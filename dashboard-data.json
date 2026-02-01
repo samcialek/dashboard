@@ -14,6 +14,7 @@
       "title": "aaru-resume-new.html",
       "desc": "Decision Scientist resume. Production bullet + $2.3M SBIR added. Profile summary needs update (you're choosing between 3 storytelling options).",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\aaru-resume-new.html",
+      "url": "content/aaru-resume-new.html",
       "meta": "drafts/ · Updated 6:00 PM",
       "project": "aaru",
       "badges": [{"type": "draft", "text": "DRAFT"}, {"type": "urgent", "text": "ACTION"}]
@@ -22,6 +23,7 @@
       "title": "jev-wray-followup.md",
       "desc": "LinkedIn DM to Jev Wray. Updated Feb 1: added Serif × population-agent model (partial pooling/PCA) + hedge fund client bridge angle. Ready for review + send.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\jev-wray-followup.md",
+      "url": "content/jev-wray-followup.md",
       "meta": "drafts/ · Updated Feb 1",
       "project": "aaru",
       "badges": [{"type": "draft", "text": "DRAFT"}, {"type": "urgent", "text": "OVERDUE"}]
@@ -30,6 +32,7 @@
       "title": "vim-correspondence-summary.md",
       "desc": "All Vim/Oron Afek email threads (Jan 14-26). Context for Feb 6 meeting.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\vim-correspondence-summary.md",
+      "url": "content/vim-correspondence-summary.md",
       "meta": "briefs/ · Created 4:34 PM",
       "project": "vim",
       "badges": [{"type": "brief", "text": "BRIEF"}]
@@ -38,6 +41,7 @@
       "title": "polmodel-blog-outline.md",
       "desc": "10-section blog outline from 44 Todoist tasks for MoC PRISM write-up.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\polmodel-blog-outline.md",
+      "url": "content/polmodel-blog-outline.md",
       "meta": "briefs/ · Created 4:32 PM",
       "project": "polmodel",
       "badges": [{"type": "brief", "text": "BRIEF"}]
@@ -78,6 +82,7 @@
     {
       "title": "Ground News collaboration pitch",
       "desc": "Kyle Finck draft ready at drafts/kyle-finck-ground-news-intro.md. He's 1st-degree, CBS classmate, YouTube News Content Partnerships. 2nd-degree to Harleen Kaur (CEO).",
+      "url": "content/kyle-finck-ground-news-intro.md",
       "project": "polmodel",
       "badges": [{"type": "draft", "text": "DRAFT READY"}]
     },
@@ -169,6 +174,7 @@
       "title": "Resume comparison (MLE vs Decision Scientist)",
       "desc": "Full HTML comparison table created. Verdict: Decision Scientist version wins for Aaru.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\aaru-resume-comparison.html",
+      "url": "content/aaru-resume-comparison.html",
       "project": "aaru",
       "badges": [{"type": "done", "text": "DONE"}]
     },
@@ -238,6 +244,7 @@
     {
       "title": "Kyle Finck intro email drafted",
       "desc": "Ground News pitch via 1st-degree CBS classmate → Harleen Kaur (CEO). drafts/kyle-finck-ground-news-intro.md",
+      "url": "content/kyle-finck-ground-news-intro.md",
       "project": "polmodel",
       "badges": [{"type": "done", "text": "DRAFTED"}]
     },

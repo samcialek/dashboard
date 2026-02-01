@@ -46,15 +46,146 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
 .card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; transition: border-color 0.15s; cursor: default; }
 .card:last-child { margin-bottom: 0; }
 .card:hover { border-color: #58a6ff; }
+.card.clickable { cursor: pointer; }
+.card.clickable:hover { border-color: #58a6ff; background: #161b22; }
+.card.clickable .card-title { color: #58a6ff; }
 .card-title { font-size: 13px; font-weight: 600; color: #e6edf3; margin-bottom: 3px; }
-.card-title a { color: #58a6ff; text-decoration: none; }
-.card-title a:hover { text-decoration: underline; }
 .card-desc { font-size: 11px; color: #8b949e; line-height: 1.4; }
+.card-desc .inline-link { color: #58a6ff; cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+.card-desc .inline-link:hover { text-decoration-style: solid; }
 .card-meta { font-size: 10px; color: #484f58; margin-top: 4px; }
 .empty { color: #484f58; font-size: 12px; font-style: italic; text-align: center; padding: 20px 0; }
 .refresh-note { text-align: center; color: #30363d; font-size: 11px; margin-top: 16px; }
 .completed-card { opacity: 0.7; }
 .completed-card .card-title { text-decoration: line-through; color: #8b949e; }
+.completed-card.clickable .card-title { color: #58a6ff; }
+
+/* View icon for clickable cards */
+.view-icon { float: right; font-size: 11px; color: #484f58; margin-left: 8px; }
+.card.clickable:hover .view-icon { color: #58a6ff; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+.modal-overlay.visible { display: flex; }
+.modal {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 64px rgba(0,0,0,0.5);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #30363d;
+  flex-shrink: 0;
+}
+.modal-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e6edf3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-title .file-type {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  background: #1c2333;
+  color: #58a6ff;
+}
+.modal-close {
+  background: none;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.modal-close:hover { background: #21262d; color: #f85149; border-color: #f85149; }
+.modal-body {
+  overflow-y: auto;
+  padding: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Markdown rendered content */
+.modal-body .md-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #c9d1d9;
+}
+.md-content h1 { font-size: 24px; color: #e6edf3; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid #30363d; }
+.md-content h2 { font-size: 20px; color: #e6edf3; margin: 24px 0 8px; padding-bottom: 6px; border-bottom: 1px solid #21262d; }
+.md-content h3 { font-size: 16px; color: #e6edf3; margin: 20px 0 6px; }
+.md-content h4 { font-size: 14px; color: #e6edf3; margin: 16px 0 4px; }
+.md-content p { margin: 8px 0; }
+.md-content ul, .md-content ol { margin: 8px 0; padding-left: 24px; }
+.md-content li { margin-bottom: 4px; }
+.md-content a { color: #58a6ff; }
+.md-content code { background: #21262d; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: #e6edf3; }
+.md-content pre { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px; overflow-x: auto; margin: 12px 0; }
+.md-content pre code { background: none; padding: 0; }
+.md-content blockquote { border-left: 3px solid #58a6ff; padding: 4px 16px; margin: 12px 0; color: #8b949e; background: #0d1117; border-radius: 0 6px 6px 0; }
+.md-content table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.md-content th { background: #21262d; padding: 8px 12px; text-align: left; border: 1px solid #30363d; font-size: 12px; color: #e6edf3; }
+.md-content td { padding: 8px 12px; border: 1px solid #30363d; font-size: 13px; }
+.md-content tr:nth-child(even) { background: #0d1117; }
+.md-content hr { border: none; border-top: 1px solid #30363d; margin: 16px 0; }
+.md-content strong { color: #e6edf3; }
+.md-content em { color: #8b949e; }
+
+/* HTML iframe content */
+.modal-body iframe {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  min-height: 600px;
+}
+
+/* Loading state */
+.modal-loading {
+  text-align: center;
+  padding: 40px;
+  color: #8b949e;
+  font-size: 13px;
+}
+.modal-loading::before {
+  content: '⏳';
+  display: block;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+.modal-error {
+  text-align: center;
+  padding: 40px;
+  color: #f85149;
+  font-size: 13px;
+}
 </style>
 </head>
 <body>
@@ -141,11 +272,77 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
 
 <p class="refresh-note">Data: dashboard-data.json + ideas-data.json · Matrices updates automatically</p>
 
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <span id="modal-title-text"></span>
+        <span class="file-type" id="modal-file-type"></span>
+      </div>
+      <button class="modal-close" id="modal-close" title="Close (Esc)">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
 const DATA_URL = './dashboard-data.json';
 const PROJECT_ORDER = ['prism','polmodel','aaru','vim','china','serif','general'];
 
-// Tab switching
+// URL mapping for content files — built from dashboard data
+const URL_MAP = {};
+
+// ===== MODAL LOGIC =====
+const overlay = document.getElementById('modal-overlay');
+const modalBody = document.getElementById('modal-body');
+const modalTitleText = document.getElementById('modal-title-text');
+const modalFileType = document.getElementById('modal-file-type');
+
+function openModal(url, title) {
+  const ext = url.split('.').pop().toLowerCase();
+  modalTitleText.textContent = title || url.split('/').pop();
+  modalFileType.textContent = ext.toUpperCase();
+  modalBody.innerHTML = '<div class="modal-loading">Loading content…</div>';
+  overlay.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+
+  if (ext === 'html') {
+    // For HTML files, use an iframe
+    modalBody.innerHTML = `<iframe src="${url}" style="min-height:700px;" onload="this.style.height = Math.max(600, this.contentDocument.body.scrollHeight + 40) + 'px'"></iframe>`;
+  } else {
+    // Markdown — fetch and render
+    fetch(url + '?t=' + Date.now())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load');
+        return res.text();
+      })
+      .then(md => {
+        modalBody.innerHTML = '<div class="md-content">' + marked.parse(md) + '</div>';
+      })
+      .catch(err => {
+        modalBody.innerHTML = '<div class="modal-error">❌ Could not load file: ' + err.message + '</div>';
+      });
+  }
+}
+
+function closeModal() {
+  overlay.classList.remove('visible');
+  document.body.style.overflow = '';
+  modalBody.innerHTML = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+overlay.addEventListener('click', function(e) {
+  if (e.target === overlay) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && overlay.classList.contains('visible')) closeModal();
+});
+
+// ===== TAB SWITCHING =====
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -155,17 +352,35 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
+// ===== RENDERING =====
+
+// Make desc text linkable when it references known content files
+function linkifyDesc(desc) {
+  if (!desc) return '';
+  // Match patterns like drafts/filename.md or briefs/filename.md
+  return desc.replace(/((?:drafts|briefs)\/[\w\-]+\.(?:md|html))/g, function(match) {
+    const filename = match.split('/').pop();
+    const url = URL_MAP[filename];
+    if (url) {
+      return '<span class="inline-link" onclick="event.stopPropagation(); openModal(\'' + url + '\', \'' + filename + '\')">' + match + '</span>';
+    }
+    return match;
+  });
+}
+
 function renderCard(item, completed) {
   const badges = (item.badges || []).map(b =>
     `<span class="badge badge-${b.type}">${b.text}</span>`
   ).join('');
-  const link = item.path
-    ? `<a href="${item.path.replace(/\\\\/g,'/').replace(/\\/g,'/')}" target="_blank">${item.title}</a>`
-    : item.title;
+  const hasUrl = !!item.url;
+  const clickClass = hasUrl ? 'clickable' : '';
+  const clickAttr = hasUrl ? ` onclick="openModal('${item.url}', '${item.title.replace(/'/g, "\\'")}')"` : '';
+  const viewIcon = hasUrl ? '<span class="view-icon">📄 View</span>' : '';
+  const desc = linkifyDesc(item.desc || '');
   return `
-    <div class="card ${completed ? 'completed-card' : ''}">
-      <div class="card-title">${link}${badges}</div>
-      <div class="card-desc">${item.desc || ''}</div>
+    <div class="card ${completed ? 'completed-card' : ''} ${clickClass}"${clickAttr}>
+      <div class="card-title">${viewIcon}${item.title}${badges}</div>
+      <div class="card-desc">${desc}</div>
       ${item.meta ? `<div class="card-meta">${item.meta}</div>` : ''}
     </div>
   `;
@@ -198,11 +413,27 @@ function renderGrouped(items, projects, completed) {
 
 function setCount(id, n) { document.getElementById(id).textContent = n; }
 
+function buildUrlMap(data) {
+  // Scan all sections for items with url fields
+  const sections = ['files','tasks','upcoming','waiting','blocked','done','answered'];
+  sections.forEach(s => {
+    (data[s] || []).forEach(item => {
+      if (item.url) {
+        const filename = item.url.split('/').pop();
+        URL_MAP[filename] = item.url;
+      }
+    });
+  });
+}
+
 function render(data) {
   document.getElementById('timestamp').textContent = new Date().toLocaleString('en-US', {
     timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
   });
   const p = data.projects || [];
+
+  // Build URL map for inline links
+  buildUrlMap(data);
 
   // Active tab
   setCount('files-count', data.files.length);
@@ -246,7 +477,6 @@ async function loadIssues() {
     const projMap = {};
     (await (await fetch(DATA_URL + '?t=' + Date.now())).json()).projects.forEach(p => projMap[p.id] = p);
 
-    // Group by project
     const groups = {};
     issues.forEach(issue => {
       const pid = issue.project || 'general';

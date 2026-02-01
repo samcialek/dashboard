@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Aaru Resume Comparison: MLE vs Decision Scientist</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; padding: 24px; color: #333; max-width: 1100px; margin: 0 auto; }
+h1 { text-align: center; margin-bottom: 4px; }
+.subtitle { text-align: center; color: #666; margin-bottom: 24px; }
+.verdict { background: #1a1a2e; color: #fff; padding: 20px 28px; border-radius: 12px; margin-bottom: 28px; }
+.verdict h2 { color: #4fc3f7; margin-top: 0; }
+.verdict .winner { color: #81c784; font-weight: bold; font-size: 1.1em; }
+.verdict ul { margin: 8px 0; padding-left: 20px; }
+.verdict li { margin-bottom: 6px; line-height: 1.4; }
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; }
+th { background: #2B579A; color: #fff; padding: 12px 14px; text-align: left; font-size: 13px; }
+th.col-a { background: #5c6bc0; }
+th.col-b { background: #00897b; }
+td { padding: 10px 14px; border-bottom: 1px solid #e8e8e8; vertical-align: top; font-size: 13px; line-height: 1.45; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) { background: #fafafa; }
+.section-label { font-weight: 700; color: #2B579A; white-space: nowrap; width: 140px; }
+.highlight { background: #e8f5e9; }
+.concern { background: #fff3e0; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+.tag-new { background: #e8f5e9; color: #2e7d32; }
+.tag-old { background: #e3f2fd; color: #1565c0; }
+.tag-changed { background: #fff3e0; color: #e65100; }
+.tag-removed { background: #fce4ec; color: #c62828; }
+.tag-better { background: #c8e6c9; color: #1b5e20; }
+.note { font-style: italic; color: #777; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>🔍 Resume Comparison for Aaru</h1>
+<p class="subtitle">Version A: "MLE / Production ML" &nbsp;vs.&nbsp; Version B: "Decision Scientist / Population Modeling"</p>
+
+<div class="verdict">
+<h2>📊 Verdict: <span class="winner">Version B (Decision Scientist) is significantly better for Aaru</span></h2>
+<ul>
+<li><strong>Direct alignment:</strong> Aaru builds synthetic population simulations. Version B literally says "population modeling" and "causal simulation" in the headline. Version A says "production ML systems" — generic.</li>
+<li><strong>PRISM connection:</strong> Version B's independent research section explicitly mentions "population simulation model for political behavior prediction" — this IS Aaru's domain.</li>
+<li><strong>Language match:</strong> Aaru uses agent-based modeling, Bayesian reasoning, causal inference, heterogeneous populations. Version B uses all of these naturally. Version A talks about latency, uptime, and MLOps.</li>
+<li><strong>D. E. Shaw framing:</strong> Version B's "out-of-sample prediction accuracy" and "signal decay" framing is more intellectually interesting than Version A's "anomaly detection" angle — better for impressing John Kessler.</li>
+<li><strong>One concern:</strong> Version B drops some concrete production metrics (sub-100ms latency, 99.9% uptime) that show you can ship. For a Staff Engineer role, some execution proof matters. Consider keeping 1-2 production bullets.</li>
+</ul>
+</div>
+
+<table>
+<thead>
+<tr>
+<th style="width:140px">Section</th>
+<th class="col-a" style="width:43%">Version A — MLE</th>
+<th class="col-b" style="width:43%">Version B — Decision Scientist</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td class="section-label">Headline</td>
+<td>MACHINE LEARNING ENGINEER | PRODUCTION ML SYSTEMS</td>
+<td class="highlight">DECISION SCIENTIST | POPULATION MODELING | CAUSAL SIMULATION <span class="tag tag-better">★ Aaru fit</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Contact / Links</td>
+<td>discoverserif.com | matrices.earth | linkedin</td>
+<td class="highlight"><span class="tag tag-new">NEW</span> Adds <em>blog: matricesofconfusion.com</em> + <em>founder: discoverserif.com</em> — shows the PRISM research</td>
+</tr>
+
+<tr>
+<td class="section-label">Profile Summary</td>
+<td>"ML engineer and CDO with 14+ years architecting production-grade ML systems at scale… inference systems and model optimization"</td>
+<td class="highlight">"Decision Scientist with 14 years building predictive systems for <strong>heterogeneous populations</strong>… <strong>population simulation models for political behavior prediction</strong>" <span class="tag tag-better">★ Direct Aaru match</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Core Expertise<br>(Bucket 1)</td>
+<td><strong>ML Frameworks & Libraries</strong><br>PyTorch, TensorFlow, JAX, scikit-learn, XGBoost, LightGBM, CatBoost, HuggingFace, ONNX, TensorRT</td>
+<td class="highlight"><strong>Agentic AI & LLM Systems</strong><br>LangGraph, OpenAI Agents SDK, multi-agent orchestration, RAG, Claude/GPT-4 <span class="tag tag-changed">CHANGED</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Core Expertise<br>(Bucket 2)</td>
+<td><strong>Causal Inference & Bayesian ML</strong><br>PyMC3/Stan, DoWhy, EconML, CausalML, Double ML, SHAP/LIME</td>
+<td><strong>Statistical Modeling & ML</strong><br>Probabilistic programming (PyMC3, Stan), time series, XGBoost, causal inference, SHAP/LIME <span class="tag tag-changed">CHANGED</span><br><span class="note">Similar content, different framing</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Core Expertise<br>(Bucket 3)</td>
+<td><strong>MLOps & Infrastructure</strong><br>MLflow, Kubeflow, Docker, K8s, CI/CD, SageMaker, Vertex AI</td>
+<td class="highlight"><strong>Population Simulation & Validation</strong><br>Synthetic population generation, agent-based modeling, calibration metrics, partial pooling, HTE, sensitivity analysis <span class="tag tag-new">NEW</span> <span class="tag tag-better">★ Core Aaru skill</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Core Expertise<br>(Bucket 4)</td>
+<td><strong>Data Engineering</strong><br>PySpark, SQL, Snowflake, dbt, Airflow, Kafka, Redis, CUDA</td>
+<td class="highlight"><strong>Quantitative Research Methods</strong><br>Hypothesis testing, causal identification, Bayesian updating, experimental design, A/B testing, diff-in-diffs, propensity score matching <span class="tag tag-changed">CHANGED</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Serif — Title</td>
+<td>Founder & CEO</td>
+<td>Founder & CEO <span class="note">(same)</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Serif — Bullets</td>
+<td>
+• Real-time Bayesian inference, sub-100ms latency, 99.9% uptime<br>
+• Auto-retraining pipeline, 70% false-positive reduction<br>
+• Feature engineering: 1m+ records, 8 APIs, 40% compute savings<br>
+• R² 0.52 vs 0.06 baseline<br>
+• Shipped in 6 months: A/B testing, monitoring<br>
+• Human Edge pilot, 350 users
+</td>
+<td class="highlight">
+• <strong>1,000+ individualized models, partial pooling, heterogeneous populations</strong> — $8K MRR, 90% ops reduction<br>
+• <strong>Agentic workflow (LangGraph)</strong> — multi-step insight generation<br>
+• <strong>Hierarchical Bayesian (PyMC)</strong> — R² 0.52, calibrated uncertainty<br>
+• <strong>Causal DAG with automated validity</strong> — front/back door adjustment, 95% smaller samples<br>
+<span class="tag tag-better">★ Population + causal framing</span><br>
+<span class="tag tag-removed">DROPPED</span> Sub-100ms latency, 99.9% uptime, Human Edge pilot
+</td>
+</tr>
+
+<tr>
+<td class="section-label">Matrices — Title</td>
+<td>Principal, <strong>ML Engineer</strong></td>
+<td class="highlight">Founder & <strong>Principal Consultant</strong> <span class="tag tag-changed">CHANGED</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Matrices — Bullets</td>
+<td>
+• Probabilistic graphical models + MLOps lifecycle<br>
+• GPT-4 analytics, RAG, 40% adoption increase<br>
+• Cross-frequency attribution for medical AI<br>
+• 8m+ records, Snowflake, ESG dashboards<br>
+• Nuveen 1,300 buildings dashboard
+</td>
+<td>
+• LLM-powered doc processing agents, 60% analyst time reduction<br>
+• 10 end-to-end ML engagements across healthcare/RE/finance<br>
+• <strong>Double-ML causal forecasting</strong> (EconML), 20% accuracy improvement<br>
+• Nuveen $2B+ portfolio dashboard<br>
+<span class="tag tag-changed">CHANGED</span> <span class="note">Reframed from MLOps to consulting/causal</span>
+</td>
+</tr>
+
+<tr>
+<td class="section-label">Maalka — Bullets</td>
+<td>
+• Double-ML on AWS EMR, distributed training<br>
+• Real-time ML inference, canary deployments<br>
+• Spark → Snowflake, green-bond risk models<br>
+• REST API/SDK for C&W $200m+ deals<br>
+• $2.3m SBIR awards
+</td>
+<td class="highlight">
+• <strong>C&W strategic partnership</strong>, cross-functional bridge<br>
+• <strong>"Pathways" product end-to-end</strong>, team of 8, GTM<br>
+• <strong>89% out-of-sample accuracy</strong> with held-out validation<br>
+• <strong>Linear programming optimization</strong>, multi-constraint<br>
+• <strong>35 customer discovery interviews</strong><br>
+<span class="tag tag-changed">CHANGED</span> <span class="note">Shifts from infra → product ownership + validation</span><br>
+<span class="tag tag-removed">DROPPED</span> $2.3m SBIR, green-bond risk models
+</td>
+</tr>
+
+<tr>
+<td class="section-label">D. E. Shaw</td>
+<td>
+• ML evaluation framework for alt data, $1.5m savings<br>
+• Anomaly detection (isolation forests, LSTM)<br>
+• ML API integration, alpha-generating insights<br>
+• Rule-based trade conflict detection
+</td>
+<td class="highlight">
+• <strong>Out-of-sample prediction accuracy</strong>, walk-forward validation, orthogonality screening<br>
+• 50+ vendor evaluation, unified scoring framework<br>
+• <strong>Signal decay and crowding risk</strong>, half-life of predictive value<br>
+<span class="tag tag-better">★ Research-flavored, intellectually rigorous</span><br>
+<span class="tag tag-removed">DROPPED</span> Anomaly detection, $1.5m savings, $2.5m compliance
+</td>
+</tr>
+
+<tr>
+<td class="section-label">Barclays</td>
+<td>KYC/AML VBA automation, sanctions screening</td>
+<td class="highlight">Book-building and pricing models (VBA & MATLAB) for 10+ IPOs (incl. Facebook), $5B+ <span class="tag tag-changed">CHANGED</span><br><span class="note">More quantitative, less compliance</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Education</td>
+<td colspan="2"><span class="note">Identical: Georgia Tech MS (60%), Columbia MBA (750 GMAT), NYU BA Econ & Math</span></td>
+</tr>
+
+<tr>
+<td class="section-label">Additional Info</td>
+<td>
+• Extensive ML skills list (Horovod, Ray, NAS, etc.)<br>
+• FINRA Series 7, CFA ESG, DELE A2<br>
+• Community roles listed inline
+</td>
+<td class="highlight">
+• Programming & AI (cleaner list)<br>
+• Infrastructure (AWS, GCP, etc.)<br>
+• Leadership & Recognition (DOE, Stern, Community Board)<br>
+• <strong>Independent Research:</strong> "population simulation model for political behavior prediction" <span class="tag tag-new">NEW</span> <span class="tag tag-better">★ Aaru clincher</span><br>
+<span class="tag tag-removed">DROPPED</span> Certifications, advanced ML skill dump
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<div class="verdict" style="background: #263238;">
+<h2 style="color: #ffab40;">⚡ Suggested Tweaks for Version B</h2>
+<ul>
+<li><strong>Add 1 production bullet to Serif:</strong> Keep the "shipped in 6 months" or "99.9% uptime" line. Staff Engineer = you ship, not just model.</li>
+<li><strong>Mention Aaru's domain directly?</strong> "Currently developing population simulation models for political behavior prediction" is great — consider whether to make the PRISM → Aaru connection even more explicit in the cover letter.</li>
+<li><strong>Maalka $2.3m SBIR:</strong> Consider keeping this — shows you can win federal funding, which signals credibility for a ~25-person startup.</li>
+<li><strong>D. E. Shaw:</strong> Version B's framing is excellent for Aaru. The "signal decay" and "orthogonality screening" language is exactly what a quant-flavored simulation company would respect.</li>
+</ul>
+</div>
+
+</body>
+</html>
