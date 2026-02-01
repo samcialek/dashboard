@@ -20,9 +20,9 @@
     },
     {
       "title": "jev-wray-followup.md",
-      "desc": "LinkedIn DM to Jev Wray. Staff Engineer @ Aaru ($200-350K). 3+ days stale.",
+      "desc": "LinkedIn DM to Jev Wray. Updated Feb 1: added Serif × population-agent model (partial pooling/PCA) + hedge fund client bridge angle. Ready for review + send.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\jev-wray-followup.md",
-      "meta": "drafts/ · Created 5:00 PM",
+      "meta": "drafts/ · Updated Feb 1",
       "project": "aaru",
       "badges": [{"type": "draft", "text": "DRAFT"}, {"type": "urgent", "text": "OVERDUE"}]
     },
@@ -86,6 +86,12 @@
       "desc": "3 options: A) Generative Model philosophy, B) Decision Science leadership, C) Short/sharp. Pick or remix.",
       "project": "aaru",
       "badges": [{"type": "urgent", "text": "YOUR PICK"}]
+    },
+    {
+      "title": "Update Serif LinkedIn page — buyer-focused refresh",
+      "desc": "Current copy is B2B2C/product-focused. Rewrite with latest thinking: buyer pain points, outcome-driven messaging, Vim-style integration pitch. linkedin.com/company/discoverserif",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "NEW"}]
     },
     {
       "title": "Supernormal serif transcripts exported",
@@ -216,6 +222,12 @@
       "desc": "Renamed across 54 files (22 JS, 32 other, 2 filenames). Zero remaining instances.",
       "project": "prism",
       "badges": [{"type": "done", "text": "RENAMED"}]
+    },
+    {
+      "title": "Serif Demo deployed to GitHub Pages",
+      "desc": "samcialek.github.io/serif-demo — full React app with SPA routing. Live Feb 1.",
+      "project": "serif",
+      "badges": [{"type": "done", "text": "LIVE"}]
     },
     {
       "title": "Dashboard deployed to GitHub Pages",
