@@ -1,0 +1,251 @@
+{
+  "projects": [
+    { "id": "prism", "name": "PRISM Interactive", "emoji": "🧠", "color": "#a371f7" },
+    { "id": "polmodel", "name": "Polmodel Write-up", "emoji": "✍️", "color": "#d2a8ff" },
+    { "id": "aaru", "name": "Aaru Job", "emoji": "🎯", "color": "#f85149" },
+    { "id": "vim", "name": "Vim Partnership", "emoji": "🤝", "color": "#58a6ff" },
+    { "id": "china", "name": "China Trip", "emoji": "✈️", "color": "#d29922" },
+    { "id": "serif", "name": "Serif etc.", "emoji": "💊", "color": "#3fb950" },
+    { "id": "general", "name": "General", "emoji": "📋", "color": "#8b949e" }
+  ],
+
+  "files": [
+    {
+      "title": "aaru-resume-new.html",
+      "desc": "Decision Scientist resume. Production bullet + $2.3M SBIR added. Profile summary needs update (you're choosing between 3 storytelling options).",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\aaru-resume-new.html",
+      "meta": "drafts/ · Updated 6:00 PM",
+      "project": "aaru",
+      "badges": [{"type": "draft", "text": "DRAFT"}, {"type": "urgent", "text": "ACTION"}]
+    },
+    {
+      "title": "jev-wray-followup.md",
+      "desc": "LinkedIn DM to Jev Wray. Staff Engineer @ Aaru ($200-350K). 3+ days stale.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\jev-wray-followup.md",
+      "meta": "drafts/ · Created 5:00 PM",
+      "project": "aaru",
+      "badges": [{"type": "draft", "text": "DRAFT"}, {"type": "urgent", "text": "OVERDUE"}]
+    },
+    {
+      "title": "vim-correspondence-summary.md",
+      "desc": "All Vim/Oron Afek email threads (Jan 14-26). Context for Feb 6 meeting.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\vim-correspondence-summary.md",
+      "meta": "briefs/ · Created 4:34 PM",
+      "project": "vim",
+      "badges": [{"type": "brief", "text": "BRIEF"}]
+    },
+    {
+      "title": "polmodel-blog-outline.md",
+      "desc": "10-section blog outline from 44 Todoist tasks for MoC PRISM write-up.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\polmodel-blog-outline.md",
+      "meta": "briefs/ · Created 4:32 PM",
+      "project": "polmodel",
+      "badges": [{"type": "brief", "text": "BRIEF"}]
+    }
+  ],
+
+  "tasks": [
+    {
+      "title": "Choose resume profile summary",
+      "desc": "3 storytelling options proposed: A) Through-Line (population obsession), B) Builder's Claim, C) Contrarian. Pick one or riff.",
+      "project": "aaru",
+      "badges": [{"type": "urgent", "text": "YOUR PICK"}]
+    },
+    {
+      "title": "Send Jev Wray follow-up on LinkedIn",
+      "desc": "Draft ready. You send manually. Attach finalized resume. 3+ days since last contact.",
+      "project": "aaru",
+      "badges": [{"type": "urgent", "text": "OVERDUE"}]
+    },
+    {
+      "title": "Reply to Oron Afek (Vim CEO)",
+      "desc": "Jan 21 email unanswered 10+ days. Feb 6 meeting at 11am. Confirm + prep.",
+      "project": "vim",
+      "badges": [{"type": "urgent", "text": "OVERDUE"}]
+    },
+    {
+      "title": "Reply to Bob Borek",
+      "desc": "Jan 26 email re: longevity framing/pricing for Vim. Unanswered 5 days.",
+      "project": "vim",
+      "badges": [{"type": "urgent", "text": "5 DAYS"}]
+    },
+    {
+      "title": "Fix: Third Way Democrat (068) votes McCain 2008",
+      "desc": "PF=70 (strong Dem) but model picks McCain (83.7). PF underweighted in L5 vote prediction.",
+      "project": "prism",
+      "badges": [{"type": "waiting", "text": "BUG"}]
+    },
+    {
+      "title": "Deploy dashboard to permanent hosting",
+      "desc": "localhost:3333 dies on shutdown. Deploy to GitHub Pages or Vercel. Need Sam's GitHub username or create new repo. Data syncs via git push.",
+      "project": "general",
+      "badges": [{"type": "waiting", "text": "NEED GITHUB"}]
+    },
+    {
+      "title": "Ground News collaboration pitch",
+      "desc": "Sam's idea: news as version control, not narrative. PRISM + Ground News = reader disposition modeling + source bias detection. Find best connection into GN team (Harleen Kaur, Sukh Singh). Research via LinkedIn.",
+      "project": "polmodel",
+      "badges": [{"type": "waiting", "text": "RESEARCHING"}]
+    },
+    {
+      "title": "Voice profile compiled",
+      "desc": "10K words at briefs/sam-voice-profile.md. Read before drafting in Sam's voice. Loaded into AGENTS.md + MEMORY.md.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
+    }
+  ],
+
+  "upcoming": [
+    {
+      "title": "Sales & Marketing Bootcamp — Tomorrow 9am",
+      "desc": "Feb 1, Saturday morning. Serif-related.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "TOMORROW"}]
+    },
+    {
+      "title": "Carl Wolf meeting — Tuesday 11am",
+      "desc": "Need to send calendar invite.",
+      "project": "general",
+      "badges": [{"type": "urgent", "text": "NEED INVITE"}]
+    },
+    {
+      "title": "Vanck Zhu — Tuesday 2/10 at Doris",
+      "desc": "Confirmed. Bed-Stuy. He's coming from Dumbo via C.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "CONFIRMED"}]
+    },
+    {
+      "title": "Vim/Serif demo prep — Feb 6 11am",
+      "desc": "Oron Afek + William Moschella. Zus integration sketch, wearable signal value-add.",
+      "project": "vim",
+      "badges": [{"type": "waiting", "text": "FEB 6"}]
+    }
+  ],
+
+  "waiting": [
+    {
+      "title": "Kailucita — gap night plans (Feb 21-23)",
+      "desc": "Sent hotel details. She's figuring out where to go between Wuyu and SFEEL.",
+      "project": "china",
+      "badges": [{"type": "waiting", "text": "WAITING ON KAILU"}]
+    },
+    {
+      "title": "Subscription audit — your call needed",
+      "desc": "~$243/yr easy cancels: Kling AI ($128), Nebula ($36), EA ($78). VERAYOGA ($96/yr) — recognized? Slack ($57/yr), WDIP.WORKSP ($110/yr)?",
+      "project": "general",
+      "badges": [{"type": "waiting", "text": "YOUR INPUT"}]
+    },
+    {
+      "title": "Email deep-dive (past year)",
+      "desc": "Only first page scanned. 171k+ samcialek, 3.5k serif, 8.5k matrices. Full year summary pending.",
+      "project": "general",
+      "badges": [{"type": "waiting", "text": "IN PROGRESS"}]
+    }
+  ],
+
+  "blocked": [
+    {
+      "title": "Cancel Kling AI subscription",
+      "desc": "$127.99/yr on Chase Ink Unlimited. Need klingai.com credentials — no email trail found.",
+      "project": "general",
+      "badges": [{"type": "blocked", "text": "NO CREDENTIALS"}]
+    },
+    {
+      "title": "Chase Freedom Unlimited (...1728)",
+      "desc": "Account LOCKED during audit. $0 balance but couldn't verify.",
+      "project": "general",
+      "badges": [{"type": "blocked", "text": "LOCKED"}]
+    }
+  ],
+
+  "done": [
+    {
+      "title": "Resume comparison (MLE vs Decision Scientist)",
+      "desc": "Full HTML comparison table created. Verdict: Decision Scientist version wins for Aaru.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\aaru-resume-comparison.html",
+      "project": "aaru",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "PRISM quiz full read-through",
+      "desc": "62 questions, 7 types, maps to 9 L2 + 6 L1 dimensions. Ready to spot-check archetypes.",
+      "project": "prism",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Chase full audit (4 cards + checking)",
+      "desc": "Sapphire Reserve ($12,298), Prime Visa ($382), Ink Unlimited ($166), Total Checking ($24,615). All subscriptions cataloged.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Todoist connected + 19 projects mapped",
+      "desc": "API token in TOOLS.md. All projects indexed.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "OpenClaw bootstrap complete",
+      "desc": "IDENTITY.md, USER.md, SOUL.md, MEMORY.md, managed browser, WhatsApp Web, 3 Gmail accounts.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Dad's NYT article summary + talking points",
+      "desc": "Kyla Scanlon prediction markets article. 5 talking points drafted.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
+    }
+  ],
+
+  "answered": [
+    {
+      "title": "Kailucita — Chongqing hotel details sent",
+      "desc": "Wuyu (Feb 18-21) + SFEEL (Feb 23-25). Gap night flagged. Cute sticker exchange.",
+      "project": "china",
+      "badges": [{"type": "done", "text": "SENT"}]
+    },
+    {
+      "title": "Vanck Zhu — WhatsApp intro as Matrices",
+      "desc": "Introduced myself. He was amused. Handed back to Sam.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "SENT"}]
+    },
+    {
+      "title": "Eco-Fascist (091) → Fortress Traditionalist",
+      "desc": "Renamed across 6 files. No ecological dimension existed — profile measures scarcity authoritarianism. New desc: zero-sum resource thinking, hierarchical traditionalism, siege mentality.",
+      "project": "prism",
+      "badges": [{"type": "done", "text": "RENAMED"}]
+    },
+    {
+      "title": "Anti-Politics (097) naming explained",
+      "desc": "PF=20, ENG=20. Disengaged, no party ID. Bounces between parties. Name fits.",
+      "project": "prism",
+      "badges": [{"type": "done", "text": "ANSWERED"}]
+    },
+    {
+      "title": "Hardware assessment: laptop vs desktop",
+      "desc": "i9-11900H vs i9-13900F. Doesn't matter for OpenClaw (API). Desktop helps for PRISM sims.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "ANSWERED"}]
+    },
+    {
+      "title": "Jev Wray / John Kessler connection",
+      "desc": "No direct connection. Jev is independent recruiter via Paraform marketplace.",
+      "project": "aaru",
+      "badges": [{"type": "done", "text": "ANSWERED"}]
+    },
+    {
+      "title": "\"Abraham Lincoln was the first American\"",
+      "desc": "Stored in Todoist #polmodel with prism-idea label.",
+      "project": "prism",
+      "badges": [{"type": "done", "text": "STORED"}]
+    },
+    {
+      "title": "\"Open-source the tree, close-source the leaf\"",
+      "desc": "Stored in Todoist #polmodel with prism-idea label.",
+      "project": "prism",
+      "badges": [{"type": "done", "text": "STORED"}]
+    }
+  ]
+}

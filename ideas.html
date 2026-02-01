@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ideas Repository</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 40px 20px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { color: #58a6ff; margin-bottom: 4px; font-size: 22px; }
+.subtitle { color: #484f58; font-size: 12px; margin-bottom: 24px; }
+.idea { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 18px 20px; margin-bottom: 12px; transition: border-color 0.15s; }
+.idea:hover { border-color: #58a6ff; }
+.idea-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.idea-title { font-size: 16px; font-weight: 600; color: #e6edf3; }
+.idea-num { font-size: 12px; color: #484f58; font-weight: 600; background: #21262d; padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+.idea-desc { font-size: 13px; color: #8b949e; line-height: 1.5; }
+.idea-meta { display: flex; gap: 12px; margin-top: 10px; font-size: 11px; color: #484f58; }
+.idea-tag { background: #1c2333; color: #58a6ff; padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 600; }
+.count-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 12px 16px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; }
+.count-bar .num { font-size: 28px; font-weight: 700; color: #58a6ff; }
+.count-bar .label { font-size: 13px; color: #8b949e; }
+.empty { color: #484f58; font-style: italic; text-align: center; padding: 40px; }
+.refresh-note { text-align: center; color: #30363d; font-size: 11px; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>💡 Ideas Repository</h1>
+<p class="subtitle">Rolling log of ideas recorded via Matrices · Synced from Todoist <code>prism-idea</code> label · Auto-refreshes every 30s</p>
+<div class="count-bar">
+<span class="num" id="total">—</span>
+<span class="label">ideas captured</span>
+</div>
+<div id="ideas-list"></div>
+<p class="refresh-note">Source: Todoist API · label:prism-idea</p>
+</div>
+<script>
+async function load() {
+  try {
+    const res = await fetch('./ideas-data.json?t=' + Date.now());
+    const ideas = await res.json();
+    document.getElementById('total').textContent = ideas.length;
+    if (!ideas.length) {
+      document.getElementById('ideas-list').innerHTML = '<div class="empty">No ideas yet. Tell Matrices to record one.</div>';
+      return;
+    }
+    document.getElementById('ideas-list').innerHTML = ideas.map((idea, i) => `
+      <div class="idea">
+        <div class="idea-header">
+          <div class="idea-title">${idea.title}</div>
+          <div class="idea-num">#${ideas.length - i}</div>
+        </div>
+        <div class="idea-desc">${idea.desc}</div>
+        <div class="idea-meta">
+          <span>${idea.date}</span>
+          ${(idea.tags || []).map(t => `<span class="idea-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { console.error(e); }
+}
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>

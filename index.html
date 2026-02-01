@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Matrices Dashboard</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 20px; }
+h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
+.subtitle { text-align: center; color: #484f58; font-size: 12px; margin-bottom: 16px; }
+
+/* Tabs */
+.tabs { display: flex; justify-content: center; gap: 4px; margin-bottom: 20px; }
+.tab { padding: 8px 20px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid #30363d; border-bottom: none; background: #161b22; color: #8b949e; transition: all 0.15s; }
+.tab:hover { color: #c9d1d9; background: #1c2128; }
+.tab.active { background: #0d1117; color: #e6edf3; border-color: #58a6ff; border-bottom: 2px solid #0d1117; position: relative; top: 1px; }
+.tab .tab-count { background: #30363d; color: #8b949e; font-size: 10px; padding: 1px 6px; border-radius: 8px; margin-left: 6px; }
+.tab.active .tab-count { background: #1f6feb; color: #fff; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.tab-bar-line { border-bottom: 1px solid #30363d; margin-top: -1px; margin-bottom: 20px; }
+
+/* Grid */
+.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; max-width: 1300px; margin: 0 auto; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.col { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; }
+.col-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #30363d; }
+.col-header h2 { font-size: 15px; font-weight: 600; }
+.col-header .count { background: #30363d; color: #8b949e; font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+
+/* Project groups */
+.project-group { margin-bottom: 14px; }
+.project-group:last-child { margin-bottom: 0; }
+.project-divider { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #21262d; }
+.project-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.project-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Cards */
+.badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: 600; margin-left: 6px; }
+.badge-draft { background: #1f2d1f; color: #3fb950; }
+.badge-brief { background: #1c2333; color: #58a6ff; }
+.badge-urgent { background: #3d1f1f; color: #f85149; }
+.badge-waiting { background: #2d2a1f; color: #d29922; }
+.badge-done { background: #1f2d1f; color: #3fb950; }
+.badge-blocked { background: #2d2a1f; color: #d29922; }
+.card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; transition: border-color 0.15s; cursor: default; }
+.card:last-child { margin-bottom: 0; }
+.card:hover { border-color: #58a6ff; }
+.card-title { font-size: 13px; font-weight: 600; color: #e6edf3; margin-bottom: 3px; }
+.card-title a { color: #58a6ff; text-decoration: none; }
+.card-title a:hover { text-decoration: underline; }
+.card-desc { font-size: 11px; color: #8b949e; line-height: 1.4; }
+.card-meta { font-size: 10px; color: #484f58; margin-top: 4px; }
+.empty { color: #484f58; font-size: 12px; font-style: italic; text-align: center; padding: 20px 0; }
+.refresh-note { text-align: center; color: #30363d; font-size: 11px; margin-top: 16px; }
+.completed-card { opacity: 0.7; }
+.completed-card .card-title { text-decoration: line-through; color: #8b949e; }
+</style>
+</head>
+<body>
+
+<h1>🔲 Matrices Dashboard</h1>
+<p class="subtitle">Last updated: <span id="timestamp"></span> · Auto-refreshes every 30s</p>
+
+<div class="tabs">
+  <div class="tab active" data-tab="active">⚡ Active <span class="tab-count" id="active-total"></span></div>
+  <div class="tab" data-tab="waiting">⏸️ Waiting on Others <span class="tab-count" id="waiting-total"></span></div>
+  <div class="tab" data-tab="completed">✅ Completed <span class="tab-count" id="completed-total"></span></div>
+  <div class="tab" data-tab="issues">🔓 Open Issues <span class="tab-count" id="issues-total"></span></div>
+  <div class="tab" data-tab="ideas">💡 Ideas <span class="tab-count" id="ideas-total"></span></div>
+</div>
+<div class="tab-bar-line"></div>
+
+<!-- ACTIVE TAB -->
+<div class="tab-content active" id="tab-active">
+<div class="grid">
+<div class="col">
+<div class="col-header"><h2>📄 Files to Review</h2><span class="count" id="files-count"></span></div>
+<div id="files-list"></div>
+</div>
+<div class="col">
+<div class="col-header"><h2>⚡ Action Required</h2><span class="count" id="tasks-count"></span></div>
+<div id="tasks-list"></div>
+</div>
+<div class="col">
+<div class="col-header"><h2>📌 Upcoming</h2><span class="count" id="upcoming-count"></span></div>
+<div id="upcoming-list"></div>
+</div>
+</div>
+</div>
+
+<!-- WAITING TAB -->
+<div class="tab-content" id="tab-waiting">
+<div class="grid grid-2" style="max-width:900px;">
+<div class="col">
+<div class="col-header"><h2>⏸️ Waiting on Others</h2><span class="count" id="others-count"></span></div>
+<div id="others-list"></div>
+</div>
+<div class="col">
+<div class="col-header"><h2>🚫 Blocked</h2><span class="count" id="blocked-count"></span></div>
+<div id="blocked-list"></div>
+</div>
+</div>
+</div>
+
+<!-- COMPLETED TAB -->
+<div class="tab-content" id="tab-completed">
+<div class="grid grid-2" style="max-width:900px;">
+<div class="col">
+<div class="col-header"><h2>✅ Done Today</h2><span class="count" id="done-count"></span></div>
+<div id="done-list"></div>
+</div>
+<div class="col">
+<div class="col-header"><h2>💬 Answered / Sent</h2><span class="count" id="answered-count"></span></div>
+<div id="answered-list"></div>
+</div>
+</div>
+</div>
+
+<!-- OPEN ISSUES TAB -->
+<div class="tab-content" id="tab-issues">
+<div class="grid grid-2" style="max-width:900px;">
+<div class="col" style="grid-column: 1 / -1;">
+<div class="col-header"><h2>🔓 Open Issues</h2><span class="count" id="issues-count"></span></div>
+<p style="font-size:11px; color:#484f58; margin-bottom:14px;">Open-ended questions, unresolved debates, and things you haven't reached a conclusion on yet. Not tasks — just threads to pick back up.</p>
+<div id="issues-list"></div>
+</div>
+</div>
+</div>
+
+<!-- IDEAS TAB -->
+<div class="tab-content" id="tab-ideas">
+<div class="grid grid-2" style="max-width:900px;">
+<div class="col" style="grid-column: 1 / -1;">
+<div class="col-header"><h2>💡 Ideas Repository</h2><span class="count" id="ideas-count"></span></div>
+<p style="font-size:11px; color:#484f58; margin-bottom:14px;">Rolling log of everything you've asked me to record. Also synced to Todoist #polmodel with <code style="background:#21262d;padding:1px 5px;border-radius:4px;">prism-idea</code> label.</p>
+<div id="ideas-list"></div>
+</div>
+</div>
+</div>
+
+<p class="refresh-note">Data: dashboard-data.json + ideas-data.json · Matrices updates automatically</p>
+
+<script>
+const DATA_URL = './dashboard-data.json';
+const PROJECT_ORDER = ['prism','polmodel','aaru','vim','china','serif','general'];
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+function renderCard(item, completed) {
+  const badges = (item.badges || []).map(b =>
+    `<span class="badge badge-${b.type}">${b.text}</span>`
+  ).join('');
+  const link = item.path
+    ? `<a href="${item.path.replace(/\\\\/g,'/').replace(/\\/g,'/')}" target="_blank">${item.title}</a>`
+    : item.title;
+  return `
+    <div class="card ${completed ? 'completed-card' : ''}">
+      <div class="card-title">${link}${badges}</div>
+      <div class="card-desc">${item.desc || ''}</div>
+      ${item.meta ? `<div class="card-meta">${item.meta}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderGrouped(items, projects, completed) {
+  if (!items.length) return '<div class="empty">Nothing here</div>';
+  const projMap = {};
+  projects.forEach(p => projMap[p.id] = p);
+  const groups = {};
+  items.forEach(item => {
+    const pid = item.project || 'general';
+    if (!groups[pid]) groups[pid] = [];
+    groups[pid].push(item);
+  });
+  let html = '';
+  PROJECT_ORDER.forEach(pid => {
+    if (!groups[pid] || !groups[pid].length) return;
+    const proj = projMap[pid] || { name: pid, emoji: '📋', color: '#8b949e' };
+    html += `<div class="project-group">
+      <div class="project-divider">
+        <span class="project-dot" style="background:${proj.color}"></span>
+        <span class="project-name" style="color:${proj.color}">${proj.emoji} ${proj.name}</span>
+      </div>
+      ${groups[pid].map(i => renderCard(i, completed)).join('')}
+    </div>`;
+  });
+  return html;
+}
+
+function setCount(id, n) { document.getElementById(id).textContent = n; }
+
+function render(data) {
+  document.getElementById('timestamp').textContent = new Date().toLocaleString('en-US', {
+    timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
+  });
+  const p = data.projects || [];
+
+  // Active tab
+  setCount('files-count', data.files.length);
+  setCount('tasks-count', data.tasks.length);
+  setCount('upcoming-count', data.upcoming.length);
+  document.getElementById('files-list').innerHTML = renderGrouped(data.files, p);
+  document.getElementById('tasks-list').innerHTML = renderGrouped(data.tasks, p);
+  document.getElementById('upcoming-list').innerHTML = renderGrouped(data.upcoming, p);
+
+  // Waiting tab
+  setCount('others-count', data.waiting.length);
+  setCount('blocked-count', data.blocked.length);
+  document.getElementById('others-list').innerHTML = renderGrouped(data.waiting, p);
+  document.getElementById('blocked-list').innerHTML = renderGrouped(data.blocked, p);
+
+  // Completed tab
+  setCount('done-count', data.done.length);
+  setCount('answered-count', data.answered.length);
+  document.getElementById('done-list').innerHTML = renderGrouped(data.done, p, true);
+  document.getElementById('answered-list').innerHTML = renderGrouped(data.answered, p, true);
+
+  // Tab counts
+  const activeTotal = data.files.length + data.tasks.length + data.upcoming.length;
+  const waitingTotal = data.waiting.length + data.blocked.length;
+  const completedTotal = data.done.length + data.answered.length;
+  setCount('active-total', activeTotal);
+  setCount('waiting-total', waitingTotal);
+  setCount('completed-total', completedTotal);
+}
+
+async function loadIssues() {
+  try {
+    const res = await fetch('./issues-data.json?t=' + Date.now());
+    const issues = await res.json();
+    setCount('issues-total', issues.length);
+    setCount('issues-count', issues.length);
+    if (!issues.length) {
+      document.getElementById('issues-list').innerHTML = '<div class="empty">No open issues</div>';
+      return;
+    }
+    const projMap = {};
+    (await (await fetch(DATA_URL + '?t=' + Date.now())).json()).projects.forEach(p => projMap[p.id] = p);
+
+    // Group by project
+    const groups = {};
+    issues.forEach(issue => {
+      const pid = issue.project || 'general';
+      if (!groups[pid]) groups[pid] = [];
+      groups[pid].push(issue);
+    });
+
+    let html = '';
+    PROJECT_ORDER.forEach(pid => {
+      if (!groups[pid] || !groups[pid].length) return;
+      const proj = projMap[pid] || { name: pid, emoji: '📋', color: '#8b949e' };
+      html += `<div class="project-group">
+        <div class="project-divider">
+          <span class="project-dot" style="background:${proj.color}"></span>
+          <span class="project-name" style="color:${proj.color}">${proj.emoji} ${proj.name}</span>
+        </div>
+        ${groups[pid].map(issue => `
+          <div class="card" style="border-left:3px solid #d29922;">
+            <div class="card-title">${issue.title}</div>
+            <div class="card-desc">${issue.desc}</div>
+            <div class="card-meta" style="display:flex;gap:8px;align-items:center;">
+              <span>${issue.date}</span>
+              ${(issue.tags||[]).map(t => '<span class="badge badge-waiting">'+t+'</span>').join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+    });
+    document.getElementById('issues-list').innerHTML = html;
+  } catch(e) {}
+}
+
+async function loadIdeas() {
+  try {
+    const res = await fetch('./ideas-data.json?t=' + Date.now());
+    const ideas = await res.json();
+    setCount('ideas-total', ideas.length);
+    setCount('ideas-count', ideas.length);
+    if (!ideas.length) {
+      document.getElementById('ideas-list').innerHTML = '<div class="empty">No ideas yet</div>';
+      return;
+    }
+    document.getElementById('ideas-list').innerHTML = ideas.map((idea, i) => `
+      <div class="card" style="border-left:3px solid #d2a8ff;">
+        <div class="card-title" style="display:flex;justify-content:space-between;">
+          <span>${idea.title}</span>
+          <span style="font-size:10px;color:#484f58;background:#21262d;padding:2px 8px;border-radius:6px;font-weight:600;">#${ideas.length - i}</span>
+        </div>
+        <div class="card-desc">${idea.desc}</div>
+        <div class="card-meta" style="display:flex;gap:8px;align-items:center;">
+          <span>${idea.date}</span>
+          ${(idea.tags||[]).map(t => '<span class="badge badge-brief">'+t+'</span>').join('')}
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {}
+}
+
+async function load() {
+  try {
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    render(await res.json());
+  } catch(e) { console.error('Load failed:', e); }
+  loadIdeas();
+  loadIssues();
+}
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>

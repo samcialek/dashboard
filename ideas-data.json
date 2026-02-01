@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Open-source the tree, close-source the leaf",
+    "desc": "Intermediate outputs (non-leaf nodes in the DAG) should be open-source / transparent. Only the final output — the leaf, the thing the user actually engages with — gets packaged as the polished, closed product. Summarization and beautification happen at the end, not in the middle. The pipeline is open; the experience is curated.",
+    "date": "Jan 31, 2026 · 6:02 PM",
+    "tags": ["product", "philosophy"]
+  },
+  {
+    "title": "Abraham Lincoln was the first American",
+    "desc": "Lincoln as the archetype of American civic-creedal identity. The first to define what \"American\" means in a national sense vs ethnic/regional. Foundational concept for PRISM's civic nationalism dimension.",
+    "date": "Jan 31, 2026 · 5:33 PM",
+    "tags": ["prism", "civic-identity"]
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "title": "✅ Eco-Fascist (091) renamed → Fortress Traditionalist",
+    "desc": "RESOLVED: Profile (CSO=78, H=73, ZS=75, ONT_S=28) had no ecological dimension. Renamed to Fortress Traditionalist — scarcity-driven authoritarianism, hierarchical traditionalism, siege mentality. Updated across 6 active files in polmodel-final/.",
+    "date": "Jan 31, 2026 · 7:36 PM",
+    "project": "prism",
+    "tags": ["resolved", "naming"]
+  },
+  {
+    "title": "Third Way Democrat (068) votes McCain in 2008",
+    "desc": "PF=70 (strong partisan Democrat) but model picks McCain with 83.7 confidence. Obama wins them in 2012. Likely cause: L5 vote prediction overweights MAT proximity (Obama ~25 vs Third Way's 55) while underweighting partisan identity (PF=70). PF should act as a strong anchor that discounts policy distance for strong partisans.",
+    "date": "Jan 31, 2026 · 5:36 PM",
+    "project": "prism",
+    "tags": ["bug", "L5-calibration", "PF-weighting"]
+  },
+  {
+    "title": "Anti-Politics (097) — is this a real archetype or a measurement artifact?",
+    "desc": "PF=20, ENG=20, PRO=23, ONT_S=25. Someone who doesn't engage, doesn't identify with parties, and is pessimistic. Votes erratically: Kerry→McCain→Romney→Johnson→Biden→Harris. Question: is this a coherent political disposition or just the absence of one? Does \"I don't care about politics\" constitute an archetype, or is it what you get when someone scores low on everything salient?",
+    "date": "Jan 31, 2026 · 5:39 PM",
+    "project": "prism",
+    "tags": ["naming", "construct-validity"]
+  }
+]
