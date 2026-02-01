@@ -6,6 +6,7 @@
     { "id": "vim", "name": "Vim Partnership", "emoji": "🤝", "color": "#58a6ff" },
     { "id": "china", "name": "China Trip", "emoji": "✈️", "color": "#d29922" },
     { "id": "serif", "name": "Serif etc.", "emoji": "💊", "color": "#3fb950" },
+    { "id": "github", "name": "GitHub Profile", "emoji": "🟩", "color": "#3fb950" },
     { "id": "general", "name": "General", "emoji": "📋", "color": "#8b949e" }
   ],
 
@@ -97,6 +98,12 @@
       "desc": "Current copy is B2B2C/product-focused. Rewrite with latest thinking: buyer pain points, outcome-driven messaging, Vim-style integration pitch. linkedin.com/company/discoverserif",
       "project": "serif",
       "badges": [{"type": "urgent", "text": "NEW"}]
+    },
+    {
+      "title": "Polyglot daily commits — GitHub green squares",
+      "desc": "GitHub Action running daily on samcialek profile. Commits code snippets in rotating languages (Python, JS, Go, Rust, Ruby, C, TS, Java, etc.). Keeps contribution graph active.",
+      "project": "github",
+      "badges": [{"type": "urgent", "text": "BUILDING"}]
     },
     {
       "title": "Supernormal serif transcripts exported",
