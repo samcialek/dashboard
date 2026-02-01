@@ -1,5 +1,11 @@
 [
   {
+    "title": "Rosetta Stone: Chinese ↔ Western Medicine",
+    "desc": "A translation layer between Chinese and Western medical frameworks. Are TCM concepts like 'fire' related to acidity, or something mappable to the PCA of amino acid profiles? The deeper question is top-down vs. bottom-up: Western medicine's overemphasis on active ingredients is mediator bias. Captain Cook's scurvy cure is the perfect case — he got the mediator wrong (thought it was acidity, not Vitamin C). Western med has overlearned this reductionist lesson. TCM's holistic approach may capture interaction effects that active-ingredient thinking misses.",
+    "date": "Feb 1, 2026 · 3:50 PM",
+    "tags": ["serif", "medicine", "methodology"]
+  },
+  {
     "title": "Open-source the tree, close-source the leaf",
     "desc": "Intermediate outputs (non-leaf nodes in the DAG) should be open-source / transparent. Only the final output — the leaf, the thing the user actually engages with — gets packaged as the polished, closed product. Summarization and beautification happen at the end, not in the middle. The pipeline is open; the experience is curated.",
     "date": "Jan 31, 2026 · 6:02 PM",
