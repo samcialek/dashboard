@@ -76,21 +76,21 @@
       "badges": [{"type": "waiting", "text": "BUG"}]
     },
     {
-      "title": "Deploy dashboard to permanent hosting",
-      "desc": "localhost:3333 dies on shutdown. Deploy to GitHub Pages or Vercel. Need Sam's GitHub username or create new repo. Data syncs via git push.",
-      "project": "general",
-      "badges": [{"type": "waiting", "text": "NEED GITHUB"}]
-    },
-    {
       "title": "Ground News collaboration pitch",
-      "desc": "Sam's idea: news as version control, not narrative. PRISM + Ground News = reader disposition modeling + source bias detection. Find best connection into GN team (Harleen Kaur, Sukh Singh). Research via LinkedIn.",
+      "desc": "Kyle Finck draft ready at drafts/kyle-finck-ground-news-intro.md. He's 1st-degree, CBS classmate, YouTube News Content Partnerships. 2nd-degree to Harleen Kaur (CEO).",
       "project": "polmodel",
-      "badges": [{"type": "waiting", "text": "RESEARCHING"}]
+      "badges": [{"type": "draft", "text": "DRAFT READY"}]
     },
     {
-      "title": "Voice profile compiled",
-      "desc": "10K words at briefs/sam-voice-profile.md. Read before drafting in Sam's voice. Loaded into AGENTS.md + MEMORY.md.",
-      "project": "general",
+      "title": "Choose LinkedIn bio",
+      "desc": "3 options: A) Generative Model philosophy, B) Decision Science leadership, C) Short/sharp. Pick or remix.",
+      "project": "aaru",
+      "badges": [{"type": "urgent", "text": "YOUR PICK"}]
+    },
+    {
+      "title": "Supernormal serif transcripts exported",
+      "desc": "96 meeting transcripts (Mar 2025–Jan 2026) → transcripts/serif/. samcialek@ account pending.",
+      "project": "serif",
       "badges": [{"type": "done", "text": "DONE"}]
     }
   ],
@@ -213,9 +213,27 @@
     },
     {
       "title": "Eco-Fascist (091) → Fortress Traditionalist",
-      "desc": "Renamed across 6 files. No ecological dimension existed — profile measures scarcity authoritarianism. New desc: zero-sum resource thinking, hierarchical traditionalism, siege mentality.",
+      "desc": "Renamed across 54 files (22 JS, 32 other, 2 filenames). Zero remaining instances.",
       "project": "prism",
       "badges": [{"type": "done", "text": "RENAMED"}]
+    },
+    {
+      "title": "Dashboard deployed to GitHub Pages",
+      "desc": "samcialek.github.io/dashboard — always on, any device. Data syncs via git push.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "LIVE"}]
+    },
+    {
+      "title": "Kyle Finck intro email drafted",
+      "desc": "Ground News pitch via 1st-degree CBS classmate → Harleen Kaur (CEO). drafts/kyle-finck-ground-news-intro.md",
+      "project": "polmodel",
+      "badges": [{"type": "done", "text": "DRAFTED"}]
+    },
+    {
+      "title": "Voice profile compiled",
+      "desc": "10K words from 60+ emails. briefs/sam-voice-profile.md. Loaded into AGENTS.md + MEMORY.md.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
     },
     {
       "title": "Anti-Politics (097) naming explained",
