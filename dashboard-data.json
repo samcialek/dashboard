@@ -88,8 +88,9 @@
       "badges": [{"type": "draft", "text": "DRAFT READY"}]
     },
     {
-      "title": "Choose LinkedIn bio",
-      "desc": "3 options: A) Generative Model philosophy, B) Decision Science leadership, C) Short/sharp. Pick or remix.",
+      "title": "Choose LinkedIn bio + headline",
+      "desc": "NEW: Gestalt + Engines draft (Feb 1) — broad/accessible, centered on mastering decision systems. Bayesian workflow, causal inference, the gestalt. 5 headline options. See drafts/linkedin-bio-gestalt.md",
+      "url": "content/linkedin-bio-gestalt.md",
       "project": "aaru",
       "badges": [{"type": "urgent", "text": "YOUR PICK"}]
     },
