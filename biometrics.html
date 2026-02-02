@@ -17,82 +17,86 @@
   .container {
     width: 100%; height: 100%;
     display: flex; flex-direction: column;
-    padding: 28px 36px;
+    padding: 14px 28px 10px;
   }
   .header {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid rgba(139,148,158,0.12);
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(139,148,158,0.10);
+    flex-shrink: 0;
   }
   .header .logo {
-    font-size: 14px; letter-spacing: 8px; text-transform: uppercase;
-    color: rgba(139,148,158,0.35);
+    font-size: 13px; letter-spacing: 8px; text-transform: uppercase;
+    color: rgba(139,148,158,0.30);
   }
   .header .status {
-    font-size: 10px; color: rgba(139,148,158,0.2);
+    font-size: 9px; color: rgba(139,148,158,0.18);
     letter-spacing: 3px;
   }
   .rows {
     flex: 1; display: flex; flex-direction: column;
     gap: 0;
+    min-height: 0; /* allow flex children to shrink */
   }
   .row {
     flex: 1; display: flex; align-items: stretch;
     position: relative;
+    min-height: 0;
   }
   .row + .row {
     border-top: 1px solid rgba(139,148,158,0.06);
   }
   .row-label {
-    width: 160px; display: flex; flex-direction: column;
-    justify-content: center; padding-right: 20px;
+    width: 150px; display: flex; flex-direction: column;
+    justify-content: center; padding-right: 16px;
     flex-shrink: 0;
   }
   .row-label .name {
-    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-    margin-bottom: 4px;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 3px;
   }
   .row-label .value {
-    font-size: 28px; font-weight: 300;
+    font-size: 26px; font-weight: 300;
     letter-spacing: -0.5px;
     line-height: 1;
   }
   .row-label .unit {
-    font-size: 9px; letter-spacing: 1.5px;
-    opacity: 0.4; margin-top: 4px;
+    font-size: 8px; letter-spacing: 1.5px;
+    opacity: 0.4; margin-top: 3px;
   }
   .row-label .cadence {
-    font-size: 8px; letter-spacing: 1.5px;
-    opacity: 0.22; margin-top: 6px;
+    font-size: 7px; letter-spacing: 1.5px;
+    opacity: 0.20; margin-top: 4px;
     text-transform: uppercase;
   }
   .wave-container {
     flex: 1; position: relative; overflow: hidden;
+    min-height: 0;
   }
   .wave-container canvas {
     width: 100%; height: 100%;
+    display: block;
   }
-  /* Sync lines across all rows */
   .sync-line {
     position: absolute; top: 0; bottom: 0;
     width: 1px;
-    background: rgba(88,166,255,0.10);
+    background: rgba(88,166,255,0.08);
     z-index: 10;
   }
 
-  /* Row colors */
   .row-ecg .row-label .name, .row-ecg .row-label .value { color: #3fb950; }
-  .row-hrv .row-label .name, .row-hrv .row-label .value { color: #58a6ff; }
+  .row-cgm .row-label .name, .row-cgm .row-label .value { color: #d2a8ff; }
   .row-resp .row-label .name, .row-resp .row-label .value { color: #f0883e; }
 
   .footer {
     display: flex; justify-content: space-between;
-    padding-top: 14px; margin-top: 16px;
-    border-top: 1px solid rgba(139,148,158,0.08);
-    font-size: 9px; letter-spacing: 3px;
-    color: rgba(139,148,158,0.18);
+    padding-top: 8px; margin-top: 6px;
+    border-top: 1px solid rgba(139,148,158,0.06);
+    font-size: 8px; letter-spacing: 3px;
+    color: rgba(139,148,158,0.15);
     text-transform: uppercase;
+    flex-shrink: 0;
   }
 </style>
 </head>
@@ -115,38 +119,46 @@
 <script>
 const SIGNALS = [
   { 
-    id: 'ecg', name: 'ECG', value: '72', unit: 'BPM', cadence: '250 Hz · continuous',
+    id: 'ecg', name: 'ECG Lead II', value: '72', unit: 'BPM', cadence: '250 Hz · continuous',
     color: '#3fb950',
     generate: (x, w) => {
+      // PQRST with ~5 beats across the width
       const cycle = w / 5;
       const t = (x % cycle) / cycle;
-      if (t < 0.05) return 0;
-      if (t < 0.10) return Math.sin((t-0.05)/0.05 * Math.PI) * 0.12;
-      if (t < 0.14) return 0;
-      if (t < 0.16) return -(t-0.14)/0.02 * 0.15;
-      if (t < 0.20) return -0.15 + (t-0.16)/0.04 * 1.15;
-      if (t < 0.24) return 1.0 - (t-0.20)/0.04 * 1.25;
-      if (t < 0.28) return -0.25 + (t-0.24)/0.04 * 0.25;
-      if (t < 0.35) return 0;
-      if (t < 0.45) return Math.sin((t-0.35)/0.10 * Math.PI) * 0.18;
+      if (t < 0.06) return 0;
+      if (t < 0.11) return Math.sin((t-0.06)/0.05 * Math.PI) * 0.10;  // P
+      if (t < 0.15) return 0;                                           // PR
+      if (t < 0.17) return -(t-0.15)/0.02 * 0.12;                     // Q
+      if (t < 0.21) return -0.12 + (t-0.17)/0.04 * 1.12;             // R up
+      if (t < 0.25) return 1.0 - (t-0.21)/0.04 * 1.20;               // R down → S
+      if (t < 0.29) return -0.20 + (t-0.25)/0.04 * 0.20;             // S recovery
+      if (t < 0.36) return 0;                                          // ST
+      if (t < 0.46) return Math.sin((t-0.36)/0.10 * Math.PI) * 0.15; // T
       return 0;
     }
   },
   {
-    id: 'hrv', name: 'HRV', value: '58', unit: 'ms RMSSD', cadence: '1 Hz · beat-to-beat',
-    color: '#58a6ff',
+    id: 'cgm', name: 'CGM Glucose', value: '112', unit: 'mg/dL', cadence: '0.003 Hz · every 5 min',
+    color: '#d2a8ff',
     generate: (x, w) => {
-      return (Math.sin(x / w * Math.PI * 6) * 0.3 
-            + Math.sin(x / w * Math.PI * 2.3) * 0.4
-            + Math.sin(x / w * Math.PI * 14) * 0.06) * 0.65;
+      // Slow glucose curve — postprandial rise and fall with gentle drift
+      const t = x / w;
+      // Two "meal" bumps + baseline drift
+      const meal1 = Math.exp(-Math.pow((t - 0.25) * 4.5, 2)) * 0.55;
+      const meal2 = Math.exp(-Math.pow((t - 0.70) * 5.0, 2)) * 0.40;
+      const drift = Math.sin(t * Math.PI * 1.2) * 0.08;
+      const base = -0.15; // offset so range sits in middle
+      return base + meal1 + meal2 + drift;
     }
   },
   {
-    id: 'resp', name: 'RESP', value: '16', unit: 'breaths/min', cadence: '0.25 Hz · derived',
+    id: 'resp', name: 'Respiration', value: '16', unit: 'breaths/min', cadence: '0.25 Hz · derived',
     color: '#f0883e',
     generate: (x, w) => {
-      return (Math.sin(x / w * Math.PI * 3) * 0.55 
-            + Math.sin(x / w * Math.PI * 3.15) * 0.12) * 0.75;
+      // Smooth sinusoidal breathing ~6 cycles
+      return (Math.sin(x / w * Math.PI * 6) * 0.50 
+            + Math.sin(x / w * Math.PI * 6.15) * 0.10
+            + Math.sin(x / w * Math.PI * 18) * 0.03);
     }
   }
 ];
@@ -171,10 +183,9 @@ SIGNALS.forEach(sig => {
 });
 
 // Sync lines
-const syncPositions = [0.20, 0.40, 0.60, 0.80];
-SIGNALS.forEach(sig => {
-  const container = document.querySelector(`.row-${sig.id} .wave-container`);
-  syncPositions.forEach(pos => {
+[0.20, 0.40, 0.60, 0.80].forEach(pos => {
+  SIGNALS.forEach(sig => {
+    const container = document.querySelector(`.row-${sig.id} .wave-container`);
     const line = document.createElement('div');
     line.className = 'sync-line';
     line.style.left = (pos * 100) + '%';
@@ -182,7 +193,7 @@ SIGNALS.forEach(sig => {
   });
 });
 
-// Draw STATIC waveforms (no animation — safe for photo)
+// Draw static waveforms — fills available height
 function drawAll() {
   SIGNALS.forEach(sig => {
     const canvas = document.getElementById(`canvas-${sig.id}`);
@@ -198,39 +209,37 @@ function drawAll() {
     const w = rect.width;
     const h = rect.height;
     const mid = h / 2;
-    const amp = h * 0.38;
+    const amp = h * 0.42;  // use more vertical space
     
-    // Subtle vertical grid
-    ctx.strokeStyle = 'rgba(139,148,158,0.03)';
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(139,148,158,0.025)';
     ctx.lineWidth = 0.5;
-    for (let gx = 0; gx < w; gx += 50) {
-      ctx.beginPath();
-      ctx.moveTo(gx, 0);
-      ctx.lineTo(gx, h);
-      ctx.stroke();
+    for (let gx = 0; gx < w; gx += 60) {
+      ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+    }
+    for (let gy = 0; gy < h; gy += 40) {
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
     }
     
-    // Waveform
+    // Main trace
     ctx.beginPath();
     ctx.strokeStyle = sig.color;
-    ctx.lineWidth = 1.8;
+    ctx.lineWidth = 2;
     ctx.globalAlpha = 0.9;
     for (let x = 0; x < w; x++) {
       const y = mid - sig.generate(x, w) * amp;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
     ctx.stroke();
     
     // Glow
     ctx.beginPath();
     ctx.strokeStyle = sig.color;
-    ctx.lineWidth = 5;
-    ctx.globalAlpha = 0.06;
+    ctx.lineWidth = 6;
+    ctx.globalAlpha = 0.05;
     for (let x = 0; x < w; x++) {
       const y = mid - sig.generate(x, w) * amp;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
     ctx.stroke();
     ctx.globalAlpha = 1;
@@ -239,12 +248,8 @@ function drawAll() {
 
 drawAll();
 window.addEventListener('resize', drawAll);
-
-// F11 or click → fullscreen
 document.body.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  }
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
 });
 </script>
 </body>
