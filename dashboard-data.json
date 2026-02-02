@@ -94,6 +94,60 @@
       "badges": [{"type": "urgent", "text": "ACTION"}]
     },
     {
+      "title": "Send updated resume to Jev Wray",
+      "desc": "Promised in follow-up email. Tailor resume for Aaru role (Python/TS/Rust monorepo, $200-350K, 0.15-0.2% equity, reports to John Kessler). Reminder set for Mon 10am.",
+      "project": "aaru",
+      "badges": [{"type": "urgent", "text": "MONDAY"}]
+    },
+    {
+      "title": "Heads Up Health / Dave Korsunsky outreach",
+      "desc": "dave@headsuphealth.com. Pitch: 'You aggregate the data, we make it smart.' Serif as insight layer on top of their dashboard. Warm path via Molly Maloof. Lead with 92% retention stat.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "ACTION"}]
+    },
+    {
+      "title": "Reconnect with Molly Maloof",
+      "desc": "Advisor in longevity/biohacking space. Previously responsive. Warm path to Heads Up Health, Function Health, and longevity clinic network. Re-engage before Heads Up outreach.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "ACTION"}]
+    },
+    {
+      "title": "Bob (Ciax Health) — send marketing materials",
+      "desc": "Promised Aug 2025. Ciax = 10K+ employee health data company. Bob is bridge to Function Health and pharma analytics buyers. Reconnect with updated materials + Human Edge results.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "6 MONTHS OVERDUE"}]
+    },
+    {
+      "title": "Patent search — $650 with Joel",
+      "desc": "Auto-causal-graph-from-metadata system is the strongest candidate. Deterministic process: JSON metadata → causal DAG → confounders → edge weights. Do BEFORE Vim demo Feb 6 — once you show methodology, clock ticks on prior art.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "BEFORE FEB 6"}]
+    },
+    {
+      "title": "Function Health outreach",
+      "desc": "Recommended by BOTH Daisy (a16z, Aug 2025) and Bob (Ciax, Aug 2025). Blood biomarkers + wearable data = exactly Serif. No outreach happened. Warm paths: Bob, Daisy, Molly.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "ACTION"}]
+    },
+    {
+      "title": "Alexander (Urge Surfing) — close B2B deal",
+      "desc": "Actively wants Serif's intelligence layer integrated. Asked about Apple Health compatibility (Jan 2026). You said 'let's discuss in next conversation.' Potential paying client ready to close.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "WARM LEAD"}]
+    },
+    {
+      "title": "Follow up with Vivian (angel syndicate)",
+      "desc": "Invests in YC companies, invested in Sonia (AI therapy). Explicitly liked 'middle layer' positioning (Jan 2026). Freshest warm investor lead.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "WARM LEAD"}]
+    },
+    {
+      "title": "Plurality Institute × PRISM connection",
+      "desc": "Glen Weyl / Audrey Tang's framework maps directly to PRISM. Their diversity taxonomy = your L2 dimensions, decomposed properly. Your 132 archetypes = their 'intersectional identity clusters' operationalized. Audrey Tang already on Todoist. Potential collaboration / blog crossover.",
+      "project": "polmodel",
+      "badges": [{"type": "waiting", "text": "EXPLORE"}]
+    },
+    {
       "title": "Choose resume profile summary",
       "desc": "3 storytelling options proposed: A) Through-Line (population obsession), B) Builder's Claim, C) Contrarian. Pick one or riff.",
       "project": "aaru",
@@ -159,10 +213,10 @@
 
   "upcoming": [
     {
-      "title": "Sales & Marketing Bootcamp — Tomorrow 9am",
-      "desc": "Feb 1, Saturday morning. Serif-related.",
-      "project": "serif",
-      "badges": [{"type": "urgent", "text": "TOMORROW"}]
+      "title": "NYU Berkley Center Photo/Video — Tue 4:45pm",
+      "desc": "Feb 3. $25 cancellation fee.",
+      "project": "general",
+      "badges": [{"type": "urgent", "text": "TUESDAY"}]
     },
     {
       "title": "Carl Wolf meeting — Tuesday 11am",
