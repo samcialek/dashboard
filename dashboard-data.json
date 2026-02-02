@@ -76,6 +76,24 @@
       "badges": [{"type": "brief", "text": "BRIEF"}]
     },
     {
+      "title": "cofounder-search-results.md",
+      "desc": "Co-founder search strategy: 4 archetypes (BD, fundraising, clinical, ops), LinkedIn search queries, target companies (Ro/Noom/Hims/Livongo alumni), 6-week execution plan, red flags.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\cofounder-search-results.md",
+      "url": "content/cofounder-search-results.md",
+      "meta": "briefs/ · Created 1:00 AM Feb 2",
+      "project": "serif",
+      "badges": [{"type": "brief", "text": "BRIEF"}]
+    },
+    {
+      "title": "incubator-accelerator-list.md",
+      "desc": "Incubator/accelerator programs for Serif. Top picks: Columbia Startup Lab (5/5 fit, alumni access), NVIDIA Inception (free, rolling), Techstars NYC (4/5). Fit scores + application paths.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\incubator-accelerator-list.md",
+      "url": "content/incubator-accelerator-list.md",
+      "meta": "briefs/ · Created 1:00 AM Feb 2",
+      "project": "serif",
+      "badges": [{"type": "brief", "text": "BRIEF"}]
+    },
+    {
       "title": "polmodel-blog-outline.md",
       "desc": "10-section blog outline from 44 Todoist tasks for MoC PRISM write-up.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\polmodel-blog-outline.md",
@@ -204,6 +222,24 @@
       "badges": [{"type": "urgent", "text": "BUILDING"}]
     },
     {
+      "title": "Synthesize Bob/Heads Up Health engagement plan",
+      "desc": "6 transcripts read (Jul-Sep 2025). Bob = strategic advisor + connector, NOT customer. Key: he bridges to Function Health, pharma analytics, insurance. Draft outreach re-engagement email + engagement strategy. Include Human Edge results as proof point.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "TOMORROW"}]
+    },
+    {
+      "title": "Apply to Columbia Startup Lab",
+      "desc": "Perfect fit (5/5): Sam is Columbia MBA = direct access. NYC SoHo location, rolling admissions, subsidized office space, no equity taken. See briefs/incubator-accelerator-list.md.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "ACTION"}]
+    },
+    {
+      "title": "Apply to NVIDIA Inception",
+      "desc": "Free program, rolling admissions, no downside. Perfect for AI infrastructure needs. See briefs/incubator-accelerator-list.md.",
+      "project": "serif",
+      "badges": [{"type": "waiting", "text": "EXPLORE"}]
+    },
+    {
       "title": "Supernormal serif transcripts exported",
       "desc": "96 meeting transcripts (Mar 2025–Jan 2026) → transcripts/serif/. samcialek@ account pending.",
       "project": "serif",
@@ -250,9 +286,9 @@
     },
     {
       "title": "Carl Wolf demo + meeting — Tuesday 11am",
-      "desc": "Former COO of LanzaTech, Kellogg MBA. Building longevity clinic (training/nutrition/scans/bloodwork/biomarkers) in Westchester. Intro'd by cousin Michael Martin. Sub-agent customizing Serif demo for his use case. STILL NEED TO SEND CALENDAR INVITE (carl.lloyd.wolf@gmail.com). WhatsApp: 240-401-0729.",
+      "desc": "✅ DEMO READY at samcialek.github.io/serif-demo/ — customized for longevity clinic (DEXA + bloodwork + wearables, NYC personas, ROI calculator, $2.5M/yr revenue potential per location). ⚠️ STILL NEED CALENDAR INVITE → carl.lloyd.wolf@gmail.com. WhatsApp: 240-401-0729.",
       "project": "serif",
-      "badges": [{"type": "urgent", "text": "TOMORROW 11AM"}]
+      "badges": [{"type": "urgent", "text": "TUESDAY 11AM"}]
     },
     {
       "title": "Vanck Zhu — Tuesday 2/10 at Doris",
@@ -424,6 +460,36 @@
       "desc": "Last payment hit Feb 11, 2025 (for Dec 2024 invoice). No work after that — Nuveen transition never materialized. 2025 1099 income from CodeGreen.",
       "project": "general",
       "badges": [{"type": "done", "text": "ANSWERED"}]
+    },
+    {
+      "title": "Co-founder search strategy completed",
+      "desc": "4 archetypes defined, LinkedIn search queries built, target companies mapped (Ro/Noom/Hims/Livongo/Calm alumni), 6-week execution plan. briefs/cofounder-search-results.md",
+      "project": "serif",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Incubator/accelerator list compiled",
+      "desc": "Columbia Startup Lab (5/5), NVIDIA Inception (4/5), Techstars NYC (4/5). Fit scores + warm paths. briefs/incubator-accelerator-list.md",
+      "project": "serif",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Carl Wolf demo customized + deployed",
+      "desc": "Longevity clinic personas (investment banker, tech exec, lawyer), DEXA+bloodwork+wearable integration, ROI calculator ($2.5M/yr per location), 4-week implementation timeline. Live at samcialek.github.io/serif-demo/",
+      "project": "serif",
+      "badges": [{"type": "done", "text": "DEPLOYED"}]
+    },
+    {
+      "title": "113 Supernormal transcripts analyzed",
+      "desc": "Full strategic report: 92% retention + 80hr→10min are top proof points. Insurance recurring theme. Asia-first traction. Brittany closest co-founder conversation. BD pipeline mapped.",
+      "project": "serif",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Voice transcription pipeline working",
+      "desc": "faster-whisper (tiny, CPU, int8) + FFmpeg installed. WhatsApp voice notes auto-transcribe. Tested with 2 voice notes successfully.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
     },
     {
       "title": "Carl Wolf full context retrieved",
