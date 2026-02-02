@@ -213,6 +213,12 @@
 
   "upcoming": [
     {
+      "title": "Enable Google Meet transcription (replacing Supernormal)",
+      "desc": "Before your next call: (1) In Google Meet, click Activities (shapes icon, bottom right) → Transcripts → Start transcript. (2) Transcript saves to Google Drive in 'Meet Transcripts' folder. (3) If option is missing, you may need Google Workspace — free Gmail may not have it. Fallback: install Tactiq Chrome extension (free, works on any Google account) or Otter.ai. (4) Test on a solo call before Tuesday's meetings.",
+      "project": "general",
+      "badges": [{"type": "urgent", "text": "DO NOW"}]
+    },
+    {
       "title": "NYU Berkley Center Photo/Video — Tue 4:45pm",
       "desc": "Feb 3. $25 cancellation fee.",
       "project": "general",
