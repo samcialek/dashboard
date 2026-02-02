@@ -173,12 +173,6 @@
 
   "blocked": [
     {
-      "title": "Cancel Kling AI subscription",
-      "desc": "$127.99/yr on Chase Ink Unlimited. Need klingai.com credentials — no email trail found.",
-      "project": "general",
-      "badges": [{"type": "blocked", "text": "NO CREDENTIALS"}]
-    },
-    {
       "title": "Chase Freedom Unlimited (...1728)",
       "desc": "Account LOCKED during audit. $0 balance but couldn't verify.",
       "project": "general",
@@ -187,6 +181,12 @@
   ],
 
   "done": [
+    {
+      "title": "Cancel Kling AI subscription",
+      "desc": "Autorenew cancelled Feb 1. Was $127.99/yr on Chase Ink Unlimited.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
+    },
     {
       "title": "Resume comparison (MLE vs Decision Scientist)",
       "desc": "Full HTML comparison table created. Verdict: Decision Scientist version wins for Aaru.",

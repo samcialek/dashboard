@@ -1,0 +1,200 @@
+[
+  {
+    "title": "Matteo Franceschetti intro — ask Pat",
+    "desc": "Eight Sleep founder. Pat has the connection. Someday intro for Serif/longevity angle.",
+    "project": "serif",
+    "tags": ["networking", "intro"]
+  },
+  {
+    "title": "Research Kamal Patel from Examine",
+    "desc": "Examine.com founder. Relevant to Serif's evidence-based supplement positioning.",
+    "project": "serif",
+    "tags": ["research"]
+  },
+  {
+    "title": "Ask Ben how to contact Bryan Johnson",
+    "desc": "Blueprint/longevity figure. Ben may have a warm path.",
+    "project": "serif",
+    "tags": ["networking"]
+  },
+  {
+    "title": "Contact Interplay Ventures / Mark Peter Davis via Jared",
+    "desc": "VC outreach. Jared has the connection to Mark Peter Davis.",
+    "project": "serif",
+    "tags": ["fundraising", "intro"]
+  },
+  {
+    "title": "Pitch The Well",
+    "desc": "Publication/platform pitch for Serif or longevity content.",
+    "project": "serif",
+    "tags": ["outreach"]
+  },
+  {
+    "title": "Use OpenAI deep research to find VCs / reach out to Mr. Brown",
+    "desc": "Systematic VC search via deep research. Mr. Brown as specific target.",
+    "project": "serif",
+    "tags": ["fundraising", "research"]
+  },
+  {
+    "title": "Ask Natalie about General Catalyst",
+    "desc": "Natalie may have a connection or context on General Catalyst for Serif fundraising.",
+    "project": "serif",
+    "tags": ["fundraising", "networking"]
+  },
+  {
+    "title": "Letter to Pat re: data infra roles at portfolio companies",
+    "desc": "Pat's portfolio companies may have data infrastructure roles. Write a letter pitching your fit.",
+    "project": "aaru",
+    "tags": ["job-search", "networking"]
+  },
+  {
+    "title": "Ask Claude Research for Capital One contact",
+    "desc": "Use Claude to research/find a warm path into Capital One.",
+    "project": "aaru",
+    "tags": ["job-search", "research"]
+  },
+  {
+    "title": "Reach out to Julie Beckley on LinkedIn",
+    "desc": "LinkedIn outreach for job search / networking.",
+    "project": "aaru",
+    "tags": ["job-search", "outreach"]
+  },
+  {
+    "title": "Write to mbell2 on LinkedIn",
+    "desc": "LinkedIn outreach for Aaru job-related networking.",
+    "project": "aaru",
+    "tags": ["job-search", "outreach"]
+  },
+  {
+    "title": "Reach out to Mendoza about surveys/twr",
+    "desc": "Discuss survey methodology and The Weighted Republic angle with Mendoza.",
+    "project": "polmodel",
+    "tags": ["outreach", "methodology"]
+  },
+  {
+    "title": "Reach out to Mendoza about blog project",
+    "desc": "Separate conversation with Mendoza about the polmodel blog / MoC write-up.",
+    "project": "polmodel",
+    "tags": ["outreach", "content"]
+  },
+  {
+    "title": "Tell JJ about PRISM / political systems video",
+    "desc": "Share PRISM concept and political systems video with JJ.",
+    "project": "polmodel",
+    "tags": ["outreach", "prism"]
+  },
+  {
+    "title": "Reach out to Sol with political quiz",
+    "desc": "Send Sol the PRISM political quiz for feedback.",
+    "project": "polmodel",
+    "tags": ["outreach", "prism"]
+  },
+  {
+    "title": "Show MoC to Tynan",
+    "desc": "Share Matrices of Confusion with Tynan for feedback.",
+    "project": "polmodel",
+    "tags": ["outreach", "feedback"]
+  },
+  {
+    "title": "LinkedIn message Joe Weisenthal / Odd Lots",
+    "desc": "Bloomberg's Odd Lots podcast. Pitch polmodel angle or MoC content.",
+    "project": "polmodel",
+    "tags": ["outreach", "media"]
+  },
+  {
+    "title": "Write Peter Zeihan about probabilities",
+    "desc": "Zeihan does geopolitics forecasting. Share probability framework / polmodel work.",
+    "project": "polmodel",
+    "tags": ["outreach", "media"]
+  },
+  {
+    "title": "Reach out to Audrey Tang when algorithm of democracy article is up",
+    "desc": "Former Taiwan Digital Minister. Wait for article publication, then reach out.",
+    "project": "polmodel",
+    "tags": ["outreach", "conditional"]
+  },
+  {
+    "title": "Ask people to repost article",
+    "desc": "Ben Bergman, Shaw, Mike Martin, Rimas, etc. Amplification ask for published MoC content.",
+    "project": "polmodel",
+    "tags": ["outreach", "amplification"]
+  },
+  {
+    "title": "Use old LLM for pamphlets story",
+    "desc": "Use an older LLM model for the political pamphlets storytelling piece.",
+    "project": "polmodel",
+    "tags": ["content", "experiment"]
+  },
+  {
+    "title": "Tell JJ about reconstruction presidents",
+    "desc": "Share reconstruction-era presidents research/takes with JJ.",
+    "project": "general",
+    "tags": ["outreach"]
+  },
+  {
+    "title": "Reach out to Dean Stattmann",
+    "desc": "General networking outreach.",
+    "project": "general",
+    "tags": ["networking"]
+  },
+  {
+    "title": "Reach out to Scott Grossman for drinks in Chelsea",
+    "desc": "Casual drinks. Chelsea area.",
+    "project": "general",
+    "tags": ["networking", "social"]
+  },
+  {
+    "title": "Consider writing Trey Beck",
+    "desc": "Low-priority. Think about whether/what to write.",
+    "project": "general",
+    "tags": ["networking", "maybe"]
+  },
+  {
+    "title": "Reach back out to Joe",
+    "desc": "Follow-up outreach to Joe. Reconnect.",
+    "project": "general",
+    "tags": ["networking"]
+  },
+  {
+    "title": "Suggest to Tynan: Soho 1981 themed party / Andy Warhol",
+    "desc": "Party idea: 1981 Soho scene, Andy Warhol vibes. Pitch to Tynan.",
+    "project": "general",
+    "tags": ["social", "idea"]
+  },
+  {
+    "title": "Introduce Kailu and Meg to James Tang",
+    "desc": "Three-way intro. Facilitate connection.",
+    "project": "general",
+    "tags": ["networking", "intro"]
+  },
+  {
+    "title": "Sell bike on Discord",
+    "desc": "List bike for sale on relevant Discord marketplace.",
+    "project": "general",
+    "tags": ["errand"]
+  },
+  {
+    "title": "Go to 404 Fitness / NYU gym",
+    "desc": "Check out 404 Fitness or use NYU gym facilities.",
+    "project": "general",
+    "tags": ["health"]
+  },
+  {
+    "title": "Disclose AI contribution percentage",
+    "desc": "Figure out and publish AI contribution % for projects. Transparency initiative.",
+    "project": "general",
+    "tags": ["meta", "transparency"]
+  },
+  {
+    "title": "MAGA birthday invitation idea",
+    "desc": "Creative birthday invitation concept with MAGA theme.",
+    "project": "general",
+    "tags": ["idea", "social"]
+  },
+  {
+    "title": "Reuse gantt template",
+    "desc": "Repurpose existing Gantt chart template for future project planning.",
+    "project": "general",
+    "tags": ["tooling"]
+  }
+]

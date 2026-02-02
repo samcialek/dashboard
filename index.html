@@ -186,6 +186,26 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
   color: #f85149;
   font-size: 13px;
 }
+
+/* ===== BACKLOG ===== */
+.backlog-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 6px; background: #21262d; color: #8b949e; margin-right: 4px; margin-top: 4px; }
+
+/* ===== CALENDAR ===== */
+.cal-container { max-width: 900px; margin: 0 auto; }
+.cal-week { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.cal-week:last-child { margin-bottom: 0; }
+.cal-week-header { font-size: 12px; font-weight: 700; color: #58a6ff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #30363d; }
+.cal-entry { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #21262d; }
+.cal-entry:last-child { border-bottom: none; }
+.cal-date-col { min-width: 70px; font-size: 12px; font-weight: 600; color: #e6edf3; }
+.cal-day-col { min-width: 32px; font-size: 11px; color: #484f58; }
+.cal-time-col { min-width: 64px; font-size: 11px; color: #d29922; font-weight: 500; font-variant-numeric: tabular-nums; }
+.cal-title-col { font-size: 13px; color: #c9d1d9; flex: 1; }
+.cal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.cal-entry.span-entry { background: #1c2128; margin: 4px -8px; padding: 7px 8px; border-radius: 6px; border-bottom: none; }
+.cal-entry.span-entry .cal-date-col { color: #d29922; }
+.cal-entry.today-entry { background: #1a2233; margin: 0 -8px; padding: 7px 8px; border-radius: 6px; }
+.cal-entry.today-entry .cal-date-col { color: #58a6ff; }
 </style>
 </head>
 <body>
@@ -199,6 +219,8 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
   <div class="tab" data-tab="completed">✅ Completed <span class="tab-count" id="completed-total"></span></div>
   <div class="tab" data-tab="issues">🔓 Open Issues <span class="tab-count" id="issues-total"></span></div>
   <div class="tab" data-tab="ideas">💡 Ideas <span class="tab-count" id="ideas-total"></span></div>
+  <div class="tab" data-tab="backlog">📋 Backlog <span class="tab-count" id="backlog-total"></span></div>
+  <div class="tab" data-tab="calendar">📅 Calendar <span class="tab-count" id="calendar-total"></span></div>
 </div>
 <div class="tab-bar-line"></div>
 
@@ -270,7 +292,29 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
 </div>
 </div>
 
-<p class="refresh-note">Data: dashboard-data.json + ideas-data.json · Matrices updates automatically</p>
+<!-- BACKLOG TAB -->
+<div class="tab-content" id="tab-backlog">
+<div class="grid grid-2" style="max-width:900px;">
+<div class="col" style="grid-column: 1 / -1;">
+<div class="col-header"><h2>📋 Backlog</h2><span class="count" id="backlog-count"></span></div>
+<p style="font-size:11px; color:#484f58; margin-bottom:14px;">Someday/maybe items. Networking, outreach, ideas to revisit. No urgency, no due dates — just recorded so nothing falls through the cracks.</p>
+<div id="backlog-list"></div>
+</div>
+</div>
+</div>
+
+<!-- CALENDAR TAB -->
+<div class="tab-content" id="tab-calendar">
+<div class="cal-container">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+<h2 style="font-size:15px;font-weight:600;color:#e6edf3;">📅 Upcoming Calendar</h2>
+<span class="count" id="calendar-count" style="background:#30363d;color:#8b949e;font-size:11px;padding:2px 8px;border-radius:10px;"></span>
+</div>
+<div id="calendar-list"></div>
+</div>
+</div>
+
+<p class="refresh-note">Data: dashboard-data.json + ideas-data.json + backlog-data.json + calendar-data.json · Matrices updates automatically</p>
 
 <!-- MODAL OVERLAY -->
 <div class="modal-overlay" id="modal-overlay">
@@ -535,6 +579,93 @@ async function loadIdeas() {
   } catch(e) {}
 }
 
+async function loadBacklog() {
+  try {
+    const res = await fetch('./backlog-data.json?t=' + Date.now());
+    const items = await res.json();
+    setCount('backlog-total', items.length);
+    setCount('backlog-count', items.length);
+    if (!items.length) {
+      document.getElementById('backlog-list').innerHTML = '<div class="empty">Nothing in backlog</div>';
+      return;
+    }
+    // Get projects for grouping
+    const projRes = await fetch(DATA_URL + '?t=' + Date.now());
+    const projData = await projRes.json();
+    const projMap = {};
+    projData.projects.forEach(p => projMap[p.id] = p);
+
+    const groups = {};
+    items.forEach(item => {
+      const pid = item.project || 'general';
+      if (!groups[pid]) groups[pid] = [];
+      groups[pid].push(item);
+    });
+
+    let html = '';
+    PROJECT_ORDER.forEach(pid => {
+      if (!groups[pid] || !groups[pid].length) return;
+      const proj = projMap[pid] || { name: pid, emoji: '📋', color: '#8b949e' };
+      html += '<div class="project-group">';
+      html += '<div class="project-divider">';
+      html += '<span class="project-dot" style="background:' + proj.color + '"></span>';
+      html += '<span class="project-name" style="color:' + proj.color + '">' + proj.emoji + ' ' + proj.name + '</span>';
+      html += '</div>';
+      groups[pid].forEach(item => {
+        const tags = (item.tags || []).map(t => '<span class="backlog-tag">' + t + '</span>').join('');
+        html += '<div class="card">';
+        html += '<div class="card-title">' + item.title + '</div>';
+        html += '<div class="card-desc">' + (item.desc || '') + '</div>';
+        if (tags) html += '<div style="margin-top:4px;">' + tags + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById('backlog-list').innerHTML = html;
+  } catch(e) { console.error('Backlog load failed:', e); }
+}
+
+async function loadCalendar() {
+  try {
+    const res = await fetch('./calendar-data.json?t=' + Date.now());
+    const weeks = await res.json();
+    // Get projects for dot colors
+    const projRes = await fetch(DATA_URL + '?t=' + Date.now());
+    const projData = await projRes.json();
+    const projMap = {};
+    projData.projects.forEach(p => projMap[p.id] = p);
+
+    let totalEntries = 0;
+    weeks.forEach(w => totalEntries += w.entries.length);
+    setCount('calendar-total', totalEntries);
+    setCount('calendar-count', totalEntries + ' events');
+
+    if (!weeks.length) {
+      document.getElementById('calendar-list').innerHTML = '<div class="empty">No upcoming dates</div>';
+      return;
+    }
+
+    let html = '';
+    weeks.forEach(week => {
+      html += '<div class="cal-week">';
+      html += '<div class="cal-week-header">📆 ' + week.week + '</div>';
+      week.entries.forEach(entry => {
+        const proj = projMap[entry.project] || { color: '#8b949e' };
+        const spanClass = entry.span ? ' span-entry' : '';
+        html += '<div class="cal-entry' + spanClass + '">';
+        html += '<span class="cal-dot" style="background:' + proj.color + '"></span>';
+        html += '<span class="cal-date-col">' + entry.date + '</span>';
+        html += '<span class="cal-day-col">' + (entry.day || '') + '</span>';
+        html += '<span class="cal-time-col">' + (entry.time || '') + '</span>';
+        html += '<span class="cal-title-col">' + entry.title + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById('calendar-list').innerHTML = html;
+  } catch(e) { console.error('Calendar load failed:', e); }
+}
+
 async function load() {
   try {
     const res = await fetch(DATA_URL + '?t=' + Date.now());
@@ -542,6 +673,8 @@ async function load() {
   } catch(e) { console.error('Load failed:', e); }
   loadIdeas();
   loadIssues();
+  loadBacklog();
+  loadCalendar();
 }
 load();
 setInterval(load, 30000);

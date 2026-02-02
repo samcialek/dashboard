@@ -1,0 +1,42 @@
+[
+  {
+    "week": "Feb 2 – Feb 8",
+    "entries": [
+      { "date": "Feb 2", "day": "Mon", "time": "9:00 AM", "title": "Call Broadway Walgreens", "project": "general" },
+      { "date": "Feb 2", "day": "Mon", "time": "10:00 AM", "title": "Sign up for NYU Bobst", "project": "general" },
+      { "date": "Feb 2", "day": "Mon", "title": "JPMC application via Dara", "project": "aaru" },
+      { "date": "Feb 3", "day": "Tue", "time": "4:45 PM", "title": "NYU Berkley Center Photo/Video", "project": "general" },
+      { "date": "Feb 3", "day": "Tue", "title": "MoC 13 questions hovers due", "project": "polmodel" },
+      { "date": "Feb 3", "day": "Tue", "title": "Reach back out to Joe", "project": "general" },
+      { "date": "Feb 3", "day": "Tue", "time": "5:00 PM", "title": "Go over ChatGPT chat", "project": "general" },
+      { "date": "Feb 4", "day": "Wed", "title": "Contact Interplay Ventures", "project": "serif" },
+      { "date": "Feb 6", "day": "Thu", "time": "11:00 AM", "title": "Vim / Oron Afek demo", "project": "vim" },
+      { "date": "Feb 7", "day": "Sat", "title": "Ensure Heart & Soil cashback", "project": "general" }
+    ]
+  },
+  {
+    "week": "Feb 9 – Feb 15",
+    "entries": [
+      { "date": "Feb 9", "day": "Sun", "title": "Pitch The Well", "project": "serif" },
+      { "date": "Feb 10", "day": "Mon", "title": "Vanck Zhu at Doris", "project": "general" },
+      { "date": "Feb 11", "day": "Tue", "title": "China departure ✈️", "project": "china" },
+      { "date": "Feb 11", "day": "Tue", "title": "Follow up with Kevin Liu", "project": "china" },
+      { "date": "Feb 11", "day": "Tue", "title": "Check Flytogate refund", "project": "china" },
+      { "date": "Feb 14", "day": "Fri", "title": "Submit Serif DE franchise tax to LegalZoom", "project": "serif" }
+    ]
+  },
+  {
+    "week": "Feb 16 – Feb 22",
+    "entries": [
+      { "date": "Feb 18–21", "title": "🏨 Wuyu Hotel, Chongqing", "project": "china", "span": true },
+      { "date": "Feb 21–23", "title": "⚠️ Gap night (no hotel booked)", "project": "china", "span": true }
+    ]
+  },
+  {
+    "week": "Feb 23 – Mar 1",
+    "entries": [
+      { "date": "Feb 23–25", "title": "🏨 SFEEL Hotel, Chongqing", "project": "china", "span": true },
+      { "date": "Mar 1", "day": "Sun", "title": "DE franchise tax report due", "project": "serif" }
+    ]
+  }
+]
