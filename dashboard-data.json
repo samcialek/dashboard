@@ -22,12 +22,21 @@
     },
     {
       "title": "jev-wray-followup.md",
-      "desc": "LinkedIn DM to Jev Wray. Updated Feb 1: added Serif × population-agent model (partial pooling/PCA) + hedge fund client bridge angle. Ready for review + send.",
+      "desc": "Final follow-up email to Jev Wray. Feb 1: in-person meeting ask, hedge fund BD angle (D.E. Shaw alt data), 996 reference, OpenClaw mention. Sent or ready to send via LinkedIn.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\jev-wray-followup.md",
       "url": "content/jev-wray-followup.md",
-      "meta": "drafts/ · Updated Feb 1",
+      "meta": "drafts/ · Finalized 11:13 PM Feb 1",
       "project": "aaru",
-      "badges": [{"type": "draft", "text": "DRAFT"}, {"type": "urgent", "text": "OVERDUE"}]
+      "badges": [{"type": "done", "text": "FINALIZED"}]
+    },
+    {
+      "title": "thirteen-exogenous-realities.html (LIVE)",
+      "desc": "MoC article updated: securities section replaced with styled grid layout (emoji icons, 2-column, 5 asset classes). Deployed to matricesofconfusion.com via FTP at 10:39 PM.",
+      "path": "C:\\Users\\samci\\Downloads\\14140-web_page_in_html-matrices.earth-v2 (2)\\14140-web_page_in_html-matrices.earth-v2 (1)\\thirteen-exogenous-realities.html",
+      "url": "https://matricesofconfusion.com/thirteen-exogenous-realities.html",
+      "meta": "MoC · Deployed 10:39 PM Feb 1",
+      "project": "general",
+      "badges": [{"type": "done", "text": "LIVE"}]
     },
     {
       "title": "vim-correspondence-summary.md",

@@ -1,22 +1,19 @@
 # Follow-up to Jev Wray — LinkedIn Message
-**Status:** DRAFT — review and send via LinkedIn DM
-**Date:** Jan 31, 2026 (updated Feb 1)
-**Context:** Call happened Jan 30, 4:00-4:30 PM via Google Meet. This is a follow-up, NOT a cold intro.
+**Status:** SENT (or ready to send) — Feb 1, 2026
+**Context:** Call happened Jan 30, 4:00-4:30 PM via Google Meet. This is the follow-up.
 
 ---
 
-Hey Jev — great connecting Friday. Really appreciated the time and the detail on what the team is building at Aaru.
+Jev,
 
-The more I think about it, the more I see the fit. The agent architecture problems you described map directly to what I've been working through with PRISM — especially around structured psychological profiles vs. demographic-conditioned prompting, and the temporal dynamics piece. I'd been solving those same problems from the political modeling side without realizing someone was building the platform I'd want to deploy it on.
+Appreciate you sending my interest over to Aaru. Thanks for the chat on Friday. I appreciated the overview of the role and especially you going over Cameron and John's wishes for the new hire. As you could probably tell, it's a very attractive proposition to me -- really a union of the domains I'm passionate about and the methodologies I've mastered over several years. The idea of bringing my management experience to bear to steer a young company, with energetic people working 996 is attractive as well.
 
-Two things I'd love to explore with John directly:
+I'll shoot over an updated resume tomorrow (the one I provided in the videocall setup was updated 6 months ago and wasn't tailored -- maybe it'll be helpful/maybe they won't look at it) but in the meantime, do you think John would be amenable to meeting up in person? There's a lot to discuss, should they be interested in my skills and background, and for a big move like this it might be superior to videoconference. You can let him know I'd be happy to cover coffee or lunch if he can make the time. Let me know.
 
-**Serif + population-agent modeling.** I've been running a health/wearables platform called Serif for the past couple years — personalized health interventions driven by biosignal data. The core statistical problem turned out to be the same one PRISM solves: how do you build models across a heterogeneous population without either collapsing everyone into one average or overfitting to individual noise? The answer (from McElreath's *Statistical Rethinking*, which shaped a lot of how I think about this) is partial pooling — hierarchical models where individual agents share information through their cluster membership. Combine that with PCA to reduce the dimensionality of your agent parameter space, and you get something that scales without losing the texture. I think the Serif learnings around health-behavioral clustering map directly onto how Aaru could model non-political agent behaviors — consumption, health decisions, lifestyle patterns. That's a real expansion of what the synthetic population can predict.
+Beyond the modeling side, I think there's a real BD opportunity I could help with on the hedge fund front. Synthetic population data is exactly the kind of alternative signal quant funds are starving for (sentiment, consumer behavior, political risk) and most of what's currently available is garbage (I would know: I led the search for alternative data signals when I was at D. E. Shaw). I have real connections into that world and could be a bridge. Do you know if these guys have ever looked into it?
 
-**Hedge fund clients.** This is probably more of a BD conversation, but I have real connections into the hedge fund world and I think Aaru's synthetic population data is exactly the kind of alternative signal they'd pay for. Sentiment modeling, consumer behavior prediction, political risk — funds are starving for this stuff and most of what's available is garbage. I could be a bridge there. Worth discussing what that looks like if I'm on the team.
+I'll leave it there. If it's easier to hop on the phone rather than reply here, feel free to give me a buzz (1-651-283-8726). I hope you had a productive weekend and taxes are in the mail. I will say, I installed OpenClaw (an open-source agentic AI framework -- basically an always-on AI assistant that connects to your messaging, browser, and local tools) right before we spoke Friday and have been messing around with it since -- I have a feeling it's going to make my taxes a lot easier this year.
 
-Happy to send over my resume and any supporting materials whenever it makes sense. I'm in the NYC area, so very open to sitting down with John in person — I think the architecture clicks fast once you see the layer structure and how partial pooling actually works at scale.
-
-Looking forward to next steps.
+Cheers, and thanks again. Regardless of how things work out, I definitely owe you a beer or two. 🙂
 
 Sam
