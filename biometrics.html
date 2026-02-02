@@ -85,9 +85,9 @@
     z-index: 10;
   }
 
-  .row-ecg .row-label .name, .row-ecg .row-label .value { color: #3fb950; }
-  .row-cgm .row-label .name, .row-cgm .row-label .value { color: #d2a8ff; }
-  .row-resp .row-label .name, .row-resp .row-label .value { color: #f0883e; }
+  .row-ecg .row-label .name, .row-ecg .row-label .value { color: #89CCF0; }
+  .row-cgm .row-label .name, .row-cgm .row-label .value { color: #f8c8dc; }
+  .row-resp .row-label .name, .row-resp .row-label .value { color: #b8aadd; }
 
   .footer {
     display: flex; justify-content: space-between;
@@ -120,7 +120,7 @@
 const SIGNALS = [
   { 
     id: 'ecg', name: 'ECG Lead II', value: '72', unit: 'BPM', cadence: '250 Hz · continuous',
-    color: '#3fb950',
+    color: '#89CCF0',
     generate: (x, w) => {
       // PQRST with ~5 beats across the width
       const cycle = w / 5;
@@ -139,7 +139,7 @@ const SIGNALS = [
   },
   {
     id: 'cgm', name: 'CGM Glucose', value: '112', unit: 'mg/dL', cadence: '0.003 Hz · every 5 min',
-    color: '#d2a8ff',
+    color: '#f8c8dc',
     generate: (x, w) => {
       // Slow glucose curve — postprandial rise and fall with gentle drift
       const t = x / w;
@@ -153,7 +153,7 @@ const SIGNALS = [
   },
   {
     id: 'resp', name: 'Respiration', value: '16', unit: 'breaths/min', cadence: '0.25 Hz · derived',
-    color: '#f0883e',
+    color: '#b8aadd',
     generate: (x, w) => {
       // Smooth sinusoidal breathing ~6 cycles
       return (Math.sin(x / w * Math.PI * 6) * 0.50 
