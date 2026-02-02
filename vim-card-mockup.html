@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serif × Vim — Card Mock-up</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0e1a;
+    color: #e0e0e0;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #0d1224 0%, #131a33 100%);
+    border-bottom: 1px solid rgba(137,204,240,0.15);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-mark {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, #89CCF0, #b8aadd);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; color: #0a0e1a;
+  }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+  .header h1 span { color: #89CCF0; }
+  .header-tag {
+    font-size: 12px; background: rgba(248,200,220,0.12); color: #f8c8dc;
+    padding: 5px 14px; border-radius: 20px; font-weight: 500;
+  }
+
+  .main { max-width: 1200px; margin: 0 auto; padding: 48px 32px 32px; }
+  .section-title { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .section-sub {
+    text-align: center; font-size: 16px; color: #8892a6;
+    margin-bottom: 48px; max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+
+  /* Layout: EHR + Sidebar */
+  .ehr-layout {
+    display: grid; grid-template-columns: 1fr 380px; gap: 0;
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    min-height: 620px;
+  }
+
+  /* Fake EHR panel */
+  .ehr-panel {
+    background: #f5f6f8; color: #1a1a2e; padding: 0;
+  }
+  .ehr-toolbar {
+    background: #2c5282; color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px;
+  }
+  .ehr-toolbar .ehr-name { font-weight: 600; }
+  .ehr-toolbar .ehr-tabs { display: flex; gap: 16px; font-size: 12px; opacity: 0.8; }
+  .ehr-toolbar .ehr-tabs span { cursor: default; }
+  .ehr-toolbar .ehr-tabs .active { opacity: 1; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+
+  .ehr-content { padding: 24px; }
+  .ehr-patient-banner {
+    background: #fff; border-radius: 8px; padding: 16px 20px;
+    border: 1px solid #e2e8f0; margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ehr-patient-banner .name { font-weight: 700; font-size: 18px; color: #1a202c; }
+  .ehr-patient-banner .meta { font-size: 13px; color: #718096; margin-top: 2px; }
+  .ehr-patient-banner .mrn { font-size: 12px; color: #a0aec0; background: #edf2f7; padding: 4px 10px; border-radius: 6px; }
+
+  .ehr-section {
+    background: #fff; border-radius: 8px; padding: 16px 20px;
+    border: 1px solid #e2e8f0; margin-bottom: 12px;
+  }
+  .ehr-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #a0aec0; letter-spacing: 1px; margin-bottom: 10px; }
+  .ehr-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f7fafc; }
+  .ehr-row:last-child { border-bottom: none; }
+  .ehr-row .label { color: #718096; }
+  .ehr-row .value { font-weight: 600; color: #2d3748; }
+  .ehr-note { font-size: 13px; color: #4a5568; line-height: 1.6; }
+  .ehr-meds { font-size: 13px; color: #4a5568; }
+  .ehr-meds li { margin-bottom: 4px; }
+
+  /* Vim Sidebar */
+  .vim-sidebar {
+    background: linear-gradient(180deg, #0d1224, #111827);
+    border-left: 1px solid rgba(137,204,240,0.12);
+    padding: 0; display: flex; flex-direction: column;
+  }
+  .vim-sidebar-header {
+    padding: 14px 20px;
+    background: rgba(137,204,240,0.06);
+    border-bottom: 1px solid rgba(137,204,240,0.1);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .vim-logo {
+    background: #2c5282; color: #fff; font-weight: 800; font-size: 12px;
+    padding: 4px 10px; border-radius: 6px;
+  }
+  .vim-sidebar-header .text { font-size: 13px; color: #8892a6; }
+
+  .vim-cards { padding: 16px; flex: 1; overflow-y: auto; }
+
+  /* THE SERIF CARD */
+  .serif-card {
+    background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(13,18,36,0.98));
+    border: 1px solid rgba(137,204,240,0.2);
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .serif-card-header {
+    padding: 16px 18px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .serif-card-header .badge {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .serif-card-header .serif-icon {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: linear-gradient(135deg, #89CCF0, #b8aadd);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px; color: #0a0e1a;
+  }
+  .serif-card-header .label { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+  .serif-card-header .time { font-size: 11px; color: #586580; }
+
+  /* Risk signal */
+  .risk-section { padding: 16px 18px; }
+  .risk-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #586580; margin-bottom: 10px; }
+  .risk-signal {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(248,200,220,0.06);
+    border: 1px solid rgba(248,200,220,0.15);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+  }
+  .risk-indicator {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; flex-shrink: 0;
+  }
+  .risk-high {
+    background: rgba(252,129,129,0.15);
+    border: 2px solid rgba(252,129,129,0.4);
+    color: #fc8181;
+  }
+  .risk-label { font-weight: 600; font-size: 14px; color: #e2e8f0; }
+  .risk-detail { font-size: 12px; color: #8892a6; margin-top: 2px; }
+  .risk-ci { font-size: 11px; color: #89CCF0; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+  /* Uncertainty bar */
+  .uncertainty-bar {
+    margin: 12px 0; padding: 0 18px;
+  }
+  .ubar-label { font-size: 11px; color: #586580; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .ubar-track {
+    height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px;
+    position: relative; overflow: visible;
+  }
+  .ubar-fill {
+    height: 100%; border-radius: 3px; position: absolute;
+    background: linear-gradient(90deg, #89CCF0, #f8c8dc);
+  }
+  .ubar-point {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #fff; border: 2px solid #f8c8dc;
+    position: absolute; top: -3px;
+    box-shadow: 0 0 8px rgba(248,200,220,0.4);
+  }
+  .ubar-markers { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: #4a5568; }
+
+  /* Recommendation */
+  .rec-section {
+    padding: 14px 18px; margin: 0;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .rec-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #586580; margin-bottom: 8px; }
+  .rec-item {
+    background: rgba(137,204,240,0.06);
+    border: 1px solid rgba(137,204,240,0.12);
+    border-radius: 8px; padding: 12px 14px;
+    margin-bottom: 8px; display: flex; gap: 10px;
+  }
+  .rec-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .rec-text { font-size: 13px; color: #c9d1d9; line-height: 1.45; }
+  .rec-text strong { color: #89CCF0; font-weight: 600; }
+
+  /* Wearable trend */
+  .trend-section {
+    padding: 14px 18px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .trend-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #586580; margin-bottom: 12px; }
+  .trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .trend-metric {
+    background: rgba(255,255,255,0.03); border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .trend-metric .val { font-size: 18px; font-weight: 700; }
+  .trend-metric .val.cyan { color: #89CCF0; }
+  .trend-metric .val.pink { color: #f8c8dc; }
+  .trend-metric .val.lav { color: #b8aadd; }
+  .trend-metric .val.red { color: #fc8181; }
+  .trend-metric .lbl { font-size: 10px; color: #586580; margin-top: 2px; }
+  .trend-metric .delta { font-size: 10px; margin-top: 2px; }
+  .delta.up { color: #fc8181; }
+  .delta.down { color: #68d391; }
+  .delta.stable { color: #8892a6; }
+
+  /* Sparkline (CSS-only mini chart) */
+  .sparkline {
+    display: flex; align-items: flex-end; gap: 3px;
+    height: 28px; margin-top: 6px;
+  }
+  .sparkline .bar {
+    flex: 1; border-radius: 2px 2px 0 0; min-width: 0;
+    transition: height 0.3s;
+  }
+
+  /* Card actions */
+  .card-actions {
+    padding: 14px 18px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex; gap: 8px;
+  }
+  .card-btn {
+    flex: 1; padding: 10px; border: none; border-radius: 8px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .card-btn.primary {
+    background: linear-gradient(135deg, #89CCF0, #b8aadd);
+    color: #0a0e1a;
+  }
+  .card-btn.secondary {
+    background: rgba(255,255,255,0.06);
+    color: #8892a6; border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Serif footer */
+  .serif-card-footer {
+    padding: 10px 18px;
+    background: rgba(137,204,240,0.04);
+    border-top: 1px solid rgba(137,204,240,0.08);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .serif-card-footer .powered {
+    font-size: 10px; color: #4a5568;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .serif-card-footer .powered .s-mark {
+    width: 16px; height: 16px; border-radius: 4px;
+    background: linear-gradient(135deg, #89CCF0, #b8aadd);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 8px; color: #0a0e1a;
+  }
+  .serif-card-footer .evidence { font-size: 10px; color: #89CCF0; cursor: pointer; }
+
+  /* Another placeholder card */
+  .other-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 14px 16px; margin-top: 14px;
+    opacity: 0.5;
+  }
+  .other-card .oc-title { font-size: 12px; color: #586580; font-weight: 600; }
+  .other-card .oc-desc { font-size: 11px; color: #3d4a5e; margin-top: 4px; }
+
+  .footer {
+    text-align: center; padding: 40px 32px 32px;
+    font-size: 12px; color: #3d4a5e;
+  }
+  .footer a { color: #89CCF0; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-mark">S</div>
+      <h1><span>Serif</span> × Vim</h1>
+    </div>
+    <div class="header-tag">Card Mock-up</div>
+  </div>
+
+  <div class="main">
+    <div class="section-title">Vim Card — In-EHR Experience</div>
+    <p class="section-sub">
+      What providers see during a patient encounter: Serif insights delivered via Vim's
+      card infrastructure, embedded directly in the EHR sidebar.
+    </p>
+
+    <div class="ehr-layout">
+      <!-- Fake EHR -->
+      <div class="ehr-panel">
+        <div class="ehr-toolbar">
+          <span class="ehr-name">🏥 MedChart EHR</span>
+          <div class="ehr-tabs">
+            <span class="active">Chart</span>
+            <span>Orders</span>
+            <span>Results</span>
+            <span>Notes</span>
+            <span>Messages</span>
+          </div>
+        </div>
+        <div class="ehr-content">
+          <div class="ehr-patient-banner">
+            <div>
+              <div class="name">Maria Chen</div>
+              <div class="meta">54 y/o Female · DOB: 03/17/1971 · PCP: Dr. Patel</div>
+            </div>
+            <div class="mrn">MRN: 847-229-01</div>
+          </div>
+
+          <div class="ehr-section">
+            <div class="ehr-section-title">Vital Signs — Today</div>
+            <div class="ehr-row"><span class="label">Blood Pressure</span><span class="value">148/92 mmHg</span></div>
+            <div class="ehr-row"><span class="label">Heart Rate</span><span class="value">82 bpm</span></div>
+            <div class="ehr-row"><span class="label">SpO₂</span><span class="value">97%</span></div>
+            <div class="ehr-row"><span class="label">Weight</span><span class="value">168 lbs</span></div>
+            <div class="ehr-row"><span class="label">BMI</span><span class="value">28.4</span></div>
+          </div>
+
+          <div class="ehr-section">
+            <div class="ehr-section-title">Active Medications</div>
+            <ul class="ehr-meds">
+              <li>Metformin 1000mg BID</li>
+              <li>Lisinopril 20mg daily</li>
+              <li>Atorvastatin 40mg QHS</li>
+            </ul>
+          </div>
+
+          <div class="ehr-section">
+            <div class="ehr-section-title">Assessment & Plan</div>
+            <p class="ehr-note">
+              Follow-up for T2DM and HTN management. Last A1c 7.8% (3 months ago).
+              Patient reports improved adherence since wearable program enrollment.
+              Review Serif wearable insights in sidebar →
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vim Sidebar with Serif Card -->
+      <div class="vim-sidebar">
+        <div class="vim-sidebar-header">
+          <span class="vim-logo">VIM</span>
+          <span class="text">Clinical Intelligence Cards</span>
+        </div>
+
+        <div class="vim-cards">
+          <!-- SERIF INSIGHT CARD -->
+          <div class="serif-card">
+            <div class="serif-card-header">
+              <div class="badge">
+                <div class="serif-icon">S</div>
+                <span class="label">Serif Insight</span>
+              </div>
+              <span class="time">2 min ago</span>
+            </div>
+
+            <div class="risk-section">
+              <div class="risk-title">Risk Signal</div>
+              <div class="risk-signal">
+                <div class="risk-indicator risk-high">!</div>
+                <div>
+                  <div class="risk-label">Elevated Cardiovascular Risk</div>
+                  <div class="risk-detail">Nocturnal BP non-dipping + rising resting HR</div>
+                  <div class="risk-ci">📊 78% probability · 95% CI [64%, 89%]</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="uncertainty-bar">
+              <div class="ubar-label">
+                <span>Population baseline</span>
+                <span>This patient</span>
+              </div>
+              <div class="ubar-track">
+                <div class="ubar-fill" style="left:25%; width:40%;"></div>
+                <div class="ubar-point" style="left:calc(55% - 6px);"></div>
+              </div>
+              <div class="ubar-markers">
+                <span>Low</span>
+                <span>Moderate</span>
+                <span>High</span>
+              </div>
+            </div>
+
+            <div class="rec-section">
+              <div class="rec-title">Recommendation</div>
+              <div class="rec-item">
+                <span class="rec-icon">💊</span>
+                <div class="rec-text">
+                  Consider <strong>adding amlodipine 5mg</strong> or switching to
+                  combination ARB/CCB. Nocturnal pattern suggests
+                  inadequate 24h coverage.
+                </div>
+              </div>
+              <div class="rec-item">
+                <span class="rec-icon">📋</span>
+                <div class="rec-text">
+                  Order <strong>ambulatory BP monitoring</strong> to confirm
+                  non-dipping pattern observed via wearable.
+                </div>
+              </div>
+            </div>
+
+            <div class="trend-section">
+              <div class="trend-title">7-Day Wearable Summary</div>
+              <div class="trend-grid">
+                <div class="trend-metric">
+                  <div class="val red">142/88</div>
+                  <div class="lbl">Avg BP (mmHg)</div>
+                  <div class="delta up">↑ 8/5 from prior week</div>
+                </div>
+                <div class="trend-metric">
+                  <div class="val cyan">78</div>
+                  <div class="lbl">Avg Resting HR (bpm)</div>
+                  <div class="delta up">↑ 4 bpm</div>
+                </div>
+                <div class="trend-metric">
+                  <div class="val lav">62%</div>
+                  <div class="lbl">Glucose Time-in-Range</div>
+                  <div class="delta down">↑ 3% (improving)</div>
+                </div>
+                <div class="trend-metric">
+                  <div class="val pink">5.8h</div>
+                  <div class="lbl">Avg Sleep Duration</div>
+                  <div class="delta stable">— stable</div>
+                </div>
+              </div>
+              <!-- Mini sparkline for BP -->
+              <div style="margin-top:12px;">
+                <div style="font-size:10px;color:#586580;margin-bottom:4px;">Systolic BP — 7 days</div>
+                <div class="sparkline">
+                  <div class="bar" style="height:60%;background:#89CCF0;"></div>
+                  <div class="bar" style="height:55%;background:#89CCF0;"></div>
+                  <div class="bar" style="height:72%;background:#f8c8dc;"></div>
+                  <div class="bar" style="height:68%;background:#f8c8dc;"></div>
+                  <div class="bar" style="height:80%;background:#fc8181;"></div>
+                  <div class="bar" style="height:85%;background:#fc8181;"></div>
+                  <div class="bar" style="height:90%;background:#fc8181;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="card-btn primary">📝 Add to Plan</button>
+              <button class="card-btn secondary">📄 Full Report</button>
+            </div>
+
+            <div class="serif-card-footer">
+              <span class="powered">
+                <span class="s-mark">S</span> Powered by Serif · Bayesian inference
+              </span>
+              <span class="evidence">View evidence →</span>
+            </div>
+          </div>
+
+          <!-- Placeholder for other Vim cards -->
+          <div class="other-card">
+            <div class="oc-title">🏷️ Quality Measure Gap</div>
+            <div class="oc-desc">A1c due — last checked 92 days ago</div>
+          </div>
+          <div class="other-card">
+            <div class="oc-title">📞 Care Coordination</div>
+            <div class="oc-desc">Cardiology referral pending since 01/15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Serif Health AI — Bayesian intelligence for clinical decision support &nbsp;|&nbsp;
+    <a href="https://serif.life">serif.life</a>
+  </div>
+</body>
+</html>
