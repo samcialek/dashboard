@@ -208,6 +208,30 @@
       "desc": "96 meeting transcripts (Mar 2025–Jan 2026) → transcripts/serif/. samcialek@ account pending.",
       "project": "serif",
       "badges": [{"type": "done", "text": "DONE"}]
+    },
+    {
+      "title": "Modular data inputs — pitch for Serif",
+      "desc": "Creative data streams beyond labs/wearables: gut microbiome, epigenetic clocks, home environment sensors, grocery purchase data, voice biomarkers, gait analysis, cognitive performance. Each one plugs into Serif's Bayesian engine. Include in Carl Wolf demo + investor materials.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "ADD TO DEMO"}]
+    },
+    {
+      "title": "OpenClaw desktop migration",
+      "desc": "Move gateway to desktop (always-on). Laptop as paired node. Options: Syncthing for workspace sync, SMB for network file access, OpenClaw nodes for remote commands. Research + set up tomorrow.",
+      "project": "general",
+      "badges": [{"type": "urgent", "text": "TOMORROW"}]
+    },
+    {
+      "title": "Kailu's time tracking app idea",
+      "desc": "From Jan 29 Supernormal conversation. Replace manual multi-spreadsheet system with app: time logging, editing, client categorization, approval workflows, master sheet sync. Standalone (Win+Mac) or web app. Potential collab project.",
+      "project": "general",
+      "badges": [{"type": "waiting", "text": "EXPLORE"}]
+    },
+    {
+      "title": "Voice transcription working",
+      "desc": "faster-whisper + ffmpeg installed on laptop. WhatsApp voice notes auto-transcribe. Tiny model on CPU.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "DONE"}]
     }
   ],
 
@@ -225,10 +249,10 @@
       "badges": [{"type": "urgent", "text": "TUESDAY"}]
     },
     {
-      "title": "Carl Wolf meeting — Tuesday 11am",
-      "desc": "Need to send calendar invite.",
-      "project": "general",
-      "badges": [{"type": "urgent", "text": "NEED INVITE"}]
+      "title": "Carl Wolf demo + meeting — Tuesday 11am",
+      "desc": "Former COO of LanzaTech, Kellogg MBA. Building longevity clinic (training/nutrition/scans/bloodwork/biomarkers) in Westchester. Intro'd by cousin Michael Martin. Sub-agent customizing Serif demo for his use case. STILL NEED TO SEND CALENDAR INVITE (carl.lloyd.wolf@gmail.com). WhatsApp: 240-401-0729.",
+      "project": "serif",
+      "badges": [{"type": "urgent", "text": "TOMORROW 11AM"}]
     },
     {
       "title": "Vanck Zhu — Tuesday 2/10 at Doris",
@@ -393,6 +417,24 @@
       "title": "\"Open-source the tree, close-source the leaf\"",
       "desc": "Stored in Todoist #polmodel with prism-idea label.",
       "project": "prism",
+      "badges": [{"type": "done", "text": "STORED"}]
+    },
+    {
+      "title": "CodeGreen 2025 payment confirmed",
+      "desc": "Last payment hit Feb 11, 2025 (for Dec 2024 invoice). No work after that — Nuveen transition never materialized. 2025 1099 income from CodeGreen.",
+      "project": "general",
+      "badges": [{"type": "done", "text": "ANSWERED"}]
+    },
+    {
+      "title": "Carl Wolf full context retrieved",
+      "desc": "11-email thread (Aug 2025–Jan 2026). Intro by cousin Michael Martin. Carl = former COO LanzaTech, Kellogg MBA. Building longevity clinic in Westchester. No prior Supernormal call — all email. WhatsApp: 240-401-0729.",
+      "project": "serif",
+      "badges": [{"type": "done", "text": "FOUND"}]
+    },
+    {
+      "title": "\"Permission to shift\" civic nationalism idea",
+      "desc": "Trump gave Rs permission to oppose Iraq War without siding with liberals. Progressives need their version. Mechanism: belief change when decoupled from identity cost. Todoist #civicnationalism task #9975484774.",
+      "project": "polmodel",
       "badges": [{"type": "done", "text": "STORED"}]
     }
   ]
