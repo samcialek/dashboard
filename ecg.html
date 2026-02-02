@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serif — Continuous ECG</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; cursor: none; }
+  canvas { display: block; width: 100%; height: 100%; }
+  
+  #logo {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    font-family: 'SF Pro Display', -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(0, 200, 100, 0.25);
+    z-index: 10;
+    user-select: none;
+  }
+
+  #vitals {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: rgba(0, 200, 100, 0.5);
+    text-align: right;
+    z-index: 10;
+    user-select: none;
+    line-height: 1.6;
+  }
+  
+  #bpm {
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(0, 220, 100, 0.8);
+    line-height: 1.1;
+  }
+  
+  #bpm-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(0, 200, 100, 0.4);
+    text-transform: uppercase;
+  }
+
+  #lead-label {
+    position: fixed;
+    top: 24px;
+    left: 32px;
+    font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(0, 200, 100, 0.4);
+    z-index: 10;
+    user-select: none;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<canvas id="ecg"></canvas>
+<div id="lead-label">II</div>
+<div id="vitals">
+  <div id="bpm">72</div>
+  <div id="bpm-label">bpm</div>
+</div>
+<div id="logo">serif</div>
+
+<script>
+const canvas = document.getElementById('ecg');
+const ctx = canvas.getContext('2d');
+const bpmEl = document.getElementById('bpm');
+
+// High-DPI support
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.scale(dpr, dpr);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ECG waveform shape (one PQRST complex, normalized 0-1 x, centered at 0.5 y)
+// Based on realistic Lead II morphology
+function ecgSample(t) {
+  // t is 0..1 within one beat cycle
+  // Baseline
+  let y = 0;
+  
+  // P wave (small positive bump) ~0.06-0.14
+  if (t > 0.06 && t < 0.14) {
+    const pt = (t - 0.06) / 0.08;
+    y = 0.08 * Math.sin(pt * Math.PI);
+  }
+  // PR segment ~0.14-0.18 (flat)
+  
+  // Q wave (small negative dip) ~0.18-0.21
+  else if (t > 0.18 && t < 0.21) {
+    const pt = (t - 0.18) / 0.03;
+    y = -0.06 * Math.sin(pt * Math.PI);
+  }
+  // R wave (tall positive spike) ~0.21-0.27
+  else if (t > 0.21 && t < 0.27) {
+    const pt = (t - 0.21) / 0.06;
+    y = 0.85 * Math.sin(pt * Math.PI);
+  }
+  // S wave (negative dip after R) ~0.27-0.32
+  else if (t > 0.27 && t < 0.32) {
+    const pt = (t - 0.27) / 0.05;
+    y = -0.18 * Math.sin(pt * Math.PI);
+  }
+  // ST segment ~0.32-0.40 (slight elevation)
+  else if (t > 0.32 && t < 0.40) {
+    y = 0.02;
+  }
+  // T wave (moderate positive bump) ~0.40-0.55
+  else if (t > 0.40 && t < 0.55) {
+    const pt = (t - 0.40) / 0.15;
+    y = 0.18 * Math.sin(pt * Math.PI);
+  }
+  // U wave (tiny bump) ~0.56-0.62
+  else if (t > 0.56 && t < 0.62) {
+    const pt = (t - 0.56) / 0.06;
+    y = 0.03 * Math.sin(pt * Math.PI);
+  }
+  
+  return y;
+}
+
+// Animation state
+const TRACE_COLOR = '#00d864';
+const GRID_COLOR = 'rgba(0, 180, 80, 0.06)';
+const GRID_COLOR_MAJOR = 'rgba(0, 180, 80, 0.12)';
+const GLOW_COLOR = 'rgba(0, 216, 100, 0.15)';
+const BG_COLOR = '#0a0a0a';
+
+let bpm = 72;
+let phase = 0; // 0..1 through current beat
+const PIXELS_PER_SECOND = 120; // sweep speed (25mm/s at ~5px/mm)
+let sweepX = 0;
+
+// Store the trail
+const trailLength = 4000; // pixels of trail to keep
+let trail = []; // array of {x, y} points
+
+let lastTime = performance.now();
+
+// Subtle BPM variation
+let targetBpm = 72;
+let bpmTimer = 0;
+
+function drawGrid(w, h) {
+  const smallGrid = 20; // ~4mm
+  const bigGrid = 100;  // ~20mm
+  
+  ctx.strokeStyle = GRID_COLOR;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  for (let x = 0; x < w; x += smallGrid) {
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, h);
+  }
+  for (let y = 0; y < h; y += smallGrid) {
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+  }
+  ctx.stroke();
+  
+  ctx.strokeStyle = GRID_COLOR_MAJOR;
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  for (let x = 0; x < w; x += bigGrid) {
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, h);
+  }
+  for (let y = 0; y < h; y += bigGrid) {
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+  }
+  ctx.stroke();
+}
+
+function animate(now) {
+  const dt = (now - lastTime) / 1000;
+  lastTime = now;
+  
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const centerY = h * 0.5;
+  const amplitude = h * 0.35;
+  
+  // BPM variation
+  bpmTimer -= dt;
+  if (bpmTimer <= 0) {
+    targetBpm = 68 + Math.random() * 10; // 68-78
+    bpmTimer = 2 + Math.random() * 3;
+  }
+  bpm += (targetBpm - bpm) * dt * 0.5;
+  bpmEl.textContent = Math.round(bpm);
+  
+  // Advance phase
+  const beatsPerSecond = bpm / 60;
+  const phaseAdvance = beatsPerSecond * dt;
+  phase += phaseAdvance;
+  if (phase >= 1) phase -= 1;
+  
+  // Advance sweep position
+  const dx = PIXELS_PER_SECOND * dt;
+  sweepX += dx;
+  if (sweepX >= w) sweepX -= w;
+  
+  // Calculate current Y
+  const y = centerY - ecgSample(phase) * amplitude;
+  
+  // Add to trail
+  trail.push({ x: sweepX, y: y });
+  
+  // Trim trail (keep enough for full screen width)
+  while (trail.length > w * 2) {
+    trail.shift();
+  }
+  
+  // Clear
+  ctx.fillStyle = BG_COLOR;
+  ctx.fillRect(0, 0, w, h);
+  
+  // Grid
+  drawGrid(w, h);
+  
+  // Draw the ECG trace
+  // The sweep erases ahead and draws behind
+  const eraseWidth = 40;
+  
+  ctx.save();
+  
+  // Main trace glow
+  ctx.shadowColor = GLOW_COLOR;
+  ctx.shadowBlur = 12;
+  ctx.strokeStyle = TRACE_COLOR;
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  
+  // Draw segments, handling wrap-around
+  ctx.beginPath();
+  let moved = false;
+  
+  for (let i = 1; i < trail.length; i++) {
+    const p0 = trail[i - 1];
+    const p1 = trail[i];
+    
+    // Skip if this segment crosses the erase zone
+    const distFromSweep0 = ((p0.x - sweepX) % w + w) % w;
+    const distFromSweep1 = ((p1.x - sweepX) % w + w) % w;
+    
+    // Don't draw points that are in the erase zone ahead of sweep
+    if (distFromSweep1 < eraseWidth && distFromSweep1 > 0) continue;
+    
+    // Handle wrap-around (big x jump)
+    if (Math.abs(p1.x - p0.x) > w / 2) {
+      moved = false;
+      continue;
+    }
+    
+    // Fade based on age (distance behind sweep)
+    const age = ((sweepX - p1.x) % w + w) % w;
+    const alpha = Math.max(0, 1 - age / (w * 0.95));
+    
+    if (alpha < 0.02) {
+      moved = false;
+      continue;
+    }
+    
+    if (!moved) {
+      ctx.stroke(); // flush previous path
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(0, 216, 100, ${alpha})`;
+      ctx.moveTo(p0.x, p0.y);
+      moved = true;
+    }
+    ctx.lineTo(p1.x, p1.y);
+  }
+  ctx.stroke();
+  
+  // Bright dot at sweep head
+  ctx.shadowColor = '#00ff6a';
+  ctx.shadowBlur = 20;
+  ctx.fillStyle = '#00ff6a';
+  ctx.beginPath();
+  ctx.arc(sweepX, y, 3, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Secondary glow ring
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(0, 255, 106, 0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(sweepX, y, 8, 0, Math.PI * 2);
+  ctx.stroke();
+  
+  ctx.restore();
+  
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+
+// Fullscreen on click
+document.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  }
+});
+
+// Show cursor briefly on mouse move
+let cursorTimeout;
+document.addEventListener('mousemove', () => {
+  document.body.style.cursor = 'default';
+  clearTimeout(cursorTimeout);
+  cursorTimeout = setTimeout(() => {
+    document.body.style.cursor = 'none';
+  }, 2000);
+});
+</script>
+</body>
+</html>
