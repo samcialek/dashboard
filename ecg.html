@@ -3,330 +3,413 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Serif — Continuous ECG</title>
+<title>Serif — Multi-Cadence Biometric Integration</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; cursor: none; }
-  canvas { display: block; width: 100%; height: 100%; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace; }
   
-  #logo {
-    position: fixed;
-    bottom: 24px;
-    right: 32px;
-    font-family: 'SF Pro Display', -apple-system, 'Helvetica Neue', sans-serif;
-    font-size: 18px;
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px 28px;
+    gap: 4px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 8px;
+  }
+  .header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .logo {
+    font-size: 16px;
     font-weight: 300;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: rgba(0, 200, 100, 0.25);
-    z-index: 10;
-    user-select: none;
+    color: rgba(255,255,255,0.35);
   }
-
-  #vitals {
-    position: fixed;
-    top: 24px;
-    right: 32px;
-    font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
-    font-size: 14px;
-    color: rgba(0, 200, 100, 0.5);
-    text-align: right;
-    z-index: 10;
-    user-select: none;
-    line-height: 1.6;
-  }
-  
-  #bpm {
-    font-size: 48px;
-    font-weight: 700;
-    color: rgba(0, 220, 100, 0.8);
-    line-height: 1.1;
-  }
-  
-  #bpm-label {
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: rgba(0, 200, 100, 0.4);
-    text-transform: uppercase;
-  }
-
-  #lead-label {
-    position: fixed;
-    top: 24px;
-    left: 32px;
-    font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: rgba(0, 200, 100, 0.4);
-    z-index: 10;
-    user-select: none;
+  .patient-id {
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
     letter-spacing: 1px;
   }
+  .header-right {
+    display: flex;
+    gap: 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+  }
+  .header-right .val {
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+
+  .row {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+    min-height: 0;
+  }
+
+  .row-label {
+    width: 120px;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 12px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .signal-name {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .signal-value {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .signal-unit {
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+  }
+  .signal-cadence {
+    font-size: 8px;
+    color: rgba(255,255,255,0.15);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .chart-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Sync marker */
+  .sync-line {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: rgba(224, 122, 95, 0.4);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .sync-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #E07A5F;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+  }
+
+  .time-axis {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 120px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 4px;
+  }
+  .time-axis span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.2);
+    flex: 1;
+    text-align: center;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 4px;
+  }
+  .footer-left {
+    font-size: 9px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.5px;
+  }
+  .footer-right {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(224, 122, 95, 0.35);
+  }
+
+  /* Color scheme per signal */
+  .ecg .signal-name, .ecg .signal-value { color: #00d864; }
+  .hrv .signal-name, .hrv .signal-value { color: #4fc3f7; }
+  .spo2 .signal-name, .spo2 .signal-value { color: #E07A5F; }
+  .resp .signal-name, .resp .signal-value { color: #ab47bc; }
+  .glucose .signal-name, .glucose .signal-value { color: #ffd54f; }
+  .activity .signal-name, .activity .signal-value { color: #66bb6a; }
 </style>
 </head>
 <body>
-<canvas id="ecg"></canvas>
-<div id="lead-label">II</div>
-<div id="vitals">
-  <div id="bpm">72</div>
-  <div id="bpm-label">bpm</div>
+<div class="dashboard">
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">serif</span>
+      <span class="patient-id">patient 0042 · integration view · 24h window</span>
+    </div>
+    <div class="header-right">
+      <span>signals: <span class="val">6</span></span>
+      <span>cadences: <span class="val">5</span></span>
+      <span>sync: <span class="val" style="color:#00d864;">active</span></span>
+    </div>
+  </div>
+
+  <div class="row ecg">
+    <div class="row-label">
+      <div class="signal-name">ECG Lead II</div>
+      <div class="signal-value">72</div>
+      <div class="signal-unit">bpm</div>
+      <div class="signal-cadence">250 Hz continuous</div>
+    </div>
+    <div class="chart-area"><canvas id="c-ecg"></canvas></div>
+  </div>
+
+  <div class="row hrv">
+    <div class="row-label">
+      <div class="signal-name">HRV RMSSD</div>
+      <div class="signal-value">48</div>
+      <div class="signal-unit">ms</div>
+      <div class="signal-cadence">5-min epochs</div>
+    </div>
+    <div class="chart-area"><canvas id="c-hrv"></canvas></div>
+  </div>
+
+  <div class="row spo2">
+    <div class="row-label">
+      <div class="signal-name">SpO₂</div>
+      <div class="signal-value">97</div>
+      <div class="signal-unit">%</div>
+      <div class="signal-cadence">1-min avg</div>
+    </div>
+    <div class="chart-area"><canvas id="c-spo2"></canvas></div>
+  </div>
+
+  <div class="row resp">
+    <div class="row-label">
+      <div class="signal-name">Respiration</div>
+      <div class="signal-value">14</div>
+      <div class="signal-unit">br/min</div>
+      <div class="signal-cadence">30-sec windows</div>
+    </div>
+    <div class="chart-area"><canvas id="c-resp"></canvas></div>
+  </div>
+
+  <div class="row glucose">
+    <div class="row-label">
+      <div class="signal-name">CGM Glucose</div>
+      <div class="signal-value">94</div>
+      <div class="signal-unit">mg/dL</div>
+      <div class="signal-cadence">5-min intervals</div>
+    </div>
+    <div class="chart-area"><canvas id="c-glucose"></canvas></div>
+  </div>
+
+  <div class="row activity">
+    <div class="row-label">
+      <div class="signal-name">Activity</div>
+      <div class="signal-value">3.2</div>
+      <div class="signal-unit">METs</div>
+      <div class="signal-cadence">1-min bins</div>
+    </div>
+    <div class="chart-area"><canvas id="c-activity"></canvas></div>
+  </div>
+
+  <div class="time-axis">
+    <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>24:00</span>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">multi-cadence temporal alignment · causal inference engine · wearable × clinical signal fusion</div>
+    <div class="footer-right">serif</div>
+  </div>
 </div>
-<div id="logo">serif</div>
 
 <script>
-const canvas = document.getElementById('ecg');
-const ctx = canvas.getContext('2d');
-const bpmEl = document.getElementById('bpm');
+// Deterministic seeded random for reproducible "data"
+function seededRandom(seed) {
+  let s = seed;
+  return function() {
+    s = (s * 16807 + 0) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
 
-// High-DPI support
-function resize() {
+function drawSignal(canvasId, color, opts) {
+  const canvas = document.getElementById(canvasId);
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-}
-resize();
-window.addEventListener('resize', resize);
+  const w = rect.width;
+  const h = rect.height;
 
-// ECG waveform shape (one PQRST complex, normalized 0-1 x, centered at 0.5 y)
-// Based on realistic Lead II morphology
-function ecgSample(t) {
-  // t is 0..1 within one beat cycle
-  // Baseline
-  let y = 0;
-  
-  // P wave (small positive bump) ~0.06-0.14
-  if (t > 0.06 && t < 0.14) {
-    const pt = (t - 0.06) / 0.08;
-    y = 0.08 * Math.sin(pt * Math.PI);
-  }
-  // PR segment ~0.14-0.18 (flat)
-  
-  // Q wave (small negative dip) ~0.18-0.21
-  else if (t > 0.18 && t < 0.21) {
-    const pt = (t - 0.18) / 0.03;
-    y = -0.06 * Math.sin(pt * Math.PI);
-  }
-  // R wave (tall positive spike) ~0.21-0.27
-  else if (t > 0.21 && t < 0.27) {
-    const pt = (t - 0.21) / 0.06;
-    y = 0.85 * Math.sin(pt * Math.PI);
-  }
-  // S wave (negative dip after R) ~0.27-0.32
-  else if (t > 0.27 && t < 0.32) {
-    const pt = (t - 0.27) / 0.05;
-    y = -0.18 * Math.sin(pt * Math.PI);
-  }
-  // ST segment ~0.32-0.40 (slight elevation)
-  else if (t > 0.32 && t < 0.40) {
-    y = 0.02;
-  }
-  // T wave (moderate positive bump) ~0.40-0.55
-  else if (t > 0.40 && t < 0.55) {
-    const pt = (t - 0.40) / 0.15;
-    y = 0.18 * Math.sin(pt * Math.PI);
-  }
-  // U wave (tiny bump) ~0.56-0.62
-  else if (t > 0.56 && t < 0.62) {
-    const pt = (t - 0.56) / 0.06;
-    y = 0.03 * Math.sin(pt * Math.PI);
-  }
-  
-  return y;
-}
-
-// Animation state
-const TRACE_COLOR = '#00d864';
-const GRID_COLOR = 'rgba(0, 180, 80, 0.06)';
-const GRID_COLOR_MAJOR = 'rgba(0, 180, 80, 0.12)';
-const GLOW_COLOR = 'rgba(0, 216, 100, 0.15)';
-const BG_COLOR = '#0a0a0a';
-
-let bpm = 72;
-let phase = 0; // 0..1 through current beat
-const PIXELS_PER_SECOND = 120; // sweep speed (25mm/s at ~5px/mm)
-let sweepX = 0;
-
-// Store the trail
-const trailLength = 4000; // pixels of trail to keep
-let trail = []; // array of {x, y} points
-
-let lastTime = performance.now();
-
-// Subtle BPM variation
-let targetBpm = 72;
-let bpmTimer = 0;
-
-function drawGrid(w, h) {
-  const smallGrid = 20; // ~4mm
-  const bigGrid = 100;  // ~20mm
-  
-  ctx.strokeStyle = GRID_COLOR;
-  ctx.lineWidth = 0.5;
-  ctx.beginPath();
-  for (let x = 0; x < w; x += smallGrid) {
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, h);
-  }
-  for (let y = 0; y < h; y += smallGrid) {
-    ctx.moveTo(0, y);
-    ctx.lineTo(w, y);
-  }
-  ctx.stroke();
-  
-  ctx.strokeStyle = GRID_COLOR_MAJOR;
-  ctx.lineWidth = 0.8;
-  ctx.beginPath();
-  for (let x = 0; x < w; x += bigGrid) {
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, h);
-  }
-  for (let y = 0; y < h; y += bigGrid) {
-    ctx.moveTo(0, y);
-    ctx.lineTo(w, y);
-  }
-  ctx.stroke();
-}
-
-function animate(now) {
-  const dt = (now - lastTime) / 1000;
-  lastTime = now;
-  
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const centerY = h * 0.5;
-  const amplitude = h * 0.35;
-  
-  // BPM variation
-  bpmTimer -= dt;
-  if (bpmTimer <= 0) {
-    targetBpm = 68 + Math.random() * 10; // 68-78
-    bpmTimer = 2 + Math.random() * 3;
-  }
-  bpm += (targetBpm - bpm) * dt * 0.5;
-  bpmEl.textContent = Math.round(bpm);
-  
-  // Advance phase
-  const beatsPerSecond = bpm / 60;
-  const phaseAdvance = beatsPerSecond * dt;
-  phase += phaseAdvance;
-  if (phase >= 1) phase -= 1;
-  
-  // Advance sweep position
-  const dx = PIXELS_PER_SECOND * dt;
-  sweepX += dx;
-  if (sweepX >= w) sweepX -= w;
-  
-  // Calculate current Y
-  const y = centerY - ecgSample(phase) * amplitude;
-  
-  // Add to trail
-  trail.push({ x: sweepX, y: y });
-  
-  // Trim trail (keep enough for full screen width)
-  while (trail.length > w * 2) {
-    trail.shift();
-  }
-  
-  // Clear
-  ctx.fillStyle = BG_COLOR;
-  ctx.fillRect(0, 0, w, h);
-  
   // Grid
-  drawGrid(w, h);
-  
-  // Draw the ECG trace
-  // The sweep erases ahead and draws behind
-  const eraseWidth = 40;
-  
-  ctx.save();
-  
-  // Main trace glow
-  ctx.shadowColor = GLOW_COLOR;
-  ctx.shadowBlur = 12;
-  ctx.strokeStyle = TRACE_COLOR;
-  ctx.lineWidth = 2.5;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  
-  // Draw segments, handling wrap-around
-  ctx.beginPath();
-  let moved = false;
-  
-  for (let i = 1; i < trail.length; i++) {
-    const p0 = trail[i - 1];
-    const p1 = trail[i];
-    
-    // Skip if this segment crosses the erase zone
-    const distFromSweep0 = ((p0.x - sweepX) % w + w) % w;
-    const distFromSweep1 = ((p1.x - sweepX) % w + w) % w;
-    
-    // Don't draw points that are in the erase zone ahead of sweep
-    if (distFromSweep1 < eraseWidth && distFromSweep1 > 0) continue;
-    
-    // Handle wrap-around (big x jump)
-    if (Math.abs(p1.x - p0.x) > w / 2) {
-      moved = false;
-      continue;
-    }
-    
-    // Fade based on age (distance behind sweep)
-    const age = ((sweepX - p1.x) % w + w) % w;
-    const alpha = Math.max(0, 1 - age / (w * 0.95));
-    
-    if (alpha < 0.02) {
-      moved = false;
-      continue;
-    }
-    
-    if (!moved) {
-      ctx.stroke(); // flush previous path
-      ctx.beginPath();
-      ctx.strokeStyle = `rgba(0, 216, 100, ${alpha})`;
-      ctx.moveTo(p0.x, p0.y);
-      moved = true;
-    }
-    ctx.lineTo(p1.x, p1.y);
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x < w; x += w/24) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
   }
-  ctx.stroke();
-  
-  // Bright dot at sweep head
-  ctx.shadowColor = '#00ff6a';
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = '#00ff6a';
+  ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+
+  const rng = seededRandom(opts.seed);
+  const points = opts.points || 500;
+  const data = [];
+
+  if (opts.type === 'ecg') {
+    // ECG-like repeating PQRST
+    for (let i = 0; i < points; i++) {
+      const t = (i / points) * 40; // 40 beats across
+      const phase = t % 1;
+      let y = 0;
+      if (phase > 0.06 && phase < 0.14) y = 0.08 * Math.sin((phase-0.06)/0.08 * Math.PI);
+      else if (phase > 0.21 && phase < 0.27) y = 0.8 * Math.sin((phase-0.21)/0.06 * Math.PI);
+      else if (phase > 0.27 && phase < 0.32) y = -0.15 * Math.sin((phase-0.27)/0.05 * Math.PI);
+      else if (phase > 0.40 && phase < 0.55) y = 0.15 * Math.sin((phase-0.40)/0.15 * Math.PI);
+      y += (rng() - 0.5) * 0.02;
+      data.push(y);
+    }
+  } else if (opts.type === 'smooth') {
+    // Smooth varying signal (HRV, SpO2, glucose, etc.)
+    let val = opts.base;
+    for (let i = 0; i < points; i++) {
+      val += (rng() - 0.5) * opts.volatility;
+      // Mean reversion
+      val += (opts.base - val) * 0.02;
+      // Add some structure (sleep dip, meal spike, etc.)
+      const t = i / points;
+      if (opts.pattern === 'sleep') {
+        val += Math.sin(t * Math.PI * 2 - 1) * opts.amplitude * 0.3;
+      } else if (opts.pattern === 'meals') {
+        // Three meal spikes
+        for (const meal of [0.3, 0.5, 0.75]) {
+          const dist = Math.abs(t - meal);
+          if (dist < 0.05) val += opts.amplitude * Math.exp(-dist*dist*2000) * 0.8;
+        }
+      } else if (opts.pattern === 'activity') {
+        // Morning and afternoon activity
+        if (t > 0.3 && t < 0.4) val += opts.amplitude * 0.5;
+        if (t > 0.6 && t < 0.65) val += opts.amplitude * 0.8;
+      }
+      data.push((val - opts.base) / opts.range);
+    }
+  } else if (opts.type === 'resp') {
+    for (let i = 0; i < points; i++) {
+      const t = i / points;
+      let freq = 14 + Math.sin(t * Math.PI * 3) * 3;
+      // Slower during sleep
+      if (t < 0.3) freq -= 4;
+      let y = Math.sin(i * freq * 0.06) * 0.4;
+      y += (rng() - 0.5) * 0.05;
+      data.push(y);
+    }
+  }
+
+  // Draw filled area
   ctx.beginPath();
-  ctx.arc(sweepX, y, 3, 0, Math.PI * 2);
+  ctx.moveTo(0, h/2);
+  for (let i = 0; i < data.length; i++) {
+    const x = (i / data.length) * w;
+    const y = h/2 - data[i] * h * 0.4;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  // Fill
+  const lastX = w;
+  const gradient = ctx.createLinearGradient(0, 0, 0, h);
+  gradient.addColorStop(0, color.replace(')', ',0.08)').replace('rgb', 'rgba'));
+  gradient.addColorStop(0.5, 'transparent');
+  gradient.addColorStop(1, color.replace(')', ',0.08)').replace('rgb', 'rgba'));
+  ctx.lineTo(lastX, h/2);
+  ctx.lineTo(0, h/2);
+  ctx.fillStyle = gradient;
   ctx.fill();
-  
-  // Secondary glow ring
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = 'rgba(0, 255, 106, 0.3)';
-  ctx.lineWidth = 1.5;
+
+  // Draw line
   ctx.beginPath();
-  ctx.arc(sweepX, y, 8, 0, Math.PI * 2);
+  for (let i = 0; i < data.length; i++) {
+    const x = (i / data.length) * w;
+    const y = h/2 - data[i] * h * 0.4;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 4;
   ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Sync marker at ~60% (2:00 PM)
+  const syncX = w * 0.6;
+  const syncI = Math.floor(data.length * 0.6);
+  const syncY = h/2 - data[syncI] * h * 0.4;
   
-  ctx.restore();
-  
-  requestAnimationFrame(animate);
+  ctx.strokeStyle = 'rgba(224, 122, 95, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.moveTo(syncX, 0);
+  ctx.lineTo(syncX, h);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Dot on line
+  ctx.fillStyle = '#E07A5F';
+  ctx.shadowColor = '#E07A5F';
+  ctx.shadowBlur = 6;
+  ctx.beginPath();
+  ctx.arc(syncX, syncY, 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
 }
 
-requestAnimationFrame(animate);
+function render() {
+  drawSignal('c-ecg', 'rgb(0, 216, 100)', { type: 'ecg', seed: 42, points: 2000 });
+  drawSignal('c-hrv', 'rgb(79, 195, 247)', { type: 'smooth', seed: 73, points: 288, base: 45, volatility: 2, range: 30, amplitude: 15, pattern: 'sleep' });
+  drawSignal('c-spo2', 'rgb(224, 122, 95)', { type: 'smooth', seed: 91, points: 1440, base: 97, volatility: 0.3, range: 4, amplitude: 2, pattern: 'sleep' });
+  drawSignal('c-resp', 'rgb(171, 71, 188)', { type: 'resp', seed: 55, points: 1000 });
+  drawSignal('c-glucose', 'rgb(255, 213, 79)', { type: 'smooth', seed: 128, points: 288, base: 95, volatility: 3, range: 50, amplitude: 30, pattern: 'meals' });
+  drawSignal('c-activity', 'rgb(102, 187, 106)', { type: 'smooth', seed: 200, points: 1440, base: 1.5, volatility: 0.3, range: 6, amplitude: 4, pattern: 'activity' });
+}
+
+render();
+window.addEventListener('resize', render);
 
 // Fullscreen on click
 document.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  }
-});
-
-// Show cursor briefly on mouse move
-let cursorTimeout;
-document.addEventListener('mousemove', () => {
-  document.body.style.cursor = 'default';
-  clearTimeout(cursorTimeout);
-  cursorTimeout = setTimeout(() => {
-    document.body.style.cursor = 'none';
-  }, 2000);
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
 });
 </script>
 </body>
