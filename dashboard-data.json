@@ -7,6 +7,7 @@
     { "id": "china", "name": "China Trip", "emoji": "✈️", "color": "#d29922" },
     { "id": "serif", "name": "Serif etc.", "emoji": "💊", "color": "#3fb950" },
     { "id": "github", "name": "GitHub Profile", "emoji": "🟩", "color": "#3fb950" },
+    { "id": "examine", "name": "Examine Partnership", "emoji": "🔬", "color": "#f0883e" },
     { "id": "general", "name": "General", "emoji": "📋", "color": "#8b949e" }
   ],
 
@@ -39,6 +40,33 @@
       "badges": [{"type": "done", "text": "LIVE"}]
     },
     {
+      "title": "examine-outreach-email.md",
+      "desc": "Cold email to Kamal Patel (Examine.com director). Leads with Bayesian methodology, not business. Cites 92% retention, Human Edge pilot, partial pooling approach.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\examine-outreach-email.md",
+      "url": "content/examine-outreach-email.md",
+      "meta": "drafts/ · Created Feb 2",
+      "project": "examine",
+      "badges": [{"type": "draft", "text": "DRAFT"}]
+    },
+    {
+      "title": "examine-pitch-brief.md",
+      "desc": "One-pager: Serif × Examine technical integration. How Examine's evidence base becomes Bayesian priors, caffeine→sleep worked example, 3-phase partnership structure.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\examine-pitch-brief.md",
+      "url": "content/examine-pitch-brief.md",
+      "meta": "drafts/ · Created Feb 2",
+      "project": "examine",
+      "badges": [{"type": "draft", "text": "DRAFT"}]
+    },
+    {
+      "title": "examine-followup-plan.md",
+      "desc": "Full outreach sequence: LinkedIn connection request, 3 follow-up emails (5-7 day cadence), alternate channel paths (Sol Orwell, Gregory Lopez, warm intros).",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\examine-followup-plan.md",
+      "url": "content/examine-followup-plan.md",
+      "meta": "drafts/ · Created Feb 2",
+      "project": "examine",
+      "badges": [{"type": "draft", "text": "DRAFT"}]
+    },
+    {
       "title": "vim-correspondence-summary.md",
       "desc": "All Vim/Oron Afek email threads (Jan 14-26). Context for Feb 6 meeting.",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\vim-correspondence-summary.md",
@@ -59,6 +87,12 @@
   ],
 
   "tasks": [
+    {
+      "title": "Send Kamal Patel outreach email",
+      "desc": "Cold email + LinkedIn connection request ready. Review examine-outreach-email.md, then send from sam@serif.life. Pitch brief available as attachment if he responds.",
+      "project": "examine",
+      "badges": [{"type": "urgent", "text": "ACTION"}]
+    },
     {
       "title": "Choose resume profile summary",
       "desc": "3 storytelling options proposed: A) Through-Line (population obsession), B) Builder's Claim, C) Contrarian. Pick one or riff.",
