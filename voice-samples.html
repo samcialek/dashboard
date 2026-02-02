@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stokes Voice Samples — Parameter Comparison</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'SF Pro', -apple-system, system-ui, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    padding: 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.4rem; font-weight: 300; margin-bottom: 0.5rem; color: #fff; }
+  .subtitle { font-size: 0.8rem; color: #888; margin-bottom: 2rem; }
+  .sample {
+    background: #151515;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .sample-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+  .sample-name { font-size: 1.1rem; font-weight: 600; color: #fff; }
+  .sample-badge {
+    font-size: 0.7rem;
+    background: #E07A5F;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: none;
+  }
+  .sample-badge.current { display: inline-block; }
+  .params {
+    font-family: 'SF Mono', monospace;
+    font-size: 0.75rem;
+    color: #777;
+    margin-bottom: 0.75rem;
+  }
+  .desc { font-size: 0.85rem; color: #aaa; margin-bottom: 0.75rem; }
+  audio {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
+  audio::-webkit-media-controls-panel { background: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<h1>Stokes Voice — Parameter Comparison</h1>
+<p class="subtitle">ElevenLabs v3 · Same passage from "Ending Capital Asset Pricing's Geocentric Era"</p>
+
+<div class="sample">
+  <div class="sample-header">
+    <span class="sample-name">A — Natural (current)</span>
+    <span class="sample-badge current">current article</span>
+  </div>
+  <div class="params">stability: 0.5 · similarity: 0.75 · style: 0.0</div>
+  <div class="desc">Balanced, consistent delivery. What the Thirteen Exogenous Realities article uses now.</div>
+  <audio controls preload="metadata" src="https://matricesofconfusion.com/audio/samples/A_natural.mp3"></audio>
+</div>
+
+<div class="sample">
+  <div class="sample-header">
+    <span class="sample-name">B — Creative</span>
+  </div>
+  <div class="params">stability: 0.0 · similarity: 0.75 · style: 0.0</div>
+  <div class="desc">More tonal variation and pacing changes. Same voice character, less robotic.</div>
+  <audio controls preload="metadata" src="https://matricesofconfusion.com/audio/samples/B_creative.mp3"></audio>
+</div>
+
+<div class="sample">
+  <div class="sample-header">
+    <span class="sample-name">C — Creative + Medium Style</span>
+  </div>
+  <div class="params">stability: 0.0 · similarity: 0.75 · style: 0.5</div>
+  <div class="desc">Creative base + style exaggeration. More emphasis on key phrases.</div>
+  <audio controls preload="metadata" src="https://matricesofconfusion.com/audio/samples/C_creative_med.mp3"></audio>
+</div>
+
+<div class="sample">
+  <div class="sample-header">
+    <span class="sample-name">D — Creative + Max Style</span>
+  </div>
+  <div class="params">stability: 0.0 · similarity: 0.75 · style: 1.0</div>
+  <div class="desc">Maximum expressiveness. Most dramatic delivery.</div>
+  <audio controls preload="metadata" src="https://matricesofconfusion.com/audio/samples/D_creative_max.mp3"></audio>
+</div>
+
+<div class="sample">
+  <div class="sample-header">
+    <span class="sample-name">E — Creative + Loose Voice</span>
+  </div>
+  <div class="params">stability: 0.0 · similarity: 0.50 · style: 0.5</div>
+  <div class="desc">Lower similarity = more freedom from original voice. Most "performed" feel.</div>
+  <audio controls preload="metadata" src="https://matricesofconfusion.com/audio/samples/E_creative_loose.mp3"></audio>
+</div>
+
+</body>
+</html>
