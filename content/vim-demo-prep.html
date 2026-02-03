@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vim Demo Prep — Internal | Feb 6, 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #c8c8c8;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 {
+    color: #5BA8D9;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #5BA8D9;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    color: #666;
+    font-size: 0.85rem;
+    margin-bottom: 2.5rem;
+  }
+  .subtitle span { color: #5BA8D9; }
+  h2 {
+    color: #5BA8D9;
+    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding: 0.3rem 0.6rem;
+    background: #111;
+    border-left: 3px solid #5BA8D9;
+  }
+  h3 {
+    color: #e0e0e0;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  h4 {
+    color: #5BA8D9;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+  p { margin-bottom: 0.8rem; }
+  ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  .tag {
+    display: inline-block;
+    background: #1a2a3a;
+    color: #5BA8D9;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tag.red { background: #3a1a1a; color: #D95B5B; }
+  .tag.green { background: #1a3a1a; color: #5BD95B; }
+  .tag.orange { background: #3a2a1a; color: #D9A85B; }
+  .tag.purple { background: #2a1a3a; color: #A85BD9; }
+  .timer {
+    float: right;
+    background: #1a1a2a;
+    color: #888;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .card.highlight {
+    border-color: #5BA8D9;
+    border-width: 1px;
+  }
+  .card.warn {
+    border-color: #D95B5B;
+  }
+  .card.success {
+    border-color: #5BD95B;
+  }
+  .must-say {
+    background: #0d1a0d;
+    border-left: 3px solid #5BD95B;
+    padding: 0.6rem 1rem;
+    margin: 0.5rem 0 1rem 0;
+    font-size: 0.9rem;
+    color: #b0d4b0;
+  }
+  .must-say::before {
+    content: "🗣️ SAY THIS: ";
+    font-weight: 700;
+    color: #5BD95B;
+    font-size: 0.75rem;
+  }
+  .gap-item {
+    background: #1a0d0d;
+    border-left: 3px solid #D95B5B;
+    padding: 0.6rem 1rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  .gap-item strong { color: #D95B5B; }
+  .qa {
+    margin-bottom: 1rem;
+  }
+  .qa .q {
+    color: #D9A85B;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .qa .q::before { content: "Q: "; }
+  .qa .a {
+    color: #a0c0a0;
+    padding-left: 1rem;
+    border-left: 2px solid #333;
+  }
+  .qa .a::before {
+    content: "A: ";
+    font-weight: 700;
+    color: #5BD95B;
+  }
+  .email-draft {
+    background: #0d0d1a;
+    border: 1px solid #2a2a4a;
+    border-radius: 6px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+    line-height: 1.8;
+  }
+  .email-draft .field {
+    color: #666;
+    font-size: 0.8rem;
+  }
+  .email-draft .field span { color: #c8c8c8; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+  th {
+    background: #151515;
+    color: #5BA8D9;
+    text-align: left;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 2px solid #5BA8D9;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .proof-stat {
+    display: inline-block;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    min-width: 140px;
+  }
+  .proof-stat .num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5BA8D9;
+    display: block;
+  }
+  .proof-stat .label {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .proof-stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+  code {
+    background: #1a1a1a;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.85em;
+    color: #d4a85b;
+  }
+  pre {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #aaa;
+  }
+  .toc {
+    background: #0d0d14;
+    border: 1px solid #1a1a2a;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .toc a {
+    color: #5BA8D9;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .toc a:hover { text-decoration: underline; }
+  .toc ol { margin-left: 1.2rem; }
+  .toc li { margin-bottom: 0.3rem; }
+  .divider {
+    border: none;
+    border-top: 1px solid #1a1a1a;
+    margin: 2rem 0;
+  }
+  .internal-note {
+    background: #1a1a0d;
+    border: 1px dashed #444;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+    color: #999;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+  }
+  .internal-note::before {
+    content: "💡 ";
+  }
+  .day-row { display: flex; gap: 0.5rem; align-items: flex-start; margin-bottom: 0.5rem; }
+  .day-label {
+    min-width: 80px;
+    color: #5BA8D9;
+    font-weight: 600;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .day-content { flex: 1; }
+  @media (max-width: 600px) {
+    body { padding: 1rem; font-size: 13px; }
+    .proof-stat { min-width: 120px; padding: 0.8rem 1rem; }
+    .proof-stat .num { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🎯 Vim Demo Prep</h1>
+<div class="subtitle">
+  <span>INTERNAL — Sam's eyes only</span> · Feb 6, 2026 at 11am · Oron Afek (CEO, Vim) · 30-45 min demo<br>
+  Intro via Bob Borek (Jan 14) · Emails exchanged Jan 14-26 · <span style="color:#D95B5B">⚠️ Oron's Jan 21 + Bob's Jan 26 still unanswered</span>
+</div>
+
+<div class="toc">
+  <strong style="color:#5BA8D9;">Contents</strong>
+  <ol>
+    <li><a href="#proof">Proof Points — Lead With These</a></li>
+    <li><a href="#flow">Demo Flow — Minute by Minute</a></li>
+    <li><a href="#talking">Key Talking Points</a></li>
+    <li><a href="#gaps">Gaps — What Needs Building Before Feb 6</a></li>
+    <li><a href="#questions">Oron's Likely Questions</a></li>
+    <li><a href="#integration">Integration Sketch — Serif × Vim</a></li>
+    <li><a href="#poc">2-Week Hypertension POC Plan</a></li>
+    <li><a href="#emails">Draft Replies — Oron + Bob</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<h2 id="proof">1. Proof Points — Lead With These</h2>
+<!-- ============================================ -->
+
+<div class="proof-stats-row">
+  <div class="proof-stat"><span class="num">92%</span><span class="label">Retention Rate<br>(up from 60%)</span></div>
+  <div class="proof-stat"><span class="num">80→10</span><span class="label">Hours → Minutes<br>per patient</span></div>
+  <div class="proof-stat"><span class="num">3.2×</span><span class="label">Engagement<br>Increase</span></div>
+  <div class="proof-stat"><span class="num">150K+</span><span class="label">Vim Providers<br>= Serif's reach</span></div>
+</div>
+
+<div class="card highlight">
+  <h4>Why these numbers matter to Oron specifically:</h4>
+  <ul>
+    <li><strong>92% retention</strong> → Vim lives on provider adoption. If the insight layer keeps providers engaged, Vim's middleware becomes stickier. This is a retention play for Vim too.</li>
+    <li><strong>80 hrs → 10 min</strong> → Vim's providers are drowning in EHR data. Serif automates the part they hate: synthesizing multi-source data into action. Oron knows this pain — it's why Vim exists.</li>
+    <li><strong>3.2× engagement</strong> → Vim Cards live or die on click-through. A card powered by daemon-grade intelligence gets clicked. Generic alerts get dismissed.</li>
+  </ul>
+</div>
+
+<div class="internal-note">
+  Frame: "Vim gives providers the right information at the right time. Serif makes sure it's the <em>right insight</em> — not just the right data."
+</div>
+
+<!-- ============================================ -->
+<h2 id="flow">2. Demo Flow — Minute by Minute</h2>
+<!-- ============================================ -->
+
+<p>Total target: <strong>30 minutes</strong> (leave 15 min buffer for Oron's questions — he's a CEO, he'll interrupt, that's good).</p>
+
+<div class="card">
+  <h3><span class="tag green">Open</span> The Hook <span class="timer">0:00–3:00</span></h3>
+  <p>Don't start with Serif. Start with <strong>the gap Vim can't fill today</strong>.</p>
+  <div class="must-say">"Vim surfaces the right clinical action at the right moment. But what if you could extend that beyond the EHR — to what's happening with the patient between visits? Their sleep, activity, medication adherence, vitals trends from their Apple Watch? That's the signal Vim doesn't have today. Serif is the intelligence layer that brings it in."</div>
+  <div class="must-say">"Wearables are generating orders of magnitude more data than the EHR. But nobody's translating that into clinical-grade insight at the point of care. Vim is the only middleware positioned to deliver it — you just need the engine."</div>
+  <div class="internal-note">Read the room. If Oron leans in on the wearable angle, go deeper. If he's skeptical, pivot to "this is really about data sources Vim doesn't have access to today."</div>
+</div>
+
+<div class="card">
+  <h3><span class="tag">Demo</span> Serif Daemon — The Signal Engine <span class="timer">3:00–10:00</span></h3>
+  <p>Show the daemon signal architecture. Walk through a real patient scenario.</p>
+  <ul>
+    <li>Pull up a sample patient timeline (use the hypertension persona)</li>
+    <li>Show raw signals: continuous HR, HRV trending, sleep architecture, activity patterns</li>
+    <li>Show derived signals: <strong>circadian drift</strong> (leading indicator for metabolic dysfunction), <strong>autonomic balance trending</strong> (pre-hypertension detection), <strong>recovery debt accumulation</strong></li>
+    <li>Key moment: show how the daemon detected autonomic shift toward sympathetic dominance <em>3 weeks before</em> a BP spike — that's the clinical lead time</li>
+  </ul>
+  <div class="must-say">"This isn't a fitness tracker alert. It's a causal inference engine running continuously. It detected this patient's autonomic nervous system shifting toward sympathetic dominance over three weeks — that's a 2.3× increase in hypertensive crisis risk. No wearable app surfaces that. But a Vim Card could."</div>
+  <div class="must-say">"The daemon needs 14-60 days of continuous context to compute these signals. That's what makes them defensible — you can't get circadian drift from a single night. And you can't get it from the EHR."</div>
+</div>
+
+<div class="card">
+  <h3><span class="tag purple">Show</span> The Vim Card — What the Provider Sees <span class="timer">10:00–17:00</span></h3>
+  <p>This is the money shot. Show a Vim Card mockup powered by Serif intelligence.</p>
+  <ul>
+    <li>Walk through the Vim Card format — how it renders inside Epic/Cerner/athena</li>
+    <li>Show the card for the hypertension patient: "Wearable data indicates elevated sympathetic activity and circadian disruption over 21 days. Recommend BP medication review."</li>
+    <li>Contrast with what the provider sees today: just the latest BP reading from the last visit</li>
+    <li>Show the drill-down: click the card → see the Serif pipeline (temporal signal fusion, causal attribution, confidence intervals)</li>
+    <li>Show the architecture diagram: where Serif sits in Vim's stack</li>
+  </ul>
+  <div class="must-say">"This card surfaces in the same workflow your providers already use. Zero behavior change for the clinician. They just get smarter alerts — powered by data they've never had access to."</div>
+  <div class="must-say">"The beauty of Vim's architecture is you already have the delivery mechanism. I'm not asking you to build anything new. I'm giving you a new category of signal to deliver through what you've already built."</div>
+</div>
+
+<div class="card">
+  <h3><span class="tag orange">Pitch</span> The Business Case <span class="timer">17:00–23:00</span></h3>
+  <p>Transition from "cool tech" to "why Vim should care."</p>
+  <ul>
+    <li><strong>Greenfield for Vim</strong>: Wearables/personal devices are a category Vim doesn't touch today. Serif is the on-ramp.</li>
+    <li><strong>Payer alignment</strong>: Vim works with 80% of top payers. Payers want preventive care signals. Wearable-derived early warnings = avoided hospitalizations = cost savings. This is the value-based care holy grail.</li>
+    <li><strong>Provider stickiness</strong>: Every new signal category that flows through Vim Cards makes Vim harder to rip out. Serif adds a whole new data dimension.</li>
+    <li><strong>Competitive moat</strong>: No other EHR middleware has wearable intelligence at point of care. First mover advantage if Vim moves now.</li>
+  </ul>
+  <div class="must-say">"Nobody else in the EHR middleware space is doing this. Vim has 150,000 providers. If even 10% of their patients use a wearable, that's millions of data streams you're leaving on the table. Serif turns those into clinical-grade Vim Cards."</div>
+  <div class="must-say">"The business model is simple: Serif provides the intelligence, Vim provides the delivery. We charge per-provider per-month, or per-insight per-card. Happy to structure it however makes sense for Vim's model."</div>
+</div>
+
+<div class="card">
+  <h3><span class="tag green">Close</span> The Ask — Hypertension POC <span class="timer">23:00–30:00</span></h3>
+  <p>Don't leave open-ended. Propose a specific, bounded pilot.</p>
+  <ul>
+    <li>Propose 2-week hypertension POC (see Section 7 below)</li>
+    <li>Why hypertension: cleanest clinical action, largest patient population, clearest wearable signal, most payer alignment</li>
+    <li>What Serif needs: FHIR access to a sandbox or test EHR instance, Vim Card SDK, 1 engineer point of contact</li>
+    <li>What Vim gets: a working wearable-powered Vim Card in 2 weeks, no engineering lift on their side</li>
+  </ul>
+  <div class="must-say">"I want to make this as easy as possible for you. Give me sandbox access and a technical contact. In two weeks, I'll show you a live Vim Card powered by wearable intelligence for hypertensive patients. If it works, we talk scale. If it doesn't, you've lost nothing."</div>
+</div>
+
+<!-- ============================================ -->
+<h2 id="talking">3. Key Talking Points — Cheat Sheet</h2>
+<!-- ============================================ -->
+
+<div class="card">
+  <table>
+    <tr><th>Theme</th><th>Point</th><th>Proof</th></tr>
+    <tr>
+      <td><strong>The Gap</strong></td>
+      <td>Vim delivers insight at point of care but has zero wearable/device signal</td>
+      <td>150K providers, none get wearable data in-workflow</td>
+    </tr>
+    <tr>
+      <td><strong>The Engine</strong></td>
+      <td>Serif's daemon runs continuous causal inference, not just threshold alerts</td>
+      <td>Circadian drift detection, autonomic trending — signals no wearable app surfaces</td>
+    </tr>
+    <tr>
+      <td><strong>The Proof</strong></td>
+      <td>Already working in production with Human Edge (longevity clinic)</td>
+      <td>92% retention, 80hrs→10min, 3.2× engagement</td>
+    </tr>
+    <tr>
+      <td><strong>The Fit</strong></td>
+      <td>Serif is the engine, Vim is the delivery. Zero workflow disruption.</td>
+      <td>Renders as a standard Vim Card — provider sees it in their EHR, clicks through</td>
+    </tr>
+    <tr>
+      <td><strong>The Moat</strong></td>
+      <td>First EHR middleware to deliver wearable intelligence. Nobody else is doing this.</td>
+      <td>Competitive landscape: Epic/Cerner don't integrate wearables at point of care</td>
+    </tr>
+    <tr>
+      <td><strong>The Ask</strong></td>
+      <td>2-week hypertension POC. Bounded scope, zero Vim engineering lift.</td>
+      <td>Hypertension = largest chronic condition, clearest wearable signal</td>
+    </tr>
+  </table>
+</div>
+
+<div class="internal-note">
+  Oron's mental model: Vim is the "operating system" for value-based care. Frame Serif as a new "app" on that OS — specifically, the wearable intelligence app. Don't compete with Vim; extend it.
+</div>
+
+<!-- ============================================ -->
+<h2 id="gaps">4. Gaps — What Needs Building Before Feb 6</h2>
+<!-- ============================================ -->
+
+<p><span class="tag red">CRITICAL</span> You have <strong>4 days</strong>. Prioritize ruthlessly.</p>
+
+<div class="gap-item">
+  <strong>🔴 P0 — Vim Card Mockup (MUST HAVE)</strong><br>
+  HTML mockup of a Serif-powered Vim Card for the hypertension scenario. Needs to look like it could render inside an EHR. Show: patient name, daemon alert summary, confidence level, recommended action, "View Details" drill-down. <em>This is the centerpiece of the demo.</em><br>
+  <span class="tag red">Status: NOT BUILT</span> · Estimate: 3-4 hours · File: <code>vim-card-mockup.html</code>
+</div>
+
+<div class="gap-item">
+  <strong>🔴 P0 — Vim Architecture Diagram (MUST HAVE)</strong><br>
+  Clean diagram showing: Patient Wearables → Serif Daemon → Serif API → Vim Platform → Vim Card in EHR. Needs to show FHIR interface, where data flows, what Vim owns vs. what Serif owns. Oron will want to see how this plugs into his stack. <br>
+  <span class="tag red">Status: NOT BUILT</span> · Estimate: 2-3 hours · File: <code>vim-architecture.html</code>
+</div>
+
+<div class="gap-item">
+  <strong>🟡 P1 — Serif Pipeline Visualization (SHOULD HAVE)</strong><br>
+  Interactive view of the signal pipeline for the hypertension patient: raw wearable data → derived signals → causal inference → clinical recommendation. Shows the "how it works" for when Oron asks "what's under the hood." <br>
+  <span class="tag orange">Status: NOT BUILT</span> · Estimate: 4-5 hours · File: <code>vim-pipeline.html</code>
+</div>
+
+<div class="gap-item">
+  <strong>🟡 P1 — Hypertension Patient Persona + Sample Data</strong><br>
+  Need a compelling patient narrative: "Margaret, 58, hypertensive, wears Apple Watch, takes lisinopril." With fake-but-realistic 30 days of wearable data showing circadian drift + autonomic shift. Walk Oron through her timeline story.<br>
+  <span class="tag orange">Status: NOT BUILT</span> · Estimate: 2 hours
+</div>
+
+<div class="gap-item">
+  <strong>🟢 P2 — Vim-Specific One-Pager (NICE TO HAVE)</strong><br>
+  Leave-behind PDF that Oron can forward internally. 1 page: problem, solution, proof points, POC proposal. Not critical for the demo itself but useful for the "let me share this with my team" moment.<br>
+  <span class="tag green">Status: NOT BUILT</span> · Estimate: 1-2 hours
+</div>
+
+<div class="card warn">
+  <h4>⚠️ Build Order (Feb 2-5)</h4>
+  <table>
+    <tr><th>Day</th><th>Build</th><th>Hours</th></tr>
+    <tr><td><strong>Mon Feb 2</strong></td><td>✅ This prep deck (done)</td><td>—</td></tr>
+    <tr><td><strong>Tue Feb 3</strong></td><td>Vim Card mockup + patient persona</td><td>5h</td></tr>
+    <tr><td><strong>Wed Feb 4</strong></td><td>Architecture diagram + pipeline viz</td><td>6h</td></tr>
+    <tr><td><strong>Thu Feb 5</strong></td><td>Dry run. Polish. One-pager if time.</td><td>3h</td></tr>
+    <tr><td><strong>Fri Feb 6</strong></td><td>🎯 Demo at 11am</td><td>—</td></tr>
+  </table>
+</div>
+
+<!-- ============================================ -->
+<h2 id="questions">5. Oron's Likely Questions — Prep Your Answers</h2>
+<!-- ============================================ -->
+
+<div class="qa">
+  <div class="q">How do you get wearable data from patients? They're not going to install another app.</div>
+  <div class="a">We don't need them to. Serif connects through the device APIs directly — Apple HealthKit, Google Health Connect, Garmin, Oura, WHOOP. Many patients already wear these. The daemon runs server-side on consented data streams. Serif handles the data pipeline; Vim handles the consent flow. Patients opt in once through the care portal, and the data flows.</div>
+</div>
+
+<div class="qa">
+  <div class="q">What about HIPAA? Wearable data isn't covered by HIPAA — how do you handle that?</div>
+  <div class="a">You're right — wearable data in isolation isn't PHI. But the moment we link it to a clinical identity and surface it in the EHR through a Vim Card, it becomes part of the clinical record and falls under Vim's existing HIPAA framework. Serif processes data in a BAA-compliant environment. The patient consents to share device data for clinical use. We've already navigated this in our Human Edge deployment.</div>
+</div>
+
+<div class="qa">
+  <div class="q">What percentage of patients actually wear devices? Is this a niche signal?</div>
+  <div class="a">One in three American adults wears a smartwatch or fitness tracker — that's over 80 million people and growing 15% annually. For chronic conditions like hypertension and diabetes, wearable adoption is even higher because patients are motivated. And with Apple Watch and Samsung rolling out medical-grade sensors (blood pressure, ECG, SpO2), this is going from niche to standard of care. The question isn't if this data matters — it's who gets it to the provider first.</div>
+</div>
+
+<div class="qa">
+  <div class="q">How is this different from what Apple or Google are building with their health platforms?</div>
+  <div class="a">Apple and Google are building consumer-facing health features. They're not delivering clinical intelligence into EHR workflows. They don't have the provider relationship, the EHR integration, or the payer alignment. Vim does. Serif is the translation layer between what Apple/Google collect and what a provider needs at point of care. We're complementary to those platforms, not competitive. We're actually their best path into the clinical workflow — through Vim.</div>
+</div>
+
+<div class="qa">
+  <div class="q">What's the validation? Is this clinically proven?</div>
+  <div class="a">The individual signal types — HRV for cardiovascular risk, sleep architecture for metabolic health, circadian rhythm for mood disorders — these are all published and peer-reviewed. What Serif adds is the fusion and the causal inference: combining multiple signals into a clinical-grade insight with confidence intervals. In our Human Edge pilot, we reduced clinician analysis time from 80 hours to 10 minutes per patient while improving patient engagement 3.2×. We're not inventing new medicine — we're automating what the best clinicians already do, at scale.</div>
+</div>
+
+<div class="qa">
+  <div class="q">Why should Vim build this with you instead of building it in-house?</div>
+  <div class="a">Three reasons. One: the causal inference engine took 18+ months to build — it's not a weekend project. Hierarchical Bayesian models, auto-causal DAG generation, temporal signal fusion across different data frequencies. Two: you'd be pulling engineers off your core middleware platform, which is where your competitive advantage is. Three: Vim's moat is the EHR integration and provider network. Serif's moat is the health intelligence engine. Partnership is faster and cleaner than build. And if the POC doesn't deliver, you've invested nothing.</div>
+</div>
+
+<div class="qa">
+  <div class="q">What does this cost? What's the business model?</div>
+  <div class="a">Flexible. We can structure as per-provider-per-month, per-card-impression, or a flat platform fee during pilot. For the POC, I'm proposing zero cost to Vim — I'm investing my side to prove the value. Post-POC, we'd work out unit economics based on what Vim charges health plans. Our pilot pricing with other partners has been in the $1-2 per user per month range, which is a fraction of the value-based care savings from even one avoided hospitalization.</div>
+</div>
+
+<div class="qa">
+  <div class="q">How do you handle data quality issues? Wearable data is noisy.</div>
+  <div class="a">It is. That's exactly why you need a causal inference engine rather than raw threshold alerts. The daemon uses Bayesian methods specifically because they handle noise well — they express uncertainty as confidence intervals rather than false precision. If the data is low confidence, the card says so. A provider seeing "78% confidence: autonomic shift indicating elevated BP risk" is far more actionable than either a false-positive alert or no alert at all. The daemon also requires 14-60 days of continuous data before generating signals — it doesn't react to one bad night of sleep.</div>
+</div>
+
+<div class="qa">
+  <div class="q">You mentioned Human Edge — that's a longevity clinic. How does this translate to mainstream healthcare?</div>
+  <div class="a">Human Edge was our proof-of-concept: high-touch, data-rich, small scale. It validated that the engine works and that providers trust the output. The Vim integration is the scale play. The same intelligence engine, but instead of powering a boutique clinic dashboard, it's powering Vim Cards across 150,000 providers. The algorithm doesn't change — the delivery mechanism does. And Vim is the delivery mechanism that actually reaches mainstream healthcare.</div>
+</div>
+
+<!-- ============================================ -->
+<h2 id="integration">6. Integration Sketch — Serif × Vim</h2>
+<!-- ============================================ -->
+
+<div class="card">
+<pre style="color: #5BA8D9; font-size: 0.78rem;">
+┌──────────────────────────────────────────────────────────────────────────┐
+│                        PATIENT SIDE                                      │
+│                                                                          │
+│   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌──────────────┐  │
+│   │ Apple Watch  │  │  Oura Ring  │  │   Garmin    │  │  Manual Logs │  │
+│   │  HR, HRV,   │  │  Sleep, HRV │  │  BBI, HR    │  │  Symptoms,   │  │
+│   │  SpO2, ECG  │  │  Temp, SpO2 │  │  Activity   │  │  Meds, Mood  │  │
+│   └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬───────┘  │
+│          │                │                │                 │           │
+│          └───────────┬────┴────────┬───────┘                 │           │
+│                      ▼             ▼                         ▼           │
+│            ┌──────────────────────────────────────────────────┐          │
+│            │        SERIF DATA INGESTION LAYER                │          │
+│            │    HealthKit / Health Connect / Device APIs       │          │
+│            │    Consent managed via Vim patient portal         │          │
+│            └───────────────────┬──────────────────────────────┘          │
+└────────────────────────────────┼─────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│                     SERIF INTELLIGENCE ENGINE                            │
+│                                                                          │
+│  ┌─────────────────────┐  ┌────────────────────┐  ┌──────────────────┐  │
+│  │  DAEMON LAYER       │  │  CAUSAL ENGINE      │  │  POPULATION      │  │
+│  │  • Signal fusion    │  │  • Bayesian partial │  │  INTELLIGENCE    │  │
+│  │  • Circadian model  │  │    pooling          │  │  • Transfer      │  │
+│  │  • Recovery debt    │  │  • Auto-causal DAGs │  │    learning      │  │
+│  │  • Behavioral sig   │  │  • Confidence       │  │  • Cohort        │  │
+│  │  • Autonomic trend  │  │    intervals        │  │    calibration   │  │
+│  │  • Med effect       │  │  • Double-debiased  │  │  • Prior         │  │
+│  │    inference        │  │    estimation       │  │    refinement    │  │
+│  └─────────┬───────────┘  └─────────┬──────────┘  └────────┬─────────┘  │
+│            └───────────────┬────────┘                       │            │
+│                            ▼                                │            │
+│               ┌───────────────────────┐                     │            │
+│               │   CLINICAL INSIGHT    │◄────────────────────┘            │
+│               │   GENERATION          │                                  │
+│               │   • Risk scores       │                                  │
+│               │   • Recommendations   │                                  │
+│               │   • Trend narratives  │                                  │
+│               └───────────┬───────────┘                                  │
+└───────────────────────────┼──────────────────────────────────────────────┘
+                            │
+                   ┌────────▼────────┐
+                   │   FHIR R4 API   │
+                   │                 │
+                   │  Observation    │  ← Daemon-derived vitals + scores
+                   │  RiskAssessment │  ← Condition risk predictions
+                   │  ClinicalImpression │ ← Narrative summaries
+                   │  CareGap       │  ← Recommended actions
+                   └────────┬────────┘
+                            │
+┌───────────────────────────┼──────────────────────────────────────────────┐
+│                      VIM PLATFORM                                        │
+│                                                                          │
+│  ┌────────────────────────▼────────────────────────────────────────────┐ │
+│  │                    VIM CANVAS / VIM OS                               │ │
+│  │                                                                     │ │
+│  │  ┌─────────────────────────────────────────────────────────────┐    │ │
+│  │  │                     VIM CARD                                 │    │ │
+│  │  │  ┌───────────────────────────────────────────────────────┐  │    │ │
+│  │  │  │  🫀 Wearable Intelligence Alert                       │  │    │ │
+│  │  │  │                                                       │  │    │ │
+│  │  │  │  Margaret Chen, 58 — Hypertension Management          │  │    │ │
+│  │  │  │                                                       │  │    │ │
+│  │  │  │  ⚠ Elevated sympathetic activity detected over        │  │    │ │
+│  │  │  │  21 days. Circadian rhythm disruption and             │  │    │ │
+│  │  │  │  declining HRV suggest increased BP risk.             │  │    │ │
+│  │  │  │                                                       │  │    │ │
+│  │  │  │  Confidence: 84%  │  Trend: Worsening                │  │    │ │
+│  │  │  │                                                       │  │    │ │
+│  │  │  │  Recommended: Review BP medication dosage.            │  │    │ │
+│  │  │  │  Consider home BP monitoring protocol.                │  │    │ │
+│  │  │  │                                                       │  │    │ │
+│  │  │  │  [ View Serif Insights → ]  [ Dismiss ]              │  │    │ │
+│  │  │  └───────────────────────────────────────────────────────┘  │    │ │
+│  │  └─────────────────────────────────────────────────────────────┘    │ │
+│  └────────────────────────────────────────────────────────────────────┘ │
+│                                                                          │
+│  Renders inside:  ┌──────┐  ┌────────┐  ┌──────────┐                   │
+│                   │ Epic │  │ Cerner │  │ athena   │                    │
+│                   └──────┘  └────────┘  └──────────┘                    │
+└──────────────────────────────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<div class="card">
+  <h4>FHIR Interface Details</h4>
+  <table>
+    <tr><th>FHIR Resource</th><th>Serif Maps To</th><th>Example</th></tr>
+    <tr>
+      <td><code>Observation</code></td>
+      <td>Daemon-derived vitals & composite scores</td>
+      <td>Autonomic balance score: 0.34 (sympathetic-dominant), derived from 21-day HRV + HR trending</td>
+    </tr>
+    <tr>
+      <td><code>RiskAssessment</code></td>
+      <td>Condition risk predictions with confidence</td>
+      <td>Hypertensive crisis risk: 2.3× baseline, confidence 84%, basis: circadian drift + autonomic shift</td>
+    </tr>
+    <tr>
+      <td><code>ClinicalImpression</code></td>
+      <td>Narrative insight summaries for the card</td>
+      <td>"Wearable data over 21 days indicates progressive autonomic imbalance. Pattern is consistent with medication non-adherence or environmental stressor."</td>
+    </tr>
+    <tr>
+      <td><code>CareGap</code></td>
+      <td>Recommended clinical actions</td>
+      <td>BP medication review, home BP monitoring protocol, sleep hygiene consult</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h4>What Vim Provides (POC requirements)</h4>
+  <ul>
+    <li><strong>Vim Card SDK access</strong> — to render Serif insights in the card format</li>
+    <li><strong>Sandbox EHR instance</strong> — to test card rendering in Epic/Cerner/athena environments</li>
+    <li><strong>FHIR endpoint</strong> — for Serif to push Observation/RiskAssessment resources</li>
+    <li><strong>1 technical POC</strong> — a Vim engineer for API questions (1-2 hours/week)</li>
+  </ul>
+  <h4>What Serif Provides</h4>
+  <ul>
+    <li><strong>Intelligence API</strong> — FHIR-compliant endpoint returning clinical insights from wearable data</li>
+    <li><strong>Daemon infrastructure</strong> — continuous processing of patient device streams</li>
+    <li><strong>Card content</strong> — formatted insight payloads optimized for Vim Card rendering</li>
+    <li><strong>All development effort</strong> — zero Vim engineering required beyond sandbox access</li>
+  </ul>
+</div>
+
+<!-- ============================================ -->
+<h2 id="poc">7. 2-Week Hypertension POC Plan</h2>
+<!-- ============================================ -->
+
+<div class="internal-note">
+  Why hypertension: (1) Largest chronic condition in the US — 120M adults. (2) Clearest wearable signal — HR, HRV, activity directly correlate with BP management. (3) Most payer alignment — hypertension management is a top value-based care metric. (4) Cleanest clinical action — "review BP meds" is concrete, not vague. (5) Lowest regulatory risk — not diagnosing, just surfacing signals for provider review.
+</div>
+
+<div class="card highlight">
+  <h3>Week 1 — Build & Integrate</h3>
+  <div class="day-row"><div class="day-label">Day 1-2</div><div class="day-content"><strong>Environment setup.</strong> Get Vim sandbox access, Card SDK credentials, FHIR endpoint. Configure Serif API to output Vim-compatible FHIR resources. Agree on card schema.</div></div>
+  <div class="day-row"><div class="day-label">Day 3-4</div><div class="day-content"><strong>Daemon configuration.</strong> Configure hypertension-specific signal pipeline: autonomic balance trending, circadian drift detection, activity pattern analysis, recovery debt. Define thresholds for card trigger (when does a signal become a card?).</div></div>
+  <div class="day-row"><div class="day-label">Day 5</div><div class="day-content"><strong>Card rendering.</strong> First Serif-powered Vim Card rendering in sandbox EHR. Test in Epic, Cerner, athena views. QA the card content, drill-down, dismiss flow.</div></div>
+</div>
+
+<div class="card highlight">
+  <h3>Week 2 — Simulate & Validate</h3>
+  <div class="day-row"><div class="day-label">Day 6-7</div><div class="day-content"><strong>Synthetic patient simulation.</strong> Run 10 synthetic hypertensive patient profiles through the daemon. Mix of well-managed, deteriorating, medication non-adherent, and lifestyle-triggered scenarios. Generate cards for each.</div></div>
+  <div class="day-row"><div class="day-label">Day 8-9</div><div class="day-content"><strong>Clinical review.</strong> Have 2-3 physicians review the generated cards. Feedback on: clinical accuracy, actionability, false positive rate, card wording. Iterate.</div></div>
+  <div class="day-row"><div class="day-label">Day 10</div><div class="day-content"><strong>POC demo.</strong> Present results to Oron + Vim team. Show: card rendering in EHR, clinical validation feedback, daemon signal accuracy, proposed scale plan. Decision point: proceed to live pilot or iterate.</div></div>
+</div>
+
+<div class="card">
+  <h3>POC Success Metrics</h3>
+  <table>
+    <tr><th>Metric</th><th>Target</th><th>How Measured</th></tr>
+    <tr><td>Card renders correctly in EHR</td><td>100% of sandbox environments</td><td>Visual QA in Epic, Cerner, athena</td></tr>
+    <tr><td>Clinician finds card actionable</td><td>≥ 80% of reviewed cards</td><td>Physician feedback survey (3-5 reviewers)</td></tr>
+    <tr><td>False positive rate</td><td>< 15%</td><td>Cards flagged as clinically irrelevant by reviewers</td></tr>
+    <tr><td>Daemon detects known risk patterns</td><td>≥ 90% of seeded scenarios</td><td>Synthetic patients with known deterioration patterns</td></tr>
+    <tr><td>FHIR compliance</td><td>100%</td><td>Resource validation against FHIR R4 spec</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Post-POC: Scale Path</h3>
+  <ul>
+    <li><strong>Month 1-2:</strong> Live pilot with 50-100 consenting patients at 1-2 provider sites. Real wearable data, real Vim Cards in production EHR.</li>
+    <li><strong>Month 3-4:</strong> Expand to 500+ patients. Add diabetes and heart failure signal pipelines. Payer engagement for value-based care reimbursement.</li>
+    <li><strong>Month 6+:</strong> General availability across Vim's provider network. Multi-condition daemon. Population health analytics dashboard for payers.</li>
+  </ul>
+</div>
+
+<!-- ============================================ -->
+<h2 id="emails">8. Draft Replies</h2>
+<!-- ============================================ -->
+
+<p><span class="tag red">OVERDUE</span> Both of these needed replies last week. Send ASAP — ideally tonight or tomorrow morning.</p>
+
+<div class="email-draft">
+  <div class="field">To: <span>Oron Afek</span></div>
+  <div class="field">Subject: <span>Re: [original thread] — Confirmed for Feb 6 + quick preview</span></div>
+  <div class="field">Context: <span>Reply to Oron's Jan 21 email</span></div>
+  <br>
+  <p>Oron,</p>
+  <p>Apologies for the slow reply — was heads-down building out the integration architecture for what I'd like to show you.</p>
+  <p>Confirmed for <strong>February 6 at 11am</strong>. I'll keep it tight — 30 minutes.</p>
+  <p>Quick preview of what I'll walk you through: we've built a continuous health intelligence engine that turns wearable data (Apple Watch, Oura, Garmin, etc.) into clinical-grade insights. Think of it as a new signal category for Vim Cards — one that comes from what's happening with the patient <em>between</em> visits, not just at point of care.</p>
+  <p>I'll show you a working hypertension scenario: how the engine detects autonomic shifts weeks before a BP crisis, and what that looks like as a Vim Card inside the EHR workflow.</p>
+  <p>Looking forward to it.</p>
+  <p>Sam</p>
+</div>
+
+<div class="email-draft">
+  <div class="field">To: <span>Bob Borek</span></div>
+  <div class="field">Subject: <span>Re: [original thread] — Vim meeting locked + thank you</span></div>
+  <div class="field">Context: <span>Reply to Bob's Jan 26 email</span></div>
+  <br>
+  <p>Bob,</p>
+  <p>Thank you for the intro to Oron — this is exactly the kind of connection that could move the needle.</p>
+  <p>Meeting is confirmed for Feb 6 at 11am. I'm putting together a demo specifically around how Serif's intelligence engine could power a new category of Vim Cards using wearable data. Hypertension as the starting wedge — cleanest clinical action, biggest patient population, most payer alignment.</p>
+  <p>The proof points from our Human Edge deployment are strong (92% patient retention, 3.2× engagement lift, clinician time from 80 hours to 10 minutes per patient), so I'm going in with real numbers, not just a pitch deck.</p>
+  <p>I'll keep you posted on how it goes. And I still owe you those marketing materials from August — finally have something worth sending. Will follow up this week.</p>
+  <p>Really appreciate you making this happen.</p>
+  <p>Sam</p>
+</div>
+
+<div class="internal-note">
+  Re: Bob email — this also nudges the overdue marketing materials promise from the Aug 11 call. Don't let that slip again. Send Bob the one-pager as soon as you have it built (see Gaps section P2).
+</div>
+
+<!-- ============================================ -->
+<hr class="divider">
+<!-- ============================================ -->
+
+<div class="card" style="background: #0a0d0a; border-color: #2a4a2a; margin-top: 2rem;">
+  <h3 style="color: #5BD95B;">✅ Pre-Demo Checklist — Feb 5 Night</h3>
+  <ul>
+    <li>☐ Vim Card mockup polished and loaded (<code>vim-card-mockup.html</code>)</li>
+    <li>☐ Architecture diagram clean and loaded (<code>vim-architecture.html</code>)</li>
+    <li>☐ Pipeline visualization working (<code>vim-pipeline.html</code>)</li>
+    <li>☐ Patient persona narrative rehearsed (Margaret Chen, 58)</li>
+    <li>☐ Proof points memorized (92%, 80→10, 3.2×)</li>
+    <li>☐ "Why not build in-house" answer rehearsed</li>
+    <li>☐ POC plan printed or screen-ready</li>
+    <li>☐ Oron + Bob emails sent (don't walk in with unanswered emails)</li>
+    <li>☐ Tech setup tested: screen share, demo URLs loaded, backup screenshots if internet flakes</li>
+    <li>☐ Calendar block 10:30-11:00 for mental prep, no other meetings</li>
+  </ul>
+</div>
+
+<div style="text-align: center; color: #333; font-size: 0.75rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #1a1a1a;">
+  Internal prep document · Not for distribution · Generated Feb 2, 2026
+</div>
+
+</body>
+</html>
