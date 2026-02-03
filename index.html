@@ -187,6 +187,74 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
   font-size: 13px;
 }
 
+/* Modal action buttons */
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modal-btn {
+  background: none;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.modal-btn:hover {
+  background: #21262d;
+  color: #e6edf3;
+  border-color: #58a6ff;
+}
+.modal-save-btn { display: none; }
+.modal-save-btn:hover { border-color: #3fb950; color: #3fb950; }
+.modal-save-btn.saving { opacity: 0.6; pointer-events: none; }
+.modal-settings-btn { font-size: 14px; padding: 4px 6px; }
+.modal-settings-btn.has-token { color: #3fb950; }
+
+/* Editor textarea */
+.md-editor {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  tab-size: 2;
+}
+.md-editor:focus { border-color: #58a6ff; }
+
+/* Flash messages */
+.modal-flash {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 10;
+  animation: flashFade 2.5s ease-in-out forwards;
+}
+.modal-flash.success { background: #1f2d1f; color: #3fb950; border: 1px solid #3fb950; }
+.modal-flash.error { background: #3d1f1f; color: #f85149; border: 1px solid #f85149; }
+@keyframes flashFade {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* ===== BACKLOG ===== */
 .backlog-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 6px; background: #21262d; color: #8b949e; margin-right: 4px; margin-top: 4px; }
 
@@ -353,7 +421,12 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
         <span id="modal-title-text"></span>
         <span class="file-type" id="modal-file-type"></span>
       </div>
-      <button class="modal-close" id="modal-close" title="Close (Esc)">✕</button>
+      <div class="modal-actions">
+        <button class="modal-btn modal-settings-btn" id="modal-settings" title="GitHub Token Settings" style="display:none;">⚙️</button>
+        <button class="modal-btn modal-edit-btn" id="modal-edit" title="Edit markdown" style="display:none;">✏️ Edit</button>
+        <button class="modal-btn modal-save-btn" id="modal-save" title="Save to GitHub" style="display:none;">💾 Save</button>
+        <button class="modal-close" id="modal-close" title="Close (Esc)">✕</button>
+      </div>
     </div>
     <div class="modal-body" id="modal-body">
     </div>
@@ -373,26 +446,69 @@ const overlay = document.getElementById('modal-overlay');
 const modalBody = document.getElementById('modal-body');
 const modalTitleText = document.getElementById('modal-title-text');
 const modalFileType = document.getElementById('modal-file-type');
+const modalEditBtn = document.getElementById('modal-edit');
+const modalSaveBtn = document.getElementById('modal-save');
+const modalSettingsBtn = document.getElementById('modal-settings');
+
+// Editor state
+let editorState = {
+  isEditing: false,
+  rawMarkdown: '',
+  currentUrl: '',
+  currentPath: '',  // relative path for GitHub API
+  isMarkdown: false,
+};
+
+function updateSettingsIcon() {
+  const hasToken = !!localStorage.getItem('github_pat');
+  modalSettingsBtn.classList.toggle('has-token', hasToken);
+  modalSettingsBtn.title = hasToken ? 'GitHub Token ✓ (click to change)' : 'Set GitHub Token';
+}
+
+function showFlash(type, message) {
+  const existing = document.querySelector('.modal-flash');
+  if (existing) existing.remove();
+  const flash = document.createElement('div');
+  flash.className = 'modal-flash ' + type;
+  flash.textContent = message;
+  document.getElementById('modal').appendChild(flash);
+  setTimeout(() => flash.remove(), 2600);
+}
 
 function openModal(url, title) {
   const ext = url.split('.').pop().toLowerCase();
+  const isMd = (ext === 'md');
+  editorState = {
+    isEditing: false,
+    rawMarkdown: '',
+    currentUrl: url,
+    currentPath: url.replace(/^\.\//, ''),  // strip leading ./ for GitHub API path
+    isMarkdown: isMd,
+  };
+
   modalTitleText.textContent = title || url.split('/').pop();
   modalFileType.textContent = ext.toUpperCase();
   modalBody.innerHTML = '<div class="modal-loading">Loading content…</div>';
   overlay.classList.add('visible');
   document.body.style.overflow = 'hidden';
 
+  // Show/hide editor buttons based on file type
+  modalEditBtn.style.display = isMd ? '' : 'none';
+  modalSettingsBtn.style.display = isMd ? '' : 'none';
+  modalSaveBtn.style.display = 'none';
+  modalEditBtn.innerHTML = '✏️ Edit';
+  updateSettingsIcon();
+
   if (ext === 'html') {
-    // For HTML files, use an iframe
     modalBody.innerHTML = `<iframe src="${url}" style="min-height:700px;" onload="this.style.height = Math.max(600, this.contentDocument.body.scrollHeight + 40) + 'px'"></iframe>`;
   } else {
-    // Markdown — fetch and render
     fetch(url + '?t=' + Date.now())
       .then(res => {
         if (!res.ok) throw new Error('Failed to load');
         return res.text();
       })
       .then(md => {
+        editorState.rawMarkdown = md;
         modalBody.innerHTML = '<div class="md-content">' + marked.parse(md) + '</div>';
       })
       .catch(err => {
@@ -401,18 +517,129 @@ function openModal(url, title) {
   }
 }
 
+function toggleEdit() {
+  if (!editorState.isMarkdown) return;
+
+  if (editorState.isEditing) {
+    // Switch to preview mode — save textarea content first
+    const textarea = modalBody.querySelector('.md-editor');
+    if (textarea) editorState.rawMarkdown = textarea.value;
+    modalBody.innerHTML = '<div class="md-content">' + marked.parse(editorState.rawMarkdown) + '</div>';
+    modalEditBtn.innerHTML = '✏️ Edit';
+    modalSaveBtn.style.display = 'none';
+    editorState.isEditing = false;
+  } else {
+    // Switch to edit mode
+    modalBody.innerHTML = '<textarea class="md-editor" spellcheck="false">' +
+      editorState.rawMarkdown.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+      '</textarea>';
+    modalEditBtn.innerHTML = '👁 Preview';
+    modalSaveBtn.style.display = '';
+    editorState.isEditing = true;
+    // Focus and move cursor to end
+    const ta = modalBody.querySelector('.md-editor');
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  }
+}
+
+async function saveToGitHub() {
+  const token = localStorage.getItem('github_pat');
+  if (!token) {
+    showFlash('error', '❌ No GitHub token set — click ⚙️ first');
+    return;
+  }
+
+  // Grab latest content from textarea
+  const textarea = modalBody.querySelector('.md-editor');
+  if (textarea) editorState.rawMarkdown = textarea.value;
+
+  const path = editorState.currentPath;
+  const apiUrl = 'https://api.github.com/repos/samcialek/dashboard/contents/' + path;
+
+  modalSaveBtn.classList.add('saving');
+  modalSaveBtn.innerHTML = '⏳ Saving…';
+
+  try {
+    // Step 1: GET current file to obtain SHA
+    const getRes = await fetch(apiUrl, {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!getRes.ok) throw new Error('Failed to get file info (HTTP ' + getRes.status + ')');
+    const fileData = await getRes.json();
+    const sha = fileData.sha;
+
+    // Step 2: PUT with new content
+    const content = btoa(unescape(encodeURIComponent(editorState.rawMarkdown)));
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: 'Update ' + path.split('/').pop() + ' via dashboard editor',
+        content: content,
+        sha: sha,
+      }),
+    });
+
+    if (!putRes.ok) {
+      const errBody = await putRes.json().catch(() => ({}));
+      throw new Error(errBody.message || 'HTTP ' + putRes.status);
+    }
+
+    showFlash('success', 'Saved ✓');
+  } catch (err) {
+    showFlash('error', '❌ Save failed: ' + err.message);
+  } finally {
+    modalSaveBtn.classList.remove('saving');
+    modalSaveBtn.innerHTML = '💾 Save';
+  }
+}
+
+function promptForToken() {
+  const current = localStorage.getItem('github_pat');
+  const msg = current
+    ? 'GitHub token is set ✓\nPaste a new token to replace, or cancel to keep current:'
+    : 'Paste your GitHub Personal Access Token\n(fine-grained, needs Contents read/write on samcialek/dashboard):';
+  const token = prompt(msg, '');
+  if (token !== null && token.trim()) {
+    localStorage.setItem('github_pat', token.trim());
+    showFlash('success', 'Token saved ✓');
+  } else if (token !== null && !token.trim() && current) {
+    // User cleared the field — remove token
+    localStorage.removeItem('github_pat');
+    showFlash('error', 'Token removed');
+  }
+  updateSettingsIcon();
+}
+
 function closeModal() {
   overlay.classList.remove('visible');
   document.body.style.overflow = '';
   modalBody.innerHTML = '';
+  editorState.isEditing = false;
+  modalEditBtn.style.display = 'none';
+  modalSaveBtn.style.display = 'none';
+  modalSettingsBtn.style.display = 'none';
 }
 
+modalEditBtn.addEventListener('click', toggleEdit);
+modalSaveBtn.addEventListener('click', saveToGitHub);
+modalSettingsBtn.addEventListener('click', promptForToken);
 document.getElementById('modal-close').addEventListener('click', closeModal);
 overlay.addEventListener('click', function(e) {
   if (e.target === overlay) closeModal();
 });
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && overlay.classList.contains('visible')) closeModal();
+  // Ctrl+S to save in edit mode
+  if (e.key === 's' && (e.ctrlKey || e.metaKey) && editorState.isEditing) {
+    e.preventDefault();
+    saveToGitHub();
+  }
 });
 
 // ===== TAB SWITCHING =====
