@@ -43,6 +43,14 @@
       "done": false
     },
     {
+      "title": "Eric Daza Research Brief",
+      "desc": "Stats-of-1 founder, Boehringer Ingelheim. N-of-1 causal inference = Serif's academic foundation. Forbes/Fortune innovator. Connection angle + outreach plan.",
+      "url": null,
+      "project": "serif",
+      "priority": "high",
+      "done": false
+    },
+    {
       "title": "PRISM Election Analysis",
       "desc": "Completed & sent. 53% winner accuracy, +15.3 D skew, winner-take-all Gaussian kernel issue.",
       "url": null,
