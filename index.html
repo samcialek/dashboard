@@ -717,14 +717,17 @@ async function loadToday() {
         const proj = projMap[item.project] || { color: '#8b949e', emoji: '📋' };
         const priorityBorder = item.priority === 'high' ? 'border-left:3px solid #f85149;' : 'border-left:3px solid ' + proj.color + ';';
         const priorityBadge = item.priority === 'high' ? '<span class="badge badge-urgent">PRIORITY</span>' : '';
-        const linkHtml = item.url ? `<a href="${item.url}" target="_blank" style="color:#58a6ff;font-size:11px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:4px;">🔗 Open →</a>` : '';
-        return `<div class="card" style="${priorityBorder}">
+        const isInternal = item.url && !item.url.startsWith('http');
+        const isExternal = item.url && item.url.startsWith('http');
+        const clickClass = item.url ? 'clickable' : '';
+        const clickAttr = isInternal ? ` onclick="openModal('${item.url}', '${(item.title||'').replace(/'/g, "\\'")}')"` : (isExternal ? ` onclick="window.open('${item.url}','_blank')"` : '');
+        const viewIcon = item.url ? '<span class="view-icon">📄</span>' : '';
+        return `<div class="card ${clickClass}" style="${priorityBorder}"${clickAttr}>
           <div class="card-title" style="display:flex;align-items:center;gap:6px;">
             <span class="project-dot" style="background:${proj.color};width:6px;height:6px;"></span>
-            ${item.title}${priorityBadge}
+            ${item.title}${priorityBadge}${viewIcon}
           </div>
           <div class="card-desc">${item.desc || ''}</div>
-          ${linkHtml}
         </div>`;
       }).join('');
     }
