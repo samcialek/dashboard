@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serif — Data Moat API Access Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111113;
+    --surface2: #18181b;
+    --surface3: #1e1e22;
+    --border: #27272a;
+    --border-light: #3f3f46;
+    --text: #e4e4e7;
+    --text-muted: #a1a1aa;
+    --text-dim: #71717a;
+    --accent: #5BA8D9;
+    --accent-dim: rgba(91,168,217,0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.2);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.15);
+    --yellow: #eab308;
+    --yellow-dim: rgba(234,179,8,0.15);
+    --orange: #f97316;
+    --orange-dim: rgba(249,115,22,0.15);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.15);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.15);
+    --pink: #ec4899;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* Header */
+  .hero {
+    padding: 80px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(91,168,217,0.25);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.7;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Section headers */
+  .section {
+    padding: 56px 0 0;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .section .section-desc {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+
+  /* Ranking cards */
+  .rank-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .rank-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .rank-card:hover {
+    border-color: var(--border-light);
+  }
+  .rank-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .rank-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .rank-badge.tier-s { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(91,168,217,0.3); }
+  .rank-badge.tier-a { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .rank-badge.tier-b { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(234,179,8,0.3); }
+
+  .rank-info { flex: 1; min-width: 0; }
+  .rank-info h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .rank-info .rank-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .rank-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .tag-free { background: var(--green-dim); color: var(--green); }
+  .tag-paid { background: var(--orange-dim); color: var(--orange); }
+  .tag-partner { background: var(--purple-dim); color: var(--purple); }
+  .tag-live { background: var(--accent-dim); color: var(--accent); }
+  .tag-apply { background: var(--blue-dim); color: var(--blue); }
+
+  .expand-icon {
+    color: var(--text-dim);
+    font-size: 18px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+  }
+  .rank-card.open .expand-icon { transform: rotate(180deg); }
+
+  .rank-card-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+  }
+  .rank-card.open .rank-card-body { display: block; padding-top: 20px; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .detail-item {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .detail-item .label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .detail-item .value {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .detail-item .value code {
+    background: var(--surface3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .impact-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .impact-bar .bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--surface3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .impact-bar .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .impact-bar .bar-label {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* Gantt Chart */
+  .gantt-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow-x: auto;
+    margin-top: 8px;
+  }
+  .gantt-legend {
+    display: flex;
+    gap: 20px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .gantt-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .gantt-legend-item .swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+
+  .gantt {
+    min-width: 900px;
+    padding: 0 24px 24px;
+  }
+  .gantt-header {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 2;
+  }
+  .gantt-header .gh-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .gantt-header .gh-week {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .gantt-row {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    align-items: center;
+    min-height: 48px;
+    border-bottom: 1px solid rgba(39,39,42,0.5);
+    position: relative;
+  }
+  .gantt-row:last-child { border-bottom: none; }
+  .gantt-row-label {
+    font-size: 13px;
+    font-weight: 500;
+    padding-right: 12px;
+    white-space: nowrap;
+  }
+  .gantt-row-label .row-icon {
+    margin-right: 6px;
+    font-size: 14px;
+  }
+  .gantt-cell {
+    position: relative;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Grid lines */
+  .gantt-row .gantt-cell::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -10px;
+    bottom: -10px;
+    width: 1px;
+    background: rgba(39,39,42,0.4);
+  }
+
+  .gantt-bar {
+    position: absolute;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+  }
+  .bar-apply { background: rgba(59,130,246,0.3); color: #93c5fd; border: 1px solid rgba(59,130,246,0.4); }
+  .bar-integrate { background: rgba(34,197,94,0.3); color: #86efac; border: 1px solid rgba(34,197,94,0.4); }
+  .bar-test { background: rgba(234,179,8,0.3); color: #fde047; border: 1px solid rgba(234,179,8,0.4); }
+  .bar-live { background: rgba(91,168,217,0.35); color: #b8ddf2; border: 1px solid rgba(91,168,217,0.5); }
+  .bar-negotiate { background: rgba(167,139,250,0.3); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.4); }
+
+  /* Milestone markers */
+  .milestone {
+    position: absolute;
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid var(--accent);
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* 30-day action plan */
+  .action-plan {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .week-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .week-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .week-card .week-date {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .week-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .week-card li {
+    font-size: 14px;
+    color: var(--text-muted);
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .week-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+  }
+  .week-card li strong {
+    color: var(--text);
+  }
+
+  /* Critical path */
+  .critical-path {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .path-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .path-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .path-icon.blocker { background: var(--red-dim); }
+  .path-icon.parallel { background: var(--green-dim); }
+  .path-icon.dependent { background: var(--yellow-dim); }
+  .path-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .path-content p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Score visualization */
+  .score-grid {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .score-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--surface3);
+  }
+  .score-dot.filled { background: var(--accent); }
+
+  /* Summary stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    margin-top: 56px;
+    text-align: center;
+  }
+  .footer p {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 0 16px; }
+    .hero h1 { font-size: 28px; }
+    .gantt-wrap { font-size: 12px; }
+    .rank-card-header { flex-wrap: wrap; }
+    .rank-tags { width: 100%; margin-top: 8px; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .action-plan { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-label">⚡ Strategic Playbook</div>
+    <h1>Data Moat API Access Playbook</h1>
+    <p class="subtitle">Top 8 data source integrations ranked by uniqueness × feasibility × model impact. Concrete API access methods, timelines, costs, and a 90-day execution plan with Gantt chart.</p>
+    <div class="hero-meta">
+      <span>serif.life</span>
+      <span>·</span>
+      <span>feb 2 2026</span>
+      <span>·</span>
+      <span>90-day integration roadmap</span>
+    </div>
+  </header>
+
+  <!-- SUMMARY STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--accent)">8</div>
+      <div class="stat-label">Data Sources</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--green)">3</div>
+      <div class="stat-label">Free / No License</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--yellow)">~12 wk</div>
+      <div class="stat-label">To Full Stack</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--purple)">5</div>
+      <div class="stat-label">Run in Parallel</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--orange)">2</div>
+      <div class="stat-label">Need License / BAA</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: RANKED SOURCES -->
+  <section class="section">
+    <div class="section-num">01</div>
+    <h2>Data Sources Ranked</h2>
+    <p class="section-desc">Each source scored on three axes: <strong>Uniqueness</strong> (is this data rare?), <strong>Feasibility</strong> (can we actually get it?), and <strong>Model Impact</strong> (does it make the causal engine smarter?). Scores multiplied, max = 125.</p>
+
+    <div class="rank-grid">
+
+      <!-- #1 EHR via Vim/FHIR -->
+      <div class="rank-card" id="card-vim">
+        <div class="rank-card-header" onclick="toggleCard('card-vim')">
+          <div class="rank-badge tier-s">1</div>
+          <div class="rank-info">
+            <h3>EHR Data via Vim / FHIR</h3>
+            <div class="rank-sub">Labs, medications, diagnoses, clinical notes — real-time per-patient</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-partner">Partnership</span>
+            <span class="tag tag-live">Active</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>Vim Connect SDK</code> — script tag or npm. TypeScript. FHIR R4 compliant. Also supports HL7v2 via Vim's normalization layer.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value">Partnership agreement with Vim. Sandbox + workflow simulator available. Self-service and group onboarding. <strong>Serif already integrating.</strong></div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value">Platform fee (per-provider or per-patient basis). Negotiable. Vim is B2B2C — they want health tech innovators on the platform.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value">ICD-10 diagnoses, medication lists (+ dosage/frequency), lab results (CBC, CMP, HbA1c, lipids, etc.), vitals, procedure codes, clinical notes, referrals, immunizations, allergies.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>8–12 weeks</strong> for full structured data. Lab results first (highest value), then medication lists, then diagnoses. Write-back capability available.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">HIPAA compliance (✅), BAA with Vim (✅ — SOC 2, HITRUST certified), patient consent flow, 150K+ providers connected.</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--accent-dim); border: 1px solid rgba(91,168,217,0.2);">
+            <div class="label" style="color: var(--accent);">Why This Is #1</div>
+            <div class="value">No competitor has real-time per-patient EHR data linked to wearable data. Apple has wearables but no EHR. Epic has EHR but no wearables. Serif + Vim is the only entity that can fuse both. <strong>Score: 125/125</strong> (5 × 5 × 5)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #2 Dexcom CGM API -->
+      <div class="rank-card" id="card-dexcom">
+        <div class="rank-card-header" onclick="toggleCard('card-dexcom')">
+          <div class="rank-badge tier-s">2</div>
+          <div class="rank-info">
+            <h3>Dexcom CGM API</h3>
+            <div class="rank-sub">Continuous glucose monitoring — the richest metabolic signal available</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-free">Free API</span>
+            <span class="tag tag-apply">Apply</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>OAuth 2.0 REST API</code> — Dexcom Developer Program. Authorized Digital Health Partner status required. Sandbox available for development.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value">Apply at <code>developer.dexcom.com</code>. Reviewed by Strategic Partnerships team. Must meet commercial + technical standards. <strong>4–8 week review cycle.</strong></div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>Free</strong> once approved. No license fees. User-consented data via OAuth flow.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value">Estimated Glucose Values (EGV) every 5 min, events (carbs, insulin, exercise), calibration data, device info. <em>Not raw PPG/sensor signal — processed glucose values.</em></div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>2–3 weeks</strong> dev time after approval. Standard OAuth + REST. Well-documented. Main wait is the application approval (4–8 weeks).</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">Dexcom approval (selective but actively seeking health platform partners). No HIPAA/BAA required for consumer API — user consent model. Gallery listing expected.</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--accent-dim); border: 1px solid rgba(91,168,217,0.2);">
+            <div class="label" style="color: var(--accent);">Why This Is #2</div>
+            <div class="value">CGM is the single richest continuous metabolic signal. No consumer wearable (Apple Watch, Oura, WHOOP) integrates CGM. Combined with Serif's auto-causal DAGs: glucose → sleep quality → next-day HRV → cognitive performance chains. <strong>Score: 100/125</strong> (5 × 4 × 5)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #3 Garmin Health API -->
+      <div class="rank-card" id="card-garmin">
+        <div class="rank-card-header" onclick="toggleCard('card-garmin')">
+          <div class="rank-badge tier-s">3</div>
+          <div class="rank-info">
+            <h3>Garmin Health API</h3>
+            <div class="rank-sub">Beat-to-Beat Interval data — research-grade HRV from a consumer device</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-paid">License Fee</span>
+            <span class="tag tag-apply">Apply</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>Garmin Health Enterprise API</code> — REST endpoints with push notifications. BBI (Beat-to-Beat Interval) endpoint is the crown jewel. Requires Garmin Connect Developer Program approval.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value">Apply via <code>developer.garmin.com</code>. Evaluation environment after approval. Commercial license negotiation follows. <strong>2–4 weeks</strong> for initial approval, license negotiation adds 2–4 weeks.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>$10K–$50K/year</strong> license fee (volume-dependent, not publicly disclosed). Budget $25K for planning. Evaluation environment may be free.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value">Daily summaries, epoch-level HR (per-second during activities), <strong>BBI data</strong> (true RR intervals), steps, stress, sleep, Pulse Ox, Body Battery, respiration rate.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>3–4 weeks</strong> dev time. Push-based API (Garmin pushes data to your webhook). BBI data requires spectral analysis pipeline (LF/HF, RMSSD, pNN50).</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">License agreement. Budget approval for annual fee. No HIPAA/BAA required — consumer data model. Garmin has massive athletic/outdoor user base (more diverse than Oura/WHOOP).</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--accent-dim); border: 1px solid rgba(91,168,217,0.2);">
+            <div class="label" style="color: var(--accent);">Why This Is #3</div>
+            <div class="value">BBI (raw RR intervals) enables spectral HRV analysis — far more informative for autonomic nervous system state than summary HRV. Garmin's diverse user base strengthens partial pooling priors. <strong>Score: 64/125</strong> (4 × 4 × 4)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #4 Polar SDK -->
+      <div class="rank-card" id="card-polar">
+        <div class="rank-card-header" onclick="toggleCard('card-polar')">
+          <div class="rank-badge tier-a">4</div>
+          <div class="rank-info">
+            <h3>Polar SDK</h3>
+            <div class="rank-sub">Raw ECG + accelerometer — research-grade cardiac data, free</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-free">Free</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>Polar BLE SDK</code> (iOS + Android) for live streaming. <code>Polar AccessLink API</code> for cloud data (OAuth 2.0 REST). SDK enables real-time ECG, ACC, and HR streaming via Bluetooth.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value"><strong>None.</strong> SDK is publicly available on GitHub. AccessLink API requires free developer registration. No approval process.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>Free.</strong> No license fees, no partnership required. Fully open developer ecosystem.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value"><strong>Via SDK:</strong> Real-time ECG (from H10/Verity Sense), raw 3-axis accelerometer, live HR broadcast. <strong>Via API:</strong> Training sessions, daily activity, sleep. ECG enables QT interval analysis, AF detection, gold-standard HRV.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>2–3 weeks.</strong> SDK is well-documented. BLE streaming requires mobile app integration. Cloud API is standard REST. ECG processing pipeline needed (R-peak detection, QT analysis).</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">Polar device ownership (H10 chest strap for ECG). Mobile app for BLE SDK. No regulatory dependencies. Open-source friendly.</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--green-dim); border: 1px solid rgba(34,197,94,0.2);">
+            <div class="label" style="color: var(--green);">Quick Win</div>
+            <div class="value">Free, no approval wait, raw research-grade ECG from a consumer device. Unique among wearables. ECG data is the gold standard for HRV computation and cardiac health. <strong>Score: 60/125</strong> (4 × 5 × 3)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #5 Withings -->
+      <div class="rank-card" id="card-withings">
+        <div class="rank-card-header" onclick="toggleCard('card-withings')">
+          <div class="rank-badge tier-a">5</div>
+          <div class="rank-info">
+            <h3>Withings Developer API</h3>
+            <div class="rank-sub">Clinically validated BP monitors + body composition + ECG + temperature</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-free">Public API Free</span>
+            <span class="tag tag-partner">Research API</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>Withings Health API</code> (public, OAuth 2.0 REST) + <code>Advanced Research API</code> (higher-resolution, partnership required). HIPAA compliant, ISO 27001 certified.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value"><strong>Public API:</strong> Free developer signup. <strong>Research API:</strong> Formal partnership agreement. Contact Withings research team. 4–6 week process.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>Public API: Free.</strong> Research API requires partnership agreement (terms negotiable). No known per-user fees.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value"><strong>Blood pressure</strong> (systolic, diastolic, MAP), weight, body composition (fat %, lean mass, bone, water %), sleep, ECG (BPM Core), skin temperature (Thermo), SpO2. Research API provides higher-res data.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>2–3 weeks</strong> for public API. Research API adds 4–6 weeks for partnership + integration. Standard OAuth + webhook notifications for data updates.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">No HIPAA/BAA needed for public API (already HIPAA compliant). Research API needs formal agreement. Withings is the <strong>only consumer platform with clinically validated BP monitors</strong> in the API.</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--accent-dim); border: 1px solid rgba(91,168,217,0.2);">
+            <div class="label" style="color: var(--accent);">Strategic Value</div>
+            <div class="value">Blood pressure is the most important cardiovascular biomarker — and Withings is the only consumer API that has it. Longitudinal BP + weight + body composition feeds directly into metabolic health DAGs. <strong>Score: 60/125</strong> (4 × 5 × 3)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #6 Oura Ring API -->
+      <div class="rank-card" id="card-oura">
+        <div class="rank-card-header" onclick="toggleCard('card-oura')">
+          <div class="rank-badge tier-a">6</div>
+          <div class="rank-info">
+            <h3>Oura Ring API</h3>
+            <div class="rank-sub">Sleep stages, skin temperature deviation, per-5-min HRV, SpO2</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-free">Free</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>Oura Cloud API v2</code> — OAuth 2.0 REST. Rate limited. Documentation at <code>cloud.ouraring.com/docs</code>. Webhooks available for data updates.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value"><strong>None.</strong> Public API — register as developer, create app, authenticate users. No approval process. Research-grade access (raw PPG) requires Oura for Business partnership.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>Free</strong> for public API (user-consented data). Research/business partnership tier has separate terms.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value">Sleep stages (deep, REM, light, awake), per-5-min HRV samples, <strong>skin temperature deviation from baseline</strong>, daily activity/readiness scores, SpO2, resting HR. <em>No raw PPG via public API.</em></div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>1–2 weeks.</strong> Straightforward OAuth + REST. Well-documented API v2. Webhook integration for real-time updates.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">None for public API. Rate limits apply. Oura's temperature trend data is unique — skin temp deviation as daily baseline shift is powerful for menstrual cycle, illness onset, recovery state signals.</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--green-dim); border: 1px solid rgba(34,197,94,0.2);">
+            <div class="label" style="color: var(--green);">Quick Win</div>
+            <div class="value">Free, no approval wait, excellent sleep + temperature data. Temp deviation is a strong causal input for auto-DAGs (temperature → immune activation → sleep disruption → recovery). <strong>Score: 48/125</strong> (3 × 4 × 4)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #7 WHOOP -->
+      <div class="rank-card" id="card-whoop">
+        <div class="rank-card-header" onclick="toggleCard('card-whoop')">
+          <div class="rank-badge tier-a">7</div>
+          <div class="rank-info">
+            <h3>WHOOP Developer Platform</h3>
+            <div class="rank-sub">Recovery, Strain, HRV, sleep — 24/7 wear compliance king</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-free">Free</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>WHOOP Developer API</code> — OAuth 2.0 REST. Open developer program at <code>developer.whoop.com</code>. Create app, authenticate members.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value"><strong>Minimal.</strong> Open developer platform. Register, create application, get client credentials. Straightforward onboarding. No lengthy review.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>Free.</strong> No license fees. Consumer data via user OAuth consent.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value">Recovery score, HRV, resting HR, skin temperature, SpO2, sleep performance + stages, <strong>Strain score</strong> (proprietary cardiovascular load), workout details. <em>No raw sensor data — processed metrics only.</em></div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>1–2 weeks.</strong> Standard OAuth + REST. Clean API. Good documentation.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">None. WHOOP users are extremely consistent (24/7 wear) producing dense longitudinal data — ideal for transfer learning with clean, high-compliance signals.</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- #8 Apple HealthKit -->
+      <div class="rank-card" id="card-apple">
+        <div class="rank-card-header" onclick="toggleCard('card-apple')">
+          <div class="rank-badge tier-b">8</div>
+          <div class="rank-info">
+            <h3>Apple HealthKit</h3>
+            <div class="rank-sub">Central aggregator — steps, HR, ECG, sleep, workouts, and 3rd-party data</div>
+          </div>
+          <div class="rank-tags">
+            <span class="tag tag-free">Free SDK</span>
+            <span class="tag tag-apply">Apple Review</span>
+          </div>
+          <span class="expand-icon">▾</span>
+        </div>
+        <div class="rank-card-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <div class="label">API / SDK Access</div>
+              <div class="value"><code>HealthKit Framework</code> (iOS/watchOS native). On-device only — data never leaves the phone without user consent. No REST API. Must be a native iOS app or use HealthKit via React Native/Flutter bridges.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Application Process</div>
+              <div class="value">Apple Developer Program ($99/yr). HealthKit entitlement required in app. <strong>App Store Review</strong> enforces HealthKit usage guidelines. Health-related apps get extra scrutiny — 2–4 week review process.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Cost</div>
+              <div class="value"><strong>$99/year</strong> Apple Developer Program. No per-user data fees. HealthKit SDK is free.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Data Available</div>
+              <div class="value">Heart rate, HRV (SDNN), ECG waveforms (Apple Watch), steps, distance, workouts, sleep analysis, respiratory rate, blood oxygen, body measurements, nutrition, menstrual tracking, <strong>plus all 3rd-party data written to HealthKit</strong> (Oura, WHOOP, etc.).</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Integration Complexity</div>
+              <div class="value"><strong>3–5 weeks.</strong> Requires native iOS development. HealthKit permissions are granular (per-data-type consent). Background delivery for real-time updates. On-device processing only — need server sync architecture.</div>
+            </div>
+            <div class="detail-item">
+              <div class="label">Dependencies</div>
+              <div class="value">iOS app required. Apple Developer Program membership. App Store approval. HealthKit is iOS-only — no Android equivalent. Acts as a meta-aggregator for all health data on the user's phone.</div>
+            </div>
+          </div>
+          <div class="detail-item" style="background: var(--yellow-dim); border: 1px solid rgba(234,179,8,0.2);">
+            <div class="label" style="color: var(--yellow);">Strategic Note</div>
+            <div class="value">HealthKit is the <strong>aggregation layer</strong>, not a unique data source. Its value: a single integration gets you Apple Watch + all 3rd-party device data users have synced. Critical for user reach but doesn't provide data you can't get elsewhere. <strong>Score: 45/125</strong> (3 × 5 × 3)</div>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;">
+            <div><span style="font-size: 11px; color: var(--text-dim);">UNIQUENESS</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">FEASIBILITY</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div></div></div>
+            <div><span style="font-size: 11px; color: var(--text-dim);">MODEL IMPACT</span><div class="score-grid"><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot filled"></div><div class="score-dot"></div><div class="score-dot"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: GANTT CHART -->
+  <section class="section">
+    <div class="section-num">02</div>
+    <h2>90-Day Integration Timeline</h2>
+    <p class="section-desc">Gantt chart showing parallel execution tracks. Five sources can begin immediately. Two require application periods. One is already active.</p>
+
+    <div class="gantt-wrap">
+      <div class="gantt-legend">
+        <div class="gantt-legend-item"><div class="swatch" style="background: rgba(59,130,246,0.5);"></div> Application / Approval</div>
+        <div class="gantt-legend-item"><div class="swatch" style="background: rgba(167,139,250,0.5);"></div> License Negotiation</div>
+        <div class="gantt-legend-item"><div class="swatch" style="background: rgba(34,197,94,0.5);"></div> Integration / Dev</div>
+        <div class="gantt-legend-item"><div class="swatch" style="background: rgba(234,179,8,0.5);"></div> Testing / QA</div>
+        <div class="gantt-legend-item"><div class="swatch" style="background: rgba(91,168,217,0.6);"></div> Live</div>
+      </div>
+      <div class="gantt">
+        <div class="gantt-header">
+          <div class="gh-label">Source</div>
+          <div class="gh-week">W1</div>
+          <div class="gh-week">W2</div>
+          <div class="gh-week">W3</div>
+          <div class="gh-week">W4</div>
+          <div class="gh-week">W5</div>
+          <div class="gh-week">W6</div>
+          <div class="gh-week">W7</div>
+          <div class="gh-week">W8</div>
+          <div class="gh-week">W9</div>
+          <div class="gh-week">W10</div>
+          <div class="gh-week">W11</div>
+          <div class="gh-week">W12</div>
+        </div>
+
+        <!-- Vim EHR -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">🏥</span> Vim / FHIR</div>
+          <div class="gantt-cell" style="grid-column: 2 / 5;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Lab Results</div></div>
+          <div class="gantt-cell" style="grid-column: 5 / 8;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Med Lists</div></div>
+          <div class="gantt-cell" style="grid-column: 8 / 10;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Dx + Notes</div></div>
+          <div class="gantt-cell" style="grid-column: 10 / 12;"><div class="gantt-bar bar-test" style="width:100%; left:0;">E2E Test</div></div>
+          <div class="gantt-cell" style="grid-column: 12 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">Live</div></div>
+        </div>
+
+        <!-- Dexcom -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">📊</span> Dexcom CGM</div>
+          <div class="gantt-cell" style="grid-column: 2 / 8;"><div class="gantt-bar bar-apply" style="width:100%; left:0;">Application Review (4–8 wk)</div></div>
+          <div class="gantt-cell" style="grid-column: 8 / 10;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Build</div></div>
+          <div class="gantt-cell" style="grid-column: 10 / 12;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test</div></div>
+          <div class="gantt-cell" style="grid-column: 12 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">Live</div></div>
+        </div>
+
+        <!-- Garmin -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">⌚</span> Garmin Health</div>
+          <div class="gantt-cell" style="grid-column: 2 / 5;"><div class="gantt-bar bar-apply" style="width:100%; left:0;">Apply</div></div>
+          <div class="gantt-cell" style="grid-column: 5 / 7;"><div class="gantt-bar bar-negotiate" style="width:100%; left:0;">License</div></div>
+          <div class="gantt-cell" style="grid-column: 7 / 10;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Build + BBI Pipeline</div></div>
+          <div class="gantt-cell" style="grid-column: 10 / 12;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test</div></div>
+          <div class="gantt-cell" style="grid-column: 12 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">Live</div></div>
+        </div>
+
+        <!-- Polar -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">💓</span> Polar SDK</div>
+          <div class="gantt-cell" style="grid-column: 2 / 4;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">SDK + ECG</div></div>
+          <div class="gantt-cell" style="grid-column: 4 / 5;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test</div></div>
+          <div class="gantt-cell" style="grid-column: 5 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">✓ Live from Week 5</div></div>
+        </div>
+
+        <!-- Withings -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">🩺</span> Withings</div>
+          <div class="gantt-cell" style="grid-column: 2 / 4;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Public API</div></div>
+          <div class="gantt-cell" style="grid-column: 4 / 5;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test</div></div>
+          <div class="gantt-cell" style="grid-column: 5 / 8;"><div class="gantt-bar bar-live" style="width:100%; left:0;">✓ Public Live</div></div>
+          <div class="gantt-cell" style="grid-column: 3 / 7;"><div class="gantt-bar bar-apply" style="width:100%; left:0; top: 26px; height: 18px; font-size: 9px;">Research API Application</div></div>
+          <div class="gantt-cell" style="grid-column: 7 / 9;"><div class="gantt-bar bar-integrate" style="width:100%; left:0; top: 26px; height: 18px; font-size: 9px;">Research Int.</div></div>
+          <div class="gantt-cell" style="grid-column: 9 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0; top: 26px; height: 18px; font-size: 9px;">Research Live</div></div>
+        </div>
+
+        <!-- Oura -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">💍</span> Oura Ring</div>
+          <div class="gantt-cell" style="grid-column: 2 / 4;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Build</div></div>
+          <div class="gantt-cell" style="grid-column: 4 / 5;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test</div></div>
+          <div class="gantt-cell" style="grid-column: 5 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">✓ Live from Week 5</div></div>
+        </div>
+
+        <!-- WHOOP -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">🏋️</span> WHOOP</div>
+          <div class="gantt-cell" style="grid-column: 3 / 5;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">Build</div></div>
+          <div class="gantt-cell" style="grid-column: 5 / 6;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test</div></div>
+          <div class="gantt-cell" style="grid-column: 6 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">✓ Live from Week 6</div></div>
+        </div>
+
+        <!-- Apple HealthKit -->
+        <div class="gantt-row">
+          <div class="gantt-row-label"><span class="row-icon">🍎</span> Apple HealthKit</div>
+          <div class="gantt-cell" style="grid-column: 2 / 6;"><div class="gantt-bar bar-integrate" style="width:100%; left:0;">iOS Native Build</div></div>
+          <div class="gantt-cell" style="grid-column: 6 / 8;"><div class="gantt-bar bar-test" style="width:100%; left:0;">Test + Review</div></div>
+          <div class="gantt-cell" style="grid-column: 8 / 14;"><div class="gantt-bar bar-live" style="width:100%; left:0;">✓ Live from Week 8</div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top: 16px; padding: 16px 20px; background: var(--surface2); border-radius: 10px; border-left: 3px solid var(--accent);">
+      <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+        <strong style="color: var(--text);">Parallelism note:</strong> Polar, Oura, WHOOP, Withings (public), and Apple HealthKit have zero application wait time — all five start integration in Week 1. Dexcom and Garmin applications are submitted Day 1 but have 4–8 week review periods. Vim is already active — focus on deepening structured data access. <strong style="color: var(--accent);">By Week 5, four integrations are live. By Week 8, six are live. Full stack by Week 12.</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: FIRST 30 DAYS -->
+  <section class="section">
+    <div class="section-num">03</div>
+    <h2>First 30 Days — Action Plan</h2>
+    <p class="section-desc">Concrete deliverables per week. Everything here runs in parallel. The goal: submit all applications Day 1, ship quick wins by Week 4.</p>
+
+    <div class="action-plan">
+
+      <div class="week-card">
+        <h3>📋 Week 1 <span style="font-size: 12px; color: var(--accent); font-weight: 400;">— Submit & Start</span></h3>
+        <div class="week-date">Days 1–7</div>
+        <ul>
+          <li><strong>Submit Dexcom application</strong> at developer.dexcom.com — include Serif's clinical use case, causal inference pitch, projected user base</li>
+          <li><strong>Submit Garmin Health API application</strong> — emphasize BBI data use for research-grade HRV analytics</li>
+          <li><strong>Begin Polar SDK integration</strong> — clone GitHub repo, set up BLE streaming test harness, start ECG R-peak detection pipeline</li>
+          <li><strong>Begin Oura API v2 integration</strong> — register app, implement OAuth flow, pull sleep + temperature data</li>
+          <li><strong>Register Withings developer account</strong> — start public API integration (BP, weight, body comp)</li>
+          <li><strong>Contact Withings research team</strong> for Advanced Research API access</li>
+          <li><strong>Vim: Scope lab result data model</strong> — define FHIR resources to ingest (Observation, DiagnosticReport), map to Serif's causal DAG input schema</li>
+        </ul>
+      </div>
+
+      <div class="week-card">
+        <h3>⚡ Week 2 <span style="font-size: 12px; color: var(--green); font-weight: 400;">— Build Core Integrations</span></h3>
+        <div class="week-date">Days 8–14</div>
+        <ul>
+          <li><strong>Polar SDK:</strong> ECG streaming working on test device. R-peak detection + QT interval extraction pipeline functional</li>
+          <li><strong>Oura API:</strong> OAuth complete, pulling historical sleep/temp/HRV data. Webhook configured for real-time updates</li>
+          <li><strong>Withings public API:</strong> OAuth + data pull working for BP, weight, body composition</li>
+          <li><strong>Begin WHOOP integration</strong> — register app, implement OAuth, pull recovery/strain/sleep</li>
+          <li><strong>Begin Apple HealthKit integration</strong> — set up iOS project, request HealthKit entitlement, implement granular permissions</li>
+          <li><strong>Vim: Begin lab result ingestion pipeline</strong> — FHIR Observation parser, value normalization, reference range handling</li>
+        </ul>
+      </div>
+
+      <div class="week-card">
+        <h3>🧪 Week 3 <span style="font-size: 12px; color: var(--yellow); font-weight: 400;">— Test & Validate</span></h3>
+        <div class="week-date">Days 15–21</div>
+        <ul>
+          <li><strong>Polar SDK:</strong> End-to-end test — ECG capture → R-peak → HRV metrics → causal DAG input node. Validate against reference HRV calculations</li>
+          <li><strong>Oura:</strong> Data quality validation — check temp deviation accuracy, HRV sample completeness, sleep stage alignment</li>
+          <li><strong>WHOOP:</strong> OAuth + data pull working. Strain metric integration with activity models</li>
+          <li><strong>Apple HealthKit:</strong> Background delivery working. Data sync architecture to server operational</li>
+          <li><strong>Withings:</strong> BP data flowing into model. Research API application follow-up</li>
+          <li><strong>Garmin:</strong> Follow up on application status. Prepare BBI spectral analysis pipeline (LF/HF, RMSSD, pNN50) in anticipation of approval</li>
+          <li><strong>Vim:</strong> Lab result ingestion live in staging. Medication list parser started</li>
+        </ul>
+      </div>
+
+      <div class="week-card">
+        <h3>🚀 Week 4 <span style="font-size: 12px; color: var(--accent); font-weight: 400;">— First Wins Live</span></h3>
+        <div class="week-date">Days 22–30</div>
+        <ul>
+          <li><strong>Polar SDK → LIVE.</strong> Raw ECG data flowing into Serif's causal engine. First research-grade cardiac integration</li>
+          <li><strong>Oura Ring → LIVE.</strong> Sleep + temperature data as causal DAG nodes. Temperature deviation tracking operational</li>
+          <li><strong>Withings public → LIVE.</strong> BP + body composition data flowing. Longitudinal BP tracking active</li>
+          <li><strong>WHOOP → QA complete, ship.</strong> Recovery + strain + sleep integrated</li>
+          <li><strong>Apple HealthKit:</strong> Submit for App Store review. Prepare for 2–4 week review process</li>
+          <li><strong>Dexcom:</strong> Application in review (4–8 week window). Build sandbox integration while waiting</li>
+          <li><strong>Garmin:</strong> License negotiation begins (if approved). Budget $25K annual license</li>
+          <li><strong>Vim:</strong> Lab results live in production. Medication list ingestion in staging</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: CRITICAL PATH -->
+  <section class="section">
+    <div class="section-num">04</div>
+    <h2>Critical Path Analysis</h2>
+    <p class="section-desc">What blocks what. What runs independently. Where the bottlenecks are.</p>
+
+    <div class="critical-path">
+
+      <div class="path-row">
+        <div class="path-icon blocker">🚧</div>
+        <div class="path-content">
+          <h4 style="color: var(--red);">Blocker: Dexcom Application Review (4–8 weeks)</h4>
+          <p>Longest single wait in the entire plan. Application must be submitted Day 1 to hit Week 12 live target. Dexcom is selective — the application needs to demonstrate clinical value, not just data aggregation. <strong>Mitigation:</strong> Build sandbox integration during wait. Prepare OAuth flow, data models, and CGM → causal DAG mapping so dev starts immediately on approval. If rejected, Abbott FreeStyle Libre / ADC program is fallback (even slower).</p>
+        </div>
+      </div>
+
+      <div class="path-row">
+        <div class="path-icon blocker">🚧</div>
+        <div class="path-content">
+          <h4 style="color: var(--red);">Blocker: Garmin License Negotiation (2–4 weeks after approval)</h4>
+          <p>Garmin requires a commercial license for BBI data. Two-stage gate: developer approval (2–4 weeks) then license negotiation (2–4 weeks). Budget approval for $10K–$50K/year needed. <strong>Mitigation:</strong> Start with evaluation environment (may be free). Prepare spectral HRV pipeline in advance. If license is too expensive, Polar BBI via H10 is a partial substitute (but narrower user base).</p>
+        </div>
+      </div>
+
+      <div class="path-row">
+        <div class="path-icon dependent">⚠️</div>
+        <div class="path-content">
+          <h4 style="color: var(--yellow);">Dependent: Vim Lab Results → Medication Lists → Diagnoses</h4>
+          <p>Sequential integration — lab results are highest value and should ship first. Medication list parsing depends on the FHIR data model established for labs. Diagnosis codes and clinical notes come last (lower priority, higher complexity with unstructured data). <strong>These are internal dependencies</strong> — Vim partnership is already active, no external blocker.</p>
+        </div>
+      </div>
+
+      <div class="path-row">
+        <div class="path-icon dependent">⚠️</div>
+        <div class="path-content">
+          <h4 style="color: var(--yellow);">Dependent: Apple HealthKit → App Store Review</h4>
+          <p>HealthKit integration requires iOS native code and App Store approval. Health apps get extra scrutiny — 2–4 weeks for review. Submit by Week 6 to be live by Week 8. <strong>HealthKit is a meta-aggregator</strong> — once live, it unlocks all 3rd-party data synced to Apple Health (including Oura, WHOOP, etc. without separate integration).</p>
+        </div>
+      </div>
+
+      <div class="path-row">
+        <div class="path-icon parallel">✅</div>
+        <div class="path-content">
+          <h4 style="color: var(--green);">Independent: Polar SDK, Oura API, WHOOP API, Withings Public API</h4>
+          <p>All four have <strong>zero application wait time</strong> — free, open developer access. All four can begin integration on Day 1 and be live by Week 4–5. These are your quick wins that demonstrate multi-device capability while you wait for Dexcom and Garmin approvals. Assign one developer per two integrations (Polar+Oura, WHOOP+Withings).</p>
+        </div>
+      </div>
+
+      <div class="path-row">
+        <div class="path-icon parallel">✅</div>
+        <div class="path-content">
+          <h4 style="color: var(--green);">Independent: Vim EHR (already active)</h4>
+          <p>Vim partnership is already in place. Lab result integration runs on a completely independent track from all wearable integrations. Different developer, different codebase, different data pipeline. <strong>This is the most important track</strong> — the EHR backbone that makes all wearable data 10x more valuable.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Critical path diagram -->
+    <div style="margin-top: 32px; padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Dependency Map</div>
+      <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); line-height: 1.8; overflow-x: auto;">
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  DAY 1: Submit all applications simultaneously                     │
+  └──┬──────────┬──────────┬──────────┬──────────┬──────────┬─────────┘
+     │          │          │          │          │          │
+     ▼          ▼          ▼          ▼          ▼          ▼
+  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────────┐
+  │Dexcom│  │Garmin│  │Polar │  │ Oura │  │WHOOP │  │ Withings │
+  │ WAIT │  │ WAIT │  │ BUILD│  │ BUILD│  │ BUILD│  │  BUILD   │
+  │4-8 wk│  │2-4 wk│  │ 2 wk│  │1-2 wk│  │1-2 wk│  │  2 wk   │
+  └──┬───┘  └──┬───┘  └──┬───┘  └──┬───┘  └──┬───┘  └────┬─────┘
+     │         │         │         │         │            │
+     │         ▼         ▼ LIVE    ▼ LIVE    ▼ LIVE       ▼ LIVE
+     │      ┌──────┐    Wk 5      Wk 5      Wk 6        Wk 5
+     │      │License│
+     │      │ Nego │     ───────── PARALLEL TRACK ─────────
+     │      │2-4 wk│
+     │      └──┬───┘    ┌──────────────────────────────────┐
+     │         │        │  Vim EHR: Labs → Meds → Dx/Notes │
+     ▼         ▼        │  Wk 1-4    Wk 5-7    Wk 8-10    │
+  ┌──────┐  ┌──────┐    │        → Testing Wk 10-11       │
+  │BUILD │  │BUILD │    │        → LIVE Wk 12              │
+  │2-3 wk│  │3-4 wk│    └──────────────────────────────────┘
+  └──┬───┘  └──┬───┘
+     │         │        ┌──────────────────────────────────┐
+     ▼         ▼        │  Apple HealthKit: Build Wk 1-5   │
+  LIVE Wk12 LIVE Wk12   │  → Review Wk 6-7 → LIVE Wk 8   │
+                        └──────────────────────────────────┘
+      </pre>
+    </div>
+  </section>
+
+  <!-- SECTION 5: COST SUMMARY -->
+  <section class="section">
+    <div class="section-num">05</div>
+    <h2>Cost Summary</h2>
+    <p class="section-desc">Total first-year integration cost: remarkably low. Five of eight sources are free.</p>
+
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--border);">
+            <th style="text-align: left; padding: 12px 16px; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Source</th>
+            <th style="text-align: left; padding: 12px 16px; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Upfront</th>
+            <th style="text-align: left; padding: 12px 16px; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Annual</th>
+            <th style="text-align: left; padding: 12px 16px; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">Vim / FHIR</td>
+            <td style="padding: 12px 16px; color: var(--text-muted);">—</td>
+            <td style="padding: 12px 16px;">Per-provider fee</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-partner" style="font-size: 10px;">Partnership</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">Dexcom CGM</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-free" style="font-size: 10px;">Free</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">Garmin Health</td>
+            <td style="padding: 12px 16px; color: var(--text-muted);">—</td>
+            <td style="padding: 12px 16px; color: var(--orange);">$10K–$50K</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-paid" style="font-size: 10px;">License</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">Polar SDK</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-free" style="font-size: 10px;">Free</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">Withings</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0 (public) / TBD (research)</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-free" style="font-size: 10px;">Free</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">Oura Ring</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-free" style="font-size: 10px;">Free</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px 16px;">WHOOP</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px; color: var(--green);">$0</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-free" style="font-size: 10px;">Free</span></td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px;">Apple HealthKit</td>
+            <td style="padding: 12px 16px; color: var(--text-muted);">$99</td>
+            <td style="padding: 12px 16px; color: var(--text-muted);">$99</td>
+            <td style="padding: 12px 16px;"><span class="tag tag-free" style="font-size: 10px;">Dev Program</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="border-top: 2px solid var(--border);">
+            <td style="padding: 12px 16px; font-weight: 700;">TOTAL (Year 1)</td>
+            <td style="padding: 12px 16px; font-weight: 700; color: var(--accent);" colspan="3">$99 upfront + $10K–$50K Garmin license + Vim per-provider fee</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>serif data moat playbook · confidential · feb 2026</p>
+  </footer>
+
+</div>
+
+<script>
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+// Open first card by default
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('card-vim').classList.add('open');
+});
+</script>
+
+</body>
+</html>
