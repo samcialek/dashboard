@@ -12,17 +12,17 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding: 24px 32px;
-    gap: 6px;
+    padding: 16px 28px 12px;
   }
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 16px;
+    padding-bottom: 10px;
     border-bottom: 1px solid rgba(137,204,240,0.1);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
   }
   .header-left {
     display: flex;
@@ -52,51 +52,10 @@
     font-weight: 600;
   }
 
-  .row {
+  .chart-container {
     flex: 1;
-    display: flex;
-    align-items: stretch;
-    gap: 0;
     position: relative;
     min-height: 0;
-  }
-
-  .row-label {
-    width: 130px;
-    min-width: 130px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-right: 16px;
-    border-right: 1px solid rgba(255,255,255,0.06);
-  }
-  .signal-name {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .signal-value {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1;
-  }
-  .signal-unit {
-    font-size: 10px;
-    color: rgba(255,255,255,0.3);
-    margin-top: 3px;
-  }
-  .signal-cadence {
-    font-size: 8px;
-    color: rgba(255,255,255,0.15);
-    margin-top: 6px;
-    letter-spacing: 0.5px;
-  }
-
-  .chart-area {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
   }
 
   canvas {
@@ -105,28 +64,70 @@
     display: block;
   }
 
-  .time-axis {
-    height: 24px;
+  /* Floating labels */
+  .signal-labels {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 130px;
     display: flex;
-    align-items: center;
-    padding-left: 130px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    margin-top: 6px;
+    flex-direction: column;
+    pointer-events: none;
+    z-index: 5;
   }
-  .time-axis span {
-    font-size: 9px;
-    color: rgba(255,255,255,0.2);
+  .label-zone {
     flex: 1;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 4px;
+  }
+  .signal-name {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .signal-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .signal-unit {
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+  }
+  .signal-cadence {
+    font-size: 8px;
+    color: rgba(255,255,255,0.15);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .ecg-label .signal-name, .ecg-label .signal-value { color: #5BA8D9; }
+  .hrv-label .signal-name, .hrv-label .signal-value { color: #89CCF0; }
+  .glucose-label .signal-name, .glucose-label .signal-value { color: #D4A84B; }
+
+  /* Divider lines between zones */
+  .zone-divider {
+    position: absolute;
+    left: 130px;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.04);
+    z-index: 2;
   }
 
   .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 10px;
+    padding-top: 8px;
     border-top: 1px solid rgba(137,204,240,0.08);
     margin-top: 6px;
+    flex-shrink: 0;
   }
   .footer-left {
     font-size: 9px;
@@ -140,11 +141,6 @@
     text-transform: uppercase;
     color: rgba(137,204,240,0.3);
   }
-
-  /* Serif color palette */
-  .ecg .signal-name, .ecg .signal-value { color: #5BA8D9; }
-  .hrv .signal-name, .hrv .signal-value { color: #89CCF0; }
-  .glucose .signal-name, .glucose .signal-value { color: #D4A84B; }
 </style>
 </head>
 <body>
@@ -161,38 +157,30 @@
     </div>
   </div>
 
-  <div class="row ecg">
-    <div class="row-label">
-      <div class="signal-name">ECG Lead II</div>
-      <div class="signal-value">72</div>
-      <div class="signal-unit">bpm</div>
-      <div class="signal-cadence">250 Hz continuous</div>
+  <div class="chart-container">
+    <canvas id="main-canvas"></canvas>
+    <div class="signal-labels">
+      <div class="label-zone ecg-label">
+        <div class="signal-name">ECG Lead II</div>
+        <div class="signal-value">72</div>
+        <div class="signal-unit">bpm</div>
+        <div class="signal-cadence">250 Hz continuous</div>
+      </div>
+      <div class="label-zone hrv-label">
+        <div class="signal-name">HRV RMSSD</div>
+        <div class="signal-value">48</div>
+        <div class="signal-unit">ms</div>
+        <div class="signal-cadence">5-min epochs</div>
+      </div>
+      <div class="label-zone glucose-label">
+        <div class="signal-name">CGM Glucose</div>
+        <div class="signal-value">94</div>
+        <div class="signal-unit">mg/dL</div>
+        <div class="signal-cadence">5-min intervals</div>
+      </div>
     </div>
-    <div class="chart-area"><canvas id="c-ecg"></canvas></div>
-  </div>
-
-  <div class="row hrv">
-    <div class="row-label">
-      <div class="signal-name">HRV RMSSD</div>
-      <div class="signal-value">48</div>
-      <div class="signal-unit">ms</div>
-      <div class="signal-cadence">5-min epochs</div>
-    </div>
-    <div class="chart-area"><canvas id="c-hrv"></canvas></div>
-  </div>
-
-  <div class="row glucose">
-    <div class="row-label">
-      <div class="signal-name">CGM Glucose</div>
-      <div class="signal-value">94</div>
-      <div class="signal-unit">mg/dL</div>
-      <div class="signal-cadence">5-min intervals</div>
-    </div>
-    <div class="chart-area"><canvas id="c-glucose"></canvas></div>
-  </div>
-
-  <div class="time-axis">
-    <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>24:00</span>
+    <div class="zone-divider" style="top:33.33%"></div>
+    <div class="zone-divider" style="top:66.66%"></div>
   </div>
 
   <div class="footer">
@@ -210,8 +198,8 @@ function seededRandom(seed) {
   };
 }
 
-function drawSignal(canvasId, color, opts) {
-  const canvas = document.getElementById(canvasId);
+function render() {
+  const canvas = document.getElementById('main-canvas');
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
@@ -220,22 +208,95 @@ function drawSignal(canvasId, color, opts) {
   ctx.scale(dpr, dpr);
   const w = rect.width;
   const h = rect.height;
+  const leftPad = 140;
+  const chartW = w - leftPad;
 
-  // Grid
-  ctx.strokeStyle = 'rgba(137,204,240,0.04)';
+  // Zone heights — each signal gets 1/3 of total height
+  const zoneH = h / 3;
+
+  // Grid lines (vertical — time)
+  ctx.strokeStyle = 'rgba(137,204,240,0.03)';
   ctx.lineWidth = 0.5;
-  for (let x = 0; x < w; x += w/24) {
+  for (let i = 0; i <= 24; i++) {
+    const x = leftPad + (i / 24) * chartW;
     ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
   }
-  ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
 
-  const rng = seededRandom(opts.seed);
-  const points = opts.points || 500;
-  const data = [];
+  // Zone dividers
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(leftPad, zoneH); ctx.lineTo(w, zoneH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(leftPad, zoneH * 2); ctx.lineTo(w, zoneH * 2); ctx.stroke();
 
-  if (opts.type === 'ecg') {
-    for (let i = 0; i < points; i++) {
-      const t = (i / points) * 40;
+  // --- DRAW EACH SIGNAL IN ITS ZONE ---
+
+  function drawInZone(zoneIndex, color, generateData) {
+    const yTop = zoneIndex * zoneH;
+    const yMid = yTop + zoneH / 2;
+    const data = generateData();
+
+    // Baseline
+    ctx.strokeStyle = color.replace('1)', '0.08)');
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(leftPad, yMid); ctx.lineTo(w, yMid); ctx.stroke();
+
+    // Fill
+    ctx.beginPath();
+    for (let i = 0; i < data.length; i++) {
+      const x = leftPad + (i / data.length) * chartW;
+      const y = yMid - data[i] * zoneH * 0.38;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    const grad = ctx.createLinearGradient(0, yTop, 0, yTop + zoneH);
+    grad.addColorStop(0, color.replace('1)', '0.05)'));
+    grad.addColorStop(0.5, 'transparent');
+    grad.addColorStop(1, color.replace('1)', '0.05)'));
+    ctx.lineTo(leftPad + chartW, yMid);
+    ctx.lineTo(leftPad, yMid);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    for (let i = 0; i < data.length; i++) {
+      const x = leftPad + (i / data.length) * chartW;
+      const y = yMid - data[i] * zoneH * 0.38;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.8;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 6;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Sync dot at 60%
+    const syncI = Math.floor(data.length * 0.6);
+    const syncX = leftPad + 0.6 * chartW;
+    const syncY = yMid - data[syncI] * zoneH * 0.38;
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(syncX, syncY, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // Sync line across all zones
+  const syncX = leftPad + 0.6 * chartW;
+  ctx.strokeStyle = 'rgba(91,168,217,0.2)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath(); ctx.moveTo(syncX, 0); ctx.lineTo(syncX, h); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ECG (zone 0)
+  drawInZone(0, 'rgba(91, 168, 217, 1)', () => {
+    const rng = seededRandom(42);
+    const data = [];
+    for (let i = 0; i < 2000; i++) {
+      const t = (i / 2000) * 40;
       const phase = t % 1;
       let y = 0;
       if (phase > 0.06 && phase < 0.14) y = 0.08 * Math.sin((phase-0.06)/0.08 * Math.PI);
@@ -245,89 +306,55 @@ function drawSignal(canvasId, color, opts) {
       y += (rng() - 0.5) * 0.02;
       data.push(y);
     }
-  } else if (opts.type === 'smooth') {
-    let val = opts.base;
-    for (let i = 0; i < points; i++) {
-      val += (rng() - 0.5) * opts.volatility;
-      val += (opts.base - val) * 0.02;
-      const t = i / points;
-      if (opts.pattern === 'sleep') {
-        val += Math.sin(t * Math.PI * 2 - 1) * opts.amplitude * 0.3;
-      } else if (opts.pattern === 'meals') {
-        for (const meal of [0.3, 0.5, 0.75]) {
-          const dist = Math.abs(t - meal);
-          if (dist < 0.05) val += opts.amplitude * Math.exp(-dist*dist*2000) * 0.8;
-        }
-      }
-      data.push((val - opts.base) / opts.range);
+    return data;
+  });
+
+  // HRV (zone 1)
+  drawInZone(1, 'rgba(137, 204, 240, 1)', () => {
+    const rng = seededRandom(73);
+    const data = [];
+    let val = 45;
+    for (let i = 0; i < 288; i++) {
+      val += (rng() - 0.5) * 2;
+      val += (45 - val) * 0.02;
+      const t = i / 288;
+      val += Math.sin(t * Math.PI * 2 - 1) * 15 * 0.3;
+      data.push((val - 45) / 30);
     }
+    return data;
+  });
+
+  // Glucose (zone 2)
+  drawInZone(2, 'rgba(212, 168, 75, 1)', () => {
+    const rng = seededRandom(128);
+    const data = [];
+    let val = 95;
+    for (let i = 0; i < 288; i++) {
+      val += (rng() - 0.5) * 3;
+      val += (95 - val) * 0.02;
+      const t = i / 288;
+      for (const meal of [0.3, 0.5, 0.75]) {
+        const dist = Math.abs(t - meal);
+        if (dist < 0.05) val += 30 * Math.exp(-dist*dist*2000) * 0.8;
+      }
+      data.push((val - 95) / 50);
+    }
+    return data;
+  });
+
+  // Time labels
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '9px "SF Mono", "Fira Code", monospace';
+  ctx.textAlign = 'center';
+  const times = ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'];
+  for (let i = 0; i < times.length; i++) {
+    const x = leftPad + (i / (times.length - 1)) * chartW;
+    ctx.fillText(times[i], x, h - 2);
   }
-
-  // Filled area
-  ctx.beginPath();
-  ctx.moveTo(0, h/2);
-  for (let i = 0; i < data.length; i++) {
-    const x = (i / data.length) * w;
-    const y = h/2 - data[i] * h * 0.4;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
-  const gradient = ctx.createLinearGradient(0, 0, 0, h);
-  gradient.addColorStop(0, color.replace(')', ',0.06)').replace('rgb', 'rgba'));
-  gradient.addColorStop(0.5, 'transparent');
-  gradient.addColorStop(1, color.replace(')', ',0.06)').replace('rgb', 'rgba'));
-  ctx.lineTo(w, h/2);
-  ctx.lineTo(0, h/2);
-  ctx.fillStyle = gradient;
-  ctx.fill();
-
-  // Signal line
-  ctx.beginPath();
-  for (let i = 0; i < data.length; i++) {
-    const x = (i / data.length) * w;
-    const y = h/2 - data[i] * h * 0.4;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.8;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 6;
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  // Sync marker at ~60%
-  const syncX = w * 0.6;
-  const syncI = Math.floor(data.length * 0.6);
-  const syncY = h/2 - data[syncI] * h * 0.4;
-  
-  ctx.strokeStyle = 'rgba(91,168,217,0.25)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([3, 3]);
-  ctx.beginPath();
-  ctx.moveTo(syncX, 0);
-  ctx.lineTo(syncX, h);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.fillStyle = '#5BA8D9';
-  ctx.shadowColor = '#5BA8D9';
-  ctx.shadowBlur = 8;
-  ctx.beginPath();
-  ctx.arc(syncX, syncY, 3.5, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.shadowBlur = 0;
-}
-
-function render() {
-  drawSignal('c-ecg', 'rgb(91, 168, 217)', { type: 'ecg', seed: 42, points: 2000 });
-  drawSignal('c-hrv', 'rgb(137, 204, 240)', { type: 'smooth', seed: 73, points: 288, base: 45, volatility: 2, range: 30, amplitude: 15, pattern: 'sleep' });
-  drawSignal('c-glucose', 'rgb(212, 168, 75)', { type: 'smooth', seed: 128, points: 288, base: 95, volatility: 3, range: 50, amplitude: 30, pattern: 'meals' });
 }
 
 render();
 window.addEventListener('resize', render);
-
 document.addEventListener('click', () => {
   if (!document.fullscreenElement) document.documentElement.requestFullscreen();
 });
