@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serif — Signal Options</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0a; font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace; }
+
+  .tabs {
+    position: fixed;
+    top: 12px;
+    right: 28px;
+    z-index: 100;
+    display: flex;
+    gap: 2px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .tab {
+    padding: 6px 14px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-family: inherit;
+    border: none;
+    background: none;
+  }
+  .tab:hover { color: rgba(255,255,255,0.6); }
+  .tab.active {
+    background: rgba(91,168,217,0.15);
+    color: #5BA8D9;
+  }
+  .tab-hint {
+    position: fixed;
+    top: 44px;
+    right: 28px;
+    z-index: 100;
+    font-size: 9px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.5px;
+    text-align: right;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 16px 28px 12px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(137,204,240,0.1);
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+  .header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .logo {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(137,204,240,0.4);
+  }
+  .patient-id {
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+  }
+  .header-right {
+    display: flex;
+    gap: 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    margin-right: 220px;
+  }
+  .header-right .val {
+    color: rgba(137,204,240,0.6);
+    font-weight: 600;
+  }
+
+  .chart-container {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .signal-labels {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .label-zone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 4px;
+  }
+  .signal-name {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .signal-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .signal-unit {
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+  }
+  .signal-cadence {
+    font-size: 8px;
+    color: rgba(255,255,255,0.15);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .top-label .signal-name, .top-label .signal-value { color: #5BA8D9; }
+  .hrv-label .signal-name, .hrv-label .signal-value { color: #89CCF0; }
+  .glucose-label .signal-name, .glucose-label .signal-value { color: #D4A84B; }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(137,204,240,0.08);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .footer-left {
+    font-size: 9px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.5px;
+  }
+  .footer-right {
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(137,204,240,0.3);
+  }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(0)">A: Heart Rate</button>
+  <button class="tab" onclick="switchTab(1)">B: Sleep</button>
+  <button class="tab" onclick="switchTab(2)">C: Resp + SpO2</button>
+</div>
+<div class="tab-hint" id="tab-hint">Continuous BPM from optical PPG sensor. Circadian rhythm, exercise spikes, recovery dips.</div>
+
+<div class="dashboard">
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">serif</span>
+      <span class="patient-id">patient 0042 · integration view · 24h window</span>
+    </div>
+    <div class="header-right">
+      <span>signals: <span class="val">3</span></span>
+      <span>cadences: <span class="val">3</span></span>
+      <span>sync: <span class="val" style="color:#5BA8D9;">active</span></span>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="main-canvas"></canvas>
+    <div class="signal-labels">
+      <div class="label-zone top-label" id="top-label">
+        <div class="signal-name" id="top-name">Heart Rate</div>
+        <div class="signal-value" id="top-value">72</div>
+        <div class="signal-unit" id="top-unit">bpm</div>
+        <div class="signal-cadence" id="top-cadence">1-sec continuous PPG</div>
+      </div>
+      <div class="label-zone hrv-label">
+        <div class="signal-name">HRV RMSSD</div>
+        <div class="signal-value">48</div>
+        <div class="signal-unit">ms</div>
+        <div class="signal-cadence">5-min epochs</div>
+      </div>
+      <div class="label-zone glucose-label">
+        <div class="signal-name">CGM Glucose</div>
+        <div class="signal-value">94</div>
+        <div class="signal-unit">mg/dL</div>
+        <div class="signal-cadence">5-min intervals</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">multi-cadence temporal alignment · causal inference engine · wearable + clinical signal fusion</div>
+    <div class="footer-right">serif</div>
+  </div>
+</div>
+
+<script>
+let currentTab = 0;
+const hints = [
+  'Continuous BPM from optical PPG sensor. Circadian rhythm, exercise spikes, recovery dips.',
+  'Sleep architecture hypnogram. Stepped stages: Wake, REM, Light, Deep. Classic polysomnography style.',
+  'Dual overlay: respiratory rate (breaths/min) + SpO2 (%). Two signals, one axis, different scales.'
+];
+const topConfigs = [
+  { name: 'Heart Rate', value: '72', unit: 'bpm', cadence: '1-sec continuous PPG' },
+  { name: 'Sleep Stage', value: 'REM', unit: 'stage', cadence: 'polysomnography · 30s epochs' },
+  { name: 'Resp / SpO2', value: '15', unit: 'br/min · 97%', cadence: 'continuous dual-stream' }
+];
+
+function switchTab(idx) {
+  currentTab = idx;
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.getElementById('tab-hint').textContent = hints[idx];
+  const cfg = topConfigs[idx];
+  document.getElementById('top-name').textContent = cfg.name;
+  document.getElementById('top-value').textContent = cfg.value;
+  document.getElementById('top-unit').textContent = cfg.unit;
+  document.getElementById('top-cadence').textContent = cfg.cadence;
+  render();
+}
+
+function seededRandom(seed) {
+  let s = seed;
+  return function() {
+    s = (s * 16807 + 0) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+function render() {
+  const canvas = document.getElementById('main-canvas');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const w = rect.width;
+  const h = rect.height;
+  const leftPad = 150;
+  const chartW = w - leftPad;
+  const zoneH = h / 3;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Vertical grid (time)
+  ctx.strokeStyle = 'rgba(137,204,240,0.03)';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 24; i++) {
+    const x = leftPad + (i / 24) * chartW;
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+  }
+
+  // Zone dividers
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(leftPad, zoneH); ctx.lineTo(w, zoneH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(leftPad, zoneH * 2); ctx.lineTo(w, zoneH * 2); ctx.stroke();
+
+  // Sync line at 60%
+  const syncX = leftPad + 0.6 * chartW;
+  ctx.strokeStyle = 'rgba(91,168,217,0.15)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath(); ctx.moveTo(syncX, 0); ctx.lineTo(syncX, h); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // --- TOP SIGNAL (varies by tab) ---
+  if (currentTab === 0) drawHeartRate(ctx, leftPad, chartW, zoneH);
+  else if (currentTab === 1) drawSleep(ctx, leftPad, chartW, zoneH);
+  else drawRespSpO2(ctx, leftPad, chartW, zoneH);
+
+  // --- HRV (zone 1, always) ---
+  drawSignal(ctx, 1, 'rgba(137, 204, 240, 1)', leftPad, chartW, zoneH, () => {
+    const rng = seededRandom(73);
+    const data = [];
+    let val = 45;
+    for (let i = 0; i < 288; i++) {
+      val += (rng() - 0.5) * 2;
+      val += (45 - val) * 0.02;
+      const t = i / 288;
+      val += Math.sin(t * Math.PI * 2 - 1) * 15 * 0.3;
+      data.push((val - 45) / 30);
+    }
+    return data;
+  });
+
+  // --- GLUCOSE (zone 2, always) ---
+  drawSignal(ctx, 2, 'rgba(212, 168, 75, 1)', leftPad, chartW, zoneH, () => {
+    const rng = seededRandom(128);
+    const data = [];
+    let val = 95;
+    for (let i = 0; i < 288; i++) {
+      val += (rng() - 0.5) * 3;
+      val += (95 - val) * 0.02;
+      const t = i / 288;
+      for (const meal of [0.3, 0.5, 0.75]) {
+        const dist = Math.abs(t - meal);
+        if (dist < 0.05) val += 30 * Math.exp(-dist * dist * 2000) * 0.8;
+      }
+      data.push((val - 95) / 50);
+    }
+    return data;
+  });
+
+  // Time labels
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '9px "SF Mono", "Fira Code", monospace';
+  ctx.textAlign = 'center';
+  const times = ['00:00','04:00','08:00','12:00','16:00','20:00','24:00'];
+  for (let i = 0; i < times.length; i++) {
+    const x = leftPad + (i / (times.length - 1)) * chartW;
+    ctx.fillText(times[i], x, h - 2);
+  }
+}
+
+function drawSignal(ctx, zoneIndex, color, leftPad, chartW, zoneH, generateData) {
+  const yTop = zoneIndex * zoneH;
+  const yMid = yTop + zoneH / 2;
+  const data = generateData();
+
+  // Baseline
+  ctx.strokeStyle = color.replace('1)', '0.06)');
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(leftPad, yMid); ctx.lineTo(leftPad + chartW, yMid); ctx.stroke();
+
+  // Fill gradient
+  ctx.beginPath();
+  for (let i = 0; i < data.length; i++) {
+    const x = leftPad + (i / data.length) * chartW;
+    const y = yMid - data[i] * zoneH * 0.42;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  const grad = ctx.createLinearGradient(0, yTop, 0, yTop + zoneH);
+  grad.addColorStop(0, color.replace('1)', '0.06)'));
+  grad.addColorStop(0.5, 'transparent');
+  grad.addColorStop(1, color.replace('1)', '0.06)'));
+  ctx.lineTo(leftPad + chartW, yMid);
+  ctx.lineTo(leftPad, yMid);
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  for (let i = 0; i < data.length; i++) {
+    const x = leftPad + (i / data.length) * chartW;
+    const y = yMid - data[i] * zoneH * 0.42;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.6;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 5;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Sync dot
+  const syncI = Math.floor(data.length * 0.6);
+  const syncX = leftPad + 0.6 * chartW;
+  const syncY = yMid - data[syncI] * zoneH * 0.42;
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 8;
+  ctx.beginPath(); ctx.arc(syncX, syncY, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+// --- TAB A: Heart Rate ---
+function drawHeartRate(ctx, leftPad, chartW, zoneH) {
+  const color = 'rgba(91, 168, 217, 1)';
+  const yTop = 0;
+  const yMid = zoneH / 2;
+  const rng = seededRandom(55);
+  const data = [];
+  let hr = 62;
+
+  for (let i = 0; i < 1440; i++) {
+    const t = i / 1440; // fraction of day
+    // Circadian base: low at night, rises in morning
+    const circadian = -8 * Math.cos(t * Math.PI * 2 - 1.2);
+    // Exercise spike around 16:00 (t=0.67)
+    const exercise = 40 * Math.exp(-Math.pow((t - 0.67) / 0.02, 2));
+    // Meals
+    const meal1 = 8 * Math.exp(-Math.pow((t - 0.33) / 0.015, 2));
+    const meal2 = 6 * Math.exp(-Math.pow((t - 0.52) / 0.015, 2));
+    // Noise
+    hr += (rng() - 0.5) * 1.5;
+    hr += (62 + circadian - hr) * 0.05;
+    const val = hr + exercise + meal1 + meal2;
+    data.push(val);
+  }
+
+  // Normalize to [-1, 1] range for zone
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min;
+
+  // Baseline
+  ctx.strokeStyle = color.replace('1)', '0.06)');
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(leftPad, yMid); ctx.lineTo(leftPad + chartW, yMid); ctx.stroke();
+
+  // Fill
+  ctx.beginPath();
+  for (let i = 0; i < data.length; i++) {
+    const x = leftPad + (i / data.length) * chartW;
+    const norm = ((data[i] - min) / range - 0.5) * 2;
+    const y = yMid - norm * zoneH * 0.42;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  const grad = ctx.createLinearGradient(0, yTop, 0, zoneH);
+  grad.addColorStop(0, color.replace('1)', '0.06)'));
+  grad.addColorStop(0.5, 'transparent');
+  grad.addColorStop(1, color.replace('1)', '0.06)'));
+  ctx.lineTo(leftPad + chartW, yMid);
+  ctx.lineTo(leftPad, yMid);
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  for (let i = 0; i < data.length; i++) {
+    const x = leftPad + (i / data.length) * chartW;
+    const norm = ((data[i] - min) / range - 0.5) * 2;
+    const y = yMid - norm * zoneH * 0.42;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.6;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 5;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Sync dot
+  const syncI = Math.floor(data.length * 0.6);
+  const syncX = leftPad + 0.6 * chartW;
+  const norm = ((data[syncI] - min) / range - 0.5) * 2;
+  const syncY = yMid - norm * zoneH * 0.42;
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 8;
+  ctx.beginPath(); ctx.arc(syncX, syncY, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // HR range annotations
+  ctx.fillStyle = 'rgba(91,168,217,0.15)';
+  ctx.font = '8px "SF Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.fillText(Math.round(max) + ' bpm', leftPad + chartW - 4, yTop + 14);
+  ctx.fillText(Math.round(min) + ' bpm', leftPad + chartW - 4, zoneH - 6);
+}
+
+// --- TAB B: Sleep Hypnogram ---
+function drawSleep(ctx, leftPad, chartW, zoneH) {
+  const color = 'rgba(91, 168, 217, 1)';
+  const yTop = 0;
+  const rng = seededRandom(91);
+
+  // Sleep stages: 0=Wake, 1=REM, 2=Light, 3=Deep
+  // Standard 90-min cycles, ~7h sleep (23:00-06:00)
+  const stages = [];
+  const stageColors = [
+    'rgba(91,168,217,0.3)',   // Wake - faint
+    'rgba(147,112,219,0.9)',  // REM - purple
+    'rgba(91,168,217,0.7)',   // Light - blue
+    'rgba(91,168,217,1)',     // Deep - bright blue
+  ];
+  const stageNames = ['WAKE', 'REM', 'LIGHT', 'DEEP'];
+
+  // Generate realistic sleep architecture (288 5-min epochs = 24h)
+  for (let i = 0; i < 288; i++) {
+    const hour = (i / 288) * 24;
+    if (hour < 23 && hour >= 6) {
+      stages.push(0); // awake during day
+    } else {
+      // Sleep period: cycles
+      const sleepHour = hour >= 23 ? hour - 23 : hour + 1;
+      const cyclePos = (sleepHour % 1.5) / 1.5;
+      const cycleNum = Math.floor(sleepHour / 1.5);
+
+      if (rng() < 0.03) { stages.push(0); } // brief wake
+      else if (cyclePos < 0.15) { stages.push(2); } // falling into light
+      else if (cyclePos < 0.45) { stages.push(cycleNum < 3 ? 3 : 2); } // deep early, light later
+      else if (cyclePos < 0.7) { stages.push(2); } // light
+      else { stages.push(cycleNum >= 2 ? 1 : 2); } // REM increases in later cycles
+    }
+  }
+
+  const barW = chartW / stages.length;
+  const stageH = zoneH * 0.2; // height per stage level
+  const topPad = zoneH * 0.08;
+
+  // Draw stage level backgrounds
+  for (let s = 0; s < 4; s++) {
+    const y = topPad + s * stageH;
+    ctx.fillStyle = 'rgba(255,255,255,0.015)';
+    if (s % 2 === 1) ctx.fillRect(leftPad, y, chartW, stageH);
+
+    // Stage labels on right
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    ctx.font = '7px "SF Mono", monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(stageNames[s], leftPad + chartW - 4, y + stageH / 2 + 3);
+  }
+
+  // Draw hypnogram as filled blocks
+  for (let i = 0; i < stages.length; i++) {
+    const x = leftPad + (i / stages.length) * chartW;
+    const stage = stages[i];
+    const y = topPad + stage * stageH;
+
+    if (stage > 0) { // Don't draw wake blocks
+      ctx.fillStyle = stageColors[stage];
+      ctx.fillRect(x, y, barW + 0.5, stageH);
+
+      // Glow for deep sleep
+      if (stage === 3) {
+        ctx.fillStyle = 'rgba(91,168,217,0.08)';
+        ctx.fillRect(x, y - stageH, barW + 0.5, stageH * 3);
+      }
+    }
+  }
+
+  // Connecting line (stepped)
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 0.8;
+  for (let i = 0; i < stages.length; i++) {
+    const x = leftPad + (i / stages.length) * chartW;
+    const y = topPad + stages[i] * stageH + stageH / 2;
+    if (i === 0) ctx.moveTo(x, y);
+    else {
+      const prevY = topPad + stages[i-1] * stageH + stageH / 2;
+      ctx.lineTo(x, prevY);
+      ctx.lineTo(x, y);
+    }
+  }
+  ctx.stroke();
+
+  // Sleep duration annotation
+  ctx.fillStyle = 'rgba(91,168,217,0.2)';
+  ctx.font = '8px "SF Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('7h 12m total · 4 cycles', leftPad + 8, zoneH - 8);
+}
+
+// --- TAB C: Respiratory Rate + SpO2 ---
+function drawRespSpO2(ctx, leftPad, chartW, zoneH) {
+  const respColor = 'rgba(91, 168, 217, 1)';
+  const spo2Color = 'rgba(232, 93, 117, 0.8)';
+  const yTop = 0;
+  const yMid = zoneH / 2;
+  const rng = seededRandom(200);
+
+  // Respiratory rate: 12-20 br/min, slower during sleep
+  const respData = [];
+  let resp = 15;
+  for (let i = 0; i < 288; i++) {
+    const t = i / 288;
+    const sleepDip = (t > 0.96 || t < 0.25) ? -3 : 0;
+    const exerciseSpike = 8 * Math.exp(-Math.pow((t - 0.67) / 0.025, 2));
+    resp += (rng() - 0.5) * 0.8;
+    resp += (15 + sleepDip - resp) * 0.04;
+    respData.push(resp + exerciseSpike);
+  }
+
+  // SpO2: 95-100%, dips during sleep (apnea events)
+  const spo2Data = [];
+  let spo2 = 97.5;
+  for (let i = 0; i < 288; i++) {
+    const t = i / 288;
+    spo2 += (rng() - 0.5) * 0.3;
+    spo2 += (97.5 - spo2) * 0.05;
+    // Sleep apnea dips
+    if ((t > 0.02 && t < 0.04) || (t > 0.12 && t < 0.14) || (t > 0.18 && t < 0.19)) {
+      spo2 -= 1.5 * Math.exp(-Math.pow((t - (t > 0.15 ? 0.185 : t > 0.1 ? 0.13 : 0.03)) / 0.008, 2));
+    }
+    spo2Data.push(Math.min(100, Math.max(93, spo2)));
+  }
+
+  // Normalize resp
+  const respMin = Math.min(...respData);
+  const respMax = Math.max(...respData);
+  const respRange = respMax - respMin;
+
+  // Normalize SpO2
+  const spo2Min = Math.min(...spo2Data);
+  const spo2Max = Math.max(...spo2Data);
+  const spo2Range = spo2Max - spo2Min || 1;
+
+  // Resp baseline
+  ctx.strokeStyle = respColor.replace('1)', '0.06)');
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(leftPad, yMid); ctx.lineTo(leftPad + chartW, yMid); ctx.stroke();
+
+  // SpO2 fill (background band)
+  ctx.beginPath();
+  for (let i = 0; i < spo2Data.length; i++) {
+    const x = leftPad + (i / spo2Data.length) * chartW;
+    const norm = ((spo2Data[i] - spo2Min) / spo2Range - 0.5) * 2;
+    const y = yMid - norm * zoneH * 0.35;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  for (let i = spo2Data.length - 1; i >= 0; i--) {
+    const x = leftPad + (i / spo2Data.length) * chartW;
+    ctx.lineTo(x, yMid);
+  }
+  ctx.fillStyle = 'rgba(232, 93, 117, 0.04)';
+  ctx.fill();
+
+  // SpO2 line
+  ctx.beginPath();
+  for (let i = 0; i < spo2Data.length; i++) {
+    const x = leftPad + (i / spo2Data.length) * chartW;
+    const norm = ((spo2Data[i] - spo2Min) / spo2Range - 0.5) * 2;
+    const y = yMid - norm * zoneH * 0.35;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = spo2Color;
+  ctx.lineWidth = 1.2;
+  ctx.shadowColor = spo2Color;
+  ctx.shadowBlur = 4;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Resp fill
+  ctx.beginPath();
+  for (let i = 0; i < respData.length; i++) {
+    const x = leftPad + (i / respData.length) * chartW;
+    const norm = ((respData[i] - respMin) / respRange - 0.5) * 2;
+    const y = yMid - norm * zoneH * 0.42;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  const grad = ctx.createLinearGradient(0, yTop, 0, zoneH);
+  grad.addColorStop(0, respColor.replace('1)', '0.06)'));
+  grad.addColorStop(0.5, 'transparent');
+  grad.addColorStop(1, respColor.replace('1)', '0.06)'));
+  ctx.lineTo(leftPad + chartW, yMid);
+  ctx.lineTo(leftPad, yMid);
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Resp line
+  ctx.beginPath();
+  for (let i = 0; i < respData.length; i++) {
+    const x = leftPad + (i / respData.length) * chartW;
+    const norm = ((respData[i] - respMin) / respRange - 0.5) * 2;
+    const y = yMid - norm * zoneH * 0.42;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = respColor;
+  ctx.lineWidth = 1.6;
+  ctx.shadowColor = respColor;
+  ctx.shadowBlur = 5;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Desaturation event markers
+  for (const eventT of [0.03, 0.13, 0.185]) {
+    const x = leftPad + eventT * chartW;
+    ctx.fillStyle = 'rgba(232,93,117,0.5)';
+    ctx.beginPath(); ctx.arc(x, yTop + 10, 2.5, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // Legend
+  ctx.font = '8px "SF Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = respColor.replace('1)', '0.3)');
+  ctx.fillText('RESP', leftPad + 8, zoneH - 18);
+  ctx.fillStyle = spo2Color;
+  ctx.fillText('SpO2', leftPad + 50, zoneH - 18);
+  ctx.fillStyle = 'rgba(232,93,117,0.4)';
+  ctx.fillText('● desat events', leftPad + 90, zoneH - 18);
+}
+
+render();
+window.addEventListener('resize', render);
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.tabs')) return;
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+});
+</script>
+</body>
+</html>
