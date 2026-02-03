@@ -1,0 +1,298 @@
+[
+  {
+    "season": "S2",
+    "episode": 9,
+    "guest": "Stephen Senn & Richard Hahn",
+    "title": "Do Heterogeneous Treatment Effects Exist?",
+    "file": "content/transcripts/causal-bandits/V801RQTBpp4.md",
+    "youtube": "https://youtube.com/watch?v=V801RQTBpp4"
+  },
+  {
+    "season": "S2",
+    "episode": 8,
+    "guest": "Richard Hahn",
+    "title": "Causal Inference & the \"Bayesian-Frequentist War\"",
+    "file": "content/transcripts/causal-bandits/-hRS8eU3Tow.md",
+    "youtube": "https://youtube.com/watch?v=-hRS8eU3Tow"
+  },
+  {
+    "season": "S2",
+    "episode": 7,
+    "guest": "Zhijing Jin",
+    "title": "The Causal Gap: Truly Responsible AI Needs to Understand the Consequences",
+    "file": "content/transcripts/causal-bandits/Frb6eTW2ywk.md",
+    "youtube": "https://youtube.com/watch?v=Frb6eTW2ywk"
+  },
+  {
+    "season": "S2",
+    "episode": 6,
+    "guest": "Mark van der Laan",
+    "title": "Create Your Causal Inference Roadmap. TMLE & Sensitivity",
+    "file": "content/transcripts/causal-bandits/qr5JolEAuJU.md",
+    "youtube": "https://youtube.com/watch?v=qr5JolEAuJU"
+  },
+  {
+    "season": "S2",
+    "episode": 5,
+    "guest": "Julia Rohrer",
+    "title": "Causal Inference, Human Behavior, Science Crisis & The Power of Causal Graphs",
+    "file": "content/transcripts/causal-bandits/YQetmI-y5gM.md",
+    "youtube": "https://youtube.com/watch?v=YQetmI-y5gM"
+  },
+  {
+    "season": "S2",
+    "episode": 4,
+    "guest": "Amit Sharma",
+    "title": "MSFT Scientist: Agents, Causal AI & Future of DoWhy",
+    "file": "content/transcripts/causal-bandits/8yWKQqNFrmY.md",
+    "youtube": "https://youtube.com/watch?v=8yWKQqNFrmY"
+  },
+  {
+    "season": "S2",
+    "episode": 3,
+    "guest": "Eric Daza",
+    "title": "Causal Secrets of N=1 Experiments",
+    "file": "content/transcripts/causal-bandits/gN-6DfhCguA.md",
+    "youtube": "https://youtube.com/watch?v=gN-6DfhCguA"
+  },
+  {
+    "season": "S2",
+    "episode": 2,
+    "guest": "Ciarán Gilligan-Lee",
+    "title": "From Quantum Physics to Causal AI at Spotify",
+    "file": "content/transcripts/causal-bandits/CzL0pV6LyRk.md",
+    "youtube": "https://youtube.com/watch?v=CzL0pV6LyRk"
+  },
+  {
+    "season": "S2",
+    "episode": 1,
+    "guest": "Stefan Feuerriegel",
+    "title": "49% Less Loss with Causal ML",
+    "file": "content/transcripts/causal-bandits/_mJclm_aJlc.md",
+    "youtube": "https://youtube.com/watch?v=_mJclm_aJlc"
+  },
+  {
+    "season": "Conference",
+    "episode": null,
+    "guest": "cAI 2024 London",
+    "title": "Causal AI at cAI 2024 London",
+    "file": "content/transcripts/causal-bandits/HwNLE945Uv8.md",
+    "youtube": "https://youtube.com/watch?v=HwNLE945Uv8"
+  },
+  {
+    "season": "Conference",
+    "episode": null,
+    "guest": "CLeaR 2024",
+    "title": "Causal Bandits @ CLeaR 2024 Part 2",
+    "file": "content/transcripts/causal-bandits/vW2vB6e-Mm8.md",
+    "youtube": "https://youtube.com/watch?v=vW2vB6e-Mm8"
+  },
+  {
+    "season": "Conference",
+    "episode": null,
+    "guest": "CLeaR 2024",
+    "title": "Causal AI at CLeaR 2024 Part 1",
+    "file": "content/transcripts/causal-bandits/bHbqe9q_s-A.md",
+    "youtube": "https://youtube.com/watch?v=bHbqe9q_s-A"
+  },
+  {
+    "season": "Conference",
+    "episode": null,
+    "guest": "AAAI 2024",
+    "title": "Causal Bandits at AAAI 2024 Part 2",
+    "file": "content/transcripts/causal-bandits/Y4wMksHyMFg.md",
+    "youtube": "https://youtube.com/watch?v=Y4wMksHyMFg"
+  },
+  {
+    "season": "Conference",
+    "episode": null,
+    "guest": "AAAI 2024",
+    "title": "Causal Bandits at AAAI 2024 Part 1",
+    "file": "content/transcripts/causal-bandits/sljBU_HFnFs.md",
+    "youtube": "https://youtube.com/watch?v=sljBU_HFnFs"
+  },
+  {
+    "season": "S1",
+    "episode": 21,
+    "guest": "Judea Pearl",
+    "title": "Free Will, LLMs & Intelligence",
+    "file": "content/transcripts/causal-bandits/yqKJ9pUQ6Q8.md",
+    "youtube": "https://youtube.com/watch?v=yqKJ9pUQ6Q8"
+  },
+  {
+    "season": "S1",
+    "episode": 20,
+    "guest": "Scott Mueller",
+    "title": "Causal AI & Individual Treatment Effects",
+    "file": "content/transcripts/causal-bandits/zTJFUaLjxfE.md",
+    "youtube": "https://youtube.com/watch?v=zTJFUaLjxfE"
+  },
+  {
+    "season": "S1",
+    "episode": 19,
+    "guest": "Dima Goldenberg",
+    "title": "Causal AI in Personalization",
+    "file": "content/transcripts/causal-bandits/xkx1tXLAP-o.md",
+    "youtube": "https://youtube.com/watch?v=xkx1tXLAP-o"
+  },
+  {
+    "season": "S1",
+    "episode": 18,
+    "guest": "Ehud Karavani",
+    "title": "Causal Inference for Drug Repurposing & CausalLib",
+    "file": "content/transcripts/causal-bandits/Q7sinHrknC8.md",
+    "youtube": "https://youtube.com/watch?v=Q7sinHrknC8"
+  },
+  {
+    "season": "S1",
+    "episode": 17,
+    "guest": "Bernhard Schölkopf",
+    "title": "From Physics to Causal AI & Back",
+    "file": "content/transcripts/causal-bandits/ubSFglvhBd0.md",
+    "youtube": "https://youtube.com/watch?v=ubSFglvhBd0"
+  },
+  {
+    "season": "S1",
+    "episode": 16,
+    "guest": "Emre Kıcıman",
+    "title": "Open Source Causal AI & The Generative Revolution",
+    "file": "content/transcripts/causal-bandits/Vz5n5SamDAc.md",
+    "youtube": "https://youtube.com/watch?v=Vz5n5SamDAc"
+  },
+  {
+    "season": "S1",
+    "episode": 15,
+    "guest": "Thanos Vlontzos",
+    "title": "Why Hinton Was Wrong, Causal AI & Science",
+    "file": "content/transcripts/causal-bandits/ofAtKK6O2dE.md",
+    "youtube": "https://youtube.com/watch?v=ofAtKK6O2dE"
+  },
+  {
+    "season": "S1",
+    "episode": 14,
+    "guest": "Alexander Denev",
+    "title": "Causal Inference & Financial Modeling",
+    "file": "content/transcripts/causal-bandits/GkqXWC03VYM.md",
+    "youtube": "https://youtube.com/watch?v=GkqXWC03VYM"
+  },
+  {
+    "season": "S1",
+    "episode": 13,
+    "guest": "Andrew Lampinen",
+    "title": "DeepMind Scientist: Causal AI & Intelligence",
+    "file": "content/transcripts/causal-bandits/relI7Q9A03g.md",
+    "youtube": "https://youtube.com/watch?v=relI7Q9A03g"
+  },
+  {
+    "season": "S1",
+    "episode": 12,
+    "guest": "Stephen Senn",
+    "title": "Causal Inference & Clinical Trials: Myths of Randomization",
+    "file": "content/transcripts/causal-bandits/nT_yCwXSz54.md",
+    "youtube": "https://youtube.com/watch?v=nT_yCwXSz54"
+  },
+  {
+    "season": "S1",
+    "episode": 11,
+    "guest": "Robert Ness",
+    "title": "From Biology to Generative AI & RL",
+    "file": "content/transcripts/causal-bandits/gazCIKYEv44.md",
+    "youtube": "https://youtube.com/watch?v=gazCIKYEv44"
+  },
+  {
+    "season": "S1",
+    "episode": 10,
+    "guest": "Ishansh Gupta",
+    "title": "How Causal AI Transforms Supply Chain",
+    "file": "content/transcripts/causal-bandits/gmFWhAAeBfE.md",
+    "youtube": "https://youtube.com/watch?v=gmFWhAAeBfE"
+  },
+  {
+    "season": "S1",
+    "episode": 9,
+    "guest": "Matheus Facure",
+    "title": "Causal Inference's Role in Fintech",
+    "file": "content/transcripts/causal-bandits/y59_XLOnmgI.md",
+    "youtube": "https://youtube.com/watch?v=y59_XLOnmgI"
+  },
+  {
+    "season": "S1",
+    "episode": 8,
+    "guest": "Iyar Lin",
+    "title": "Understanding Time-Varying Treatments in ML",
+    "file": "content/transcripts/causal-bandits/OvmpcL1CKqM.md",
+    "youtube": "https://youtube.com/watch?v=OvmpcL1CKqM"
+  },
+  {
+    "season": "S1",
+    "episode": null,
+    "guest": "Darko Matovski",
+    "title": "Mosquitos, Pascal & Hedge Funds (Walk in London)",
+    "file": "content/transcripts/causal-bandits/pKhUuwxBdX4.md",
+    "youtube": "https://youtube.com/watch?v=pKhUuwxBdX4"
+  },
+  {
+    "season": "S1",
+    "episode": 7,
+    "guest": "Jakob Zeitler",
+    "title": "Causal AI's Role in Optimal Experiments",
+    "file": "content/transcripts/causal-bandits/Hc3rIGmX59k.md",
+    "youtube": "https://youtube.com/watch?v=Hc3rIGmX59k"
+  },
+  {
+    "season": "S1",
+    "episode": 6,
+    "guest": "Alicia Curth",
+    "title": "How Does Causal AI Change Medicine?",
+    "file": "content/transcripts/causal-bandits/w9Dy4xqn7mA.md",
+    "youtube": "https://youtube.com/watch?v=w9Dy4xqn7mA"
+  },
+  {
+    "season": "S1",
+    "episode": 5,
+    "guest": "Naftali Weinberger",
+    "title": "Causal AI: Making Sense of Dynamical Systems",
+    "file": "content/transcripts/causal-bandits/UQ8j-DEkB98.md",
+    "youtube": "https://youtube.com/watch?v=UQ8j-DEkB98"
+  },
+  {
+    "season": "S1",
+    "episode": 4,
+    "guest": "Daniel Ebenhöch",
+    "title": "Causal AI for Autonomous Driving",
+    "file": "content/transcripts/causal-bandits/rHM0mBXubig.md",
+    "youtube": "https://youtube.com/watch?v=rHM0mBXubig"
+  },
+  {
+    "season": "S1",
+    "episode": 3,
+    "guest": "Juan Orduz",
+    "title": "The Secret to Smarter Marketing? Causality and AI",
+    "file": "content/transcripts/causal-bandits/bTTSg91pFUk.md",
+    "youtube": "https://youtube.com/watch?v=bTTSg91pFUk"
+  },
+  {
+    "season": "S1",
+    "episode": 2,
+    "guest": "Andrew Lawrence",
+    "title": "Causal AI in Action: Modularity & Learning",
+    "file": "content/transcripts/causal-bandits/eCtLAt-6yps.md",
+    "youtube": "https://youtube.com/watch?v=eCtLAt-6yps"
+  },
+  {
+    "season": "S1",
+    "episode": 1,
+    "guest": "Thomas Wiecki",
+    "title": "Causal Inference Using PyMC",
+    "file": "content/transcripts/causal-bandits/QAzAFess1AA.md",
+    "youtube": "https://youtube.com/watch?v=QAzAFess1AA"
+  },
+  {
+    "season": "S1",
+    "episode": 0,
+    "guest": "Matej Zeevi",
+    "title": "Causality in AI: Can LLMs Really Get It?",
+    "file": "content/transcripts/causal-bandits/rM25vt_ZmFc.md",
+    "youtube": "https://youtube.com/watch?v=rM25vt_ZmFc"
+  }
+]

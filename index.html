@@ -222,6 +222,7 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
   <div class="tab" data-tab="ideas">💡 Ideas <span class="tab-count" id="ideas-total"></span></div>
   <div class="tab" data-tab="backlog">📋 Backlog <span class="tab-count" id="backlog-total"></span></div>
   <div class="tab" data-tab="calendar">📅 Calendar <span class="tab-count" id="calendar-total"></span></div>
+  <div class="tab" data-tab="transcripts">📝 Transcripts <span class="tab-count" id="transcripts-total"></span></div>
 </div>
 <div class="tab-bar-line"></div>
 
@@ -331,7 +332,18 @@ h1 { text-align: center; color: #58a6ff; margin-bottom: 6px; font-size: 22px; }
 </div>
 </div>
 
-<p class="refresh-note">Data: dashboard-data.json + ideas-data.json + backlog-data.json + calendar-data.json · Matrices updates automatically</p>
+<!-- TRANSCRIPTS TAB -->
+<div class="tab-content" id="tab-transcripts">
+<div class="grid grid-2" style="max-width:900px;">
+<div class="col" style="grid-column: 1 / -1;">
+<div class="col-header"><h2>📝 Causal Bandits Transcripts</h2><span class="count" id="transcripts-count"></span></div>
+<p style="font-size:11px; color:#484f58; margin-bottom:14px;">Full transcripts from the <a href="https://www.youtube.com/playlist?list=PLhKKv6iMja4p5FbJIgzTOE67E1M6c8lnB" target="_blank" style="color:#58a6ff;">Causal Bandits Podcast</a> by Alex Molak. Auto-generated from YouTube subtitles.</p>
+<div id="transcripts-list"></div>
+</div>
+</div>
+</div>
+
+<p class="refresh-note">Data: dashboard-data.json + ideas-data.json + backlog-data.json + calendar-data.json + transcripts-data.json · Matrices updates automatically</p>
 
 <!-- MODAL OVERLAY -->
 <div class="modal-overlay" id="modal-overlay">
@@ -736,6 +748,51 @@ async function loadToday() {
   } catch(e) { console.error('Today load failed:', e); }
 }
 
+async function loadTranscripts() {
+  try {
+    const res = await fetch('./transcripts-data.json?t=' + Date.now());
+    const episodes = await res.json();
+    setCount('transcripts-total', episodes.length);
+    setCount('transcripts-count', episodes.length + ' episodes');
+    if (!episodes.length) {
+      document.getElementById('transcripts-list').innerHTML = '<div class="empty">No transcripts</div>';
+      return;
+    }
+
+    const seasonOrder = ['S2', 'S1', 'Conference'];
+    const seasonLabels = { 'S2': '🎙️ Season 2', 'S1': '🎙️ Season 1', 'Conference': '🎤 Conference Coverage' };
+    const seasonColors = { 'S2': '#58a6ff', 'S1': '#3fb950', 'Conference': '#d29922' };
+
+    const groups = {};
+    episodes.forEach(ep => {
+      const s = ep.season;
+      if (!groups[s]) groups[s] = [];
+      groups[s].push(ep);
+    });
+
+    let html = '';
+    seasonOrder.forEach(s => {
+      if (!groups[s] || !groups[s].length) return;
+      const color = seasonColors[s] || '#8b949e';
+      html += '<div class="project-group">';
+      html += '<div class="project-divider">';
+      html += '<span class="project-dot" style="background:' + color + '"></span>';
+      html += '<span class="project-name" style="color:' + color + '">' + (seasonLabels[s] || s) + ' (' + groups[s].length + ')</span>';
+      html += '</div>';
+      groups[s].forEach(ep => {
+        const epLabel = ep.episode !== null ? (s === 'S2' ? 'S2E' + ep.episode : 'Ep ' + ep.episode) : (s === 'Conference' ? '' : 'Extra');
+        const epBadge = epLabel ? '<span style="font-size:10px;color:#484f58;background:#21262d;padding:2px 8px;border-radius:6px;font-weight:600;margin-right:6px;">' + epLabel + '</span>' : '';
+        html += '<div class="card clickable" onclick="openModal(\'' + ep.file + '\', \'' + ep.title.replace(/'/g, "\\'") + '\')">';
+        html += '<div class="card-title"><span class="view-icon">📄 View</span>' + epBadge + ep.title + '</div>';
+        html += '<div class="card-desc">' + ep.guest + ' · <a href="' + ep.youtube + '" target="_blank" onclick="event.stopPropagation();" style="color:#58a6ff;text-decoration:none;">▶ YouTube</a></div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById('transcripts-list').innerHTML = html;
+  } catch(e) { console.error('Transcripts load failed:', e); }
+}
+
 async function load() {
   try {
     const res = await fetch(DATA_URL + '?t=' + Date.now());
@@ -746,6 +803,7 @@ async function load() {
   loadIssues();
   loadBacklog();
   loadCalendar();
+  loadTranscripts();
 }
 load();
 setInterval(load, 30000);
