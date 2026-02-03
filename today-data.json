@@ -1,0 +1,54 @@
+{
+  "date": "2026-02-03",
+  "greeting": "Monday, February 3",
+  "items": [
+    {
+      "title": "Letter to Kailu's Parents (阿伟 & 阿群)",
+      "desc": "Prepare greeting/letter for Chongqing visit Feb 18-25. Address: 阿伟 (Ā Wěi, father) and 阿群 (Ā Qún, mother).",
+      "url": null,
+      "project": "china",
+      "priority": "high",
+      "done": false
+    },
+    {
+      "title": "LinkedIn Headline Updated",
+      "desc": "Changed to: infrastructure for adaptive decision-making | causal inference · agent-based bayesian modeling",
+      "url": "https://www.linkedin.com/in/samcialek/",
+      "project": "general",
+      "priority": "normal",
+      "done": true
+    },
+    {
+      "title": "Washington Founders Concepts (C–J)",
+      "desc": "7 of 10 images still needed. New style: UN 1948 textbook, 1:4 ratio, just the figure. A/B/G done in old style.",
+      "url": "https://chatgpt.com",
+      "project": "prism",
+      "priority": "normal",
+      "done": false
+    },
+    {
+      "title": "Vim Demo Prep — Feb 6",
+      "desc": "3 days out. Reply to Oron's Jan 21 email + Bob's Jan 26 email. Prepare integration sketch.",
+      "url": null,
+      "project": "vim",
+      "priority": "high",
+      "done": false
+    },
+    {
+      "title": "Resume Profile Summary",
+      "desc": "Pick final storytelling option for Aaru resume. Top candidate: 'Predicting the Future' from ChatGPT Round 4.",
+      "url": "https://samcialek.github.io/dashboard/content/aaru-resume-new.html",
+      "project": "aaru",
+      "priority": "normal",
+      "done": false
+    },
+    {
+      "title": "PRISM Election Analysis",
+      "desc": "Completed & sent. 53% winner accuracy, +15.3 D skew, winner-take-all Gaussian kernel issue.",
+      "url": null,
+      "project": "prism",
+      "priority": "normal",
+      "done": true
+    }
+  ]
+}
