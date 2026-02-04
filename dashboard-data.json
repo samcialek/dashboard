@@ -124,6 +124,12 @@
 
   "tasks": [
     {
+      "title": "Send Emily deGrandpre follow-up on LinkedIn",
+      "desc": "Alan Health consulting engagement. Sent v2 proposal Jan 27 (EHR section updated per her feedback). No response in 8 days. HR Tyler was 'super impressed.' Draft follow-up ready — just check in on v2 + whether Andrew has seen it. LinkedIn DM only.",
+      "project": "general",
+      "badges": [{"type": "urgent", "text": "8 DAYS SILENT"}]
+    },
+    {
       "title": "Send Kamal Patel outreach email",
       "desc": "Cold email + LinkedIn connection request ready. Review examine-outreach-email.md, then send from sam@serif.life. Pitch brief available as attachment if he responds.",
       "project": "examine",
