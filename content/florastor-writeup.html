@@ -3,192 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Florastor — Probiotic Guide for Post-Polyp Recovery</title>
+<title>Two-Phase Probiotic Recovery Protocol — Post-Polypectomy</title>
 <style>
+  @page { margin: 0.4in; size: letter; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 32px 24px;
-    color: #1a1a1a;
-    line-height: 1.6;
-    background: #fafafa;
+    font-family: 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    background: #fff; color: #1a1a2e;
+    font-size: 9.5pt; line-height: 1.38;
+    max-width: 8.5in; margin: 0 auto; padding: 0.4in;
   }
-  h1 { font-size: 1.8rem; margin-bottom: 4px; color: #0d4f2b; }
-  .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 28px; }
-  h2 { font-size: 1.15rem; color: #0d4f2b; margin: 24px 0 10px; border-bottom: 2px solid #d4edda; padding-bottom: 4px; }
-  .product-card {
-    background: white;
-    border: 1px solid #d4edda;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 24px;
-  }
-  .product-name { font-size: 1.3rem; font-weight: 700; color: #0d4f2b; }
-  .strain { font-size: 0.9rem; color: #555; font-style: italic; margin: 4px 0 12px; }
-  .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .spec { background: #f0f7f2; border-radius: 8px; padding: 10px 14px; }
-  .spec-label { font-size: 0.75rem; text-transform: uppercase; color: #888; letter-spacing: 0.5px; }
-  .spec-value { font-size: 1rem; font-weight: 600; }
-  .dosage-box {
-    background: #0d4f2b;
-    color: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-  }
-  .dosage-box h2 { color: white; border-bottom-color: rgba(255,255,255,0.3); }
-  .dosage-schedule { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
-  .dose {
-    background: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    padding: 14px 18px;
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-  }
-  .dose-time { font-size: 0.8rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
-  .dose-amount { font-size: 1.4rem; font-weight: 700; margin: 4px 0; }
-  .dose-note { font-size: 0.8rem; opacity: 0.7; }
-  ul { margin: 8px 0 8px 20px; }
-  li { margin-bottom: 6px; }
-  .evidence { background: white; border-radius: 12px; padding: 20px; border: 1px solid #e0e0e0; }
-  .evidence-item { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0f0f0; }
-  .evidence-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .evidence-tag { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; margin-right: 6px; }
-  .tag-strong { background: #d4edda; color: #0d4f2b; }
-  .tag-moderate { background: #fff3cd; color: #856404; }
-  .tag-relevant { background: #cce5ff; color: #004085; }
-  .warning {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    border-radius: 10px;
-    padding: 16px;
-    margin: 20px 0;
-    font-size: 0.9rem;
-  }
-  .warning-title { font-weight: 700; color: #e65100; margin-bottom: 4px; }
-  .why-section p { margin-bottom: 10px; }
-  .footer { margin-top: 32px; font-size: 0.75rem; color: #999; text-align: center; border-top: 1px solid #e0e0e0; padding-top: 16px; }
+
+  /* ── Header ── */
+  .header { text-align: center; margin-bottom: 10px; border-bottom: 2.5px solid #1a1a2e; padding-bottom: 8px; }
+  .header h1 { font-size: 16pt; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 2px; }
+  .header .subtitle { font-size: 9pt; color: #555; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; }
+  .header .rx-icon { font-size: 11pt; display: inline-block; border: 1.5px solid #1a1a2e; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; margin-bottom: 4px; font-weight: 700; }
+
+  /* ── Timeline ── */
+  .timeline-section { margin: 10px 0 12px; }
+  .timeline-label { font-size: 8pt; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 5px; }
+  .timeline { display: flex; align-items: stretch; height: 54px; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; position: relative; }
+  .tl-phase { display: flex; flex-direction: column; justify-content: center; padding: 4px 8px; color: #fff; position: relative; }
+  .tl-phase.p1a { flex: 2; background: linear-gradient(135deg, #2d6a4f, #40916c); }
+  .tl-phase.p1b { flex: 3; background: linear-gradient(135deg, #40916c, #52b788); }
+  .tl-phase.p2  { flex: 4; background: linear-gradient(135deg, #1d3557, #457b9d); }
+  .tl-phase .tl-title { font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tl-phase .tl-dose { font-size: 7.5pt; opacity: 0.92; margin-top: 1px; }
+  .tl-phase .tl-weeks { font-size: 7pt; opacity: 0.8; margin-top: 1px; }
+  .tl-markers { display: flex; justify-content: space-between; padding: 0 1px; margin-top: 3px; }
+  .tl-markers span { font-size: 6.5pt; color: #999; width: calc(100%/9); text-align: center; }
+  .tl-transition { position: absolute; right: -1px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.5); z-index: 2; }
+  .dosage-summary { display: flex; gap: 12px; margin-top: 6px; }
+  .dosage-card { flex: 1; border-radius: 5px; padding: 6px 8px; }
+  .dosage-card.green { background: #f0faf4; border: 1px solid #b7e4c7; }
+  .dosage-card.blue { background: #f0f4fa; border: 1px solid #a8cce0; }
+  .dosage-card .dc-name { font-size: 8.5pt; font-weight: 700; }
+  .dosage-card .dc-strain { font-size: 7pt; color: #666; font-style: italic; margin-bottom: 3px; }
+  .dosage-card .dc-row { display: flex; justify-content: space-between; font-size: 7.5pt; padding: 1px 0; }
+  .dosage-card .dc-row .label { color: #555; }
+  .dosage-card .dc-row .value { font-weight: 600; }
+  .dosage-card .dc-total { border-top: 1px solid rgba(0,0,0,0.1); margin-top: 2px; padding-top: 2px; font-weight: 700; font-size: 7.5pt; text-align: right; }
+
+  /* ── Benefits Grid ── */
+  .benefits-header { display: flex; align-items: center; gap: 8px; margin: 10px 0 6px; }
+  .benefits-header .phase-badge { font-size: 7.5pt; font-weight: 700; color: #fff; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .benefits-header .phase-badge.green { background: #2d6a4f; }
+  .benefits-header .phase-badge.blue { background: #1d3557; }
+  .benefits-header h2 { font-size: 11pt; font-weight: 700; }
+  .benefits-header .product-info { font-size: 7pt; color: #888; margin-left: auto; }
+  .gi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .gi-box { border-radius: 5px; padding: 7px 9px; }
+  .gi-box.upper-green { background: #f0faf4; border-left: 3px solid #2d6a4f; }
+  .gi-box.lower-green { background: #f5fdf8; border-left: 3px solid #52b788; }
+  .gi-box.upper-blue { background: #f0f4fa; border-left: 3px solid #1d3557; }
+  .gi-box.lower-blue { background: #f5f8fc; border-left: 3px solid #457b9d; }
+  .gi-box h3 { font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+  .gi-box h3.green { color: #2d6a4f; }
+  .gi-box h3.blue { color: #1d3557; }
+  .gi-box ul { list-style: none; padding: 0; }
+  .gi-box ul li { font-size: 8pt; padding: 1.5px 0; padding-left: 10px; position: relative; }
+  .gi-box ul li::before { content: "›"; position: absolute; left: 0; font-weight: 700; }
+  .gi-box ul li .mechanism { color: #333; }
+  .gi-box ul li .detail { color: #666; font-size: 7.5pt; }
+  .cite { font-size: 6.5pt; color: #888; font-style: italic; display: inline; }
+
+  /* ── Instructions & Warnings ── */
+  .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .info-box { border-radius: 5px; padding: 7px 9px; }
+  .info-box.instructions { background: #fafafa; border: 1px solid #ddd; }
+  .info-box.warnings { background: #fff8f0; border: 1px solid #f0c8a0; }
+  .info-box h3 { font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .info-box h3.inst-title { color: #333; }
+  .info-box h3.warn-title { color: #b85c00; }
+  .info-box ul { list-style: none; padding: 0; }
+  .info-box ul li { font-size: 7.5pt; padding: 2px 0 2px 12px; position: relative; color: #444; }
+  .info-box.instructions ul li::before { content: "✓"; position: absolute; left: 0; color: #2d6a4f; font-weight: 700; font-size: 7pt; }
+  .info-box.warnings ul li::before { content: "⚠"; position: absolute; left: -1px; font-size: 7pt; }
+  .info-box ul li strong { font-weight: 600; color: #222; }
+
+  /* ── References ── */
+  .references { margin-top: 8px; padding-top: 5px; border-top: 1px solid #e0e0e0; }
+  .references h4 { font-size: 7pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 3px; }
+  .references ol { padding-left: 14px; columns: 2; column-gap: 16px; }
+  .references ol li { font-size: 6.5pt; color: #777; padding: 0.5px 0; break-inside: avoid; }
+
+  /* ── Footer ── */
+  .footer { margin-top: 8px; padding-top: 6px; border-top: 2px solid #1a1a2e; display: flex; justify-content: space-between; align-items: center; }
+  .footer .left { font-size: 6.5pt; color: #aaa; }
+  .footer .right { font-size: 6.5pt; color: #aaa; text-align: right; }
+
+  /* ── Print ── */
   @media print {
-    body { padding: 16px; background: white; }
-    .dosage-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { padding: 0; font-size: 9pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tl-phase, .phase-badge, .gi-box, .dosage-card, .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
 <body>
 
-<h1>Florastor® Daily Probiotic</h1>
-<p class="subtitle">Guide for post-gastric polyp removal recovery</p>
+<!-- HEADER -->
+<div class="header">
+  <div class="rx-icon">℞</div>
+  <h1>Two-Phase Probiotic Recovery Protocol</h1>
+  <div class="subtitle">Post-Polypectomy Gastrointestinal Support &nbsp;·&nbsp; Evidence-Based Supplementation Guide</div>
+</div>
 
-<div class="product-card">
-  <div class="product-name">Florastor Dual Action Probiotic</div>
-  <div class="strain">Saccharomyces boulardii CNCM I-745 — probiotic yeast (not bacteria)</div>
-  <div class="specs">
-    <div class="spec">
-      <div class="spec-label">Per Capsule</div>
-      <div class="spec-value">250 mg (5B CFU)</div>
+<!-- TIMELINE -->
+<div class="timeline-section">
+  <div class="timeline-label">9-Week Protocol Timeline</div>
+  <div class="timeline">
+    <div class="tl-phase p1a">
+      <span class="tl-title">Phase 1A</span>
+      <span class="tl-dose">4 caps/day</span>
+      <span class="tl-weeks">Wk 1–2</span>
+      <div class="tl-transition"></div>
     </div>
-    <div class="spec">
-      <div class="spec-label">Count</div>
-      <div class="spec-value">100 capsules</div>
+    <div class="tl-phase p1b">
+      <span class="tl-title">Phase 1B — Taper</span>
+      <span class="tl-dose">2 caps/day</span>
+      <span class="tl-weeks">Wk 3–5</span>
+      <div class="tl-transition"></div>
     </div>
-    <div class="spec">
-      <div class="spec-label">Daily Dose</div>
-      <div class="spec-value">2–4 capsules</div>
+    <div class="tl-phase p2">
+      <span class="tl-title">Phase 2 — Colonization</span>
+      <span class="tl-dose">1 cap/day</span>
+      <span class="tl-weeks">Wk 6–9</span>
     </div>
-    <div class="spec">
-      <div class="spec-label">Supply</div>
-      <div class="spec-value">25–50 days</div>
+  </div>
+  <div class="tl-markers">
+    <span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span><span>Wk 5</span><span>Wk 6</span><span>Wk 7</span><span>Wk 8</span><span>Wk 9</span>
+  </div>
+
+  <!-- Dosage Cards -->
+  <div class="dosage-summary">
+    <div class="dosage-card green">
+      <div class="dc-name">Florastor · 100 ct</div>
+      <div class="dc-strain">Saccharomyces boulardii CNCM I-745 · 250 mg/cap</div>
+      <div class="dc-row"><span class="label">Weeks 1–2 (loading)</span><span class="value">2 caps × 2/day = 56 caps</span></div>
+      <div class="dc-row"><span class="label">Weeks 3–5 (taper)</span><span class="value">2 caps × 1/day = 44 caps</span></div>
+      <div class="dc-total">Total: 100 capsules · ~5 weeks</div>
+    </div>
+    <div class="dosage-card blue">
+      <div class="dc-name">Align Extra Strength · 28 ct</div>
+      <div class="dc-strain">Bifidobacterium longum 35624 · 5×10⁹ CFU/cap</div>
+      <div class="dc-row"><span class="label">Weeks 6–9 (maintenance)</span><span class="value">1 cap × 1/day = 28 caps</span></div>
+      <div class="dc-total">Total: 28 capsules · 4 weeks</div>
     </div>
   </div>
 </div>
 
-<div class="dosage-box">
-  <h2>📋 How to Take</h2>
-  <div class="dosage-schedule">
-    <div class="dose">
-      <div class="dose-time">Morning</div>
-      <div class="dose-amount">2 capsules</div>
-      <div class="dose-note">with or without food</div>
-    </div>
-    <div class="dose">
-      <div class="dose-time">Evening</div>
-      <div class="dose-amount">2 capsules</div>
-      <div class="dose-note">optional — during recovery</div>
-    </div>
-  </div>
-  <ul style="margin-top: 16px; font-size: 0.9rem;">
-    <li><strong>Standard maintenance:</strong> 2 capsules once daily</li>
-    <li><strong>Post-procedure recovery:</strong> 2 capsules twice daily (4/day) for the first 2–4 weeks, then taper to 2/day</li>
-    <li><strong>If on antibiotics:</strong> Take Florastor at least 2 hours apart from the antibiotic dose (S. boulardii is antibiotic-resistant, but spacing optimizes colonization)</li>
-    <li><strong>Swallow whole</strong> with water. Can also be opened and mixed into room-temp food/drink (not hot — stay below 50°C / 122°F)</li>
-    <li><strong>Store</strong> at room temperature. No refrigeration needed.</li>
-  </ul>
+<!-- PHASE 1 BENEFITS -->
+<div class="benefits-header">
+  <span class="phase-badge green">Phase 1</span>
+  <h2>Florastor — Acute Recovery &amp; Pathogen Defense</h2>
+  <span class="product-info">ASIN B01NB0G1V8 · ~$67.99</span>
 </div>
-
-<h2>Why This One — Post-Polyp Context</h2>
-<div class="why-section">
-  <p><strong>S. boulardii is a yeast, not a bacterium.</strong> This matters after a GI procedure. Bacterial probiotics (Lactobacillus, Bifido) can be disrupted by post-procedure antibiotics. S. boulardii is inherently antibiotic-resistant — it survives and works even during antibiotic courses.</p>
-  <p><strong>Gastric polyp removal</strong> (polypectomy) can temporarily compromise the mucosal lining and disrupt local flora. S. boulardii has two mechanisms particularly relevant here:</p>
-  <ul>
-    <li><strong>Mucosal barrier support</strong> — stimulates secretory IgA production and increases brush border enzyme activity, helping the gut lining recover</li>
-    <li><strong>Anti-inflammatory</strong> — inhibits NF-κB and MAP kinase pathways, reducing post-procedure inflammation in the GI tract</li>
-    <li><strong>Pathogen displacement</strong> — produces proteases that break down toxin receptors on the intestinal wall, reducing opportunistic infection risk during the healing window</li>
-  </ul>
-</div>
-
-<h2>Clinical Evidence Summary</h2>
-<div class="evidence">
-  <div class="evidence-item">
-    <span class="evidence-tag tag-strong">Strong Evidence</span>
-    <strong>Antibiotic-associated diarrhea (AAD)</strong><br>
-    Meta-analyses (McFarland 2010, Szajewska 2015) show ~50% relative risk reduction for AAD. Most robust finding — if post-procedure antibiotics are prescribed, this is the primary reason to take it.
+<div class="gi-grid">
+  <div class="gi-box upper-green">
+    <h3 class="green">Upper GI · Gastric Benefits</h3>
+    <ul>
+      <li><span class="mechanism"><strong>Mucosal barrier repair</strong></span> <span class="detail">— stimulates secretory IgA production at the gastric lining, accelerating epithelial recovery post-polypectomy</span></li>
+      <li><span class="mechanism"><strong>Anti-inflammatory</strong></span> <span class="detail">— inhibits NF-κB signaling cascade, reducing localized post-procedural inflammation</span></li>
+      <li><span class="mechanism"><strong>H. pylori adjunct</strong></span> <span class="detail">— significantly improves eradication rates when combined with triple therapy</span> <span class="cite">(Szajewska et al. 2015, World J Gastroenterol) [1]</span></li>
+      <li><span class="mechanism"><strong>Antibiotic-safe</strong></span> <span class="detail">— yeast-based organism; survives concurrent antibiotic administration without resistance concerns</span></li>
+    </ul>
   </div>
-  <div class="evidence-item">
-    <span class="evidence-tag tag-strong">Strong Evidence</span>
-    <strong>C. difficile prevention</strong><br>
-    Reduces risk of C. diff infection during/after antibiotic use. Cochrane review supports use specifically in hospital/post-procedure settings.
-  </div>
-  <div class="evidence-item">
-    <span class="evidence-tag tag-moderate">Moderate Evidence</span>
-    <strong>General GI inflammation</strong><br>
-    Randomized trials show reduced inflammatory markers (IL-8, TNF-α) in gastric and intestinal tissue. Relevant for post-polypectomy mucosal healing.
-  </div>
-  <div class="evidence-item">
-    <span class="evidence-tag tag-moderate">Moderate Evidence</span>
-    <strong>H. pylori adjunct therapy</strong><br>
-    When added to standard H. pylori triple therapy, S. boulardii improves eradication rates and reduces side effects. Relevant if H. pylori was a factor in polyp formation.
-  </div>
-  <div class="evidence-item">
-    <span class="evidence-tag tag-relevant">Contextual</span>
-    <strong>Gut microbiome restoration</strong><br>
-    S. boulardii acts transiently — it doesn't permanently colonize. Instead, it creates favorable conditions for native flora to re-establish. Clears out within 2–5 days of stopping, making it a "scaffolding" probiotic.
+  <div class="gi-box lower-green">
+    <h3 class="green">Lower GI · Intestinal Benefits</h3>
+    <ul>
+      <li><span class="mechanism"><strong>Pathogen displacement</strong></span> <span class="detail">— enzymatically cleaves toxin A/B receptors, reducing C. difficile and opportunistic infections</span></li>
+      <li><span class="mechanism"><strong>Flora reconditioning</strong></span> <span class="detail">— produces short-chain fatty acids and polyamines, creating optimal conditions for native bacterial recolonization</span></li>
+      <li><span class="mechanism"><strong>AAD prevention</strong></span> <span class="detail">— ~50% relative risk reduction in antibiotic-associated diarrhea</span> <span class="cite">(McFarland 2010 meta-analysis [2]; Cochrane Review 2017 [3])</span></li>
+    </ul>
   </div>
 </div>
 
-<div class="warning">
-  <div class="warning-title">⚠️ Important Notes</div>
-  <ul>
-    <li>S. boulardii is a <strong>yeast</strong> — do NOT use if the patient is immunocompromised, has a central venous catheter, or is critically ill (rare risk of fungemia)</li>
-    <li>Check with the prescribing doctor before starting, especially if antifungal medications are prescribed (antifungals will kill S. boulardii)</li>
-    <li>This is a supplement, not a substitute for any prescribed post-procedure medication</li>
-    <li>Mild bloating or gas is normal in the first 1–3 days as the gut adjusts</li>
-  </ul>
+<!-- PHASE 2 BENEFITS -->
+<div class="benefits-header" style="margin-top:8px;">
+  <span class="phase-badge blue">Phase 2</span>
+  <h2>Align — Long-Term Colonization &amp; Immune Modulation</h2>
+</div>
+<div class="gi-grid">
+  <div class="gi-box upper-blue">
+    <h3 class="blue">Upper GI · Gastric Benefits</h3>
+    <ul>
+      <li><span class="mechanism"><strong>Cytokine modulation</strong></span> <span class="detail">— reduces pro-inflammatory markers IL-6 and TNF-α at the gastric mucosal level</span></li>
+      <li><span class="mechanism"><strong>GALT support</strong></span> <span class="detail">— enhances immune regulation in gut-associated lymphoid tissue, promoting balanced immune surveillance</span></li>
+    </ul>
+  </div>
+  <div class="gi-box lower-blue">
+    <h3 class="blue">Lower GI · Intestinal Benefits</h3>
+    <ul>
+      <li><span class="mechanism"><strong>Persistent colonization</strong></span> <span class="detail">— unlike S. boulardii (clears in 2–5 days), B. longum 35624 establishes durable residence in the intestinal mucosa</span></li>
+      <li><span class="mechanism"><strong>Symptom relief</strong></span> <span class="detail">— clinically shown to reduce bloating, gas, and irregular bowel patterns</span> <span class="cite">(Whorwell et al. 2006 [4])</span></li>
+      <li><span class="mechanism"><strong>Barrier integrity</strong></span> <span class="detail">— upregulates tight junction proteins (ZO-1, occludin), strengthening intestinal permeability</span></li>
+      <li><span class="mechanism"><strong>Immune balance</strong></span> <span class="detail">— best-studied strain for sustained anti-inflammatory and digestive comfort outcomes</span> <span class="cite">(O'Mahony et al. 2005 [5])</span></li>
+    </ul>
+  </div>
 </div>
 
-<h2>Recommended Timeline</h2>
-<ul>
-  <li><strong>Weeks 1–2 post-procedure:</strong> 2 capsules twice daily (4/day)</li>
-  <li><strong>Weeks 3–4:</strong> 2 capsules twice daily if still on antibiotics, otherwise taper to 2/day</li>
-  <li><strong>Week 5+:</strong> 2 capsules once daily for ongoing maintenance (optional — can stop once GI function normalizes)</li>
-  <li><strong>Total suggested course:</strong> 4–8 weeks minimum</li>
-</ul>
+<!-- INSTRUCTIONS + WARNINGS -->
+<div class="bottom-grid">
+  <div class="info-box instructions">
+    <h3 class="inst-title">📋 Administration Instructions</h3>
+    <ul>
+      <li>Swallow capsules whole with water</li>
+      <li><strong>Florastor:</strong> may open capsule and mix into room-temperature food — do NOT exceed 50°C / 122°F (heat kills yeast)</li>
+      <li><strong>Align:</strong> take at the same time each day for optimal colonization</li>
+      <li>No refrigeration required for either product</li>
+      <li>Begin Phase 2 within a few days of completing Phase 1</li>
+      <li>Mild bloating or gas is normal during the first 1–3 days of each phase</li>
+    </ul>
+  </div>
+  <div class="info-box warnings">
+    <h3 class="warn-title">⚠ Contraindications &amp; Precautions</h3>
+    <ul>
+      <li><strong>Do NOT use Florastor</strong> if immunocompromised, has central venous catheter, or is critically ill — risk of <em>S. boulardii</em> fungemia</li>
+      <li><strong>Antifungal medications</strong> (fluconazole, etc.) will kill <em>S. boulardii</em> — consult physician before combining</li>
+      <li>This protocol is <strong>not a substitute</strong> for prescribed post-procedure medications (PPIs, antibiotics, etc.)</li>
+      <li>Discontinue and contact physician if symptoms worsen or new symptoms develop</li>
+    </ul>
+  </div>
+</div>
 
+<!-- REFERENCES -->
+<div class="references">
+  <h4>References</h4>
+  <ol>
+    <li>Szajewska H, Horvath A, Kołodziej M. Systematic review with meta-analysis: <em>Saccharomyces boulardii</em> supplementation and eradication of <em>Helicobacter pylori</em> infection. <strong>World J Gastroenterol.</strong> 2015;21(15):4345-4357.</li>
+    <li>McFarland LV. Systematic review and meta-analysis of <em>Saccharomyces boulardii</em> in adult patients. <strong>World J Gastroenterol.</strong> 2010;16(18):2202-2222.</li>
+    <li>Goldenberg JZ, et al. Probiotics for the prevention of antibiotic-associated diarrhea in children and adults. <strong>Cochrane Database Syst Rev.</strong> 2017;12:CD004827.</li>
+    <li>Whorwell PJ, et al. Efficacy of an encapsulated probiotic <em>Bifidobacterium infantis</em> 35624 in women with irritable bowel syndrome. <strong>Am J Gastroenterol.</strong> 2006;101(7):1581-1590.</li>
+    <li>O'Mahony L, et al. <em>Lactobacillus</em> and <em>Bifidobacterium</em> in irritable bowel syndrome: symptom responses and relationship to cytokine profiles. <strong>Gastroenterology.</strong> 2005;128(3):541-551.</li>
+  </ol>
+</div>
+
+<!-- FOOTER -->
 <div class="footer">
-  Prepared Feb 4, 2026 · For informational purposes · Not medical advice · Consult physician before use<br>
-  Product: Florastor 100ct (Amazon ASIN B01NB0G1V8) · ~$67.99
+  <div class="left">Prepared February 4, 2026 &nbsp;·&nbsp; For informational purposes only &nbsp;·&nbsp; <strong>Not medical advice</strong> &nbsp;·&nbsp; Consult your physician</div>
+  <div class="right">Florastor 100 ct (ASIN B01NB0G1V8) &nbsp;·&nbsp; Align Extra Strength 28 ct</div>
 </div>
 
 </body>
