@@ -13,6 +13,15 @@
 
   "files": [
     {
+      "title": "serif-outreach-targets.html",
+      "desc": "40+ outreach targets across 5 categories: causal inference podcasts, longevity/health podcasts, academic researchers, health tech leaders, discovery channels. Color-coded priorities, outreach templates, 90-day success metrics.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\briefs\\serif-outreach-targets.md",
+      "url": "content/serif-outreach-targets.html",
+      "meta": "briefs/ · Created Feb 3",
+      "project": "serif",
+      "badges": [{"type": "brief", "text": "BRIEF"}]
+    },
+    {
       "title": "aaru-resume-new.html",
       "desc": "Decision Scientist resume. Production bullet + $2.3M SBIR added. Profile summary needs update (you're choosing between 3 storytelling options).",
       "path": "C:\\Users\\samci\\.openclaw\\workspace\\drafts\\aaru-resume-new.html",
@@ -101,6 +110,15 @@
       "meta": "briefs/ · Created 4:32 PM",
       "project": "polmodel",
       "badges": [{"type": "brief", "text": "BRIEF"}]
+    },
+    {
+      "title": "serif-outreach-targets.html",
+      "desc": "Comprehensive outreach target research for Serif. 40+ high-value collaborators across causal inference podcasts, longevity/health optimization, academic researchers, health tech leaders, and alternative channels. Priority matrix with 90-day success metrics.",
+      "path": "C:\\Users\\samci\\.openclaw\\workspace\\dashboard-repo\\content\\serif-outreach-targets.html",
+      "url": "content/serif-outreach-targets.html",
+      "meta": "dashboard/ · Created 9:26 PM Feb 3",
+      "project": "serif",
+      "badges": [{"type": "brief", "text": "RESEARCH"}]
     }
   ],
 

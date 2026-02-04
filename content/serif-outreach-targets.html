@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serif Outreach Target Research</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #3fb950;
+    --red: #f85149;
+    --yellow: #d29922;
+    --blue: #58a6ff;
+    --purple: #a371f7;
+    --orange: #f0883e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+  .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .header .meta { color: var(--text-muted); font-size: 0.9rem; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: var(--text-muted); font-size: 0.85rem; }
+  .back-link:hover { color: var(--text); }
+
+  /* Executive Summary */
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .summary h2 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .summary p { color: var(--text-muted); font-size: 0.95rem; }
+  .summary .key-finding {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+    color: var(--yellow);
+    font-size: 0.9rem;
+  }
+
+  /* Category sections */
+  .category { margin-bottom: 3rem; }
+  .category-header {
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .category-header span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+
+  /* Priority labels */
+  .priority-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+  .priority-red { background: rgba(248,81,73,0.15); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+  .priority-yellow { background: rgba(210,169,34,0.15); color: var(--yellow); border: 1px solid rgba(210,169,34,0.3); }
+
+  /* Target cards */
+  .target-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+  }
+  .target-card:hover { border-color: var(--accent); }
+  .target-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .target-card .title { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .target-card .field { margin-bottom: 0.4rem; font-size: 0.9rem; }
+  .target-card .field-label { color: var(--blue); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.3px; }
+  .target-card .connection { background: var(--surface2); border-radius: 4px; padding: 0.6rem 0.8rem; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); font-style: italic; border-left: 3px solid var(--purple); }
+  .target-card .where { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.4rem; }
+
+  /* Group target (conferences, communities) */
+  .group-target { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; }
+  .group-target h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .group-target .key-people { margin: 0.5rem 0; padding-left: 1.25rem; }
+  .group-target .key-people li { font-size: 0.9rem; margin-bottom: 0.2rem; color: var(--text-muted); }
+  .group-target .key-people li strong { color: var(--text); }
+
+  /* Priority Matrix */
+  .matrix { margin-bottom: 3rem; }
+  .matrix h2 { font-size: 1.3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  .timeline { margin-bottom: 1.5rem; }
+  .timeline h3 { font-size: 1rem; margin-bottom: 0.6rem; }
+  .timeline-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+  }
+  .tl-immediate { background: rgba(248,81,73,0.15); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+  .tl-short { background: rgba(210,169,34,0.15); color: var(--yellow); border: 1px solid rgba(210,169,34,0.3); }
+  .tl-medium { background: rgba(88,166,255,0.15); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+
+  .matrix-table { width: 100%; border-collapse: collapse; margin-bottom: 0.5rem; }
+  .matrix-table th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .matrix-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .matrix-table tr:hover td { background: var(--surface); }
+  .rank { color: var(--text-muted); font-weight: 600; width: 30px; }
+
+  /* Templates */
+  .templates { margin-bottom: 3rem; }
+  .templates h2 { font-size: 1.3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  .template-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .template-block h3 { font-size: 1rem; color: var(--orange); margin-bottom: 0.3rem; }
+  .template-block .subject { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+  .template-block .body { font-size: 0.88rem; white-space: pre-line; color: var(--text-muted); line-height: 1.7; }
+
+  /* Metrics */
+  .metrics { margin-bottom: 3rem; }
+  .metrics h2 { font-size: 1.3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; text-align: center; }
+  .metric-card .number { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .metric-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .leading-indicators { list-style: none; padding: 0; }
+  .leading-indicators li { padding: 0.4rem 0; font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  .leading-indicators li::before { content: "→ "; color: var(--accent); }
+
+  /* Notes */
+  .notes { margin-bottom: 2rem; }
+  .notes h2 { font-size: 1.3rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  .notes ol { padding-left: 1.5rem; }
+  .notes li { margin-bottom: 0.6rem; font-size: 0.92rem; color: var(--text-muted); }
+  .notes li strong { color: var(--text); }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    body { padding: 1rem; }
+    .header h1 { font-size: 1.5rem; }
+    .metric-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../" class="back-link">← Back to Dashboard</a>
+
+<div class="header">
+  <h1>💊 Serif Outreach Target Research</h1>
+  <div class="meta">Analysis Date: February 4, 2026 · Research Scope: 40+ potential collaborators across 5 categories</div>
+</div>
+
+<div class="summary">
+  <h2>Executive Summary</h2>
+  <p>Building on the success of the Causal Bandits analysis (which surfaced Eric Daza and the MOTR framework), this research identifies high-value targets across the broader landscape where Serif's causal inference methodology intersects with existing health/longevity communities. Focus areas: causal inference podcasts, longevity optimization, academic researchers, health tech leaders, and alternative discovery channels.</p>
+  <div class="key-finding"><strong>Key Finding:</strong> The intersection of Bayesian methods, causal inference, and personalized health represents an emerging field with significant collaboration opportunities, particularly among podcast audiences, longevity practitioners, and health tech innovators.</div>
+</div>
+
+<!-- CATEGORY 1 -->
+<div class="category">
+  <h2 class="category-header">Category 1: Causal Inference Podcasts <span>(Beyond Causal Bandits)</span></h2>
+
+  <div class="priority-label priority-red">🔴 Priority Targets</div>
+
+  <div class="target-card">
+    <h3>Brady Neal</h3>
+    <div class="title">PhD Student, McGill MILA · Host, Causal Revolution Podcast</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Host of leading causal inference podcast; focuses on practical applications and methodology bridging academia/industry</div>
+    <div class="connection">"Your podcast's focus on causal inference applications maps perfectly to what we're building at Serif—Bayesian causal models for personalized health insights. Would love to discuss how MOTR/N-of-1 methods scale with partial pooling."</div>
+    <div class="where">📍 LinkedIn: Brady Neal MILA · Twitter: @bradyneal · Podcast: Causal Revolution</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Michael Jordan</h3>
+    <div class="title">Professor, UC Berkeley; Director, Simons Institute</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Godfather of modern machine learning, increasingly focused on causal inference; frequent podcast guest discussing Bayesian methods</div>
+    <div class="connection">"Your recent talks on the intersection of Bayesian inference and causal reasoning directly inform Serif's architecture. We're applying exactly the partially pooled treatment effect estimation you've advocated for."</div>
+    <div class="where">📍 LinkedIn: Michael I. Jordan UC Berkeley · Academic email · Berkeley connections</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Judea Pearl</h3>
+    <div class="title">Professor Emeritus, UCLA; Turing Award Winner</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Father of causal inference; explicitly connected individual-level causal inference to health in Causal Bandits Episode 21</div>
+    <div class="connection">"Your comment about 'personalized medicine' and 'individualized decision-making' being feasible now directly validates Serif's approach. We're implementing your causal hierarchy for health interventions."</div>
+    <div class="where">📍 UCLA contact · Through Scott Mueller (student) · Podcast networks</div>
+  </div>
+
+  <div class="priority-label priority-yellow">🟡 Secondary Targets</div>
+
+  <div class="target-card">
+    <h3>Bernhard Schölkopf</h3>
+    <div class="title">Director, Max Planck Institute for Intelligent Systems</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading causal discovery researcher; interested in real-world applications beyond traditional ML</div>
+    <div class="connection">"Your work on causal discovery could accelerate Serif's ability to identify health intervention pathways from observational wearable data."</div>
+    <div class="where">📍 LinkedIn: Bernhard Schölkopf MPI · Academic conferences</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Jonas Peters</h3>
+    <div class="title">Professor, University of Copenhagen · Author, "Elements of Causal Inference"</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Expert in causal discovery and invariant prediction</div>
+    <div class="connection">"Your invariant causal prediction framework could help Serif's models generalize across different user populations and devices."</div>
+    <div class="where">📍 University of Copenhagen · Academic networks</div>
+  </div>
+</div>
+
+<!-- CATEGORY 2 -->
+<div class="category">
+  <h2 class="category-header">Category 2: Longevity / Health Optimization Podcasts</h2>
+
+  <div class="priority-label priority-red">🔴 Priority Targets</div>
+
+  <div class="target-card">
+    <h3>Peter Attia</h3>
+    <div class="title">Physician, longevity medicine · Host, The Peter Attia Drive · 100M+ downloads</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Perfect audience for Serif's methodology; focuses on biomarker optimization, Zone 2 training, precision medicine</div>
+    <div class="connection">"Your Zone 2 framework and biomarker tracking approach align perfectly with Serif's causal modeling of exercise interventions. Our platform provides the causal framework to optimize the protocols you discuss."</div>
+    <div class="where">📍 LinkedIn: Peter Attia MD · peterattiamd.com · Early Medical practice</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Andrew Huberman</h3>
+    <div class="title">Neuroscientist, Stanford · Host, Huberman Lab · #1 health podcast globally</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Massive audience interested in science-backed health optimization; frequently discusses protocols and measurement</div>
+    <div class="connection">"Your protocol-based approach to health optimization would benefit from causal inference to personalize recommendations. Serif applies Bayesian methods to determine which protocols work for which individuals."</div>
+    <div class="where">📍 LinkedIn: Andrew Huberman Stanford · @hubermanlab · Stanford contacts</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Rhonda Patrick</h3>
+    <div class="title">PhD in biochemistry · Host, FoundMyFitness · Expert in micronutrients, genetics, longevity</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Deep scientific credibility; audience interested in personalized health based on genetics/biomarkers</div>
+    <div class="connection">"Your focus on gene-diet interactions and personalized nutrition aligns with Serif's causal approach to individual health optimization. We provide the statistical framework for N-of-1 experimentation."</div>
+    <div class="where">📍 LinkedIn: Rhonda Patrick PhD · @foundmyfitness · FoundMyFitness.com</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Dave Asprey</h3>
+    <div class="title">Founder, Bulletproof · Host, The Human Upgrade · Biohacker &amp; entrepreneur</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Large audience of quantified-self enthusiasts; interested in optimization through data</div>
+    <div class="connection">"Your biohacking community represents Serif's ideal early adopters—people already tracking biomarkers who need causal frameworks to optimize interventions."</div>
+    <div class="where">📍 LinkedIn: Dave Asprey · @dave_asprey · Bulletproof / Upgrade Labs</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Ben Greenfield</h3>
+    <div class="title">Biohacker, author, performance consultant · Host, Ben Greenfield Podcast</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Audience of serious biohackers; frequently discusses wearable devices and self-experimentation</div>
+    <div class="connection">"Your audience is already doing N-of-1 experiments but lacks causal inference methodology. Serif provides the statistical rigor to make biohacking scientifically valid."</div>
+    <div class="where">📍 LinkedIn: Ben Greenfield · @bengreenfield · BenGreenfield.com</div>
+  </div>
+
+  <div class="priority-label priority-yellow">🟡 Secondary Targets</div>
+
+  <div class="target-card">
+    <h3>Tim Ferriss</h3>
+    <div class="title">Author, investor, self-experimentation advocate · Host, The Tim Ferriss Show</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Massive influence in optimization space; audience interested in health and performance</div>
+    <div class="connection">"Your 'minimum effective dose' philosophy aligns with Serif's approach to finding personalized optimal interventions through causal modeling."</div>
+    <div class="where">📍 LinkedIn: Tim Ferriss · @tferriss · Investments/network</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Mark Sisson</h3>
+    <div class="title">Founder, Mark's Daily Apple · Primal health advocate</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Influential in ancestral health space; audience interested in personalized approaches</div>
+    <div class="connection">"Your ancestral health framework could benefit from causal inference to determine which traditional practices work for modern individuals."</div>
+    <div class="where">📍 LinkedIn: Mark Sisson · Primal Kitchen / Mark's Daily Apple</div>
+  </div>
+</div>
+
+<!-- CATEGORY 3 -->
+<div class="category">
+  <h2 class="category-header">Category 3: Longevity / Health Publications &amp; Researchers</h2>
+
+  <div class="priority-label priority-red">🔴 Priority Targets</div>
+
+  <div class="target-card">
+    <h3>Eric Daza ⭐</h3>
+    <div class="title">Principal Clinical Data Scientist · Creator, Stats of One newsletter</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> MOTR framework IS Serif's academic foundation; expert in N-of-1 causal inference</div>
+    <div class="connection">"Your MOTR framework and APTE estimand are exactly what we've implemented at Serif. Would love to collaborate on scaling N-of-1 methods."</div>
+    <div class="where">📍 LinkedIn: Eric Daza Stats of One · @statsofone · Stats of One newsletter</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Susan Murphy</h3>
+    <div class="title">Professor of Statistics &amp; Computer Science, Harvard · MacArthur Fellow</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading expert in adaptive treatment strategies and mobile health interventions; developed JITAIs</div>
+    <div class="connection">"Your JITAI framework for mobile health perfectly complements Serif's causal inference approach to wearable intervention optimization."</div>
+    <div class="where">📍 Harvard Statistics · LinkedIn: Susan Murphy Harvard · Academic conferences</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Finale Doshi-Velez</h3>
+    <div class="title">Professor, Harvard CS · Expert in healthcare ML and interpretability</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Focuses on healthcare applications of ML with emphasis on interpretability—crucial for clinical adoption</div>
+    <div class="connection">"Your work on interpretable ML for healthcare addresses exactly the clinical adoption challenges Serif faces. Our causal approach provides the interpretability clinicians need."</div>
+    <div class="where">📍 Harvard CS · LinkedIn: Finale Doshi-Velez · Academic network</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Marzyeh Ghassemi</h3>
+    <div class="title">Professor, MIT CSAIL · Expert in clinical machine learning</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading voice in healthcare AI; understands both technical and clinical perspectives</div>
+    <div class="connection">"Your research on bias and fairness in healthcare ML informs Serif's approach to equitable personalized health insights."</div>
+    <div class="where">📍 MIT CSAIL · LinkedIn: Marzyeh Ghassemi MIT · Academic conferences</div>
+  </div>
+
+  <div class="priority-label priority-yellow">🟡 Secondary Targets</div>
+
+  <div class="target-card">
+    <h3>Ziad Obermeyer</h3>
+    <div class="title">Associate Professor, UC Berkeley · Physician &amp; health economist</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Expert in algorithmic bias in healthcare; studies health disparities</div>
+    <div class="connection">"Your work on healthcare algorithms and disparities informs Serif's approach to equitable causal inference."</div>
+    <div class="where">📍 UC Berkeley · Health economics conferences</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Nigam Shah</h3>
+    <div class="title">Chief Data Scientist, Stanford Medicine · MBDS Program Director</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Bridge between academic research and clinical implementation</div>
+    <div class="connection">"Your experience translating health AI research to clinical practice directly relevant to Serif's EHR integration via Vim."</div>
+    <div class="where">📍 Stanford Medicine · LinkedIn: Nigam Shah Stanford</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Isaac Kohane</h3>
+    <div class="title">Professor, Harvard Medical School · Expert in medical informatics</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Pioneer in healthcare AI; influential in medical community</div>
+    <div class="connection">"Your work on computational medicine provides the clinical context for Serif's causal inference approach."</div>
+    <div class="where">📍 Harvard Medical School · Biomedical informatics conferences</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Regina Barzilay</h3>
+    <div class="title">Professor, MIT CSAIL · Expert in NLP for healthcare · MacArthur Fellow</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading researcher in AI for medicine</div>
+    <div class="connection">"Your approach to AI in healthcare informs Serif's integration of clinical and wearable data."</div>
+    <div class="where">📍 MIT CSAIL · Academic conferences · MIT network</div>
+  </div>
+</div>
+
+<!-- CATEGORY 4 -->
+<div class="category">
+  <h2 class="category-header">Category 4: Health Tech / Digital Health Leaders</h2>
+
+  <div class="priority-label priority-red">🔴 Priority Targets</div>
+
+  <div class="target-card">
+    <h3>Josh Clemente</h3>
+    <div class="title">Former SpaceX engineer · Co-founder &amp; CEO, Levels</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading CGM-based personalized health platform; proven B2B2C model; strong data/analytics focus</div>
+    <div class="connection">"Levels' metabolic optimization approach would benefit from Serif's causal inference framework to determine which interventions actually improve glucose control for specific individuals."</div>
+    <div class="where">📍 LinkedIn: Josh Clemente Levels · @joshdclemente · Levels partnerships</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Casey Means</h3>
+    <div class="title">Physician, Stanford-trained · Co-founder &amp; CMO, Levels</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Medical credibility in metabolic health space; understands clinical adoption challenges</div>
+    <div class="connection">"Your clinical perspective on metabolic optimization aligns with Serif's approach to evidence-based personalized health insights."</div>
+    <div class="where">📍 LinkedIn: Casey Means MD Levels · @thecastramd · Stanford medical network</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Harpreet Rai</h3>
+    <div class="title">CEO, Oura</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading sleep/recovery wearable platform; strong data analytics capabilities</div>
+    <div class="connection">"Oura's sleep and recovery data represents a perfect use case for Serif's causal inference—determining which interventions actually improve individual sleep quality."</div>
+    <div class="where">📍 LinkedIn: Harpreet Rai Oura · Oura corporate contacts</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Will Ahmed</h3>
+    <div class="title">Founder &amp; CEO, WHOOP</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Focus on HRV, strain, and recovery optimization; data-driven approach to fitness</div>
+    <div class="connection">"WHOOP's strain and recovery framework would benefit from causal modeling to personalize training recommendations based on individual response patterns."</div>
+    <div class="where">📍 LinkedIn: Will Ahmed WHOOP · @willjahmed · WHOOP partnerships</div>
+  </div>
+
+  <div class="priority-label priority-yellow">🟡 Secondary Targets</div>
+
+  <div class="target-card">
+    <h3>Mark Cuban</h3>
+    <div class="title">Entrepreneur, investor · Founder, Cost Plus Drugs</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Major healthcare disruptor; interested in cost-effective health solutions</div>
+    <div class="connection">"Serif's approach to reducing clinical workload (80hrs→10min per patient) aligns with your mission to make healthcare more efficient and affordable."</div>
+    <div class="where">📍 LinkedIn: Mark Cuban · @mcuban · Cuban Companies</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Atul Butte</h3>
+    <div class="title">Chief Data Scientist, UCSF Health · Professor of Pediatrics</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Bridge between academic research and clinical implementation; expert in health data</div>
+    <div class="connection">"Your experience in health data science informs Serif's approach to integrating wearable and clinical data for causal inference."</div>
+    <div class="where">📍 UCSF · LinkedIn: Atul Butte UCSF · Academic network</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Blackstone LaunchPad Network</h3>
+    <div class="title">Health Tech Accelerator Alumni</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Many health tech companies need better analytics/AI capabilities</div>
+    <div class="connection">"Serif provides the causal inference backend that many digital health companies need to validate their interventions."</div>
+    <div class="where">📍 Accelerator networks · Techstars Health · Rock Health portfolio</div>
+  </div>
+
+  <div class="target-card">
+    <h3>Todd Park</h3>
+    <div class="title">Co-founder, Devoted Health · Former US CTO</div>
+    <div class="field"><span class="field-label">Why Relevant:</span> Deep healthcare policy and technology experience; influential in health tech</div>
+    <div class="connection">"Your experience with healthcare technology adoption informs Serif's go-to-market through EHR integration."</div>
+    <div class="where">📍 LinkedIn: Todd Park · Health tech networks</div>
+  </div>
+</div>
+
+<!-- CATEGORY 5 -->
+<div class="category">
+  <h2 class="category-header">Category 5: Other Discovery Channels</h2>
+
+  <div class="priority-label priority-red">🔴 Priority Targets</div>
+
+  <div class="group-target">
+    <h3>Society for Clinical Trials (SCT) Conference</h3>
+    <div class="field"><span class="field-label">Why Relevant:</span> Leading conference for clinical trials methodology; perfect audience for N-of-1 and personalized medicine</div>
+    <ul class="key-people">
+      <li><strong>Janet Wittes</strong> — Statistics Collaborative</li>
+      <li><strong>Frank Harrell Jr.</strong> — Vanderbilt University</li>
+      <li><strong>Don Berry</strong> — UT MD Anderson</li>
+    </ul>
+    <div class="connection">"Serif applies clinical trials methodology (randomization, causal inference) at the individual level through wearable devices."</div>
+    <div class="where">📍 SCT conference attendee lists · Society membership directories</div>
+  </div>
+
+  <div class="group-target">
+    <h3>International Society for Clinical Trials Methodology (ISCTM)</h3>
+    <div class="field"><span class="field-label">Why Relevant:</span> Global network of clinical trials experts; increasingly interested in adaptive and personalized approaches</div>
+    <ul class="key-people">
+      <li><strong>Lisa LaVange</strong> — FDA (former)</li>
+      <li><strong>John Concato</strong> — Yale/FDA</li>
+      <li><strong>Michael Rosenblum</strong> — Johns Hopkins</li>
+    </ul>
+    <div class="connection">"Serif extends clinical trials methodology to continuous, individualized health optimization."</div>
+    <div class="where">📍 ISCTM conference · FDA connections · Academic networks</div>
+  </div>
+
+  <div class="priority-label priority-yellow">🟡 Secondary Targets</div>
+
+  <div class="group-target">
+    <h3>Quantified Self Movement Leaders</h3>
+    <div class="field"><span class="field-label">Why Relevant:</span> Early adopters of self-experimentation; understand value of personal data</div>
+    <ul class="key-people">
+      <li><strong>Gary Wolf</strong> — Quantified Self co-founder</li>
+      <li><strong>Kevin Kelly</strong> — Wired co-founder, self-tracking advocate</li>
+      <li><strong>Larry Smarr</strong> — UCSD, self-tracking pioneer</li>
+    </ul>
+    <div class="connection">"Serif provides the statistical rigor that the QS movement needs to make self-experimentation scientifically valid."</div>
+    <div class="where">📍 QS conferences · LinkedIn · QS community</div>
+  </div>
+
+  <div class="group-target">
+    <h3>Substack Health Newsletter Authors</h3>
+    <div class="field"><span class="field-label">Why Relevant:</span> Growing influence in health discourse; engaged audiences interested in health optimization</div>
+    <ul class="key-people">
+      <li><strong>Marty Makary</strong> — Johns Hopkins surgeon, healthcare policy</li>
+      <li><strong>Vinay Prasad</strong> — UCSF oncologist, evidence-based medicine</li>
+      <li><strong>Adam Cifu</strong> — University of Chicago, medical reversal expert</li>
+    </ul>
+    <div class="connection">"Serif provides the evidence-based framework these authors advocate for, applied to individual health optimization."</div>
+    <div class="where">📍 Substack · Twitter · Academic affiliations</div>
+  </div>
+
+  <div class="group-target">
+    <h3>Digital Health Communities</h3>
+    <div class="field"><span class="field-label">Why Relevant:</span> Active communities of health tech professionals, researchers, and entrepreneurs</div>
+    <ul class="key-people">
+      <li><strong>Health Tech Nerds</strong> — Slack community</li>
+      <li><strong>Digital Health Today</strong> — Community &amp; newsletter</li>
+      <li><strong>Biotech/Pharma Discords</strong> — Various communities</li>
+    </ul>
+    <div class="connection">Participate in discussions about personalized medicine, wearable data analytics, and clinical validation</div>
+    <div class="where">📍 Community directories · Referrals from existing members</div>
+  </div>
+</div>
+
+<!-- PRIORITY OUTREACH MATRIX -->
+<div class="matrix">
+  <h2>Priority Outreach Matrix</h2>
+
+  <div class="timeline">
+    <span class="timeline-label tl-immediate">Immediate — Next 2 Weeks</span>
+    <table class="matrix-table">
+      <thead><tr><th>#</th><th>Target</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Eric Daza</strong></td><td>Direct academic collaboration on MOTR framework</td></tr>
+        <tr><td class="rank">2</td><td><strong>Peter Attia</strong></td><td>Podcast guest opportunity + potential advisory role</td></tr>
+        <tr><td class="rank">3</td><td><strong>Josh Clemente / Casey Means</strong> (Levels)</td><td>Partnership discussion for causal CGM analytics</td></tr>
+        <tr><td class="rank">4</td><td><strong>Andrew Huberman</strong></td><td>Podcast guest discussing causal inference in health</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="timeline">
+    <span class="timeline-label tl-short">Short Term — Next Month</span>
+    <table class="matrix-table">
+      <thead><tr><th>#</th><th>Target</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">5</td><td><strong>Susan Murphy</strong></td><td>Academic collaboration on adaptive health interventions</td></tr>
+        <tr><td class="rank">6</td><td><strong>Brady Neal</strong></td><td>Podcast guest on Causal Revolution</td></tr>
+        <tr><td class="rank">7</td><td><strong>Harpreet Rai</strong> (Oura)</td><td>Partnership discussion for sleep optimization</td></tr>
+        <tr><td class="rank">8</td><td><strong>Finale Doshi-Velez</strong></td><td>Academic collaboration on interpretable health ML</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="timeline">
+    <span class="timeline-label tl-medium">Medium Term — Next Quarter</span>
+    <table class="matrix-table">
+      <thead><tr><th>#</th><th>Target</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">9</td><td><strong>Michael Jordan</strong></td><td>Advisory role or academic collaboration</td></tr>
+        <tr><td class="rank">10</td><td><strong>Will Ahmed</strong> (WHOOP)</td><td>Partnership discussion for training optimization</td></tr>
+        <tr><td class="rank">11</td><td><strong>Judea Pearl</strong></td><td>Thought leadership collaboration</td></tr>
+        <tr><td class="rank">12</td><td><strong>Rhonda Patrick</strong></td><td>Podcast guest + potential advisory role</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- OUTREACH TEMPLATES -->
+<div class="templates">
+  <h2>Outreach Templates</h2>
+
+  <div class="template-block">
+    <h3>📚 Academic Researchers</h3>
+    <div class="subject">Subject: Causal Inference for Personalized Health — Serif Collaboration</div>
+    <div class="body">Hi [Name],
+
+Your work on [specific research area] directly informs the methodology behind Serif, our AI health platform using causal inference and Bayesian methods on wearable + clinical data.
+
+Specifically, your [specific paper/framework] addresses exactly the challenge we face in [specific application]. We've implemented [specific method] and achieved [specific results: 92% retention, 80hrs→10min per patient].
+
+Would you be interested in discussing potential collaboration on [specific research question relevant to their work]?
+
+Best,
+Sam — Founder, Serif</div>
+  </div>
+
+  <div class="template-block">
+    <h3>🎙️ Podcast Hosts</h3>
+    <div class="subject">Subject: Causal Inference Meets Personalized Health — Serif Founder Interview</div>
+    <div class="body">Hi [Name],
+
+I'm the founder of Serif, an AI health platform that applies causal inference and Bayesian methods (MOTR/N-of-1 framework) to wearable + clinical data for personalized health insights.
+
+Your podcast's focus on [specific area] aligns perfectly with our approach. We've achieved [specific metrics] by bringing academic causal inference to practical health optimization.
+
+I'd love to discuss the intersection of [their focus area] and causal inference for personalized medicine on [podcast name].
+
+Best,
+Sam</div>
+  </div>
+
+  <div class="template-block">
+    <h3>🏢 Industry Leaders</h3>
+    <div class="subject">Subject: Causal Analytics for [Their Company] — Partnership Discussion</div>
+    <div class="body">Hi [Name],
+
+[Their company]'s approach to [specific area] represents exactly the use case where causal inference can transform user outcomes.
+
+Serif provides the causal modeling framework to determine which interventions actually work for specific individuals. Our approach could help [their company] move beyond correlation to true personalization.
+
+Early results: [specific metrics relevant to their business model].
+
+Would you be open to a brief conversation about potential partnership opportunities?
+
+Best,
+Sam</div>
+  </div>
+</div>
+
+<!-- SUCCESS METRICS -->
+<div class="metrics">
+  <h2>Success Metrics <span style="color:var(--text-muted);font-weight:400;font-size:0.85rem;">— 90 Day Targets</span></h2>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="number">5–8</div>
+      <div class="label">Podcast Appearances</div>
+    </div>
+    <div class="metric-card">
+      <div class="number">2–3</div>
+      <div class="label">Academic Collaborations</div>
+    </div>
+    <div class="metric-card">
+      <div class="number">3–4</div>
+      <div class="label">Industry Partnerships</div>
+    </div>
+    <div class="metric-card">
+      <div class="number">1–2</div>
+      <div class="label">Advisory Relationships</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:0.95rem;margin-bottom:0.6rem;">Leading Indicators</h3>
+  <ul class="leading-indicators">
+    <li>Response rate to initial outreach (target: &gt;40%)</li>
+    <li>Meeting acceptance rate (target: &gt;60% of responses)</li>
+    <li>Follow-up engagement rate</li>
+    <li>Referrals generated from initial contacts</li>
+  </ul>
+</div>
+
+<!-- NOTES -->
+<div class="notes">
+  <h2>Notes &amp; Next Steps</h2>
+  <ol>
+    <li><strong>Prioritize academic credibility first</strong> — Establishing relationships with Eric Daza, Susan Murphy, and other academics provides validation for industry conversations</li>
+    <li><strong>Leverage podcast appearances</strong> — Single appearances can reach thousands of potential users and create credibility for B2B partnerships</li>
+    <li><strong>Focus on methodology differentiation</strong> — Emphasize how causal inference separates Serif from correlation-based health tech</li>
+    <li><strong>Build clinical advisory board</strong> — Need 2-3 physicians with digital health experience to accelerate clinical adoption</li>
+    <li><strong>Document partnership frameworks</strong> — Prepare specific collaboration models for different types of partners (data sharing, white-label analytics, etc.)</li>
+  </ol>
+</div>
+
+<div style="text-align:center;color:var(--text-muted);font-size:0.8rem;padding:2rem 0 1rem;border-top:1px solid var(--border);">
+  Serif Outreach Target Research · 40+ targets across 5 categories · Generated Feb 4, 2026
+</div>
+
+</body>
+</html>
