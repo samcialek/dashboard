@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serif | Partner Overview — Constellation DAG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0D0D0D;
+            --ink-80: #1a1a1a;
+            --ink-60: #525252;
+            --ink-40: #858585;
+            --ink-20: #B8B8B8;
+            --ink-10: #E0E0E0;
+            --ink-05: #F2F2F2;
+            --white: #FFFFFF;
+            /* Darker sky for hero - can support white text */
+            --sky-dark: #1E4D6B;
+            --sky-darker: #153A52;
+            --sky: #89ccf0;
+            --sky-light: #d4ebf9;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @page { size: letter; margin: 0; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ink-05);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            max-height: 11in;
+            margin: 0 auto 40px;
+            padding: 0;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 48px rgba(0,0,0,0.12);
+        }
+        
+        @media print {
+            body { background: white; }
+            .page { width: 8.5in; height: 11in; margin: 0; box-shadow: none; page-break-after: always; }
+        }
+        
+        /* Dark hero with DAG constellation */
+        .dark-hero {
+            background: linear-gradient(135deg, var(--sky-darker) 0%, var(--sky-dark) 100%);
+            padding: 32px 48px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dag-constellation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        
+        .dag-constellation svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 28px;
+            color: var(--white);
+            letter-spacing: -0.02em;
+        }
+        
+        .tagline {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+        }
+        
+        .header-contact {
+            text-align: right;
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .header-contact .name {
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        .hero-label {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 12px;
+        }
+        
+        .dark-hero h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.15;
+            color: var(--white);
+            max-width: 480px;
+        }
+        
+        .dark-hero h1 em {
+            font-style: italic;
+            color: var(--sky);
+        }
+        
+        /* DAG Illustration Section */
+        .dag-section {
+            background: linear-gradient(180deg, var(--sky-dark) 0%, var(--sky-darker) 100%);
+            padding: 28px 48px 32px;
+            position: relative;
+        }
+        
+        .dag-title {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .dag-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .dag-visual svg {
+            width: 100%;
+            max-width: 650px;
+            height: 180px;
+        }
+        
+        /* Light content area */
+        .light-content {
+            padding: 28px 48px;
+            background: var(--white);
+        }
+        
+        /* Metrics - minimal */
+        .metrics-strip {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-top: 1px solid var(--ink-10);
+            border-bottom: 1px solid var(--ink-10);
+            margin-bottom: 24px;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 28px;
+            color: var(--ink);
+            line-height: 1;
+        }
+        
+        .metric-label {
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-40);
+            margin-top: 6px;
+        }
+        
+        /* Two columns */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        
+        .section-label {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ink-40);
+            margin-bottom: 14px;
+        }
+        
+        .minimal-list {
+            list-style: none;
+        }
+        
+        .minimal-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--ink-05);
+            font-size: 12px;
+            color: var(--ink-60);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .minimal-list li:last-child { border-bottom: none; }
+        
+        .minimal-list li .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ink-20);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        
+        .minimal-list li.problem .dot { background: var(--ink-40); }
+        .minimal-list li.solution .dot { background: var(--sky-dark); }
+        
+        .minimal-list li strong { color: var(--ink); }
+        
+        .page-num {
+            position: absolute;
+            bottom: 20px;
+            right: 48px;
+            font-size: 10px;
+            color: var(--ink-20);
+            font-weight: 500;
+        }
+        
+        /* Page 2 */
+        .dark-hero-compact {
+            background: linear-gradient(135deg, var(--sky-darker) 0%, var(--sky-dark) 100%);
+            padding: 28px 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-hero-compact h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 26px;
+            font-weight: 400;
+            color: var(--white);
+            margin-top: 12px;
+        }
+        
+        .dark-hero-compact h1 em {
+            font-style: italic;
+            color: var(--sky);
+        }
+        
+        /* Flow diagram */
+        .flow-section {
+            padding: 24px 48px;
+            background: var(--ink-05);
+        }
+        
+        .flow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .flow-node {
+            text-align: center;
+            padding: 14px 18px;
+            background: var(--white);
+            border: 1px solid var(--ink-10);
+            border-radius: 4px;
+            min-width: 120px;
+        }
+        
+        .flow-node h4 {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+        
+        .flow-node p {
+            font-size: 9px;
+            color: var(--ink-40);
+        }
+        
+        .flow-arrow {
+            color: var(--ink-40);
+            font-size: 16px;
+        }
+        
+        /* View cards */
+        .view-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .view-card {
+            border: 1px solid var(--ink-10);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .view-card-header {
+            background: var(--sky-dark);
+            padding: 8px 14px;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+        
+        .view-card-content {
+            padding: 14px;
+        }
+        
+        .view-card-content ul { list-style: none; }
+        
+        .view-card-content ul li {
+            font-size: 10px;
+            color: var(--ink);
+            padding: 5px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .view-card-content ul li .indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 4px;
+            background: var(--ink-20);
+        }
+        
+        .view-card-content ul li .indicator.alert { background: #ef4444; }
+        .view-card-content ul li .indicator.warn { background: #f59e0b; }
+        .view-card-content ul li .indicator.ok { background: #10b981; }
+        
+        /* Pricing */
+        .pricing-section {
+            background: linear-gradient(135deg, var(--sky-darker) 0%, var(--sky-dark) 100%);
+            padding: 20px 24px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .pricing-section h4 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 16px;
+            color: var(--white);
+            margin-bottom: 14px;
+        }
+        
+        .pricing-row {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .pricing-item {
+            text-align: center;
+        }
+        
+        .pricing-item .value {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 24px;
+            color: var(--white);
+        }
+        
+        .pricing-item .label {
+            font-size: 9px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        
+        /* CTA */
+        .cta-minimal {
+            text-align: center;
+            padding: 16px;
+        }
+        
+        .cta-minimal p {
+            font-size: 12px;
+            color: var(--ink-60);
+            margin-bottom: 6px;
+        }
+        
+        .cta-minimal .email {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 18px;
+            color: var(--sky-dark);
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+    <div class="dark-hero">
+        <div class="dag-constellation">
+            <svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMid slice">
+                <!-- Ambient stars -->
+                <circle cx="50" cy="30" r="1.5" fill="white" opacity="0.3"/>
+                <circle cx="120" cy="80" r="1" fill="white" opacity="0.2"/>
+                <circle cx="200" cy="45" r="1.5" fill="white" opacity="0.25"/>
+                <circle cx="750" cy="60" r="1" fill="white" opacity="0.2"/>
+                <circle cx="700" cy="150" r="1.5" fill="white" opacity="0.3"/>
+                <circle cx="780" cy="100" r="1" fill="white" opacity="0.2"/>
+            </svg>
+        </div>
+        <div class="hero-content">
+            <div class="hero-header">
+                <div>
+                    <div class="logo">Serif</div>
+                    <div class="tagline">The intelligence layer for health optimization</div>
+                </div>
+                <div class="header-contact">
+                    <div class="name">Sam Cialek, Founder</div>
+                    <div>sam@serif.life</div>
+                </div>
+            </div>
+            <div class="hero-label">For Longevity Clinics & Elite Practitioners</div>
+            <h1>Your clients want to know what works for <em>them</em> — not population averages</h1>
+        </div>
+    </div>
+    
+    <!-- DAG Constellation Illustration -->
+    <div class="dag-section">
+        <div class="dag-title">The Complete Framework</div>
+        <div class="dag-visual">
+            <svg viewBox="0 0 650 180" preserveAspectRatio="xMidYMid meet">
+                <!-- Background constellation dots -->
+                <circle cx="30" cy="40" r="1.5" fill="white" opacity="0.15"/>
+                <circle cx="80" cy="160" r="1" fill="white" opacity="0.1"/>
+                <circle cx="580" cy="30" r="1.5" fill="white" opacity="0.15"/>
+                <circle cx="620" cy="140" r="1" fill="white" opacity="0.1"/>
+                <circle cx="320" cy="20" r="1" fill="white" opacity="0.1"/>
+                
+                <!-- LAYER 1: Input nodes (left side) -->
+                <!-- Wearables -->
+                <circle cx="60" cy="50" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="60" cy="50" r="4" fill="white" opacity="0.8"/>
+                <text x="60" y="85" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Wearables</text>
+                
+                <!-- Labs -->
+                <circle cx="60" cy="130" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="60" cy="130" r="4" fill="white" opacity="0.8"/>
+                <text x="60" y="165" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Labs</text>
+                
+                <!-- Behaviors -->
+                <circle cx="140" cy="90" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="140" cy="90" r="4" fill="white" opacity="0.8"/>
+                <text x="140" y="125" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Behaviors</text>
+                
+                <!-- LAYER 2: Serif Engine (center) -->
+                <circle cx="325" cy="90" r="32" fill="none" stroke="#89ccf0" stroke-width="2" opacity="0.9"/>
+                <circle cx="325" cy="90" r="20" fill="none" stroke="#89ccf0" stroke-width="1" opacity="0.5"/>
+                <circle cx="325" cy="90" r="8" fill="#89ccf0" opacity="0.9"/>
+                <text x="325" y="140" text-anchor="middle" fill="#89ccf0" font-size="10" font-weight="600" font-family="Inter, sans-serif">SERIF ENGINE</text>
+                <text x="325" y="152" text-anchor="middle" fill="white" font-size="7" opacity="0.5" font-family="Inter, sans-serif">Bayesian Calibration</text>
+                
+                <!-- LAYER 3: Output nodes (right side) -->
+                <!-- Causal Insights -->
+                <circle cx="510" cy="50" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="510" cy="50" r="4" fill="white" opacity="0.8"/>
+                <text x="510" y="85" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Causal Insights</text>
+                
+                <!-- Daily Protocols -->
+                <circle cx="510" cy="130" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="510" cy="130" r="4" fill="white" opacity="0.8"/>
+                <text x="510" y="165" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Daily Protocols</text>
+                
+                <!-- LAYER 4: Outcome node (far right) -->
+                <circle cx="590" cy="90" r="16" fill="none" stroke="#89ccf0" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="590" cy="90" r="4" fill="#89ccf0" opacity="0.8"/>
+                <text x="590" y="125" text-anchor="middle" fill="#89ccf0" font-size="8" font-weight="500" font-family="Inter, sans-serif">Outcomes</text>
+                
+                <!-- CONNECTIONS: Inputs → Engine -->
+                <line x1="76" y1="50" x2="293" y2="80" stroke="white" stroke-width="1" opacity="0.3"/>
+                <line x1="76" y1="130" x2="293" y2="100" stroke="white" stroke-width="1" opacity="0.3"/>
+                <line x1="156" y1="90" x2="293" y2="90" stroke="white" stroke-width="1" opacity="0.3"/>
+                
+                <!-- CONNECTIONS: Engine → Outputs -->
+                <line x1="357" y1="80" x2="494" y2="50" stroke="white" stroke-width="1" opacity="0.3"/>
+                <line x1="357" y1="100" x2="494" y2="130" stroke="white" stroke-width="1" opacity="0.3"/>
+                
+                <!-- CONNECTIONS: Outputs → Outcome -->
+                <line x1="526" y1="50" x2="574" y2="80" stroke="white" stroke-width="1" opacity="0.3"/>
+                <line x1="526" y1="130" x2="574" y2="100" stroke="white" stroke-width="1" opacity="0.3"/>
+                
+                <!-- Feedback loop (dashed) -->
+                <path d="M 590 106 Q 590 170 325 170 Q 140 170 140 106" fill="none" stroke="#89ccf0" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+                <text x="325" y="180" text-anchor="middle" fill="#89ccf0" font-size="7" opacity="0.5" font-family="Inter, sans-serif">Continuous Learning</text>
+            </svg>
+        </div>
+    </div>
+    
+    <div class="light-content">
+        <div class="metrics-strip">
+            <div class="metric">
+                <div class="metric-value">87%</div>
+                <div class="metric-label">Less Churn</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">90%</div>
+                <div class="metric-label">Time Saved</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">7 days</div>
+                <div class="metric-label">To Personalize</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">3.2×</div>
+                <div class="metric-label">Engagement</div>
+            </div>
+        </div>
+        
+        <div class="two-col">
+            <div>
+                <div class="section-label">The Problem</div>
+                <ul class="minimal-list">
+                    <li class="problem"><span class="dot"></span><span><strong>Generic advice fails.</strong> Population medians miss individual thresholds by 2–5×.</span></li>
+                    <li class="problem"><span class="dot"></span><span><strong>Coaching doesn't scale.</strong> Deep personalization requires hours per client.</span></li>
+                    <li class="problem"><span class="dot"></span><span><strong>Data overload.</strong> Oura, CGM, labs — no unified picture.</span></li>
+                    <li class="problem"><span class="dot"></span><span><strong>Churn kills growth.</strong> Frustrated clients leave.</span></li>
+                </ul>
+            </div>
+            <div>
+                <div class="section-label">Serif Delivers</div>
+                <ul class="minimal-list">
+                    <li class="solution"><span class="dot"></span><span><strong>Causal insights.</strong> "HRV improves 23% when you walk 6K+ before noon."</span></li>
+                    <li class="solution"><span class="dot"></span><span><strong>Automated depth.</strong> Every client gets your best work.</span></li>
+                    <li class="solution"><span class="dot"></span><span><strong>Unified view.</strong> All data → what actually moves outcomes.</span></li>
+                    <li class="solution"><span class="dot"></span><span><strong>Clients stay.</strong> Personalized progress = referrals.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-num">01</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+    <div class="dark-hero-compact">
+        <div class="dag-constellation">
+            <svg viewBox="0 0 800 120" preserveAspectRatio="xMidYMid slice">
+                <circle cx="700" cy="30" r="1.5" fill="white" opacity="0.2"/>
+                <circle cx="750" cy="80" r="1" fill="white" opacity="0.15"/>
+                <circle cx="720" cy="100" r="1.5" fill="white" opacity="0.2"/>
+            </svg>
+        </div>
+        <div class="hero-content">
+            <div class="hero-header">
+                <div>
+                    <div class="logo">Serif</div>
+                </div>
+                <div class="header-contact">
+                    <div class="name">Sam Cialek, Founder</div>
+                    <div>sam@serif.life</div>
+                </div>
+            </div>
+            <div class="hero-label">How It Works</div>
+            <h1>Plug Serif into your practice — <em>keep your workflow</em></h1>
+        </div>
+    </div>
+    
+    <div class="flow-section">
+        <div class="flow-row">
+            <div class="flow-node">
+                <h4>Connect Data</h4>
+                <p>Oura, Whoop, CGM, labs</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+                <h4>7-Day Calibration</h4>
+                <p>Models adapt to individual</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+                <h4>Insights Flow</h4>
+                <p>Clients + coach dashboard</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="light-content" style="padding-top: 20px;">
+        <div class="view-cards">
+            <div class="view-card">
+                <div class="view-card-header">Client View</div>
+                <div class="view-card-content">
+                    <ul>
+                        <li><span class="indicator"></span>"Fasting glucose drops 12% when you finish eating by 7 PM"</li>
+                        <li><span class="indicator"></span>"Sleep quality improves 18% with screens off by 9:30 PM"</li>
+                        <li><span class="indicator"></span>Today's Protocol: Walk before lunch, no caffeine after 2 PM</li>
+                        <li><span class="indicator"></span>Progress tracking toward their goals</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="view-card">
+                <div class="view-card-header">Coach Dashboard</div>
+                <div class="view-card-content">
+                    <ul>
+                        <li><span class="indicator alert"></span>At-Risk: Sarah — glucose trending up</li>
+                        <li><span class="indicator warn"></span>Needs Attention: Marcus — overtraining</li>
+                        <li><span class="indicator ok"></span>On Track: 12 clients improving</li>
+                        <li><span class="indicator"></span>Pre-populated session notes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pricing-section">
+            <h4>Pricing</h4>
+            <div class="pricing-row">
+                <div class="pricing-item">
+                    <div class="value">$1,000</div>
+                    <div class="label">Platform / Month</div>
+                </div>
+                <div class="pricing-item">
+                    <div class="value">$3–7</div>
+                    <div class="label">Per Client / Month</div>
+                </div>
+                <div class="pricing-item">
+                    <div class="value">$0</div>
+                    <div class="label">Pilot Setup</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-minimal">
+            <p>Ready to give your clients the personalization they're looking for?</p>
+            <div class="email">sam@serif.life</div>
+        </div>
+    </div>
+    
+    <div class="page-num">02</div>
+</div>
+
+</body>
+</html>
