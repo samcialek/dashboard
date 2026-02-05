@@ -15,11 +15,21 @@
             --ink-10: #E0E0E0;
             --ink-05: #F2F2F2;
             --white: #FFFFFF;
-            /* Darker sky for hero - can support white text */
-            --sky-dark: #1E4D6B;
-            --sky-darker: #153A52;
+            /* Main brand blue */
+            --brand: #5cbdea;
+            --brand-dark: #1a5a7a;
+            --brand-darker: #133d52;
+            /* Serif pastel palette */
             --sky: #89ccf0;
             --sky-light: #d4ebf9;
+            --blush: #f8c8dc;
+            --blush-light: #fceef4;
+            --lavender: #a78bfa;
+            --lavender-light: #ede9fe;
+            --steel: #96b9d0;
+            --steel-light: #dae8f0;
+            --emerald: #10b981;
+            --emerald-light: #d1fae5;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,6 +54,8 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 48px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: column;
         }
         
         @media print {
@@ -51,15 +63,15 @@
             .page { width: 8.5in; height: 11in; margin: 0; box-shadow: none; page-break-after: always; }
         }
         
-        /* Dark hero with DAG constellation */
+        /* Dark hero */
         .dark-hero {
-            background: linear-gradient(135deg, var(--sky-darker) 0%, var(--sky-dark) 100%);
-            padding: 32px 48px 24px;
+            background: linear-gradient(135deg, var(--brand-darker) 0%, var(--brand-dark) 100%);
+            padding: 32px 48px 28px;
             position: relative;
             overflow: hidden;
         }
         
-        .dag-constellation {
+        .ambient-stars {
             position: absolute;
             top: 0;
             left: 0;
@@ -68,7 +80,7 @@
             pointer-events: none;
         }
         
-        .dag-constellation svg {
+        .ambient-stars svg {
             width: 100%;
             height: 100%;
         }
@@ -129,52 +141,24 @@
         
         .dark-hero h1 em {
             font-style: italic;
-            color: var(--sky);
-        }
-        
-        /* DAG Illustration Section */
-        .dag-section {
-            background: linear-gradient(180deg, var(--sky-dark) 0%, var(--sky-darker) 100%);
-            padding: 28px 48px 32px;
-            position: relative;
-        }
-        
-        .dag-title {
-            font-size: 9px;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .dag-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .dag-visual svg {
-            width: 100%;
-            max-width: 650px;
-            height: 180px;
+            color: var(--brand);
         }
         
         /* Light content area */
         .light-content {
-            padding: 28px 48px;
+            padding: 24px 48px;
             background: var(--white);
+            flex: 1;
         }
         
         /* Metrics - minimal */
         .metrics-strip {
             display: flex;
             justify-content: space-between;
-            padding: 20px 0;
+            padding: 18px 0;
             border-top: 1px solid var(--ink-10);
             border-bottom: 1px solid var(--ink-10);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         
         .metric {
@@ -183,7 +167,7 @@
         
         .metric-value {
             font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 28px;
+            font-size: 26px;
             color: var(--ink);
             line-height: 1;
         }
@@ -194,14 +178,15 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--ink-40);
-            margin-top: 6px;
+            margin-top: 5px;
         }
         
         /* Two columns */
         .two-col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            gap: 28px;
+            margin-bottom: 20px;
         }
         
         .section-label {
@@ -210,7 +195,7 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--ink-40);
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         
         .minimal-list {
@@ -218,9 +203,9 @@
         }
         
         .minimal-list li {
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--ink-05);
-            font-size: 12px;
+            font-size: 11px;
             color: var(--ink-60);
             display: flex;
             align-items: flex-start;
@@ -235,26 +220,55 @@
             border-radius: 50%;
             background: var(--ink-20);
             flex-shrink: 0;
-            margin-top: 5px;
+            margin-top: 4px;
         }
         
         .minimal-list li.problem .dot { background: var(--ink-40); }
-        .minimal-list li.solution .dot { background: var(--sky-dark); }
+        .minimal-list li.solution .dot { background: var(--brand); }
         
         .minimal-list li strong { color: var(--ink); }
         
+        /* DAG Section at bottom */
+        .dag-section {
+            background: linear-gradient(180deg, var(--brand-dark) 0%, var(--brand-darker) 100%);
+            padding: 20px 48px 24px;
+            margin-top: auto;
+        }
+        
+        .dag-title {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .dag-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .dag-visual svg {
+            width: 100%;
+            max-width: 620px;
+            height: 140px;
+        }
+        
         .page-num {
             position: absolute;
-            bottom: 20px;
+            bottom: 16px;
             right: 48px;
             font-size: 10px;
-            color: var(--ink-20);
+            color: rgba(255,255,255,0.4);
             font-weight: 500;
         }
         
         /* Page 2 */
         .dark-hero-compact {
-            background: linear-gradient(135deg, var(--sky-darker) 0%, var(--sky-dark) 100%);
+            background: linear-gradient(135deg, var(--brand-darker) 0%, var(--brand-dark) 100%);
             padding: 28px 48px;
             position: relative;
             overflow: hidden;
@@ -270,12 +284,12 @@
         
         .dark-hero-compact h1 em {
             font-style: italic;
-            color: var(--sky);
+            color: var(--brand);
         }
         
         /* Flow diagram */
         .flow-section {
-            padding: 24px 48px;
+            padding: 20px 48px;
             background: var(--ink-05);
         }
         
@@ -288,18 +302,18 @@
         
         .flow-node {
             text-align: center;
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: var(--white);
             border: 1px solid var(--ink-10);
             border-radius: 4px;
-            min-width: 120px;
+            min-width: 110px;
         }
         
         .flow-node h4 {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: var(--ink);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         
         .flow-node p {
@@ -317,7 +331,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         
         .view-card {
@@ -327,7 +341,7 @@
         }
         
         .view-card-header {
-            background: var(--sky-dark);
+            background: var(--brand-dark);
             padding: 8px 14px;
             font-size: 9px;
             font-weight: 600;
@@ -337,7 +351,7 @@
         }
         
         .view-card-content {
-            padding: 14px;
+            padding: 12px;
         }
         
         .view-card-content ul { list-style: none; }
@@ -345,7 +359,7 @@
         .view-card-content ul li {
             font-size: 10px;
             color: var(--ink);
-            padding: 5px 0;
+            padding: 4px 0;
             display: flex;
             align-items: flex-start;
             gap: 8px;
@@ -366,17 +380,17 @@
         
         /* Pricing */
         .pricing-section {
-            background: linear-gradient(135deg, var(--sky-darker) 0%, var(--sky-dark) 100%);
-            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--brand-darker) 0%, var(--brand-dark) 100%);
+            padding: 18px 24px;
             border-radius: 4px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         
         .pricing-section h4 {
             font-family: 'Instrument Serif', Georgia, serif;
             font-size: 16px;
             color: var(--white);
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         
         .pricing-row {
@@ -390,7 +404,7 @@
         
         .pricing-item .value {
             font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--white);
         }
         
@@ -405,19 +419,28 @@
         /* CTA */
         .cta-minimal {
             text-align: center;
-            padding: 16px;
+            padding: 14px;
         }
         
         .cta-minimal p {
             font-size: 12px;
             color: var(--ink-60);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
         
         .cta-minimal .email {
             font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 18px;
-            color: var(--sky-dark);
+            font-size: 17px;
+            color: var(--brand-dark);
+        }
+        
+        .page-num-light {
+            position: absolute;
+            bottom: 16px;
+            right: 48px;
+            font-size: 10px;
+            color: var(--ink-20);
+            font-weight: 500;
         }
     </style>
 </head>
@@ -426,15 +449,12 @@
 <!-- PAGE 1 -->
 <div class="page">
     <div class="dark-hero">
-        <div class="dag-constellation">
-            <svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMid slice">
-                <!-- Ambient stars -->
-                <circle cx="50" cy="30" r="1.5" fill="white" opacity="0.3"/>
-                <circle cx="120" cy="80" r="1" fill="white" opacity="0.2"/>
-                <circle cx="200" cy="45" r="1.5" fill="white" opacity="0.25"/>
-                <circle cx="750" cy="60" r="1" fill="white" opacity="0.2"/>
-                <circle cx="700" cy="150" r="1.5" fill="white" opacity="0.3"/>
-                <circle cx="780" cy="100" r="1" fill="white" opacity="0.2"/>
+        <div class="ambient-stars">
+            <svg viewBox="0 0 800 160" preserveAspectRatio="xMidYMid slice">
+                <circle cx="700" cy="40" r="1.5" fill="white" opacity="0.2"/>
+                <circle cx="750" cy="100" r="1" fill="white" opacity="0.15"/>
+                <circle cx="650" cy="130" r="1.5" fill="white" opacity="0.2"/>
+                <circle cx="600" cy="60" r="1" fill="white" opacity="0.15"/>
             </svg>
         </div>
         <div class="hero-content">
@@ -450,77 +470,6 @@
             </div>
             <div class="hero-label">For Longevity Clinics & Elite Practitioners</div>
             <h1>Your clients want to know what works for <em>them</em> — not population averages</h1>
-        </div>
-    </div>
-    
-    <!-- DAG Constellation Illustration -->
-    <div class="dag-section">
-        <div class="dag-title">The Complete Framework</div>
-        <div class="dag-visual">
-            <svg viewBox="0 0 650 180" preserveAspectRatio="xMidYMid meet">
-                <!-- Background constellation dots -->
-                <circle cx="30" cy="40" r="1.5" fill="white" opacity="0.15"/>
-                <circle cx="80" cy="160" r="1" fill="white" opacity="0.1"/>
-                <circle cx="580" cy="30" r="1.5" fill="white" opacity="0.15"/>
-                <circle cx="620" cy="140" r="1" fill="white" opacity="0.1"/>
-                <circle cx="320" cy="20" r="1" fill="white" opacity="0.1"/>
-                
-                <!-- LAYER 1: Input nodes (left side) -->
-                <!-- Wearables -->
-                <circle cx="60" cy="50" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="60" cy="50" r="4" fill="white" opacity="0.8"/>
-                <text x="60" y="85" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Wearables</text>
-                
-                <!-- Labs -->
-                <circle cx="60" cy="130" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="60" cy="130" r="4" fill="white" opacity="0.8"/>
-                <text x="60" y="165" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Labs</text>
-                
-                <!-- Behaviors -->
-                <circle cx="140" cy="90" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="140" cy="90" r="4" fill="white" opacity="0.8"/>
-                <text x="140" y="125" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Behaviors</text>
-                
-                <!-- LAYER 2: Serif Engine (center) -->
-                <circle cx="325" cy="90" r="32" fill="none" stroke="#89ccf0" stroke-width="2" opacity="0.9"/>
-                <circle cx="325" cy="90" r="20" fill="none" stroke="#89ccf0" stroke-width="1" opacity="0.5"/>
-                <circle cx="325" cy="90" r="8" fill="#89ccf0" opacity="0.9"/>
-                <text x="325" y="140" text-anchor="middle" fill="#89ccf0" font-size="10" font-weight="600" font-family="Inter, sans-serif">SERIF ENGINE</text>
-                <text x="325" y="152" text-anchor="middle" fill="white" font-size="7" opacity="0.5" font-family="Inter, sans-serif">Bayesian Calibration</text>
-                
-                <!-- LAYER 3: Output nodes (right side) -->
-                <!-- Causal Insights -->
-                <circle cx="510" cy="50" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="510" cy="50" r="4" fill="white" opacity="0.8"/>
-                <text x="510" y="85" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Causal Insights</text>
-                
-                <!-- Daily Protocols -->
-                <circle cx="510" cy="130" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="510" cy="130" r="4" fill="white" opacity="0.8"/>
-                <text x="510" y="165" text-anchor="middle" fill="white" font-size="8" opacity="0.7" font-family="Inter, sans-serif">Daily Protocols</text>
-                
-                <!-- LAYER 4: Outcome node (far right) -->
-                <circle cx="590" cy="90" r="16" fill="none" stroke="#89ccf0" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="590" cy="90" r="4" fill="#89ccf0" opacity="0.8"/>
-                <text x="590" y="125" text-anchor="middle" fill="#89ccf0" font-size="8" font-weight="500" font-family="Inter, sans-serif">Outcomes</text>
-                
-                <!-- CONNECTIONS: Inputs → Engine -->
-                <line x1="76" y1="50" x2="293" y2="80" stroke="white" stroke-width="1" opacity="0.3"/>
-                <line x1="76" y1="130" x2="293" y2="100" stroke="white" stroke-width="1" opacity="0.3"/>
-                <line x1="156" y1="90" x2="293" y2="90" stroke="white" stroke-width="1" opacity="0.3"/>
-                
-                <!-- CONNECTIONS: Engine → Outputs -->
-                <line x1="357" y1="80" x2="494" y2="50" stroke="white" stroke-width="1" opacity="0.3"/>
-                <line x1="357" y1="100" x2="494" y2="130" stroke="white" stroke-width="1" opacity="0.3"/>
-                
-                <!-- CONNECTIONS: Outputs → Outcome -->
-                <line x1="526" y1="50" x2="574" y2="80" stroke="white" stroke-width="1" opacity="0.3"/>
-                <line x1="526" y1="130" x2="574" y2="100" stroke="white" stroke-width="1" opacity="0.3"/>
-                
-                <!-- Feedback loop (dashed) -->
-                <path d="M 590 106 Q 590 170 325 170 Q 140 170 140 106" fill="none" stroke="#89ccf0" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
-                <text x="325" y="180" text-anchor="middle" fill="#89ccf0" font-size="7" opacity="0.5" font-family="Inter, sans-serif">Continuous Learning</text>
-            </svg>
         </div>
     </div>
     
@@ -566,17 +515,87 @@
         </div>
     </div>
     
+    <!-- DAG at bottom -->
+    <div class="dag-section">
+        <div class="dag-title">The Complete Framework</div>
+        <div class="dag-visual">
+            <svg viewBox="0 0 620 120" preserveAspectRatio="xMidYMid meet">
+                <!-- Ambient constellation dots -->
+                <circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/>
+                <circle cx="600" cy="100" r="1" fill="white" opacity="0.1"/>
+                <circle cx="310" cy="10" r="1" fill="white" opacity="0.08"/>
+                
+                <!-- INPUT NODES (pastel colors) -->
+                <!-- Wearables - Sky -->
+                <circle cx="50" cy="35" r="14" fill="#89ccf0" opacity="0.3"/>
+                <circle cx="50" cy="35" r="14" fill="none" stroke="#89ccf0" stroke-width="1.5"/>
+                <circle cx="50" cy="35" r="3" fill="#89ccf0"/>
+                <text x="50" y="62" text-anchor="middle" fill="white" font-size="7" opacity="0.8" font-family="Inter, sans-serif">Wearables</text>
+                
+                <!-- Labs - Blush -->
+                <circle cx="50" cy="95" r="14" fill="#f8c8dc" opacity="0.3"/>
+                <circle cx="50" cy="95" r="14" fill="none" stroke="#f8c8dc" stroke-width="1.5"/>
+                <circle cx="50" cy="95" r="3" fill="#f8c8dc"/>
+                <text x="50" y="118" text-anchor="middle" fill="white" font-size="7" opacity="0.8" font-family="Inter, sans-serif">Labs</text>
+                
+                <!-- Behaviors - Lavender -->
+                <circle cx="120" cy="65" r="14" fill="#a78bfa" opacity="0.3"/>
+                <circle cx="120" cy="65" r="14" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+                <circle cx="120" cy="65" r="3" fill="#a78bfa"/>
+                <text x="120" y="92" text-anchor="middle" fill="white" font-size="7" opacity="0.8" font-family="Inter, sans-serif">Behaviors</text>
+                
+                <!-- SERIF ENGINE (center) - Brand color -->
+                <circle cx="310" cy="60" r="26" fill="#5cbdea" opacity="0.2"/>
+                <circle cx="310" cy="60" r="26" fill="none" stroke="#5cbdea" stroke-width="2"/>
+                <circle cx="310" cy="60" r="16" fill="none" stroke="#5cbdea" stroke-width="1" opacity="0.5"/>
+                <circle cx="310" cy="60" r="6" fill="#5cbdea"/>
+                <text x="310" y="98" text-anchor="middle" fill="#5cbdea" font-size="8" font-weight="600" font-family="Inter, sans-serif">SERIF ENGINE</text>
+                
+                <!-- OUTPUT NODES -->
+                <!-- Causal Insights - Steel -->
+                <circle cx="500" cy="35" r="14" fill="#96b9d0" opacity="0.3"/>
+                <circle cx="500" cy="35" r="14" fill="none" stroke="#96b9d0" stroke-width="1.5"/>
+                <circle cx="500" cy="35" r="3" fill="#96b9d0"/>
+                <text x="500" y="62" text-anchor="middle" fill="white" font-size="7" opacity="0.8" font-family="Inter, sans-serif">Causal Insights</text>
+                
+                <!-- Daily Protocols - Emerald -->
+                <circle cx="500" cy="95" r="14" fill="#10b981" opacity="0.3"/>
+                <circle cx="500" cy="95" r="14" fill="none" stroke="#10b981" stroke-width="1.5"/>
+                <circle cx="500" cy="95" r="3" fill="#10b981"/>
+                <text x="500" y="118" text-anchor="middle" fill="white" font-size="7" opacity="0.8" font-family="Inter, sans-serif">Daily Protocols</text>
+                
+                <!-- OUTCOME NODE - Sky -->
+                <circle cx="570" cy="65" r="14" fill="#89ccf0" opacity="0.3"/>
+                <circle cx="570" cy="65" r="14" fill="none" stroke="#89ccf0" stroke-width="1.5"/>
+                <circle cx="570" cy="65" r="3" fill="#89ccf0"/>
+                <text x="570" y="92" text-anchor="middle" fill="white" font-size="7" opacity="0.8" font-family="Inter, sans-serif">Outcomes</text>
+                
+                <!-- CONNECTIONS: Inputs → Engine -->
+                <line x1="64" y1="35" x2="284" y2="55" stroke="white" stroke-width="1" opacity="0.25"/>
+                <line x1="64" y1="95" x2="284" y2="65" stroke="white" stroke-width="1" opacity="0.25"/>
+                <line x1="134" y1="65" x2="284" y2="60" stroke="white" stroke-width="1" opacity="0.25"/>
+                
+                <!-- CONNECTIONS: Engine → Outputs -->
+                <line x1="336" y1="55" x2="486" y2="35" stroke="white" stroke-width="1" opacity="0.25"/>
+                <line x1="336" y1="65" x2="486" y2="95" stroke="white" stroke-width="1" opacity="0.25"/>
+                
+                <!-- CONNECTIONS: Outputs → Outcome -->
+                <line x1="514" y1="35" x2="556" y2="55" stroke="white" stroke-width="1" opacity="0.25"/>
+                <line x1="514" y1="95" x2="556" y2="75" stroke="white" stroke-width="1" opacity="0.25"/>
+            </svg>
+        </div>
+    </div>
+    
     <div class="page-num">01</div>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page">
     <div class="dark-hero-compact">
-        <div class="dag-constellation">
-            <svg viewBox="0 0 800 120" preserveAspectRatio="xMidYMid slice">
+        <div class="ambient-stars">
+            <svg viewBox="0 0 800 100" preserveAspectRatio="xMidYMid slice">
                 <circle cx="700" cy="30" r="1.5" fill="white" opacity="0.2"/>
-                <circle cx="750" cy="80" r="1" fill="white" opacity="0.15"/>
-                <circle cx="720" cy="100" r="1.5" fill="white" opacity="0.2"/>
+                <circle cx="750" cy="70" r="1" fill="white" opacity="0.15"/>
             </svg>
         </div>
         <div class="hero-content">
@@ -613,7 +632,7 @@
         </div>
     </div>
     
-    <div class="light-content" style="padding-top: 20px;">
+    <div class="light-content" style="padding-top: 18px;">
         <div class="view-cards">
             <div class="view-card">
                 <div class="view-card-header">Client View</div>
@@ -663,7 +682,7 @@
         </div>
     </div>
     
-    <div class="page-num">02</div>
+    <div class="page-num-light">02</div>
 </div>
 
 </body>
