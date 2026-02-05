@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serif | Partner Overview — Blueprint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0D0D0D;
+            --ink-80: #2D2D2D;
+            --ink-60: #525252;
+            --ink-40: #858585;
+            --ink-20: #B8B8B8;
+            --ink-10: #E0E0E0;
+            --ink-05: #F5F6F8;
+            --white: #FFFFFF;
+            --blueprint: #f8fafc;
+            --blueprint-line: #e2e8f0;
+            --blueprint-accent: #64748b;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @page { size: letter; margin: 0; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ink-05);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            max-height: 11in;
+            margin: 0 auto 40px;
+            padding: 0;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        
+        @media print {
+            body { background: white; }
+            .page { width: 8.5in; height: 11in; margin: 0; box-shadow: none; page-break-after: always; }
+        }
+        
+        /* Blueprint grid background */
+        .blueprint-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--blueprint-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--blueprint-line) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            padding: 40px 48px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--ink);
+        }
+        
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 36px;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+        }
+        
+        .tagline {
+            font-size: 11px;
+            color: var(--ink-60);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        
+        .header-contact {
+            text-align: right;
+            font-size: 10px;
+            color: var(--ink-60);
+        }
+        
+        .header-contact .name {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 11px;
+        }
+        
+        /* Hero */
+        .hero {
+            margin-bottom: 28px;
+        }
+        
+        .hero-label {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ink-40);
+            margin-bottom: 10px;
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--ink-05);
+            border: 1px solid var(--ink-20);
+        }
+        
+        .hero h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--ink);
+        }
+        
+        .hero h1 em {
+            font-style: italic;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+        }
+        
+        /* Technical diagram - flow */
+        .tech-diagram {
+            background: var(--blueprint);
+            border: 1px solid var(--ink-20);
+            padding: 20px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .tech-diagram::before {
+            content: 'SYSTEM ARCHITECTURE';
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            background: var(--white);
+            padding: 0 8px;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--ink-40);
+        }
+        
+        .tech-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .tech-node {
+            flex: 1;
+            text-align: center;
+            padding: 0 12px;
+        }
+        
+        .tech-node .box {
+            border: 2px solid var(--ink);
+            padding: 12px 8px;
+            margin-bottom: 8px;
+            background: var(--white);
+        }
+        
+        .tech-node .box h4 {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ink);
+        }
+        
+        .tech-node p {
+            font-size: 9px;
+            color: var(--ink-60);
+        }
+        
+        .tech-arrow {
+            font-size: 20px;
+            color: var(--ink-40);
+            flex-shrink: 0;
+        }
+        
+        /* Metrics */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .metric {
+            border: 1px solid var(--ink-20);
+            padding: 14px;
+            text-align: center;
+            background: var(--white);
+        }
+        
+        .metric-value {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 28px;
+            color: var(--ink);
+            line-height: 1;
+        }
+        
+        .metric-label {
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ink-60);
+            margin-top: 6px;
+        }
+        
+        /* Two columns */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .col-header {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ink);
+            padding: 8px 12px;
+            background: var(--ink-05);
+            border-left: 3px solid var(--ink);
+            margin-bottom: 12px;
+        }
+        
+        .spec-list {
+            list-style: none;
+        }
+        
+        .spec-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--ink-20);
+            font-size: 11px;
+            color: var(--ink-60);
+        }
+        
+        .spec-list li:last-child { border-bottom: none; }
+        
+        .spec-list li .marker {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--ink-40);
+            flex-shrink: 0;
+            width: 20px;
+        }
+        
+        .spec-list li strong { color: var(--ink); }
+        
+        .page-num {
+            position: absolute;
+            bottom: 24px;
+            right: 48px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: var(--ink-40);
+        }
+        
+        /* Page 2 specifics */
+        .interface-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .interface-box {
+            border: 1px solid var(--ink-20);
+            background: var(--white);
+        }
+        
+        .interface-box .title-bar {
+            background: var(--ink);
+            color: var(--white);
+            padding: 8px 12px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .interface-box .content {
+            padding: 14px;
+        }
+        
+        .interface-box ul {
+            list-style: none;
+        }
+        
+        .interface-box ul li {
+            font-size: 10px;
+            color: var(--ink);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--ink-10);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .interface-box ul li:last-child { border-bottom: none; }
+        
+        .interface-box ul li .status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 3px;
+            border: 1px solid var(--ink-40);
+        }
+        
+        .interface-box ul li .status.red { background: #fecaca; border-color: #dc2626; }
+        .interface-box ul li .status.yellow { background: #fef08a; border-color: #ca8a04; }
+        .interface-box ul li .status.green { background: #bbf7d0; border-color: #16a34a; }
+        
+        /* Pricing table */
+        .pricing-table {
+            border: 2px solid var(--ink);
+            margin-bottom: 16px;
+        }
+        
+        .pricing-table .table-header {
+            background: var(--ink);
+            color: var(--white);
+            padding: 12px 16px;
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 16px;
+        }
+        
+        .pricing-table .table-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--ink-20);
+        }
+        
+        .pricing-table .table-row:last-child { border-bottom: none; }
+        
+        .pricing-table .table-cell {
+            padding: 16px;
+            text-align: center;
+            border-right: 1px solid var(--ink-20);
+        }
+        
+        .pricing-table .table-cell:last-child { border-right: none; }
+        
+        .pricing-table .table-cell .value {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 24px;
+            color: var(--ink);
+        }
+        
+        .pricing-table .table-cell .label {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ink-60);
+            margin-top: 4px;
+        }
+        
+        /* CTA */
+        .cta-box {
+            border: 2px dashed var(--ink-40);
+            padding: 20px;
+            text-align: center;
+            background: var(--blueprint);
+        }
+        
+        .cta-box p {
+            font-size: 12px;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+        
+        .cta-box .email {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        
+        .integration-note {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--ink-05);
+            border: 1px solid var(--ink-20);
+            margin-bottom: 16px;
+            font-size: 11px;
+            color: var(--ink-60);
+        }
+        
+        .integration-note .badge {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 4px 8px;
+            background: var(--ink);
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .integration-note strong { color: var(--ink); }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+    <div class="blueprint-bg"></div>
+    <div class="content-wrapper">
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo">Serif</div>
+                <span class="tagline">The intelligence layer for health optimization</span>
+            </div>
+            <div class="header-contact">
+                <div class="name">Sam Cialek, Founder</div>
+                <div>sam@serif.life</div>
+            </div>
+        </header>
+        
+        <div class="hero">
+            <div class="hero-label">For Longevity Clinics & Elite Practitioners</div>
+            <h1>Your clients want to know what works for <em>them</em> — not population averages</h1>
+        </div>
+        
+        <div class="tech-diagram">
+            <div class="tech-flow">
+                <div class="tech-node">
+                    <div class="box"><h4>Data Sources</h4></div>
+                    <p>Oura · Whoop · CGM · Labs</p>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <div class="box"><h4>Serif Engine</h4></div>
+                    <p>Bayesian N-of-1 Models</p>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <div class="box"><h4>Calibration</h4></div>
+                    <p>7-Day Individual Tuning</p>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <div class="box"><h4>Insights</h4></div>
+                    <p>Causal · Actionable · Personal</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="metrics-row">
+            <div class="metric">
+                <div class="metric-value">87%</div>
+                <div class="metric-label">Reduced Churn</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">90%</div>
+                <div class="metric-label">Time Saved</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">7d</div>
+                <div class="metric-label">To Personalize</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">3.2×</div>
+                <div class="metric-label">Engagement Lift</div>
+            </div>
+        </div>
+        
+        <div class="two-col">
+            <div>
+                <div class="col-header">Problem Specification</div>
+                <ul class="spec-list">
+                    <li><span class="marker">[01]</span><span><strong>Generic advice fails.</strong> Population medians miss individual thresholds by 2–5×.</span></li>
+                    <li><span class="marker">[02]</span><span><strong>Coaching doesn't scale.</strong> Deep personalization requires hours per client.</span></li>
+                    <li><span class="marker">[03]</span><span><strong>Data overload.</strong> Clients have multiple devices but no unified picture.</span></li>
+                    <li><span class="marker">[04]</span><span><strong>Churn kills growth.</strong> Acquiring clients is expensive; losing them is preventable.</span></li>
+                </ul>
+            </div>
+            <div>
+                <div class="col-header">Solution Specification</div>
+                <ul class="spec-list">
+                    <li><span class="marker">[S1]</span><span><strong>Causal insights.</strong> "HRV improves 23% when you walk 6K+ steps before noon."</span></li>
+                    <li><span class="marker">[S2]</span><span><strong>Automated depth.</strong> Every client gets the analysis you'd give your best client.</span></li>
+                    <li><span class="marker">[S3]</span><span><strong>Unified view.</strong> Wearables + labs + CGM → what actually moves outcomes.</span></li>
+                    <li><span class="marker">[S4]</span><span><strong>Retention.</strong> When people see personalized progress, they stay and refer.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="page-num">PAGE 01</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+    <div class="blueprint-bg"></div>
+    <div class="content-wrapper">
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo">Serif</div>
+                <span class="tagline">The intelligence layer for health optimization</span>
+            </div>
+            <div class="header-contact">
+                <div class="name">Sam Cialek, Founder</div>
+                <div>sam@serif.life</div>
+            </div>
+        </header>
+        
+        <div class="hero" style="margin-bottom: 20px;">
+            <div class="hero-label">Implementation</div>
+            <h1 style="font-size: 28px;">Plug Serif into your practice — <em>keep your workflow</em></h1>
+        </div>
+        
+        <div class="interface-diagram">
+            <div class="interface-box">
+                <div class="title-bar">Client Interface</div>
+                <div class="content">
+                    <ul>
+                        <li><span class="status"></span>"Fasting glucose drops 12% when you finish eating by 7 PM"</li>
+                        <li><span class="status"></span>"Sleep quality improves 18% with screens off by 9:30 PM"</li>
+                        <li><span class="status"></span>Today's Protocol: Walk before lunch, no caffeine after 2 PM</li>
+                        <li><span class="status"></span>Progress tracking toward their specific goals</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="interface-box">
+                <div class="title-bar">Coach Dashboard</div>
+                <div class="content">
+                    <ul>
+                        <li><span class="status red"></span>At-Risk: Sarah — glucose trending up, adherence dropped</li>
+                        <li><span class="status yellow"></span>Needs Attention: Marcus — overtraining signals</li>
+                        <li><span class="status green"></span>On Track: 12 clients improving, no action needed</li>
+                        <li><span class="status"></span>Pre-populated session notes with talking points</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="integration-note">
+            <span class="badge">Integration</span>
+            <span><strong>2-month typical timeline.</strong> Works alongside existing systems. White-label available. HIPAA-compliant.</span>
+        </div>
+        
+        <div class="pricing-table">
+            <div class="table-header">Pricing Schedule</div>
+            <div class="table-row">
+                <div class="table-cell">
+                    <div class="value">$1,000</div>
+                    <div class="label">Platform / Month</div>
+                </div>
+                <div class="table-cell">
+                    <div class="value">$3–7</div>
+                    <div class="label">Per Client / Month</div>
+                </div>
+                <div class="table-cell">
+                    <div class="value">$0</div>
+                    <div class="label">Pilot Setup Fee</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-box">
+            <p>Ready to give your clients the personalization they're looking for?</p>
+            <div class="email">sam@serif.life</div>
+        </div>
+    </div>
+    <div class="page-num">PAGE 02</div>
+</div>
+
+</body>
+</html>
