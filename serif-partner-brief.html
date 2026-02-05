@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serif | Partner Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0D0D0D;
+            --ink-80: #2D2D2D;
+            --ink-60: #525252;
+            --ink-40: #858585;
+            --ink-20: #B8B8B8;
+            --ink-10: #E0E0E0;
+            --ink-05: #F2F2F2;
+            --paper: #FAFAFA;
+            --white: #FFFFFF;
+            --sky: #89ccf0;
+            --sky-light: #d4ebf9;
+            --steel: #96b9d0;
+            --steel-light: #dae8f0;
+            --blush: #f8c8dc;
+            --blush-light: #fceef4;
+            --lavender: #a78bfa;
+            --lavender-light: #ede9fe;
+            --emerald: #10b981;
+            --emerald-light: #d1fae5;
+            --amber: #fbbf24;
+            --amber-light: #fef3c7;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page { size: letter; margin: 0; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ink-05);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            max-height: 11in;
+            margin: 0 auto 40px;
+            padding: 0.5in;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        
+        @media print {
+            body { background: white; }
+            .page { 
+                width: 8.5in; 
+                height: 11in; 
+                margin: 0; 
+                box-shadow: none; 
+                page-break-after: always; 
+            }
+            .page:last-child { page-break-after: auto; }
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--ink-10);
+            margin-bottom: 32px;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        
+        .logo {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: var(--ink-40);
+            font-weight: 400;
+        }
+        
+        .header-contact {
+            text-align: right;
+            font-size: 11px;
+            color: var(--ink-40);
+        }
+        
+        .header-contact .name {
+            font-weight: 600;
+            color: var(--ink);
+        }
+        
+        /* Hero */
+        .hero {
+            margin-bottom: 36px;
+        }
+        
+        .hero-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--lavender);
+            margin-bottom: 12px;
+        }
+        
+        .hero h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            max-width: 560px;
+        }
+        
+        .hero h1 em {
+            font-style: italic;
+            color: var(--lavender);
+        }
+        
+        /* Pull Quote */
+        .pull-quote {
+            background: linear-gradient(135deg, var(--lavender-light) 0%, var(--white) 100%);
+            border-left: 4px solid var(--lavender);
+            padding: 20px 24px;
+            margin-bottom: 32px;
+        }
+        
+        .pull-quote p {
+            font-size: 15px;
+            color: var(--ink);
+            line-height: 1.7;
+        }
+        
+        .pull-quote .highlight {
+            background: linear-gradient(120deg, var(--amber-light) 0%, var(--amber-light) 100%);
+            padding: 2px 6px;
+            font-weight: 600;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--ink-10);
+            margin-bottom: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .metric {
+            background: var(--white);
+            padding: 20px 16px;
+            text-align: center;
+        }
+        
+        .metric:nth-child(1) { background: var(--sky-light); }
+        .metric:nth-child(2) { background: var(--blush-light); }
+        .metric:nth-child(3) { background: var(--lavender-light); }
+        .metric:nth-child(4) { background: var(--emerald-light); }
+        
+        .metric-value {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            line-height: 1;
+        }
+        
+        .metric-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-60);
+            margin-top: 8px;
+        }
+        
+        .metric-context {
+            font-size: 11px;
+            color: var(--ink-40);
+            margin-top: 4px;
+        }
+        
+        /* Section Label */
+        .section-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ink-40);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--ink-10);
+        }
+        
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 28px;
+        }
+        
+        .col p {
+            font-size: 13px;
+            color: var(--ink-60);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .col p strong {
+            color: var(--ink);
+        }
+        
+        /* Problem List */
+        .problem-list {
+            list-style: none;
+        }
+        
+        .problem-list li {
+            padding: 12px 16px;
+            background: var(--ink-05);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--ink-60);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .problem-list li::before {
+            content: '✗';
+            color: #ef4444;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .problem-list li strong {
+            color: var(--ink);
+        }
+        
+        /* Solution List */
+        .solution-list {
+            list-style: none;
+        }
+        
+        .solution-list li {
+            padding: 12px 16px;
+            background: var(--emerald-light);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--ink-60);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .solution-list li::before {
+            content: '✓';
+            color: var(--emerald);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .solution-list li strong {
+            color: var(--ink);
+        }
+        
+        /* Page Number */
+        .page-num {
+            position: absolute;
+            bottom: 0.4in;
+            right: 0.5in;
+            font-size: 10px;
+            color: var(--ink-40);
+            font-weight: 500;
+        }
+        
+        /* Page 2 Specific */
+        .how-it-works {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        
+        .how-step {
+            padding: 20px;
+            border: 1px solid var(--ink-10);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .how-step-num {
+            width: 28px;
+            height: 28px;
+            background: var(--lavender);
+            color: var(--white);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .how-step h4 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        
+        .how-step p {
+            font-size: 12px;
+            color: var(--ink-60);
+            line-height: 1.5;
+        }
+        
+        /* Client View / Coach View */
+        .view-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        
+        .view-box {
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .view-box.client {
+            background: var(--sky-light);
+            border: 1px solid var(--sky);
+        }
+        
+        .view-box.coach {
+            background: var(--blush-light);
+            border: 1px solid var(--blush);
+        }
+        
+        .view-box h4 {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-60);
+            margin-bottom: 12px;
+        }
+        
+        .view-box ul {
+            list-style: none;
+        }
+        
+        .view-box ul li {
+            font-size: 13px;
+            color: var(--ink);
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .view-box ul li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Integration */
+        .integration-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: var(--ink-05);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .integration-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: var(--emerald);
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .integration-row p {
+            font-size: 13px;
+            color: var(--ink-60);
+            flex: 1;
+        }
+        
+        .integration-row p strong {
+            color: var(--ink);
+        }
+        
+        /* Pricing */
+        .pricing-box {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-80) 100%);
+            color: var(--white);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-box h4 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        
+        .pricing-item {
+            text-align: center;
+        }
+        
+        .pricing-value {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 28px;
+            color: var(--sky);
+        }
+        
+        .pricing-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 4px;
+        }
+        
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 20px;
+            background: var(--lavender-light);
+            border-radius: 8px;
+        }
+        
+        .cta p {
+            font-size: 14px;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        
+        .cta .email {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 20px;
+            color: var(--lavender);
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: The Problem & Why Serif -->
+<div class="page">
+    <header class="header">
+        <div class="logo-section">
+            <div class="logo">Serif</div>
+            <span class="tagline">The intelligence layer for health optimization</span>
+        </div>
+        <div class="header-contact">
+            <div class="name">Sam Cialek, Founder</div>
+            <div>sam@serif.life</div>
+        </div>
+    </header>
+    
+    <div class="hero">
+        <div class="hero-label">For Longevity Clinics & Elite Practitioners</div>
+        <h1>Your clients want to know what works for <em>them</em> — not population averages</h1>
+    </div>
+    
+    <div class="pull-quote">
+        <p>60% of health optimization clients churn within 90 days because they can't answer two questions: <span class="highlight">"What's actually working for me?"</span> and <span class="highlight">"What should I do differently today?"</span> Serif answers both — automatically.</p>
+    </div>
+    
+    <div class="metrics-grid">
+        <div class="metric">
+            <div class="metric-value">87%</div>
+            <div class="metric-label">Less Client Churn</div>
+            <div class="metric-context">From 60% → 8% dropout</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">90%</div>
+            <div class="metric-label">Less Coaching Time</div>
+            <div class="metric-context">Per-client analysis automated</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">7 days</div>
+            <div class="metric-label">To Personalize</div>
+            <div class="metric-context">Not months of trial & error</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">3.2×</div>
+            <div class="metric-label">Engagement Lift</div>
+            <div class="metric-context">4×/day check-ins vs. 1.2×</div>
+        </div>
+    </div>
+    
+    <div class="two-col">
+        <div>
+            <div class="section-label">The Problem You Face</div>
+            <ul class="problem-list">
+                <li><strong>Generic advice doesn't stick.</strong> Population medians miss individual thresholds by 2–5×. Your clients know this.</li>
+                <li><strong>Coaching doesn't scale.</strong> Deep personalization requires hours per client. You can only serve so many before burning out.</li>
+                <li><strong>Data overload, no clarity.</strong> Clients have Oura, CGM, labs — but can't connect the dots. They blame you when they don't see progress.</li>
+                <li><strong>Churn kills your business.</strong> Acquiring clients is expensive. Losing them to frustration is preventable.</li>
+            </ul>
+        </div>
+        <div>
+            <div class="section-label">What Serif Delivers</div>
+            <ul class="solution-list">
+                <li><strong>Causal insights, not correlations.</strong> "Your HRV improves 23% on days you walk 6K+ steps before noon" — specific, actionable, true.</li>
+                <li><strong>Automated analysis at scale.</strong> Every client gets the depth you'd give your best client — without the time cost.</li>
+                <li><strong>Unified view of all their data.</strong> Wearables + labs + CGM → one dashboard showing what actually moves outcomes.</li>
+                <li><strong>Clients who stay.</strong> When people see personalized progress, they don't leave. They refer friends.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-num">01</div>
+</div>
+
+<!-- PAGE 2: How It Works & Get Started -->
+<div class="page">
+    <header class="header">
+        <div class="logo-section">
+            <div class="logo">Serif</div>
+            <span class="tagline">The intelligence layer for health optimization</span>
+        </div>
+        <div class="header-contact">
+            <div class="name">Sam Cialek, Founder</div>
+            <div>sam@serif.life</div>
+        </div>
+    </header>
+    
+    <div class="hero">
+        <div class="hero-label">How It Works</div>
+        <h1>Plug Serif into your practice — <em>keep your workflow</em></h1>
+    </div>
+    
+    <div class="how-it-works">
+        <div class="how-step">
+            <div class="how-step-num">1</div>
+            <h4>Connect Data Sources</h4>
+            <p>Oura, Whoop, Apple Watch, Garmin, CGM, labs — we aggregate via API. Your clients link once.</p>
+        </div>
+        <div class="how-step">
+            <div class="how-step-num">2</div>
+            <h4>7-Day Calibration</h4>
+            <p>Our models start with population priors, then calibrate to the individual within 7–10 days.</p>
+        </div>
+        <div class="how-step">
+            <div class="how-step-num">3</div>
+            <h4>Insights Flow Automatically</h4>
+            <p>Clients get daily protocols. You get a coach dashboard showing who needs attention.</p>
+        </div>
+    </div>
+    
+    <div class="view-grid">
+        <div class="view-box client">
+            <h4>What Your Clients See</h4>
+            <ul>
+                <li>📊 "Your fasting glucose drops 12% when you finish eating by 7 PM"</li>
+                <li>💤 "Sleep quality improves 18% when you stop screens by 9:30 PM"</li>
+                <li>🎯 Today's Protocol: Walk before lunch, no caffeine after 2 PM, bed by 10:30</li>
+                <li>📈 Progress tracking toward their specific goals</li>
+            </ul>
+        </div>
+        <div class="view-box coach">
+            <h4>What You See (Coach Dashboard)</h4>
+            <ul>
+                <li>🔴 At-Risk: Sarah — glucose trending up, adherence dropped</li>
+                <li>🟡 Needs Attention: Marcus — overtraining signals, schedule check-in</li>
+                <li>🟢 On Track: 12 clients improving, no action needed</li>
+                <li>📋 Pre-populated session notes with key talking points</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="integration-row">
+        <div class="integration-badge">Easy Integration</div>
+        <p><strong>2-month typical timeline.</strong> Works alongside your existing systems. White-label available. HIPAA-compliant infrastructure.</p>
+    </div>
+    
+    <div class="pricing-box">
+        <h4>Simple, Scalable Pricing</h4>
+        <div class="pricing-grid">
+            <div class="pricing-item">
+                <div class="pricing-value">$3–5</div>
+                <div class="pricing-label">per client / month</div>
+            </div>
+            <div class="pricing-item">
+                <div class="pricing-value">$1.50</div>
+                <div class="pricing-label">at 2,000+ clients</div>
+            </div>
+            <div class="pricing-item">
+                <div class="pricing-value">$0</div>
+                <div class="pricing-label">setup fee for pilots</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="cta">
+        <p>Ready to give your clients the personalization they're looking for?</p>
+        <div class="email">sam@serif.life</div>
+    </div>
+    
+    <div class="page-num">02</div>
+</div>
+
+</body>
+</html>
