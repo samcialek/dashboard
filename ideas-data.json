@@ -1,50 +1,96 @@
 [
   {
+    "title": "Imperfects Shepherds Shirt",
+    "desc": "Garment dyed canvas chore coat/shirt from Imperfects. . Black and green colorway. Cool workwear aesthetic - potential for Monday John meeting or general wardrobe upgrade.",
+    "date": "Feb 5 — 2026, 9:05 PM",
+    "tags": [
+      "fashion",
+      "shopping",
+      "aaru-meeting"
+    ]
+  },
+  {
     "title": "N-of-1 as the Daemon Layer",
     "desc": "In a world of daemons and AI everywhere, everything becomes about N-of-1 and personalization — the 'last mile' of intelligence. The value shifts to millions of systems that can perform personalizing functions better. The agent isn't just a tool; it's a model OF you. Serif = N-of-1 health (individual-level causal inference from wearables). PRISM = N-of-1 politics (archetypes as cluster centers, but placing a specific person in trait-space). Aaru = N-of-1 simulation at population scale. The common thread: estimation inverts to simulation. Instead of 'what's the average effect?' you ask 'what does THIS person do under THESE conditions?'",
     "date": "Feb 5, 2026 · 7:19 AM",
-    "tags": ["ai", "daemons", "serif", "prism", "aaru", "personalization", "n-of-1"]
+    "tags": [
+      "ai",
+      "daemons",
+      "serif",
+      "prism",
+      "aaru",
+      "personalization",
+      "n-of-1"
+    ]
   },
   {
     "title": "Of/By/For: Civic Progressive PAC Name",
     "desc": "Name concept for a civic progressive political action committee: 'Of the People, By the People, For the People' — reclaiming the Lincoln framing for a modern civic progressive movement. The constitutional resonance makes it hard to argue against. Could work as full name or abbreviated (OBF PAC, 'Of By For').",
     "date": "Feb 2, 2026 · 9:34 PM",
-    "tags": ["politics", "civic", "prism", "branding"]
+    "tags": [
+      "politics",
+      "civic",
+      "prism",
+      "branding"
+    ]
   },
   {
     "title": "Wokeness = Means Without the End",
     "desc": "Social justice, properly understood: you care about accessibility, egalitarianism, people with disabilities. One implication is understanding power dynamics and questioning entrenched systems — but as a MEANS to an END (achieving the justice you seek). 'Wokeness' as pejorative = doing only the means (questioning systems, calling out power) without caring about the end. The system-questioning becomes the identity, detached from the actual outcome it was supposed to serve. It's the difference between instrumentally questioning power structures and ritualistically performing the questioning.",
     "date": "Feb 2, 2026 · 7:43 PM",
-    "tags": ["politics", "philosophy", "prism"]
+    "tags": [
+      "politics",
+      "philosophy",
+      "prism"
+    ]
   },
   {
     "title": "Inspiration as the New Labor",
     "desc": "As work gets offloaded to AI, more and more of human time shifts to sampling different sources of inspiration rather than executing. The spark of creativity becomes the new product and value people offer. The scarce resource isn't labor or even knowledge anymore, it's taste, curation, and the ability to get inspired. Work is downstream of inspiration.",
     "date": "Feb 2, 2026 · 5:55 PM",
-    "tags": ["philosophy", "ai", "creativity", "future-of-work"]
+    "tags": [
+      "philosophy",
+      "ai",
+      "creativity",
+      "future-of-work"
+    ]
   },
   {
     "title": "IRS Audit Risk Score = Kamala Vote Share?",
     "desc": "Joke for Tyler: the IRS audit risk score they assign you is now just the percentage of people in your precinct who voted for Kamala Harris. Politically weaponized auditing as a feature, not a bug.",
     "date": "Feb 2, 2026 · 5:47 PM",
-    "tags": ["politics", "humor", "tyler"]
+    "tags": [
+      "politics",
+      "humor",
+      "tyler"
+    ]
   },
   {
     "title": "Rosetta Stone: Chinese ↔ Western Medicine",
     "desc": "A translation layer between Chinese and Western medical frameworks. Are TCM concepts like 'fire' related to acidity, or something mappable to the PCA of amino acid profiles? The deeper question is top-down vs. bottom-up: Western medicine's overemphasis on active ingredients is mediator bias. Captain Cook's scurvy cure is the perfect case — he got the mediator wrong (thought it was acidity, not Vitamin C). Western med has overlearned this reductionist lesson. TCM's holistic approach may capture interaction effects that active-ingredient thinking misses.",
     "date": "Feb 1, 2026 · 3:50 PM",
-    "tags": ["serif", "medicine", "methodology"]
+    "tags": [
+      "serif",
+      "medicine",
+      "methodology"
+    ]
   },
   {
     "title": "Open-source the tree, close-source the leaf",
     "desc": "Intermediate outputs (non-leaf nodes in the DAG) should be open-source / transparent. Only the final output — the leaf, the thing the user actually engages with — gets packaged as the polished, closed product. Summarization and beautification happen at the end, not in the middle. The pipeline is open; the experience is curated.",
     "date": "Jan 31, 2026 · 6:02 PM",
-    "tags": ["product", "philosophy"]
+    "tags": [
+      "product",
+      "philosophy"
+    ]
   },
   {
     "title": "Abraham Lincoln was the first American",
     "desc": "Lincoln as the archetype of American civic-creedal identity. The first to define what \"American\" means in a national sense vs ethnic/regional. Foundational concept for PRISM's civic nationalism dimension.",
     "date": "Jan 31, 2026 · 5:33 PM",
-    "tags": ["prism", "civic-identity"]
+    "tags": [
+      "prism",
+      "civic-identity"
+    ]
   }
 ]
