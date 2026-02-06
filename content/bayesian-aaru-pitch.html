@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persistent Bayesian Workflow × Agent Simulation</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --border: #2a2a2a;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --accent: #4a9eff;
+            --accent-dim: #2a5a99;
+            --green: #4ade80;
+            --amber: #fbbf24;
+            --red: #f87171;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .model-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 4px;
+        }
+        
+        .model-card.current {
+            border-color: var(--text-muted);
+            opacity: 0.7;
+        }
+        
+        .model-card.bayesian {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.1);
+        }
+        
+        .model-card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .model-card.current h3 {
+            color: var(--text-muted);
+        }
+        
+        .model-card.bayesian h3 {
+            color: var(--accent);
+        }
+        
+        .flow {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .flow .arrow {
+            color: var(--text-muted);
+            margin: 0 0.25rem;
+        }
+        
+        .flow .highlight {
+            color: var(--green);
+            font-weight: 600;
+        }
+        
+        .insight-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .insight {
+            background: var(--surface);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.25rem;
+        }
+        
+        .insight-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .insight-body {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .insight-body strong {
+            color: var(--text);
+        }
+        
+        .example-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        
+        .example-header {
+            background: var(--border);
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        
+        .example-content {
+            padding: 1.25rem;
+        }
+        
+        .static-output, .bayesian-output {
+            margin-bottom: 1rem;
+        }
+        
+        .static-output:last-child, .bayesian-output:last-child {
+            margin-bottom: 0;
+        }
+        
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .static-output .label {
+            color: var(--text-muted);
+        }
+        
+        .bayesian-output .label {
+            color: var(--accent);
+        }
+        
+        .output-text {
+            font-size: 0.9rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 3px;
+        }
+        
+        .bayesian-output .output-text {
+            border-left: 2px solid var(--accent);
+        }
+        
+        .metric {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 0.25rem;
+        }
+        
+        .metric.uncertain {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--amber);
+        }
+        
+        .metric.tight {
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--green);
+        }
+        
+        .metric.learning {
+            background: rgba(74, 158, 255, 0.2);
+            color: var(--accent);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--amber), var(--green));
+        }
+        
+        .timeline-item {
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-label {
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .timeline-detail {
+            color: var(--text-muted);
+        }
+        
+        .pitch-box {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(74, 222, 128, 0.05));
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .pitch-box h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .pitch-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            font-style: italic;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        
+        @media (max-width: 600px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Persistent Bayesian Workflow × Agent Simulation</h1>
+    <div class="subtitle">Turning scenario generators into calibrated prediction machines</div>
+    
+    <h2>The Architecture Gap</h2>
+    
+    <div class="comparison">
+        <div class="model-card current">
+            <h3>Current Model</h3>
+            <div class="flow">
+                Run simulation <span class="arrow">→</span> get prediction <span class="arrow">→</span> decision <span class="arrow">→</span> observe outcome <span class="arrow">→</span> run new simulation
+            </div>
+        </div>
+        <div class="model-card bayesian">
+            <h3>Bayesian Workflow</h3>
+            <div class="flow">
+                Agents carry <span class="highlight">posterior distributions</span> that <span class="highlight">update</span> with each observation. The model <span class="highlight">learns</span>, not just reruns.
+            </div>
+        </div>
+    </div>
+    
+    <h2>Why This Matters</h2>
+    
+    <div class="insight-grid">
+        <div class="insight">
+            <div class="insight-title">1. Agents Become Learners</div>
+            <div class="insight-body">
+                Currently: synthetic agents have <strong>fixed preference parameters</strong> (or sampled from a distribution).<br><br>
+                With persistent Bayesian updating: each agent's preferences have <strong>uncertainty that shrinks</strong> as you observe behavior.<br><br>
+                <em>First-time Horizon shopper: wide priors on lobster preference. After 3 visits with no seafood purchases: tight posterior → probably not your lobster customer.</em>
+            </div>
+        </div>
+        
+        <div class="insight">
+            <div class="insight-title">2. The Simulation Becomes a Living Model</div>
+            <div class="insight-body">
+                Instead of "run simulation, get answer, done" → the simulation <strong>accumulates knowledge</strong>.<br><br>
+                Each Horizon transaction updates the population's belief state. You're not starting from scratch each time.
+            </div>
+        </div>
+        
+        <div class="insight">
+            <div class="insight-title">3. Partial Pooling = Competitive Moat</div>
+            <div class="insight-body">
+                New store opening? You don't have data on <em>those</em> customers, but you have <strong>posteriors from similar demographics</strong>.<br><br>
+                Hierarchical Bayesian structure: individual agents inherit from group-level distributions.<br><br>
+                <em>This is exactly how PRISM archetypes work → Aaru is already halfway there architecturally.</em>
+            </div>
+        </div>
+    </div>
+    
+    <h2>The Lobster Example</h2>
+    
+    <div class="example-box">
+        <div class="example-header">Static Simulation</div>
+        <div class="example-content">
+            <div class="static-output">
+                <div class="output-text">
+                    "Given our agent parameters, 23% of simulated customers would buy lobster. Stock it."
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="example-box">
+        <div class="example-header">Bayesian Version</div>
+        <div class="example-content">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-label">Initial forecast:</span>
+                    <span class="timeline-detail">
+                        23% expected purchase rate, but <span class="metric uncertain">90% CI: [14%, 32%]</span>
+                    </span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-label">After week 1:</span>
+                    <span class="timeline-detail">
+                        Observed 18% → posterior tightens to <span class="metric tight">[15%, 24%]</span>
+                    </span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-label">Diagnosis:</span>
+                    <span class="timeline-detail">
+                        High-uncertainty agents (new to neighborhood) drove the miss — <span class="metric learning">their posteriors are updating fast</span>
+                    </span>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-label">Week 4 forecast:</span>
+                    <span class="timeline-detail">
+                        <span class="metric tight">21% ± 3%</span> — much tighter because the model <em>learned</em>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pitch-box">
+        <h3>The Pitch</h3>
+        <div class="pitch-text">
+            "Aaru already has the agent architecture. What I bring is the <strong>inference layer</strong> — turning your simulations from scenario generators into calibrated prediction machines that get smarter with every observation. Not just 'what might happen' but 'what will happen, with quantified uncertainty, updated in real-time.'"
+        </div>
+    </div>
+    
+    <div class="footer">
+        Sam Cialek · Bayesian Workflow × Agent Simulation · 2026
+    </div>
+</body>
+</html>
