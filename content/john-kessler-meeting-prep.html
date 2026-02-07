@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Kessler Meeting — Monday Feb 10</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --border: #2a2a2a;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --accent: #4a9eff;
+            --green: #4ade80;
+            --amber: #fbbf24;
+            --red: #f87171;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 2rem 0 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .checklist {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .checklist-item:last-child { margin-bottom: 0; }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 3px;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .item-content { flex: 1; }
+        
+        .item-main { color: var(--text); font-weight: 600; }
+        
+        .item-detail { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem; }
+        
+        .talking-points {
+            background: var(--surface);
+            border-left: 3px solid var(--green);
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+        
+        .talking-point {
+            margin-bottom: 1.25rem;
+        }
+        
+        .talking-point:last-child { margin-bottom: 0; }
+        
+        .tp-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tp-text {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        
+        .tp-text em { color: var(--text-muted); }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(74, 222, 128, 0.05));
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .highlight-box h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .outfit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .outfit-item {
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .outfit-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; }
+        
+        .outfit-value { color: var(--text); font-size: 0.95rem; margin-top: 0.25rem; }
+        
+        .warning {
+            background: rgba(248, 113, 113, 0.1);
+            border-left: 3px solid var(--red);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .context-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .context-box h4 {
+            color: var(--amber);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .context-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .context-box li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .context-box li::before {
+            content: "→ ";
+            color: var(--amber);
+        }
+        
+        @media (max-width: 600px) {
+            .outfit-grid { grid-template-columns: 1fr; }
+            body { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <h1>John Kessler Meeting</h1>
+    <div class="subtitle">Monday, February 10, 2026 · Aaru CTO · NYC</div>
+    
+    <h2>🎒 Bring Checklist</h2>
+    <div class="checklist">
+        <div class="checklist-item">
+            <div class="checkbox"></div>
+            <div class="item-content">
+                <div class="item-main">XREAL AR Glasses</div>
+                <div class="item-detail">Demo voice interface + real-time data viz. Show don't tell.</div>
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checkbox"></div>
+            <div class="item-content">
+                <div class="item-main">Book Gift — The Book of Why (Pearl)</div>
+                <div class="item-detail">Or Rethinking if you have a spare. Annotated if possible. Thoughtful touch.</div>
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checkbox"></div>
+            <div class="item-content">
+                <div class="item-main">Suitcase / Bag with Demo Props</div>
+                <div class="item-detail">Laptop, chargers, backup phone for demos, printed one-pagers.</div>
+            </div>
+        </div>
+        <div class="checklist-item">
+            <div class="checkbox"></div>
+            <div class="item-content">
+                <div class="item-main">Phone charged + hotspot ready</div>
+                <div class="item-detail">In case venue wifi is unreliable.</div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>👔 What to Wear</h2>
+    <div class="outfit-grid">
+        <div class="outfit-item">
+            <div class="outfit-label">Top</div>
+            <div class="outfit-value">Dark navy or black button-down, no tie. Smart casual — he's ~20, not a suit culture.</div>
+        </div>
+        <div class="outfit-item">
+            <div class="outfit-label">Bottom</div>
+            <div class="outfit-value">Dark chinos or clean dark jeans. Not too formal.</div>
+        </div>
+        <div class="outfit-item">
+            <div class="outfit-label">Shoes</div>
+            <div class="outfit-value">Clean white sneakers or minimal leather boots.</div>
+        </div>
+        <div class="outfit-item">
+            <div class="outfit-label">Vibe</div>
+            <div class="outfit-value">Technical founder, not finance bro. Approachable but sharp.</div>
+        </div>
+    </div>
+    
+    <h2>💬 Core Talking Points</h2>
+    <div class="talking-points">
+        <div class="talking-point">
+            <div class="tp-label">The Hook</div>
+            <div class="tp-text">
+                "Aaru already has the agent architecture. What I bring is the <strong>inference layer</strong> — turning your simulations from scenario generators into <strong>calibrated prediction machines</strong> that get smarter with every observation."
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">PRISM Connection</div>
+            <div class="tp-text">
+                "My 132 political archetypes are basically Aaru agent clusters with L2 disposition profiles. The methodology maps directly — your consumer personas are my voting blocs."<br>
+                <em>Show the alignment map if relevant.</em>
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">Bayesian Advantage</div>
+            <div class="tp-text">
+                "Static simulation: run it, get answer, done. Bayesian workflow: <strong>agents carry posteriors that update</strong> with each observation. The model learns, not just reruns."
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">Partial Pooling = Moat</div>
+            <div class="tp-text">
+                "New market entry? You don't have data on <em>those</em> customers, but you have posteriors from similar demographics. Hierarchical structure means new agents inherit from group-level distributions."
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">What I'd Do at Aaru</div>
+            <div class="tp-text">
+                "Build the uncertainty quantification layer. Make predictions that say <strong>'23% ± 4%'</strong> not just '23%'. Add temporal updating so the model gets better each week automatically."
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">Environment vs. Agent (Horizon Case)</div>
+            <div class="tp-text">
+                "The key question isn't just 'what will happen' — it's <strong>'what can we change?'</strong> Simulation lets you decompose outcomes into:<br><br>
+                • <strong>Environment functions</strong> (fixed): demographics, location, competition, seasonality<br>
+                • <strong>Agent functions</strong> (actionable): price sensitivity, brand preference, response to promotions<br><br>
+                Horizon doesn't care that affluent neighborhoods buy more lobster. They care: <em>if we run a promo, does the uplift come from new buyers (agent-side) or just pull-forward from regulars (environment-side)?</em> That's the causal question simulations should answer."
+            </div>
+        </div>
+    </div>
+    
+    <h2>📋 One Bullet Per Role (Aaru-Relevant)</h2>
+    <div class="talking-points">
+        <div class="talking-point">
+            <div class="tp-label">Serif → Partial Pooling at Scale</div>
+            <div class="tp-text">
+                "Built 1,000+ individualized Bayesian models that share information across cohorts while preserving individual variation. <em>That's exactly what Aaru agents need — not one-size-fits-all, not fully independent, but hierarchically pooled.</em>"
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">Matrices (Nuveen) → Digital Twin Simulation</div>
+            <div class="tp-text">
+                "Designed 1,300 building-level digital twins for a $2B real estate portfolio — each 'agent' with its own parameters, running daily scenario analysis. <em>Same architecture as Aaru consumer agents, different domain.</em>"
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">Maalka → Out-of-Sample Validation</div>
+            <div class="tp-text">
+                "Achieved 89% accuracy on held-out properties the model never saw. <em>The discipline of testing on data you didn't train on — that's what separates calibrated predictions from curve-fitting.</em>"
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">D.E. Shaw → Population-Level Stress Testing</div>
+            <div class="tp-text">
+                "Built scenario simulation stress-testing 500+ correlated positions across macro regimes. <em>Not just 'what's the average outcome' but 'what happens when agents move together under stress.'</em>"
+            </div>
+        </div>
+        <div class="talking-point">
+            <div class="tp-label">Barclays → Modeling Human Demand (Facebook IPO)</div>
+            <div class="tp-text">
+                "Built book-building models for the Facebook IPO — forecasting investor behavior to price $5B+ of stock. <em>That's agent simulation: predicting what people will do based on who they are and what they've seen.</em>"
+            </div>
+        </div>
+    </div>
+    
+    <h2>🧠 Context: Who is John Kessler</h2>
+    <div class="context-box">
+        <h4>Key Facts</h4>
+        <ul>
+            <li>CTO & Co-founder of Aaru, was 15-16 at founding (now ~20)</li>
+            <li>Technical, built Lumen (private sector) and Polls (public sector)</li>
+            <li>Series A Dec 2025, ~$1B valuation, ~25 people</li>
+            <li>NYC/SF presence — likely meeting in NYC</li>
+            <li>Recruited through Jev Wray (Paraform), not internal</li>
+        </ul>
+    </div>
+    
+    <div class="highlight-box">
+        <h3>The Core Message</h3>
+        <p style="font-size: 1.1rem; color: var(--text);">
+            "I build systems to predict the future by explaining it. PRISM proves I can model human behavior at scale with quantified uncertainty. Aaru has the simulation engine — I add the learning layer."
+        </p>
+    </div>
+    
+    <div class="warning">
+        <strong>Don't:</strong> Over-explain the math. He's technical — he'll get it fast. Focus on what you'd build, not how Bayesian inference works.
+    </div>
+    
+    <h2>📎 Links to Prep</h2>
+    <div class="context-box">
+        <ul>
+            <li><a href="bayesian-aaru-pitch.html" style="color: var(--accent);">Bayesian Pitch One-Pager</a></li>
+            <li><a href="aaru-resume-new.html" style="color: var(--accent);">Aaru-Tailored Resume</a></li>
+            <li>polmodel-final/Aaru/ — Full interview prep docs (7 files)</li>
+        </ul>
+    </div>
+</body>
+</html>
