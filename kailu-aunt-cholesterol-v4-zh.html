@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天然降胆固醇指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  @page { size: 8.5in 11in; margin: 0.4in; }
+  @media print {
+    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+  
+  body {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+    background: #fff;
+    color: #1a1a2e;
+    line-height: 1.5;
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    padding: 0.4in;
+    font-size: 11px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #e8e8e8;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .card {
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-psyllium {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+    border: 1.5px solid #c5d5f7;
+  }
+  .card-fish {
+    background: linear-gradient(135deg, #fff4ec 0%, #fee8d6 100%);
+    border: 1.5px solid #f5d0a9;
+  }
+  .card-icon { font-size: 48px; margin-bottom: 8px; display: block; }
+  .card-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .card-psyllium .card-label { color: #4a6cf7; }
+  .card-fish .card-label { color: #e67e22; }
+  
+  .card h2 { font-size: 20px; font-weight: 800; margin-bottom: 2px; }
+  .card .card-generic { font-size: 11px; color: #777; margin-bottom: 10px; }
+  .card .target {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .card-psyllium .target { background: #4a6cf7; color: #fff; }
+  .card-fish .target { background: #e67e22; color: #fff; }
+
+  .dose-box {
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .dose-box .dose-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .dose-box .dose-detail { font-size: 11px; color: #555; }
+  .dose-split {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .dose-split > div {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 8px;
+    text-align: center;
+    font-size: 10px;
+  }
+  .dose-split .split-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .dose-split .split-label { font-weight: 600; }
+
+  .evidence {
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    padding: 8px 10px;
+    border-left: 3px solid;
+    font-size: 10px;
+  }
+  .card-psyllium .evidence { border-color: #4a6cf7; }
+  .card-fish .evidence { border-color: #e67e22; }
+  .evidence .ev-stat { font-size: 18px; font-weight: 800; line-height: 1.1; }
+  .card-psyllium .ev-stat { color: #4a6cf7; }
+  .card-fish .ev-stat { color: #e67e22; }
+  .evidence .ev-detail { color: #666; margin-top: 2px; }
+  .evidence .ev-cite { color: #999; font-size: 9px; margin-top: 3px; font-style: italic; }
+
+  .schedule {
+    background: #fafbff;
+    border: 1.5px solid #e8ecf4;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .schedule h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .time-slot { flex: 1; text-align: center; position: relative; }
+  .time-slot .ts-icon { font-size: 28px; display: block; margin-bottom: 4px; }
+  .time-slot .ts-time { font-weight: 700; font-size: 12px; color: #333; }
+  .time-slot .ts-items { margin-top: 6px; }
+  .ts-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9px;
+    font-weight: 600;
+    margin: 2px 0;
+    width: 100%;
+  }
+  .ts-pill.psyllium { background: #e8f0fe; color: #4a6cf7; }
+  .ts-pill.fish { background: #fee8d6; color: #d35400; }
+  .ts-pill.meds { background: #f0f0f0; color: #888; }
+  .arrow-between { flex: 0 0 20px; text-align: center; padding-top: 16px; color: #ccc; font-size: 14px; }
+
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .results-box {
+    background: linear-gradient(135deg, #e8faf0, #d4f5e2);
+    border: 1.5px solid #a8e6c3;
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .results-box h3 { font-size: 13px; font-weight: 700; color: #1a7a4c; margin-bottom: 10px; }
+  .result-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .result-item .ri-icon { font-size: 22px; }
+  .result-item .ri-value { font-size: 16px; font-weight: 800; color: #1a7a4c; }
+  .result-item .ri-label { font-size: 11px; color: #555; }
+
+  .warnings-box {
+    background: #fff9f0;
+    border: 1.5px solid #f5d5a0;
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .warnings-box h3 { font-size: 13px; font-weight: 700; color: #b8860b; margin-bottom: 10px; }
+  .warning-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 11px;
+  }
+  .warning-item .wi-icon { font-size: 18px; flex-shrink: 0; }
+  .warning-item strong { color: #b8860b; }
+
+  .references {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    font-size: 8px;
+    color: #aaa;
+    columns: 2;
+    column-gap: 20px;
+  }
+  .references p { margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>天然降胆固醇指南</h1>
+  <div class="subtitle">循证医学推荐 · 2026年2月</div>
+</div>
+
+<div class="cards">
+  <!-- 洋车前子壳 -->
+  <div class="card card-psyllium">
+    <span class="card-icon">🌾</span>
+    <div class="card-label">可溶性膳食纤维</div>
+    <h2>洋车前子壳（Psyllium）</h2>
+    <div class="card-generic">Metamucil 或同类产品</div>
+    <span class="target">↓ 低密度脂蛋白（LDL）胆固醇</span>
+    
+    <div class="dose-box">
+      <div class="dose-title">每天10克可溶性纤维</div>
+      <div class="dose-detail">用一大杯水冲服，立即饮用。从每天3克开始，4周内逐渐增加（见下方计划）。</div>
+      <div class="dose-split">
+        <div><span class="split-icon">🌅</span><span class="split-label">5克</span><br>早餐前</div>
+        <div><span class="split-icon">🌆</span><span class="split-label">5克</span><br>晚餐前</div>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <div class="ev-stat">LDL ↓7%</div>
+      <div class="ev-detail">低密度脂蛋白降低约11 mg/dL</div>
+      <div class="ev-cite">Jovanovski 2018, Am J Clin Nutr (28项RCTs, n=1,257) · Wei 2009 Cochrane (8项RCTs, n=1,030)</div>
+    </div>
+  </div>
+
+  <!-- 深海鱼油 -->
+  <div class="card card-fish">
+    <span class="card-icon">🐟</span>
+    <div class="card-label">Omega-3 EPA+DHA</div>
+    <h2>深海鱼油（Fish Oil）</h2>
+    <div class="card-generic">高浓度EPA+DHA胶囊</div>
+    <span class="target">↓ 甘油三酯</span>
+    
+    <div class="dose-box">
+      <div class="dose-title">每天2–4克 EPA+DHA</div>
+      <div class="dose-detail">随餐服用，吸收效果最佳</div>
+      <div class="dose-split">
+        <div><span class="split-icon">🌅</span><span class="split-label">1–2克</span><br>早餐时</div>
+        <div><span class="split-icon">🌆</span><span class="split-label">1–2克</span><br>晚餐时</div>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <div class="ev-stat">甘油三酯 ↓25–30%</div>
+      <div class="ev-detail">每天4克可降低约30 mg/dL</div>
+      <div class="ev-cite">Eslick 2009, Int J Cardiol (47项RCTs, n=3,803) · Harris 1997, Am J Clin Nutr (72项试验)</div>
+    </div>
+  </div>
+</div>
+
+<!-- 洋车前子壳逐步增量计划 -->
+<div class="schedule" style="margin-bottom: 14px;">
+  <h3>📊 洋车前子壳逐步增量计划</h3>
+  <div style="position:relative;">
+    <div style="display:flex;align-items:center;margin-bottom:8px;">
+      <div style="width:90px;font-size:11px;font-weight:700;color:#4a6cf7;">第1–2周</div>
+      <div style="flex:1;height:28px;background:#e8ecf4;border-radius:8px;overflow:hidden;position:relative;">
+        <div style="position:absolute;left:0;top:0;height:100%;width:30%;background:linear-gradient(90deg,#7c9cf7,#a8bfff);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">每天3克</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;margin-bottom:8px;">
+      <div style="width:90px;font-size:11px;font-weight:700;color:#4a6cf7;">第3–4周</div>
+      <div style="flex:1;height:28px;background:#e8ecf4;border-radius:8px;overflow:hidden;position:relative;">
+        <div style="position:absolute;left:0;top:0;height:100%;width:60%;background:linear-gradient(90deg,#5b7ef5,#7c9cf7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">每天6克（3克×2次）</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;margin-bottom:4px;">
+      <div style="width:90px;font-size:11px;font-weight:700;color:#4a6cf7;">第5周起</div>
+      <div style="flex:1;height:28px;background:#e8ecf4;border-radius:8px;overflow:hidden;position:relative;">
+        <div style="position:absolute;left:0;top:0;height:100%;width:100%;background:linear-gradient(90deg,#4a6cf7,#667eea);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">每天10克（5克×2次）— 全剂量</div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:10px;color:#777;margin-top:6px;">从低剂量开始，避免胀气和腹胀 · 鱼油可以从一开始就按全剂量服用</div>
+  </div>
+</div>
+
+<!-- 每日服用时间表 -->
+<div class="schedule">
+  <h3>📋 每日服用时间表（全剂量）</h3>
+  <div class="timeline">
+    <div class="time-slot">
+      <span class="ts-icon">🌅</span>
+      <div class="ts-time">早上7:00</div>
+      <div class="ts-items">
+        <div class="ts-pill psyllium">🌾 洋车前子壳 5克+水</div>
+      </div>
+    </div>
+    <div class="arrow-between">→</div>
+    <div class="time-slot">
+      <span class="ts-icon">🍳</span>
+      <div class="ts-time">早上7:30</div>
+      <div class="ts-items">
+        <div class="ts-pill fish">🐟 鱼油 1–2克</div>
+        <div style="font-size:9px;color:#aaa;margin-top:2px;">随早餐服用</div>
+      </div>
+    </div>
+    <div class="arrow-between">→</div>
+    <div class="time-slot">
+      <span class="ts-icon">💊</span>
+      <div class="ts-time">上午9:30+</div>
+      <div class="ts-items">
+        <div class="ts-pill meds">其他药物</div>
+        <div style="font-size:9px;color:#aaa;margin-top:2px;">在洋车前子壳后2小时</div>
+      </div>
+    </div>
+    <div class="arrow-between">→</div>
+    <div class="time-slot">
+      <span class="ts-icon">🌆</span>
+      <div class="ts-time">下午6:00</div>
+      <div class="ts-items">
+        <div class="ts-pill psyllium">🌾 洋车前子壳 5克+水</div>
+      </div>
+    </div>
+    <div class="arrow-between">→</div>
+    <div class="time-slot">
+      <span class="ts-icon">🍽️</span>
+      <div class="ts-time">下午6:30</div>
+      <div class="ts-items">
+        <div class="ts-pill fish">🐟 鱼油 1–2克</div>
+        <div style="font-size:9px;color:#aaa;margin-top:2px;">随晚餐服用</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 预期效果 + 注意事项 -->
+<div class="bottom-row">
+  <div class="results-box">
+    <h3>✅ 预期效果 · 8–12周</h3>
+    <div class="result-item">
+      <span class="ri-icon">📉</span>
+      <div>
+        <div class="ri-value">LDL ↓ 5–10%</div>
+        <div class="ri-label">"坏"胆固醇降低</div>
+      </div>
+    </div>
+    <div class="result-item">
+      <span class="ri-icon">📉</span>
+      <div>
+        <div class="ri-value">甘油三酯 ↓ 15–25%</div>
+        <div class="ri-label">血脂降低</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:#1a7a4c;margin-top:6px;">🩺 3个月后复查血脂</div>
+  </div>
+
+  <div class="warnings-box">
+    <h3>⚠️ 重要注意事项</h3>
+    <div class="warning-item">
+      <span class="wi-icon">⏰</span>
+      <div><strong>药物间隔2小时：</strong>所有其他药物需在洋车前子壳服用前后至少2小时服用——它可能影响药物吸收。</div>
+    </div>
+    <div class="warning-item">
+      <span class="wi-icon">🩸</span>
+      <div><strong>抗凝血药物：</strong>如正在服用华法林或其他抗凝血药物，请在开始服用鱼油前咨询医生。</div>
+    </div>
+    <div class="warning-item">
+      <span class="wi-icon">💧</span>
+      <div><strong>多喝水：</strong>服用洋车前子壳时要喝充足的水，以防止便秘。</div>
+    </div>
+  </div>
+</div>
+
+<div class="references">
+  <p><strong>参考文献：</strong></p>
+  <p>1. Wei ZH et al. (2009). 洋车前子壳与高胆固醇. Cochrane Database Syst Rev. 8项RCTs, n=1,030.</p>
+  <p>2. Jovanovski E et al. (2018). 洋车前子壳对LDL胆固醇的影响. Am J Clin Nutr, 108(5):922–932. 28项RCTs, n=1,257.</p>
+  <p>3. Balk EM et al. (2006). Omega-3脂肪酸对心血管风险因素的影响. AHRQ Evidence Report. 21项RCTs.</p>
+  <p>4. Eslick GD et al. (2009). 鱼油补充剂对甘油三酯的益处. Int J Cardiol, 136(1):4–16. 47项RCTs, n=3,803.</p>
+  <p>5. Harris WS (1997). n-3脂肪酸与血清脂蛋白. Am J Clin Nutr, 65(5):1645S–1654S. 72项对照试验.</p>
+  <p style="margin-top:4px;">本指南不构成医疗建议。所有补充剂请咨询医生后使用。Kailu 用心准备 💛</p>
+</div>
+
+</body>
+</html>
