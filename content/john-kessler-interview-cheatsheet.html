@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>John Kessler Interview — Cheat Sheet</title>
+<style>
+  @page { size: letter; margin: 0.6in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; line-height: 1.45; color: #1a1a1a; max-width: 7.5in; margin: 0 auto; padding: 0.5in; }
+  h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+  .subtitle { font-size: 11px; color: #666; margin-bottom: 16px; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; }
+  .section { margin-bottom: 14px; }
+  .section-header { font-size: 13px; font-weight: 700; color: #fff; background: #1a1a1a; padding: 4px 8px; margin-bottom: 6px; letter-spacing: 0.3px; }
+  .section-header span.num { color: #aaa; margin-right: 4px; }
+  .ask { font-size: 11.5px; font-weight: 600; color: #0a3d62; margin-bottom: 4px; padding-left: 8px; }
+  .notes { font-size: 10.5px; color: #444; padding-left: 8px; margin-bottom: 4px; }
+  .notes li { margin-bottom: 2px; }
+  .quote-box { background: #f0f4f8; border-left: 3px solid #0a3d62; padding: 6px 10px; margin: 4px 0 4px 8px; font-style: italic; font-size: 11px; color: #0a3d62; }
+  .followup { font-size: 10.5px; color: #666; padding-left: 8px; margin-top: 2px; }
+  .followup strong { color: #333; }
+  .light-tag { display: inline-block; font-size: 9px; background: #e8e8e8; color: #555; padding: 1px 6px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+  .bottom-bar { border-top: 2px solid #1a1a1a; margin-top: 12px; padding-top: 8px; }
+  .bottom-bar h3 { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+  .bottom-bar ul { font-size: 10px; color: #444; padding-left: 16px; }
+  .bottom-bar li { margin-bottom: 2px; }
+  .terms { display: flex; flex-wrap: wrap; gap: 4px; padding-left: 8px; margin-top: 4px; }
+  .term { background: #eef2f7; border: 1px solid #c8d6e5; padding: 2px 7px; border-radius: 3px; font-size: 9.5px; font-weight: 600; color: #0a3d62; }
+</style>
+</head>
+<body>
+
+<h1>John Kessler — Interview Cheat Sheet</h1>
+<div class="subtitle">Aaru · Staff Engineer · Feb 2026</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-header"><span class="num">01</span> THE ARCHITECTURE QUESTION <span class="light-tag">DAY-ONE INJECTION</span></div>
+  <div class="ask">ASK: "Do you see Aaru moving beyond LLMs toward something more custom-built for predicting population behavior under different states of the world?"</div>
+  <div class="quote-box">"The large behavior model we're building starts with statistical traits — but the architecture scales to psychographic traits. Same principles, deeper latent space. Observable behavior to latent dispositions."</div>
+  <ul class="notes">
+    <li>His answer maps your skills to their roadmap — listen for where they feel limited by LLMs</li>
+    <li>Segue from his answer into your LBM work with Sarah</li>
+  </ul>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+  <div class="section-header"><span class="num">02</span> EMERGENCE + EQUILIBRIA <span class="light-tag">CONCEPTUAL HEAVY-HITTER</span></div>
+  <div class="quote-box">"We're not just predicting individual behavior — we're modeling the equilibria that populations settle into when agents interact under different states of the world."</div>
+  <div class="terms">
+    <span class="term">MARL</span>
+    <span class="term">Nash Equilibrium</span>
+    <span class="term">Mean Field Game Theory</span>
+    <span class="term">Emergent Macro-Behavior</span>
+  </div>
+  <ul class="notes" style="margin-top:6px;">
+    <li><strong>MARL:</strong> agents learning policies simultaneously in shared environments</li>
+    <li><strong>Nash:</strong> stable states — no agent benefits from unilateral strategy change</li>
+    <li><strong>Mean field:</strong> scale Nash to millions via population distribution approximation</li>
+    <li><strong>Connection:</strong> Aaru's agents ARE playing a game; their output IS an equilibrium</li>
+  </ul>
+  <div class="quote-box">"Machine learning tells you what IS. Simulation tells you what's POSSIBLE."</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+  <div class="section-header"><span class="num">03</span> BIAS TRACKING + R&D WORKFLOW <span class="light-tag">PROCESS + INTEGRITY</span></div>
+  <div class="ask">ASK: "How do you track sources of bias in the model, and how does a modeling decision go from identifying a gap to landing in production?"</div>
+  <ul class="notes">
+    <li>These pair naturally — bias tracking IS part of the R&D pipeline</li>
+    <li>Reference your PRISM bias registry: prompt bias, anchor bias, historical coverage, salience weighting, representativeness</li>
+    <li>Shows you think about model integrity, not just model building</li>
+  </ul>
+  <div class="quote-box">"I built a bias registry for PRISM — five categories of bias, each with a detection method and mitigation. That's the kind of infrastructure I'd bring to Aaru's pipeline."</div>
+  <p class="followup"><strong>Follow-up:</strong> "If I started Monday, which existing project would benefit most from someone who can bridge the statistical modeling and the engineering?"</p>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+  <div class="section-header"><span class="num">04</span> CITY SIMULATION <span class="light-tag">RAPPORT · SAVE FOR RIGHT MOMENT</span></div>
+  <div class="quote-box">"Aaru in 2030, once we're dominating — we should take a beat and make a city simulation PC game."</div>
+  <ul class="notes">
+    <li>Plays to John's city sim background — shows you did your homework</li>
+    <li>Light, forward-looking, implies long-term commitment</li>
+  </ul>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <h3>Back-Pocket Lines</h3>
+  <ul>
+    <li>"My shoes are older than John" — self-deprecating if age comes up</li>
+    <li>D.E. Shaw pedigree — OG quant fund, Bezos was there, Two Sigma founders came from there</li>
+    <li>"I've spent my career inverting the question — from estimation to simulation, from what happened to what's possible"</li>
+    <li>"PRISM maps directly to your agent architecture — my archetypes are your cluster centers, my L4 is your temporal dynamics"</li>
+  </ul>
+</div>
+
+</body>
+</html>
