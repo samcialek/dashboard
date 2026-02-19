@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Aaru / John Kessler — Two-Page Cheat Sheet</title>
+<style>
+  @page { size: letter; margin: 0.5in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; line-height: 1.4; color: #1a1a1a; max-width: 7.5in; margin: 0 auto; padding: 0.4in; columns: 2; column-gap: 20px; }
+  h1 { font-size: 17px; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.3px; column-span: all; }
+  .subtitle { font-size: 10px; color: #666; margin-bottom: 12px; border-bottom: 2px solid #1a1a1a; padding-bottom: 6px; column-span: all; }
+  .section { break-inside: avoid; margin-bottom: 10px; }
+  .section-header { font-size: 11px; font-weight: 700; color: #fff; background: #1a1a1a; padding: 3px 7px; margin-bottom: 4px; letter-spacing: 0.3px; text-transform: uppercase; }
+  .section-header .tag { float: right; font-size: 8px; font-weight: 400; color: #aaa; text-transform: none; letter-spacing: 0; }
+  ul { padding-left: 14px; margin-bottom: 4px; }
+  li { margin-bottom: 1.5px; }
+  li strong { color: #0a3d62; }
+  .quote-box { background: #f0f4f8; border-left: 3px solid #0a3d62; padding: 4px 8px; margin: 4px 0; font-style: italic; font-size: 9.5px; color: #0a3d62; }
+  .ask { font-size: 10px; font-weight: 600; color: #0a3d62; margin-bottom: 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.5px; margin: 4px 0; }
+  th { background: #2c3e50; color: #fff; text-align: left; padding: 2px 6px; font-size: 9px; }
+  td { padding: 2px 6px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) td { background: #f7f9fb; }
+  .terms { display: flex; flex-wrap: wrap; gap: 3px; margin: 4px 0; }
+  .term { background: #eef2f7; border: 1px solid #c8d6e5; padding: 1px 6px; border-radius: 3px; font-size: 8.5px; font-weight: 600; color: #0a3d62; }
+  .bottom-bar { break-inside: avoid; border-top: 2px solid #1a1a1a; margin-top: 8px; padding-top: 6px; }
+  .bottom-bar h3 { font-size: 10px; font-weight: 700; margin-bottom: 3px; }
+  .bottom-bar ul { font-size: 9.5px; color: #444; }
+  .risk { color: #999; font-size: 9px; }
+  .risk li { margin-bottom: 1px; }
+  .oneliner { text-align: center; font-weight: 700; font-size: 10.5px; color: #0a3d62; margin: 6px 0; padding: 4px; background: #f0f4f8; border-radius: 3px; column-span: all; }
+</style>
+</head>
+<body>
+
+<h1>Aaru / John Kessler — Two-Page Cheat Sheet</h1>
+<div class="subtitle">Staff Engineer · $200–350K · Series A (Redpoint, Dec 2025) · ~$1B val · Feb 2026</div>
+
+<!-- COMPANY -->
+<div class="section">
+  <div class="section-header">The Company</div>
+  <ul>
+    <li><strong>Aaru</strong> — AI synthetic population simulation. Multi-agent systems replacing surveys, focus groups, polls</li>
+    <li><strong>Products:</strong> Lumen (private), Dynamo (political), Seraph (public sector)</li>
+    <li><strong>Team:</strong> Cameron Fink (CEO, ~20), Ned Koh (~20), John Kessler (CTO, ~18), Mathew Hauer (Agent Dev, FSU demographer)</li>
+    <li><strong>Scale:</strong> ~25 people, &lt;$10M ARR, &gt;$50M raised</li>
+    <li><strong>Partners:</strong> Accenture Song, EY (90% Spearman validation), IPG</li>
+  </ul>
+</div>
+
+<!-- JOHN -->
+<div class="section">
+  <div class="section-header">John Kessler <span class="tag">CTO · ~18 yrs old</span></div>
+  <ul>
+    <li>Was 15–16 at founding. Z Fellows, Kleiner Perkins, Cerebras, MIT Media Lab</li>
+    <li>City simulation background — plays to the rapport line about building a PC game</li>
+    <li>"My shoes are older than John" — self-deprecating if age comes up</li>
+  </ul>
+</div>
+
+<!-- PITCH: PRISM → AARU -->
+<div class="section">
+  <div class="section-header">Your Pitch: PRISM → Aaru</div>
+  <table>
+    <tr><th>Your Work</th><th>Their Need</th></tr>
+    <tr><td>132 archetypes</td><td>Agent cluster centers</td></tr>
+    <tr><td>L1–L3 (psych → political → behavioral)</td><td>Structured cognitive profiles</td></tr>
+    <tr><td>L4 era salience</td><td>Temporal dynamics — what matters NOW</td></tr>
+    <tr><td>Bayesian calibration (48.9% vs 49.9%)</td><td>Model validation framework</td></tr>
+    <tr><td>Partial pooling across archetypes</td><td>Info sharing without losing signal</td></tr>
+    <tr><td>60 US + 500 global elections</td><td>Massive backtesting corpus</td></tr>
+  </table>
+  <div class="quote-box">"I've spent my career inverting the question — from estimation to simulation, from what happened to what's possible."</div>
+</div>
+
+<!-- SERIF -->
+<div class="section">
+  <div class="section-header">Serif = Same Engine, Different Domain <span class="tag">DEPTH · VERSATILITY</span></div>
+  <ul>
+    <li><strong>PRISM</strong> = proto-LBM for psychographic traits (how people think)</li>
+    <li><strong>Serif</strong> = proto-LBM for physiological traits (how bodies work)</li>
+    <li>Same core: partial pooling, latent state estimation, observed data → predictions</li>
+    <li>Proves the framework <strong>generalizes</strong> — not domain-specific</li>
+  </ul>
+  <div class="quote-box">"Whether it's voting behavior or glucose response, the math is the same — you pool information across similar people without losing individual signal."</div>
+</div>
+
+<!-- LLMs → LBMs -->
+<div class="section">
+  <div class="section-header">1. LLMs → Large Behavior Models <span class="tag">CORE ARGUMENT</span></div>
+  <ul>
+    <li>LLMs predict plausible <em>text</em>, not plausible <em>actions</em></li>
+    <li>Training data bias: English internet text → liberal, Western, urban, educated</li>
+    <li>Published words ≠ representative behavior — certain types write, that's not everyone</li>
+    <li>Need models trained on <strong>observed behavior</strong> (census, voting, mobility, transactions)</li>
+  </ul>
+  <div class="quote-box">"You need a model where the training signal is what people DID, not what the internet SAID about what people do."</div>
+</div>
+
+<!-- MARL -->
+<div class="section">
+  <div class="section-header">2. Multi-Agent Reinforcement Learning <span class="tag">NEXT FRONTIER</span></div>
+  <ul>
+    <li><strong>MARL:</strong> agents learn decision policies simultaneously in shared environments</li>
+    <li><strong>Emergent behavior:</strong> discovers strategies designers didn't anticipate</li>
+    <li><strong>Realistic counterfactuals:</strong> agents <em>react</em> to changes with second-order effects</li>
+    <li><strong>Inverse RL:</strong> learn reward functions from observed data</li>
+    <li><strong>Mean Field RL:</strong> scales to millions via population distribution approximation</li>
+  </ul>
+  <div class="quote-box">"You go from a model that replays the world with different parameters to one that plays the world and discovers what emerges."</div>
+</div>
+
+<!-- AGENT × ENVIRONMENT -->
+<div class="section">
+  <div class="section-header">3. Agent × Environment Decomposition <span class="tag">RL FRAMEWORK</span></div>
+  <ul>
+    <li><strong>Fix world, vary agent:</strong> What can this agent affect? Tests action space</li>
+    <li><strong>Fix agent, vary world:</strong> What scenarios might they face? Tests robustness</li>
+    <li><strong>Vary both (MARL):</strong> Co-evolve → discover <strong>Nash equilibria</strong></li>
+    <li><strong>Lumen:</strong> equilibrium pricing — "if Walmart does X, where does it settle?"</li>
+    <li><strong>Dynamo:</strong> policy interventions → agents adapt → new equilibrium</li>
+  </ul>
+</div>
+
+<!-- MODEL ALIGNMENT -->
+<div class="section">
+  <div class="section-header">4. Model Alignment via RL</div>
+  <ul>
+    <li>Reward shaping from ground truth — match observed behavior distributions</li>
+    <li>Inverse RL for value alignment — infer objectives from observed choices</li>
+    <li>Distribution matching (KL divergence / Wasserstein) — aligned at every percentile</li>
+    <li>Adversarial validation — discriminator can't tell simulated from real = aligned</li>
+  </ul>
+</div>
+
+<!-- BIAS REGISTRY -->
+<div class="section">
+  <div class="section-header">5. Bias Registry <span class="tag">INFRASTRUCTURE</span></div>
+  <ul>
+    <li>5 categories: prompt bias, anchor bias, historical coverage, salience weighting, representativeness</li>
+    <li>Each with detection method and mitigation</li>
+  </ul>
+  <div class="quote-box">"That's the kind of infrastructure I'd bring to Aaru's pipeline."</div>
+</div>
+
+<!-- QUESTIONS -->
+<div class="section">
+  <div class="section-header">Questions to Ask John</div>
+  <ul>
+    <li><strong>Architecture:</strong> "Do you see Aaru moving beyond LLMs toward something more custom-built for predicting population behavior?"</li>
+    <li><strong>Bias + R&D:</strong> "How do you track sources of bias, and how does a modeling decision go from gap to production?"</li>
+    <li><strong>Methodology:</strong> "What does internal discourse look like around methodology choices?"</li>
+    <li><strong>Walmart:</strong> "How's the Walmart engagement going?"</li>
+    <li><strong>Day-one:</strong> "If I started Monday, which project benefits most from someone bridging stats and engineering?"</li>
+    <li><strong>City sim:</strong> "Aaru 2030, once we're dominating — let's make a city sim PC game."</li>
+  </ul>
+</div>
+
+<!-- BACK-POCKET -->
+<div class="bottom-bar">
+  <h3>Back-Pocket Lines</h3>
+  <ul>
+    <li>"Machine learning tells you what IS. Simulation tells you what's POSSIBLE."</li>
+    <li>"We're not just predicting individual behavior — we're modeling the equilibria populations settle into."</li>
+    <li>D.E. Shaw pedigree — OG quant fund, Bezos was there</li>
+    <li>"My archetypes are your cluster centers, my L4 is your temporal dynamics"</li>
+  </ul>
+</div>
+
+<!-- TERMS -->
+<div class="section" style="margin-top:6px;">
+  <div class="section-header">Terms to Drop Naturally</div>
+  <div class="terms">
+    <span class="term">MARL</span>
+    <span class="term">Nash Equilibrium</span>
+    <span class="term">Mean Field Game Theory</span>
+    <span class="term">Inverse RL</span>
+    <span class="term">Partial Pooling</span>
+    <span class="term">Bayesian Calibration</span>
+    <span class="term">Large Behavior Model</span>
+    <span class="term">Emergent Macro-Behavior</span>
+    <span class="term">Distribution Matching</span>
+    <span class="term">Counterfactual Realism</span>
+  </div>
+</div>
+
+<!-- RISK -->
+<div class="bottom-bar">
+  <h3>Risk Awareness <span style="font-weight:400;color:#999;">(don't say — just know)</span></h3>
+  <ul class="risk">
+    <li>$1B on &lt;$10M ARR — extreme ratio</li>
+    <li>No published methodology (black box) · No peer-reviewed papers</li>
+    <li>2024 miss: predicted Harris 53–47, Trump won 312–226 EC</li>
+    <li>Very young team (CTO is a teenager)</li>
+  </ul>
+</div>
+
+</body>
+</html>
