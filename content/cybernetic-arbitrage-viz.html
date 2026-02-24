@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybernetic Arbitrage — Dual AI Visualization</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;height:100vh;display:flex;flex-direction:column}
+.header{padding:20px 30px;text-align:center;border-bottom:1px solid #1a1a2e;flex-shrink:0}
+.header h1{font-size:1.8rem;background:linear-gradient(135deg,#6366f1,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:#666;font-size:0.85rem;margin-top:6px}
+.header a{color:#6366f1;text-decoration:none}
+.tabs{display:flex;justify-content:center;gap:4px;padding:12px;flex-shrink:0}
+.tab{padding:10px 28px;background:#111;border:1px solid #222;border-radius:8px 8px 0 0;cursor:pointer;font-size:0.9rem;color:#888;transition:all 0.2s}
+.tab.active{background:#1a1a2e;color:#fff;border-color:#333;border-bottom-color:#1a1a2e}
+.tab:hover{color:#ccc}
+.frames{flex:1;position:relative}
+.frames iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;background:#0a0a0f}
+.frames iframe.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Cybernetic Arbitrage — Dual AI Visualization</h1>
+  <p>Two AI models visualize the same thesis · <a href="https://hypersoren.xyz/posts/cybernetic-arbitrage/" target="_blank">Read the original →</a></p>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="show('claude')">Claude Opus 4.6</div>
+  <div class="tab" onclick="show('chatgpt')">ChatGPT 5.2</div>
+</div>
+<div class="frames">
+  <iframe id="claude" src="cybernetic-arbitrage-claude.html"></iframe>
+  <iframe id="chatgpt" src="cybernetic-arbitrage-chatgpt.html" class="hidden"></iframe>
+</div>
+<script>
+function show(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===(id==='claude'?0:1)));
+  document.getElementById('claude').classList.toggle('hidden',id!=='claude');
+  document.getElementById('chatgpt').classList.toggle('hidden',id!=='chatgpt');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybernetic Arbitrage — Claude Opus Visualization</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .header {
+    text-align: center;
+    padding: 3rem 2rem 1rem;
+    position: relative;
+  }
+
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff6b35, #f7c948, #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+  }
+
+  .header .subtitle {
+    font-size: 0.95rem;
+    color: #888;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .header .badge {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: rgba(255,107,53,0.15);
+    color: #ff6b35;
+    border: 1px solid rgba(255,107,53,0.3);
+  }
+
+  svg { display: block; margin: 0 auto; }
+
+  .node-group { cursor: pointer; }
+  .node-group:hover .node-box { filter: brightness(1.3); }
+  .node-group:hover .node-glow { opacity: 0.6; }
+
+  .node-box {
+    transition: filter 0.3s ease;
+    rx: 12;
+    ry: 12;
+  }
+
+  .node-glow {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: blur(20px);
+  }
+
+  .arrow-path {
+    fill: none;
+    stroke-width: 2;
+    opacity: 0.7;
+  }
+
+  .arrow-path.profit {
+    stroke: #f7c948;
+    stroke-dasharray: 8 4;
+    animation: dash 1.5s linear infinite;
+  }
+
+  .arrow-path.flow {
+    stroke: #555;
+    stroke-width: 1.5;
+  }
+
+  @keyframes dash {
+    to { stroke-dashoffset: -24; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  .tooltip {
+    position: fixed;
+    max-width: 320px;
+    background: #1a1a24;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #ccc;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .tooltip .tt-title {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .inversion-zone {
+    fill: url(#inversionGrad);
+    opacity: 0.08;
+    rx: 20;
+    ry: 20;
+  }
+
+  .zone-label {
+    font-size: 11px;
+    fill: #666;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 2rem 2rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  .legend-line {
+    width: 24px;
+    height: 2px;
+    background: #f7c948;
+    background-image: repeating-linear-gradient(90deg, #f7c948 0, #f7c948 8px, transparent 8px, transparent 12px);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Cybernetic Arbitrage</h1>
+  <div class="subtitle">Profit Migration in the Age of Commoditized Intelligence</div>
+  <div class="badge">Claude Opus Visualization</div>
+</div>
+
+<svg id="flowchart" width="960" height="820" viewBox="0 0 960 820"></svg>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:#ff6b35"></div>Disruption / Collapse</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#4ecdc4"></div>Structural Constraint</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#f7c948"></div>Profit Migration</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#a78bfa"></div>Inversion / Outcome</div>
+  <div class="legend-item"><div class="legend-line"></div>Profit Flow</div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const nodes = [
+  { id: 'ai', x: 480, y: 60, w: 280, h: 56, label: '① AI Modularizes Intelligence', color: '#ff6b35', desc: 'Models get cheaper exponentially. Tokens are commoditized. Claude Code is free. Codex is open-sourced. Intelligence itself becomes a utility.' },
+  { id: 'saas', x: 240, y: 170, w: 260, h: 56, label: '② SaaS Margin Collapse', color: '#ff6b35', desc: 'As token consumption scales, marginal value of the wrapper → 0. Middleware SaaS is structurally doomed — it resells intelligence it doesn\'t own.' },
+  { id: 'context', x: 560, y: 170, w: 280, h: 56, label: '③ Context Can\'t Be Intermediated', color: '#4ecdc4', desc: 'Context rots when extracted, leaks alpha when shared. Physics pushes compute to where context is born — the edge, not the cloud.' },
+  { id: 'coord', x: 480, y: 300, w: 340, h: 56, label: '④ Coordination Constraint', color: '#4ecdc4', desc: 'Can\'t coordinate what you don\'t know → can\'t know what you don\'t own → can\'t own without liability. Coase\'s firm boundary, applied to AI.' },
+  { id: 'profit', x: 200, y: 420, w: 300, h: 56, label: '⑤ Profit Migration (Christensen)', color: '#f7c948', desc: 'Intelligence modularized → attractive profits migrate to trust + demand aggregation. The money moves from where intelligence lives to where context lives.' },
+  { id: 'inversion', x: 540, y: 420, w: 300, h: 56, label: '⑥ Inversion of Aggregation', color: '#a78bfa', desc: 'Past: Uber doesn\'t drive, Airbnb doesn\'t clean. Future: to deliver autonomy, you must assume operational control. "Install a brain into a foreign body" fails.' },
+  { id: 'rollup', x: 280, y: 570, w: 400, h: 64, label: '⑦ Cybernetic Rollup', color: '#a78bfa', desc: 'Own physical nodes where context is born. Deploy edge intelligence. Convert capital intensity into a data flywheel. PE buy-and-install or deep tech build — same goal.' },
+  { id: 'arb', x: 280, y: 700, w: 400, h: 64, label: '⑧ Cybernetic Arbitrage', color: '#f7c948', desc: 'Capture the spread between market\'s perceived cost of operations and actual efficiency of AI-governed assets. The grand path: optimize conversion of energy + capital to intelligence.' },
+];
+
+const edges = [
+  { from: 'ai', to: 'saas', type: 'flow' },
+  { from: 'ai', to: 'context', type: 'flow' },
+  { from: 'saas', to: 'profit', type: 'profit' },
+  { from: 'context', to: 'coord', type: 'flow' },
+  { from: 'coord', to: 'inversion', type: 'flow' },
+  { from: 'profit', to: 'rollup', type: 'profit' },
+  { from: 'inversion', to: 'rollup', type: 'flow' },
+  { from: 'rollup', to: 'arb', type: 'profit' },
+  { from: 'coord', to: 'profit', type: 'flow' },
+];
+
+const svg = document.getElementById('flowchart');
+const tooltip = document.getElementById('tooltip');
+const nodeMap = {};
+nodes.forEach(n => nodeMap[n.id] = n);
+
+// Defs
+svg.innerHTML = `
+<defs>
+  <marker id="arrowGray" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#555"/></marker>
+  <marker id="arrowGold" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#f7c948"/></marker>
+  <linearGradient id="inversionGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f7c948"/></linearGradient>
+</defs>
+`;
+
+// Inversion zone
+const zone = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+Object.entries({x:170, y:390, width:700, height:110, class:'inversion-zone'}).forEach(([k,v])=>zone.setAttribute(k,v));
+svg.appendChild(zone);
+
+const zl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+zl.setAttribute('x', 880); zl.setAttribute('y', 460); zl.setAttribute('class', 'zone-label');
+zl.setAttribute('text-anchor', 'end');
+zl.textContent = 'inversion zone';
+svg.appendChild(zl);
+
+// Edges
+edges.forEach(e => {
+  const from = nodeMap[e.from], to = nodeMap[e.to];
+  const x1 = from.x + from.w/2, y1 = from.y + from.h;
+  const x2 = to.x + to.w/2, y2 = to.y;
+  const midY = (y1 + y2) / 2;
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', `M${x1},${y1} C${x1},${midY} ${x2},${midY} ${x2},${y2}`);
+  path.setAttribute('class', `arrow-path ${e.type}`);
+  path.setAttribute('marker-end', e.type === 'profit' ? 'url(#arrowGold)' : 'url(#arrowGray)');
+  svg.appendChild(path);
+});
+
+// Nodes
+nodes.forEach((n, i) => {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'node-group');
+  g.style.animation = `fadeInUp 0.5s ease ${i * 0.08}s both`;
+
+  // Glow
+  const glow = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  Object.entries({x:n.x, y:n.y, width:n.w, height:n.h, fill:n.color, class:'node-glow'}).forEach(([k,v])=>glow.setAttribute(k,v));
+  g.appendChild(glow);
+
+  // Box
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  Object.entries({x:n.x, y:n.y, width:n.w, height:n.h, fill:'#14141e', stroke:n.color, 'stroke-width':1.5, class:'node-box'}).forEach(([k,v])=>rect.setAttribute(k,v));
+  g.appendChild(rect);
+
+  // Label
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  text.setAttribute('x', n.x + n.w/2);
+  text.setAttribute('y', n.y + n.h/2 + 5);
+  text.setAttribute('text-anchor', 'middle');
+  text.setAttribute('fill', '#fff');
+  text.setAttribute('font-size', '13');
+  text.setAttribute('font-weight', '500');
+  text.textContent = n.label;
+  g.appendChild(text);
+
+  // Tooltip
+  g.addEventListener('mouseenter', (ev) => {
+    tooltip.innerHTML = `<div class="tt-title">${n.label}</div>${n.desc}`;
+    tooltip.style.opacity = '1';
+  });
+  g.addEventListener('mousemove', (ev) => {
+    tooltip.style.left = ev.clientX + 12 + 'px';
+    tooltip.style.top = ev.clientY + 12 + 'px';
+  });
+  g.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
+
+  svg.appendChild(g);
+});
+</script>
+</body>
+</html>
