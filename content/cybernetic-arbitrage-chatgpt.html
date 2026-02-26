@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatGPT 5.2 Visualization — Cybernetic Arbitrage</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;overflow-x:hidden;padding-bottom:60px}
+.header{text-align:center;padding:40px 20px 20px}
+.header h1{font-size:2.2rem;background:linear-gradient(135deg,#10a37f,#1a7f64);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.header .sub{color:#888;font-size:0.9rem}
+
+/* Concentric rings layout */
+.ring-container{position:relative;width:min(90vw,800px);height:min(90vw,800px);margin:30px auto}
+.ring{position:absolute;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;transition:all 0.4s}
+.ring:hover{transform:scale(1.02);filter:brightness(1.2)}
+
+.ring-4{width:100%;height:100%;top:0;left:0;border-color:#10a37f33;background:radial-gradient(circle,transparent 60%,#10a37f08 100%)}
+.ring-3{width:72%;height:72%;top:14%;left:14%;border-color:#f59e0b33;background:radial-gradient(circle,transparent 55%,#f59e0b08 100%)}
+.ring-2{width:46%;height:46%;top:27%;left:27%;border-color:#ef444433;background:radial-gradient(circle,transparent 50%,#ef444408 100%)}
+.ring-1{width:22%;height:22%;top:39%;left:39%;border-color:#6366f133;background:radial-gradient(circle,transparent 40%,#6366f118 100%)}
+
+/* Labels on rings */
+.ring-label{position:absolute;font-size:0.75rem;color:#666;text-transform:uppercase;letter-spacing:2px;pointer-events:none}
+
+/* Positioned nodes */
+.node{position:absolute;padding:10px 16px;border-radius:10px;font-size:0.8rem;font-weight:600;text-align:center;cursor:pointer;transition:all 0.3s;z-index:2;max-width:160px;line-height:1.3}
+.node:hover{transform:translateY(-3px);z-index:10}
+.node .detail{font-size:0.65rem;font-weight:400;color:#aaa;margin-top:4px;display:none}
+.node.expanded .detail{display:block}
+
+.n-cause{background:#12122a;border:1.5px solid #6366f1;color:#c4b5fd}
+.n-mechanism{background:#1a1208;border:1.5px solid #f59e0b;color:#fbbf24}
+.n-failure{background:#1a0a0a;border:1.5px solid #ef4444;color:#f87171}
+.n-outcome{background:#0a1a12;border:1.5px solid #10b981;color:#6ee7b7}
+
+/* Central node */
+.center-node{position:absolute;width:160px;height:160px;top:calc(50% - 80px);left:calc(50% - 80px);border-radius:50%;background:radial-gradient(circle,#10a37f22,#0a0a0f);border:3px solid #10a37f;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:5;cursor:pointer;animation:pulse 3s ease-in-out infinite}
+.center-node h2{font-size:1rem;color:#10a37f;margin-bottom:4px}
+.center-node p{font-size:0.65rem;color:#888;padding:0 10px}
+@keyframes pulse{0%,100%{box-shadow:0 0 20px #10a37f22}50%{box-shadow:0 0 40px #10a37f44}}
+
+/* Connector lines via SVG overlay */
+.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.conn{stroke-width:1.5;opacity:0.3;stroke-dasharray:6 4}
+@keyframes flowIn{to{stroke-dashoffset:-20}}
+.conn{animation:flowIn 2s linear infinite}
+
+/* Frameworks bar */
+.frameworks{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:30px auto;max-width:800px}
+.fw{background:#111;border:1px solid #222;border-radius:20px;padding:8px 18px;font-size:0.75rem;color:#888;cursor:default;transition:all 0.3s}
+.fw:hover{border-color:#10a37f;color:#10b981}
+
+/* Quotes */
+.quotes{max-width:800px;margin:30px auto;padding:0 20px}
+.q{background:rgba(16,163,127,0.06);border-left:3px solid #10a37f;padding:14px 18px;margin:10px 0;border-radius:0 8px 8px 0;font-style:italic;color:#6ee7b7;font-size:0.85rem;transition:background 0.3s}
+.q:hover{background:rgba(16,163,127,0.12)}
+
+.legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:20px auto;font-size:0.78rem;color:#999}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend .dot{width:10px;height:10px;border-radius:3px}
+
+.source{text-align:center;padding:30px;font-size:0.8rem;color:#555}
+.source a{color:#10a37f;text-decoration:none}
+
+/* Tooltip */
+.tip{position:fixed;background:#1e1e2e;border:1px solid #333;border-radius:8px;padding:12px 16px;font-size:0.82rem;max-width:280px;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:100;line-height:1.45;color:#ccc}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Cybernetic Arbitrage</h1>
+  <div class="sub">ChatGPT 5.2 Visualization · Concentric Thesis Map</div>
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:#6366f1"></span> Cause</span>
+  <span><span class="dot" style="background:#f59e0b"></span> Mechanism</span>
+  <span><span class="dot" style="background:#ef4444"></span> Failure Mode</span>
+  <span><span class="dot" style="background:#10b981"></span> Outcome</span>
+</div>
+
+<div class="ring-container" id="rc">
+  <!-- Rings -->
+  <div class="ring ring-4"></div>
+  <div class="ring ring-3"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-1"></div>
+
+  <!-- SVG connectors -->
+  <svg class="connectors" viewBox="0 0 800 800">
+    <!-- Center to inner ring nodes -->
+    <line class="conn" stroke="#10b981" x1="400" y1="400" x2="400" y2="215"/>
+    <line class="conn" stroke="#10b981" x1="400" y1="400" x2="565" y2="400"/>
+    <line class="conn" stroke="#10b981" x1="400" y1="400" x2="400" y2="575"/>
+    <line class="conn" stroke="#10b981" x1="400" y1="400" x2="240" y2="400"/>
+    <!-- Inner to mid ring -->
+    <line class="conn" stroke="#f59e0b" x1="400" y1="215" x2="280" y2="140"/>
+    <line class="conn" stroke="#f59e0b" x1="400" y1="215" x2="520" y2="140"/>
+    <line class="conn" stroke="#ef4444" x1="240" y1="400" x2="120" y2="310"/>
+    <line class="conn" stroke="#f59e0b" x1="565" y1="400" x2="660" y2="300"/>
+    <!-- Mid to outer ring -->
+    <line class="conn" stroke="#6366f1" x1="280" y1="140" x2="180" y2="60"/>
+    <line class="conn" stroke="#6366f1" x1="520" y1="140" x2="620" y2="60"/>
+    <line class="conn" stroke="#f59e0b" x1="660" y1="300" x2="720" y2="180"/>
+  </svg>
+
+  <!-- Center -->
+  <div class="center-node" data-tip="The spread between the market's perceived cost of operations and the actual efficiency of AI-governed assets. This is the alpha.">
+    <h2>⚡ Cybernetic<br>Arbitrage</h2>
+    <p>Perceived ops cost vs. AI-governed efficiency</p>
+  </div>
+
+  <!-- Inner ring: Outcomes -->
+  <div class="node n-outcome" style="top:12%;left:calc(50% - 70px)" data-tip="Own physical nodes where context is born. Deploy edge intelligence. Convert capital intensity into a data flywheel.">
+    Cybernetic Rollup
+    <div class="detail">Physical nodes + edge AI + data flywheel</div>
+  </div>
+  <div class="node n-outcome" style="top:calc(50% - 20px);right:6%" data-tip="Aggregation inverts: to deliver autonomy, you must assume operational control. Airbnb doesn't clean sheets — but AI must.">
+    Aggregation<br>Inversion
+    <div class="detail">Must own/operate for autonomy</div>
+  </div>
+  <div class="node n-mechanism" style="bottom:11%;left:calc(50% - 65px)" data-tip="Christensen's Law: when intelligence modularizes, profits migrate to trust and demand aggregation layers.">
+    Profit Migration
+    <div class="detail">Christensen → trust + demand</div>
+  </div>
+  <div class="node n-mechanism" style="top:calc(50% - 20px);left:6%" data-tip="Can't coordinate what you don't know → can't know what you don't own → can't own without bearing liability.">
+    Coordination<br>Constraint
+    <div class="detail">Unknown → Unowned → No liability</div>
+  </div>
+
+  <!-- Mid ring: Mechanisms & Failures -->
+  <div class="node n-mechanism" style="top:4%;left:15%" data-tip="Context rots when extracted from its origin. It leaks alpha. Physics pushes compute to where context is born — the edge.">
+    Context Can't Be<br>Intermediated
+    <div class="detail">Rots · Leaks alpha · Edge physics</div>
+  </div>
+  <div class="node n-mechanism" style="top:4%;right:15%" data-tip="Claude Code is free. Codex is open-sourced. The wrapper's marginal value trends to zero.">
+    SaaS Wrapper<br>Value → 0
+    <div class="detail">API wrappers commoditized</div>
+  </div>
+  <div class="node n-failure" style="top:30%;left:2%" data-tip="Poor-sighted, expensive, misaligned. Frankenstein: intelligence installed in a body you don't own.">
+    Middleware<br>Doomed
+    <div class="detail">"Brain in foreign body"</div>
+  </div>
+  <div class="node n-mechanism" style="top:28%;right:3%" data-tip="Hayek: intelligence best deployed where knowledge exists — at the edge, not centralized data centers.">
+    Edge Over<br>Centralization
+    <div class="detail">Hayek's local knowledge</div>
+  </div>
+
+  <!-- Outer ring: Root Causes -->
+  <div class="node n-cause" style="top:-2%;left:6%" data-tip="AI commoditizes intelligence itself. Token costs collapse. Intelligence is no longer scarce — context is.">
+    AI Modularizes<br>Intelligence
+    <div class="detail">Token costs → 0</div>
+  </div>
+  <div class="node n-cause" style="top:-2%;right:6%" data-tip="No distinction between PE (buy legacy + install sensors) and Deep Tech (build from scratch). Same endgame: own the physical context layer.">
+    Asset-Agnostic<br>Convergence
+    <div class="detail">PE ≡ Deep Tech</div>
+  </div>
+  <div class="node n-mechanism" style="top:14%;right:-1%" data-tip="Don't resell cognition. Either host your own models or don't sell much intelligence. Revenue orthogonal to tokens = durable.">
+    "Be Dumb"
+    <div class="detail">Revenue ⊥ tokens</div>
+  </div>
+</div>
+
+<div class="frameworks">
+  <div class="fw">Coase · Nature of the Firm (1937)</div>
+  <div class="fw">Christensen · Conservation of Profits</div>
+  <div class="fw">Stratechery · Aggregation Theory</div>
+  <div class="fw">Hayek · Use of Knowledge in Society</div>
+  <div class="fw">Byrne Hobart / The Diff</div>
+</div>
+
+<div class="quotes">
+  <div class="q">"If you can't install a brain into a foreign body, you must assume the body yourself."</div>
+  <div class="q">"The winners of this era will build railroads starting from the applications' edge: situated, aware, capital-intensive networks that make the physical world programmable."</div>
+  <div class="q">"The grand path isn't to sell or resell intelligence; it's to optimize the conversion of energy and capital to intelligence."</div>
+</div>
+
+<div class="source">
+  Source: <a href="https://hypersoren.xyz/posts/cybernetic-arbitrage/" target="_blank">hypersoren.xyz/posts/cybernetic-arbitrage</a>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+const tip=document.getElementById('tip');
+document.querySelectorAll('[data-tip]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{tip.textContent=el.dataset.tip;tip.style.opacity='1'});
+  el.addEventListener('mousemove',e=>{tip.style.left=Math.min(e.clientX+15,window.innerWidth-300)+'px';tip.style.top=(e.clientY-10)+'px'});
+  el.addEventListener('mouseleave',()=>{tip.style.opacity='0'});
+  el.addEventListener('click',()=>{el.classList.toggle('expanded')});
+});
+</script>
+</body>
+</html>
