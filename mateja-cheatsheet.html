@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mateja Milicevic — Call Cheat Sheet</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; padding: 16px; max-width: 800px; margin: 0 auto; font-size: 13px; line-height: 1.5; }
+  h1 { font-size: 18px; color: #58a6ff; margin-bottom: 4px; border-bottom: 1px solid #30363d; padding-bottom: 6px; }
+  h2 { font-size: 14px; color: #f0883e; margin: 12px 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  h3 { font-size: 13px; color: #7ee787; margin: 8px 0 2px 0; }
+  .subtitle { color: #8b949e; font-size: 12px; margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 10px; }
+  .card-full { grid-column: 1 / -1; }
+  .tag { display: inline-block; background: #1f6feb33; color: #58a6ff; padding: 1px 6px; border-radius: 3px; font-size: 11px; margin: 1px 2px; }
+  .tag-warn { background: #f0883e33; color: #f0883e; }
+  .tag-green { background: #238636; color: #fff; }
+  ul { padding-left: 16px; margin: 4px 0; }
+  li { margin: 2px 0; }
+  .highlight { color: #f778ba; font-weight: 600; }
+  .quote { border-left: 2px solid #58a6ff; padding-left: 8px; color: #8b949e; font-style: italic; margin: 4px 0; }
+  .divider { border-top: 1px solid #30363d; margin: 12px 0; }
+  strong { color: #e6edf3; }
+  .two-col { columns: 2; column-gap: 16px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .two-col { columns: 1; } }
+  @media print { body { background: #fff; color: #000; } .card { border-color: #ccc; background: #f8f8f8; } h1, h2 { color: #333; } .tag { background: #eee; color: #333; } }
+</style>
+</head>
+<body>
+
+<h1>🎯 Mateja Milicevic — Call Cheat Sheet</h1>
+<p class="subtitle">Aaru Research | Feb 27, 2026 | Prep by Matrices</p>
+
+<div class="grid">
+
+<div class="card">
+<h2>👤 Mateja</h2>
+<ul>
+<li><strong>Role:</strong> Research @ Aaru (Aug 2025)</li>
+<li><strong>Age:</strong> ~24, from Belgrade, Serbia</li>
+<li><strong>Ed:</strong> BS Data Science, MSU. PhD dropout</li>
+<li><strong>Pre-Aaru:</strong> NASA (drones/AI), Food AI Lab (metagenomics), Bosch (CV), founded Imagine Software</li>
+<li><strong>Vibe:</strong> Builder, irreverent, applied ML</li>
+<li><strong>Languages:</strong> English + Serbian (native)</li>
+<li><strong>Interests:</strong> Building, travel, cooking, football</li>
+<li><strong>Contact:</strong> me@matejam.com</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>🏢 Aaru Quick Facts</h2>
+<ul>
+<li><strong>What:</strong> AI synthetic population simulation</li>
+<li><strong>Products:</strong> Lumen (consumer), Dynamo (political), Seraph (public sector)</li>
+<li><strong>Team:</strong> ~25 people, NYC</li>
+<li><strong>Funding:</strong> Series A Dec 2025, Redpoint-led, ~$1B val</li>
+<li><strong>Key win:</strong> NY-16 primary within 371 votes</li>
+<li><strong>Key miss:</strong> 2024 presidential (predicted Harris)</li>
+<li><strong>Validation:</strong> EY study, 90% Spearman corr.</li>
+<li><strong>Partners:</strong> Accenture, Spindrift, IPG</li>
+</ul>
+</div>
+
+<div class="card card-full">
+<h2>🔬 Aaru's Tech Evolution (from John, Feb 19)</h2>
+<div class="two-col">
+<h3>Stage 1: Brute Force LLM</h3>
+<ul><li>10B tokens/day via DeepSeek API</li><li>Query each agent individually</li></ul>
+
+<h3>Stage 2: Fine-Tuned Models</h3>
+<ul><li>262K profile-response pairs</li><li>Trained models to predict from profiles</li></ul>
+
+<h3>Stage 3: Classical ML + LLM Hybrid (NOW)</h3>
+<ul><li>Less LLM as they got more developed</li><li>LLMs for: priors, data cleaning, parameterization</li><li>Classical ML for core prediction</li></ul>
+
+<h3>Key Insight: Mode Collapse</h3>
+<ul><li>LLMs can't reproduce oracle distributions even with oracle as input</li><li>"Greedy evaluators" → destroy distributional diversity</li><li><span class="highlight">YOUR VALUE-ADD: Partial pooling prevents this naturally</span></li></ul>
+</div>
+</div>
+
+<div class="card card-full">
+<h2>🎯 Mateja's Likely Work Areas</h2>
+<span class="tag">Consumer Simulation (Spindrift)</span>
+<span class="tag">Classical ML Layer</span>
+<span class="tag">Data Fusion Pipeline</span>
+<span class="tag">ASMMA Graph System</span>
+<span class="tag">Automated Clustering</span>
+<p style="margin-top:6px; color:#8b949e;">Diagnostic Q: "What are you focused on right now?" → calibrate from his answer</p>
+</div>
+
+<div class="card">
+<h2>💬 Questions to Ask</h2>
+<ul>
+<li>"How do you preserve distributional diversity across a synthetic population?"</li>
+<li>"What's the validation loop — how fast can you tell if predictions match reality?"</li>
+<li>"How does research vs product work? Who decides what gets built?"</li>
+<li>"What surprised you most about Aaru's approach after joining?"</li>
+<li>"Where do you see the biggest research gaps?"</li>
+<li>"What's the hardest problem that wakes you up at night?"</li>
+<li>"If I showed you 134 cluster centers validated against 60 elections, how would you adapt that to consumer behavior?"</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>🗣️ Your Pitch Lines</h2>
+<ul>
+<li>"I use LLMs as prior-setters, not prediction engines"</li>
+<li>"134 archetypes backtested against 60 elections"</li>
+<li>"Partial pooling = never fully individual (noisy), never fully population (mode-collapsed)"</li>
+<li>"1,300 building-level digital twins at Nuveen — same architecture, different domain"</li>
+<li>"30-day calibration → 15 days via transfer learning"</li>
+<li>"I'd build a Bayesian calibration layer with uncertainty intervals"</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>🔑 Aaru Internal Tools</h2>
+<h3>ASMMA</h3>
+<p>Self-assembling knowledge graph. Any data type → auto-determines links/relations/nodes. Nodes auto-split. "Huge research accelerant"</p>
+<h3>Tabular Combination</h3>
+<p>Fuses census + Google busyness + sqft + occupancy data. Replaced $200K GPS vendor data.</p>
+<h3>Agent-by-Agent Views</h3>
+<p>See individual agents + cluster assignments. Automated segmentation destroying traditional analysis.</p>
+</div>
+
+<div class="card">
+<h2>👥 Key People</h2>
+<ul>
+<li><strong>John Kessler</strong> — CTO, ~18, your advocate</li>
+<li><strong>Cameron Fink</strong> — CEO, ~20, public face</li>
+<li><strong>Ned Koh</strong> — Co-founder, knows Peter Brown (RenTech)</li>
+<li><strong>Mathew Hauer</strong> — Head of Agent Dev, FSU demographer</li>
+<li><strong>Matt</strong> — Research, causal inference</li>
+<li><strong>Sam</strong> — Product team</li>
+<li><strong>Mo & Nat</strong> — New design team</li>
+</ul>
+</div>
+
+<div class="card card-full" style="border-color: #f0883e;">
+<h2>⚠️ LANDMINES</h2>
+<div class="two-col">
+<ul>
+<li><span class="tag tag-warn">DON'T</span> Mention specific numbers from John (10B tokens, 262K rows)</li>
+<li><span class="tag tag-warn">DON'T</span> Bring up the 2024 election miss</li>
+<li><span class="tag tag-warn">DON'T</span> Discuss comp/title — this is research convo</li>
+<li><span class="tag tag-warn">DON'T</span> Mention NDA hasn't been signed</li>
+<li><span class="tag tag-warn">DON'T</span> Talk down to him — he's a serious researcher</li>
+<li><span class="tag tag-warn">DON'T</span> Over-pitch — he's evaluating peer fit</li>
+<li><span class="tag tag-warn">DON'T</span> Dismiss LLMs entirely — they still use them</li>
+</ul>
+</div>
+</div>
+
+<div class="card card-full" style="border-color: #7ee787;">
+<h2>🚀 Where Aaru Is Headed</h2>
+<div class="two-col">
+<ul>
+<li><span class="tag tag-green">NOW</span> Event super-forecasting (hedge fund product)</li>
+<li><span class="tag tag-green">NOW</span> Automated clustering / dynamic segmentation</li>
+<li><span class="tag tag-green">NEXT</span> Reinforcement learning for verifiable tasks</li>
+<li><span class="tag tag-green">NEXT</span> Cross-domain general-purpose platform</li>
+<li><span class="tag tag-green">FUTURE</span> 8.3B — modeling civilization scale</li>
+</ul>
+</div>
+</div>
+
+<div class="card card-full">
+<h2>🔥 Emergency Topics (If Conversation Stalls)</h2>
+<ul>
+<li><strong>RimWorld:</strong> "Tynan Sylvester said it's not a game, it's an AI story generator. Same engine as Aaru, different query."</li>
+<li><strong>DE Shaw lore:</strong> "Your office reminded me of the early DE Shaw stories — brilliant people above a communist bookstore inventing stat arb."</li>
+<li><strong>Cybernetic Arbitrage:</strong> "John sent me this blog by the Consumer Edge CEO. The observation channel is economically governed — maps to revealed vs declared preferences."</li>
+<li><strong>Belgrade:</strong> "Where in Belgrade? I'm in China right now visiting my girlfriend's family — the cultural navigation thing is real."</li>
+<li><strong>Cooking:</strong> "What do you cook? The food in Chongqing is insane right now."</li>
+</ul>
+</div>
+
+</div>
+
+<div class="divider"></div>
+<p style="text-align:center; color:#8b949e; font-size:11px;">Generated Feb 27, 2026 · Sam Cialek · Aaru Interview Process</p>
+
+</body>
+</html>
