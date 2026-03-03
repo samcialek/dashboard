@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关节保健指南 | Joint Health Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f0eb; color: #2d2d2d; line-height: 1.6; }
+  
+  .header { background: linear-gradient(135deg, #1a5632, #2d8a56); color: white; text-align: center; padding: 40px 20px; }
+  .header h1 { font-size: 2em; margin-bottom: 8px; }
+  .header p { font-size: 1.1em; opacity: 0.9; }
+  
+  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+  
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    margin: 24px 0;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  
+  .product-header {
+    padding: 20px 24px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .product-num {
+    font-size: 2.5em;
+    font-weight: 800;
+    opacity: 0.3;
+    line-height: 1;
+  }
+  .product-header h2 { font-size: 1.3em; }
+  .product-header .subtitle { font-size: 0.9em; opacity: 0.85; margin-top: 4px; }
+  
+  .card1 .product-header { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  .card2 .product-header { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+  .card3 .product-header { background: linear-gradient(135deg, #2980b9, #3498db); }
+  
+  .product-body { padding: 24px; }
+  
+  .section-label {
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #eee;
+  }
+  .card1 .section-label { color: #c0392b; }
+  .card2 .section-label { color: #8e44ad; }
+  .card3 .section-label { color: #2980b9; }
+  
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .benefit-item {
+    background: #f8f8f8;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .benefit-icon { font-size: 1.5em; flex-shrink: 0; }
+  .benefit-text { font-size: 0.9em; }
+  .benefit-text strong { display: block; margin-bottom: 2px; }
+  .benefit-text span { color: #666; font-size: 0.85em; }
+  
+  .dosage-box {
+    background: #fffbf0;
+    border: 2px solid #f0d060;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .dosage-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  .dosage-time {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    min-width: 80px;
+    text-align: center;
+    font-size: 0.9em;
+    border: 1px solid #e8d88a;
+  }
+  .dosage-pills {
+    display: flex;
+    gap: 6px;
+  }
+  .pill {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7em;
+    font-weight: 700;
+  }
+  .card1 .pill { background: #e74c3c; }
+  .card2 .pill { background: #9b59b6; }
+  .dosage-note { font-size: 0.85em; color: #666; margin-top: 8px; }
+  
+  .topical-box {
+    background: #f0f8ff;
+    border: 2px solid #90cdf4;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .topical-steps {
+    list-style: none;
+    counter-reset: steps;
+  }
+  .topical-steps li {
+    counter-increment: steps;
+    padding: 10px 0;
+    padding-left: 44px;
+    position: relative;
+    border-bottom: 1px solid #e0eef8;
+  }
+  .topical-steps li:last-child { border-bottom: none; }
+  .topical-steps li::before {
+    content: counter(steps);
+    position: absolute;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    background: #3498db;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85em;
+  }
+  
+  .timeline-box {
+    background: #f0faf4;
+    border: 2px solid #a0d8b8;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    right: 40px;
+    height: 4px;
+    background: linear-gradient(to right, #ddd, #2d8a56);
+    border-radius: 2px;
+  }
+  .timeline-point {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+  }
+  .timeline-point:nth-child(1) .timeline-dot { background: #f0d0d0; }
+  .timeline-point:nth-child(2) .timeline-dot { background: #f0e8c0; }
+  .timeline-point:nth-child(3) .timeline-dot { background: #c0e8d0; }
+  .timeline-label { font-size: 0.8em; font-weight: 600; }
+  .timeline-desc { font-size: 0.7em; color: #666; }
+  
+  .warning-box {
+    background: #fff5f5;
+    border-left: 4px solid #e74c3c;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+  .warning-box h3 { color: #c0392b; margin-bottom: 12px; }
+  .warning-box ul { padding-left: 20px; }
+  .warning-box li { margin: 8px 0; font-size: 0.95em; }
+  
+  .daily-schedule {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .daily-schedule h2 { text-align: center; margin-bottom: 20px; color: #1a5632; }
+  
+  .schedule-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 16px;
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .schedule-time {
+    font-weight: 700;
+    font-size: 1.1em;
+    min-width: 60px;
+    color: #1a5632;
+  }
+  .schedule-icon { font-size: 1.5em; }
+  .schedule-action { flex: 1; }
+  .schedule-action strong { display: block; }
+  .schedule-action span { font-size: 0.85em; color: #888; }
+  
+  .lang-toggle {
+    text-align: center;
+    margin: 20px 0;
+  }
+  .lang-toggle button {
+    background: white;
+    border: 2px solid #1a5632;
+    color: #1a5632;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 4px;
+  }
+  .lang-toggle button.active {
+    background: #1a5632;
+    color: white;
+  }
+  
+  .cn { display: block; }
+  .en { display: none; }
+  body.show-en .cn { display: none; }
+  body.show-en .en { display: block; }
+  body.show-both .cn, body.show-both .en { display: block; }
+  body.show-both .en { color: #888; font-size: 0.85em; margin-top: 2px; }
+  
+  @media (max-width: 600px) {
+    .benefit-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.5em; }
+    .timeline { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .timeline::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🦴 <span class="cn">关节保健指南</span><span class="en">Joint Health Guide</span></h1>
+  <p><span class="cn">三种产品 · 每日服用方法与功效</span><span class="en">Three Products · Daily Usage & Benefits</span></p>
+</div>
+
+<div class="container">
+
+<div class="lang-toggle">
+  <button onclick="setLang('cn')" class="active" id="btn-cn">中文</button>
+  <button onclick="setLang('both')" id="btn-both">中英对照</button>
+  <button onclick="setLang('en')" id="btn-en">English</button>
+</div>
+
+<!-- PRODUCT 1 -->
+<div class="product-card card1">
+  <div class="product-header">
+    <div class="product-num">1</div>
+    <div>
+      <h2>Doctor's Best 氨基葡萄糖 软骨素 MSM</h2>
+      <div class="subtitle">Glucosamine Chondroitin MSM · 240 Capsules</div>
+    </div>
+  </div>
+  <div class="product-body">
+    
+    <div class="section-label"><span class="cn">✨ 功效与好处</span><span class="en">✨ Benefits</span></div>
+    <div class="benefit-grid">
+      <div class="benefit-item">
+        <div class="benefit-icon">🦴</div>
+        <div class="benefit-text">
+          <strong><span class="cn">修复软骨</span><span class="en">Repairs Cartilage</span></strong>
+          <span><span class="cn">氨基葡萄糖是软骨的基本成分，帮助重建磨损的关节</span><span class="en">Glucosamine is a building block of cartilage, helping rebuild worn joints</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🔧</div>
+        <div class="benefit-text">
+          <strong><span class="cn">保护关节结构</span><span class="en">Protects Joint Structure</span></strong>
+          <span><span class="cn">软骨素帮助软骨保持弹性和水分</span><span class="en">Chondroitin helps cartilage retain elasticity and moisture</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">💪</div>
+        <div class="benefit-text">
+          <strong><span class="cn">减少疼痛</span><span class="en">Reduces Pain</span></strong>
+          <span><span class="cn">MSM是天然硫化物，帮助减轻关节炎症和疼痛</span><span class="en">MSM is a natural sulfur compound that reduces inflammation and pain</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🏃</div>
+        <div class="benefit-text">
+          <strong><span class="cn">改善活动能力</span><span class="en">Improves Mobility</span></strong>
+          <span><span class="cn">长期服用可以让关节更灵活，上下楼梯更轻松</span><span class="en">Long-term use makes joints more flexible, easier to climb stairs</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><span class="cn">💊 每日用量</span><span class="en">💊 Daily Dosage</span></div>
+    <div class="dosage-box">
+      <div class="dosage-row">
+        <div class="dosage-time">🌅 <span class="cn">早饭后</span><span class="en">Breakfast</span></div>
+        <div class="dosage-pills"><div class="pill">💊</div><div class="pill">💊</div></div>
+        <span><span class="cn">2粒，饭后吃</span><span class="en">2 capsules, after eating</span></span>
+      </div>
+      <div class="dosage-row">
+        <div class="dosage-time">🌙 <span class="cn">晚饭后</span><span class="en">Dinner</span></div>
+        <div class="dosage-pills"><div class="pill">💊</div><div class="pill">💊</div></div>
+        <span><span class="cn">2粒，饭后吃</span><span class="en">2 capsules, after eating</span></span>
+      </div>
+      <div class="dosage-note">
+        ⚠️ <strong><span class="cn">一定要和饭一起吃，不要空腹！</span><span class="en">Always take with food, never on an empty stomach!</span></strong><br>
+        📦 <span class="cn">一瓶240粒，够吃约60天</span><span class="en">One bottle (240 caps) lasts ~60 days</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT 2 -->
+<div class="product-card card2">
+  <div class="product-header">
+    <div class="product-num">2</div>
+    <div>
+      <h2>Doctor's Best 乳香 + UC-II 胶囊</h2>
+      <div class="subtitle">Boswellia + UC-II · 60 Veggie Caps</div>
+    </div>
+  </div>
+  <div class="product-body">
+    
+    <div class="section-label"><span class="cn">✨ 功效与好处</span><span class="en">✨ Benefits</span></div>
+    <div class="benefit-grid">
+      <div class="benefit-item">
+        <div class="benefit-icon">🔥</div>
+        <div class="benefit-text">
+          <strong><span class="cn">消炎止痛</span><span class="en">Anti-Inflammatory</span></strong>
+          <span><span class="cn">乳香是几千年的印度草药，强效天然消炎</span><span class="en">Boswellia is a centuries-old Ayurvedic herb, powerfully anti-inflammatory</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🧬</div>
+        <div class="benefit-text">
+          <strong><span class="cn">胶原蛋白修复</span><span class="en">Collagen Repair</span></strong>
+          <span><span class="cn">UC-II是未变性II型胶原蛋白，训练免疫系统不攻击关节</span><span class="en">UC-II is undenatured type II collagen — trains your immune system not to attack joints</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🧊</div>
+        <div class="benefit-text">
+          <strong><span class="cn">减轻僵硬</span><span class="en">Reduces Stiffness</span></strong>
+          <span><span class="cn">特别有效缓解早晨起床时的关节僵硬</span><span class="en">Especially effective for morning joint stiffness</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-text">
+          <strong><span class="cn">长期保护</span><span class="en">Long-Term Protection</span></strong>
+          <span><span class="cn">减缓关节退化速度，保护软骨不再被破坏</span><span class="en">Slows joint degeneration, protects cartilage from further damage</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><span class="cn">💊 每日用量</span><span class="en">💊 Daily Dosage</span></div>
+    <div class="dosage-box">
+      <div class="dosage-row">
+        <div class="dosage-time">🌙 <span class="cn">睡前</span><span class="en">Bedtime</span></div>
+        <div class="dosage-pills"><div class="pill">💊</div></div>
+        <span><span class="cn">1粒，空腹吃</span><span class="en">1 capsule, on empty stomach</span></span>
+      </div>
+      <div class="dosage-note">
+        ⚠️ <strong><span class="cn">空腹吃效果更好！和第一种不一样！</span><span class="en">Take on EMPTY stomach for best results! Different from Product 1!</span></strong><br>
+        📦 <span class="cn">一瓶60粒，够吃约60天</span><span class="en">One bottle (60 caps) lasts ~60 days</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT 3 -->
+<div class="product-card card3">
+  <div class="product-header">
+    <div class="product-num">3</div>
+    <div>
+      <h2>NOW Foods 氨基葡萄糖 MSM 山金车 乳液</h2>
+      <div class="subtitle">Glucosamine, MSM & Arnica Lotion · 8oz (Topical)</div>
+    </div>
+  </div>
+  <div class="product-body">
+    
+    <div class="section-label"><span class="cn">✨ 功效与好处</span><span class="en">✨ Benefits</span></div>
+    <div class="benefit-grid">
+      <div class="benefit-item">
+        <div class="benefit-icon">🎯</div>
+        <div class="benefit-text">
+          <strong><span class="cn">局部止痛</span><span class="en">Targeted Pain Relief</span></strong>
+          <span><span class="cn">直接涂在疼痛部位，快速缓解</span><span class="en">Apply directly to painful area for fast relief</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🌿</div>
+        <div class="benefit-text">
+          <strong><span class="cn">天然山金车消炎</span><span class="en">Natural Arnica Anti-Inflammatory</span></strong>
+          <span><span class="cn">山金车是欧洲传统草药，减轻肿胀和淤青</span><span class="en">Arnica is a European herb that reduces swelling and bruising</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">💧</div>
+        <div class="benefit-text">
+          <strong><span class="cn">脂质体技术</span><span class="en">Liposome Technology</span></strong>
+          <span><span class="cn">特殊配方让成分更容易透过皮肤被吸收</span><span class="en">Special formula allows ingredients to absorb deeper through skin</span></span>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">✅</div>
+        <div class="benefit-text">
+          <strong><span class="cn">内服+外用双重效果</span><span class="en">Oral + Topical Combo</span></strong>
+          <span><span class="cn">配合胶囊一起用，效果加倍</span><span class="en">Use with the capsules above for combined effect</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><span class="cn">🧴 使用方法</span><span class="en">🧴 How to Apply</span></div>
+    <div class="topical-box">
+      <ol class="topical-steps">
+        <li><strong><span class="cn">挤适量乳液</span><span class="en">Squeeze a small amount</span></strong><br><span class="cn">大约一元硬币大小</span><span class="en">About the size of a coin</span></li>
+        <li><strong><span class="cn">涂在疼痛的关节上</span><span class="en">Apply to sore joint</span></strong><br><span class="cn">膝盖、手指、肩膀、手腕等</span><span class="en">Knees, fingers, shoulders, wrists, etc.</span></li>
+        <li><strong><span class="cn">轻轻按摩至吸收</span><span class="en">Gently massage until absorbed</span></strong><br><span class="cn">按摩1-2分钟，直到皮肤不再油腻</span><span class="en">Massage 1-2 minutes until skin is no longer oily</span></li>
+        <li><strong><span class="cn">每天2-3次</span><span class="en">Repeat 2-3 times daily</span></strong><br><span class="cn">早上、下午、睡前各一次效果最好</span><span class="en">Morning, afternoon, and before bed works best</span></li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- DAILY SCHEDULE -->
+<div class="daily-schedule">
+  <h2>📋 <span class="cn">每日时间表</span><span class="en">Daily Schedule</span></h2>
+  
+  <div class="schedule-row">
+    <div class="schedule-time">7:00</div>
+    <div class="schedule-icon">🌅</div>
+    <div class="schedule-action">
+      <strong><span class="cn">早饭后</span><span class="en">After Breakfast</span></strong>
+      <span><span class="cn">红瓶胶囊 × 2粒（和饭一起吃）+ 涂乳液</span><span class="en">Red bottle × 2 caps (with food) + apply lotion</span></span>
+    </div>
+  </div>
+  
+  <div class="schedule-row">
+    <div class="schedule-time">14:00</div>
+    <div class="schedule-icon">☀️</div>
+    <div class="schedule-action">
+      <strong><span class="cn">下午</span><span class="en">Afternoon</span></strong>
+      <span><span class="cn">涂乳液（如果关节不舒服）</span><span class="en">Apply lotion (if joints feel sore)</span></span>
+    </div>
+  </div>
+  
+  <div class="schedule-row">
+    <div class="schedule-time">19:00</div>
+    <div class="schedule-icon">🌙</div>
+    <div class="schedule-action">
+      <strong><span class="cn">晚饭后</span><span class="en">After Dinner</span></strong>
+      <span><span class="cn">红瓶胶囊 × 2粒（和饭一起吃）+ 涂乳液</span><span class="en">Red bottle × 2 caps (with food) + apply lotion</span></span>
+    </div>
+  </div>
+  
+  <div class="schedule-row">
+    <div class="schedule-time">22:00</div>
+    <div class="schedule-icon">😴</div>
+    <div class="schedule-action">
+      <strong><span class="cn">睡前（空腹）</span><span class="en">Before Bed (empty stomach)</span></strong>
+      <span><span class="cn">紫瓶胶囊 × 1粒（不要和饭一起吃）</span><span class="en">Purple bottle × 1 cap (do NOT take with food)</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="product-card">
+  <div class="product-body">
+    <div class="section-label" style="color: #1a5632;"><span class="cn">📈 什么时候能看到效果？</span><span class="en">📈 When Will I See Results?</span></div>
+    <div class="timeline-box">
+      <div class="timeline">
+        <div class="timeline-point">
+          <div class="timeline-dot">🌱</div>
+          <div class="timeline-label"><span class="cn">1-2周</span><span class="en">1-2 Weeks</span></div>
+          <div class="timeline-desc"><span class="cn">乳液开始缓解疼痛</span><span class="en">Lotion starts easing pain</span></div>
+        </div>
+        <div class="timeline-point">
+          <div class="timeline-dot">🌿</div>
+          <div class="timeline-label"><span class="cn">4-6周</span><span class="en">4-6 Weeks</span></div>
+          <div class="timeline-desc"><span class="cn">消炎效果明显</span><span class="en">Inflammation noticeably reduced</span></div>
+        </div>
+        <div class="timeline-point">
+          <div class="timeline-dot">🌳</div>
+          <div class="timeline-label"><span class="cn">2-3个月</span><span class="en">2-3 Months</span></div>
+          <div class="timeline-desc"><span class="cn">软骨修复，活动能力改善</span><span class="en">Cartilage repair, mobility improves</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WARNINGS -->
+<div class="warning-box">
+  <h3>⚠️ <span class="cn">注意事项</span><span class="en">Important Notes</span></h3>
+  <ul>
+    <li><span class="cn">如果对<strong>海鲜过敏</strong>，先吃少量试试（氨基葡萄糖可能从虾蟹壳提取）</span><span class="en">If <strong>allergic to shellfish</strong>, start with a small dose (glucosamine may be derived from shrimp/crab shells)</span></li>
+    <li><span class="cn">正在吃<strong>血液稀释药物</strong>（如华法林），请先咨询医生</span><span class="en">If taking <strong>blood thinners</strong> (e.g. warfarin), consult your doctor first</span></li>
+    <li><span class="cn">三种产品可以<strong>同时使用</strong>，互相不冲突</span><span class="en">All three products can be <strong>used together</strong> — they don't conflict</span></li>
+    <li><span class="cn"><strong>坚持服用</strong>很重要！不要吃几天就停，至少坚持2-3个月</span><span class="en"><strong>Consistency is key!</strong> Don't stop after a few days — commit to at least 2-3 months</span></li>
+    <li><span class="cn">乳液<strong>只能涂在皮肤上</strong>，不能吃！避免涂在破损皮肤上</span><span class="en">Lotion is <strong>for skin only</strong>, do NOT ingest! Avoid applying to broken skin</span></li>
+  </ul>
+</div>
+
+<p style="text-align:center; color:#aaa; font-size:0.8em; margin: 32px 0;">
+  <span class="cn">❤️ 来自Sam — 希望这些对你有帮助，阿伟</span>
+  <span class="en">❤️ From Sam — Hope these help, 阿伟</span>
+</p>
+
+</div>
+
+<script>
+function setLang(lang) {
+  document.body.className = lang === 'en' ? 'show-en' : lang === 'both' ? 'show-both' : '';
+  document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + lang).classList.add('active');
+}
+</script>
+
+</body>
+</html>
