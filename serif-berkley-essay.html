@@ -14,134 +14,147 @@
     -webkit-font-smoothing: antialiased;
   }
   .hero {
-    background: linear-gradient(160deg, #071f1a 0%, #0d6b4f 50%, #0a4a3a 100%);
+    background: #111;
     color: white;
     padding: 100px 20px 80px;
     text-align: center;
     position: relative;
-    overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.03) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .hero-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-inner { max-width: 700px; margin: 0 auto; }
   .hero-label {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 11px; font-weight: 600; letter-spacing: 3px;
-    text-transform: uppercase; opacity: 0.5; margin-bottom: 28px;
+    font-size: 11px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; opacity: 0.35; margin-bottom: 28px;
   }
   .hero h1 { font-size: 2.8em; font-weight: 400; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.5px; }
-  .hero .byline { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 0.9em; opacity: 0.6; }
+  .hero .byline { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 0.9em; opacity: 0.4; }
   .content { max-width: 680px; margin: 0 auto; padding: 56px 20px 80px; }
   .content p { font-size: 1.12em; margin-bottom: 1.7em; }
   .content p.drop-cap::first-letter {
     font-size: 3.4em; float: left; line-height: 1;
-    margin-right: 8px; margin-top: 6px; color: #0d6b4f; font-weight: 700;
+    margin-right: 8px; margin-top: 6px; color: #89ccf0; font-weight: 700;
   }
+
+  /* --- Categories Block --- */
   .categories-block {
-    margin: 48px 0; display: flex; flex-direction: column;
-    border-radius: 14px; overflow: hidden; box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+    margin: 48px 0;
+    display: flex; flex-direction: column; gap: 1px;
+    background: #e4e4e4;
+    border-radius: 10px; overflow: hidden;
   }
-  .cat-row { display: flex; align-items: stretch; }
-  .cat-stripe { width: 6px; flex-shrink: 0; }
-  .cat-body { padding: 24px 28px; flex: 1; display: flex; align-items: center; gap: 18px; }
-  .cat-icon { font-size: 2em; flex-shrink: 0; width: 48px; text-align: center; }
+  .cat-row { display: flex; align-items: center; background: #fff; padding: 22px 28px; gap: 20px; }
+  .cat-row:last-child { background: #111; }
+  .cat-icon-wrap {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .cat-icon-wrap svg { width: 22px; height: 22px; }
+  .cat-context .cat-icon-wrap { background: #f0f0f0; }
+  .cat-context .cat-icon-wrap svg { stroke: #bbb; fill: none; }
+  .cat-intel .cat-icon-wrap { background: #f0f0f0; }
+  .cat-intel .cat-icon-wrap svg { stroke: #999; fill: none; }
+  .cat-outcomes .cat-icon-wrap { background: rgba(137,204,240,0.15); }
+  .cat-outcomes .cat-icon-wrap svg { stroke: #89ccf0; fill: none; }
+  .cat-text { flex: 1; }
   .cat-text h3 {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.95em; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; margin-bottom: 4px;
+    font-size: 0.85em; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; margin-bottom: 3px;
   }
-  .cat-text p { font-size: 0.92em !important; margin-bottom: 0 !important; line-height: 1.5; color: #555; }
-  .cat-context { background: #f5f5f5; }
-  .cat-context .cat-stripe { background: #bbb; }
-  .cat-context h3 { color: #999; }
-  .cat-intel { background: #faf6ef; }
-  .cat-intel .cat-stripe { background: #d4a84b; }
-  .cat-intel h3 { color: #b89860; }
-  .cat-outcomes { background: linear-gradient(135deg, #0a4a3a, #0d6b4f); }
-  .cat-outcomes .cat-stripe { background: #0d6b4f; }
-  .cat-outcomes h3 { color: rgba(255,255,255,0.7); }
-  .cat-outcomes .cat-text p { color: rgba(255,255,255,0.85); }
+  .cat-context h3 { color: #bbb; }
+  .cat-intel h3 { color: #999; }
+  .cat-outcomes h3 { color: #89ccf0; }
+  .cat-text p { font-size: 0.88em !important; margin-bottom: 0 !important; line-height: 1.5; }
+  .cat-context .cat-text p { color: #aaa; }
+  .cat-intel .cat-text p { color: #888; }
+  .cat-outcomes .cat-text p { color: rgba(255,255,255,0.6); }
   .cat-tag {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.6em; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
-    padding: 3px 10px; border-radius: 10px; display: inline-block; margin-left: 8px; vertical-align: middle;
+    font-size: 0.58em; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 4px; display: inline-block; margin-left: 8px; vertical-align: middle;
   }
-  .cat-context .cat-tag { background: #e0e0e0; color: #999; }
-  .cat-intel .cat-tag { background: #f0e0c0; color: #b89860; }
-  .cat-outcomes .cat-tag { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.9); }
-  .stages-block { margin: 36px 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .stage-card {
-    background: white; border-radius: 12px; padding: 24px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.05); border-top: 3px solid;
-  }
-  .stage-card:first-child { border-color: #d4a84b; }
-  .stage-card:last-child { border-color: #0d6b4f; }
+  .cat-context .cat-tag { background: #f0f0f0; color: #bbb; }
+  .cat-intel .cat-tag { background: #f0f0f0; color: #999; }
+  .cat-outcomes .cat-tag { background: rgba(137,204,240,0.15); color: #89ccf0; }
+
+  /* --- Stages --- */
+  .stages-block { margin: 36px 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #e4e4e4; border-radius: 10px; overflow: hidden; }
+  .stage-card { background: #fff; padding: 28px 24px; }
   .stage-num {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
+    font-size: 0.65em; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 12px; color: #bbb;
   }
-  .stage-card:first-child .stage-num { color: #d4a84b; }
-  .stage-card:last-child .stage-num { color: #0d6b4f; }
-  .stage-card p { font-size: 0.95em !important; margin-bottom: 0 !important; line-height: 1.6; color: #444; }
-  .pull-quote {
-    border-left: 4px solid #0d6b4f; padding: 24px 0 24px 30px; margin: 48px 0;
-    font-size: 1.3em; font-style: italic; color: #0d6b4f; line-height: 1.5; letter-spacing: -0.2px;
-  }
+  .stage-card:last-child .stage-num { color: #89ccf0; }
+  .stage-card p { font-size: 0.92em !important; margin-bottom: 0 !important; line-height: 1.6; color: #555; }
+
+  /* --- Comparison --- */
   .comparison {
     margin: 48px 0; display: grid; grid-template-columns: 1fr 1fr;
-    border-radius: 14px; overflow: hidden; box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+    border-radius: 10px; overflow: hidden; background: #e4e4e4; gap: 1px;
   }
   .comp-side { padding: 32px 28px; }
-  .comp-llm { background: #f5f5f5; }
-  .comp-serif { background: linear-gradient(135deg, #0a4a3a, #0d6b4f); color: white; }
+  .comp-llm { background: #fff; }
+  .comp-serif { background: #111; color: white; }
   .comp-label {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.65em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px;
+    font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 16px;
   }
-  .comp-llm .comp-label { color: #999; }
-  .comp-serif .comp-label { color: rgba(255,255,255,0.5); }
-  .comp-output { font-size: 1em; line-height: 1.6; font-style: italic; }
-  .comp-llm .comp-output { color: #777; }
-  .comp-serif .comp-output { color: rgba(255,255,255,0.9); }
+  .comp-llm .comp-label { color: #ccc; }
+  .comp-serif .comp-label { color: #89ccf0; }
+  .comp-output { font-size: 0.95em; line-height: 1.65; font-style: italic; }
+  .comp-llm .comp-output { color: #999; }
+  .comp-serif .comp-output { color: rgba(255,255,255,0.8); }
   .comp-type {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.7em; font-weight: 600; margin-top: 16px;
-    padding: 4px 12px; border-radius: 10px; display: inline-block;
+    font-size: 0.6em; font-weight: 600; margin-top: 18px;
+    padding: 4px 10px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px;
   }
-  .comp-llm .comp-type { background: #e0e0e0; color: #999; }
-  .comp-serif .comp-type { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); }
+  .comp-llm .comp-type { background: #f0f0f0; color: #bbb; }
+  .comp-serif .comp-type { background: rgba(137,204,240,0.15); color: #89ccf0; }
+
+  /* --- Pull Quote --- */
+  .pull-quote {
+    border-left: 3px solid #89ccf0; padding: 24px 0 24px 28px; margin: 48px 0;
+    font-size: 1.25em; font-style: italic; color: #555; line-height: 1.5;
+  }
+
+  /* --- GIF --- */
   .gif-section { margin: 56px -60px; text-align: center; }
-  .gif-section img { max-width: 100%; border-radius: 12px; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+  .gif-section img { max-width: 100%; border-radius: 10px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
   .gif-caption {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.78em; color: #999; margin-top: 14px; font-style: italic;
+    font-size: 0.75em; color: #bbb; margin-top: 14px;
   }
+
+  /* --- Closing --- */
   .closing-visual {
-    margin: 56px 0; background: linear-gradient(160deg, #071f1a, #0d6b4f);
-    border-radius: 14px; padding: 40px 36px; text-align: center;
-    color: white; box-shadow: 0 4px 30px rgba(13,107,79,0.2);
+    margin: 56px 0; background: #111;
+    border-radius: 10px; padding: 44px 36px; text-align: center; color: white;
   }
   .closing-visual .cv-label {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.65em; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 2px; opacity: 0.4; margin-bottom: 20px;
+    font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2.5px; color: #89ccf0; margin-bottom: 22px; opacity: 0.7;
   }
-  .closing-visual .cv-statement { font-size: 1.4em; line-height: 1.5; font-style: italic; max-width: 540px; margin: 0 auto; }
+  .closing-visual .cv-statement {
+    font-size: 1.3em; line-height: 1.55; font-style: italic;
+    max-width: 540px; margin: 0 auto; color: rgba(255,255,255,0.8);
+  }
   .closing-visual .cv-author {
     font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.8em; opacity: 0.5; margin-top: 20px;
+    font-size: 0.8em; color: rgba(255,255,255,0.35); margin-top: 24px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6;
   }
+
+  /* --- Footer --- */
   .essay-footer {
     max-width: 680px; margin: 0 auto; padding: 40px 20px;
     border-top: 1px solid #eee; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 0.8em; color: #bbb; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8em; color: #ccc; display: flex; justify-content: space-between; align-items: center;
   }
-  .footer-logo { font-weight: 700; color: #0d6b4f; letter-spacing: 1.5px; font-size: 1.1em; }
+  .footer-logo { font-weight: 700; color: #89ccf0; letter-spacing: 1.5px; font-size: 1.1em; }
+
   @media (max-width: 720px) {
     .gif-section { margin-left: 0; margin-right: 0; }
     .hero h1 { font-size: 2em; }
@@ -168,51 +181,60 @@
 
 <p>This will continually disrupt business models in ways that are sure to be painful for existing SaaS businesses, but through this pain, SaaS companies like mine will have an opportunity to help their customers in ways the pre-AI world simply didn't allow for. To explain where these opportunities lie, consider this system for tracking the value that SaaS companies offer their users: three categories of value that are connected — context, intelligence, and outcomes.</p>
 
-<!-- Three Categories Visual -->
+<!-- Three Categories -->
 <div class="categories-block">
   <div class="cat-row cat-context">
-    <div class="cat-stripe"></div>
-    <div class="cat-body">
-      <div class="cat-icon">📊</div>
-      <div class="cat-text">
-        <h3>Context <span class="cat-tag">Base Layer</span></h3>
-        <p>Aggregating data, organizing it, making it accessible.</p>
-      </div>
+    <div class="cat-icon-wrap">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    </div>
+    <div class="cat-text">
+      <h3>Context <span class="cat-tag">Base Layer</span></h3>
+      <p>Aggregating data, organizing it, making it accessible.</p>
     </div>
   </div>
   <div class="cat-row cat-intel">
-    <div class="cat-stripe"></div>
-    <div class="cat-body">
-      <div class="cat-icon">🧠</div>
-      <div class="cat-text">
-        <h3>Intelligence <span class="cat-tag">Commoditizing</span></h3>
-        <p>Making sense of that data through pattern recognition, correlations, recommendations.</p>
-      </div>
+    <div class="cat-icon-wrap">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+    </div>
+    <div class="cat-text">
+      <h3>Intelligence <span class="cat-tag">Commoditizing</span></h3>
+      <p>Making sense of that data through pattern recognition, correlations, recommendations.</p>
     </div>
   </div>
   <div class="cat-row cat-outcomes">
-    <div class="cat-stripe"></div>
-    <div class="cat-body">
-      <div class="cat-icon">🎯</div>
-      <div class="cat-text">
-        <h3>Outcomes <span class="cat-tag">The Frontier</span></h3>
-        <p>Delivering a quantified level of certainty that a specific action will produce a specific result.</p>
-      </div>
+    <div class="cat-icon-wrap">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="6"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+    </div>
+    <div class="cat-text">
+      <h3>Outcomes <span class="cat-tag">The Frontier</span></h3>
+      <p>Delivering a quantified level of certainty that a specific action will produce a specific result.</p>
     </div>
   </div>
 </div>
 
 <p>Inspired by where venture capital was putting its money, the SaaS businesses getting funded have largely gone from "here's a dashboard, figure it out" to "let me put my brain in your application to make it smarter." In my view, this is the wrong spot to put your money as intelligence gets quickly commoditized. Profits mostly migrate to the adjacent stages. The winners of the commoditization of intelligence, I believe, will be companies that own the un-modularizable stages — the context where data is born and the outcomes that people use the intelligence to empower. Or, they will be companies that handle intelligence in a way that's fundamentally different to the way an LLM can handle it.</p>
 
-<!-- GIF: Serif Platform -->
+<!-- GIF -->
 <div class="gif-section">
-  <img src="https://discoverserif.com/upload/home-gif-v2.gif" alt="Serif platform — causal health intelligence infrastructure connecting wearables, labs, and clinical data">
+  <img src="https://discoverserif.com/upload/home-gif-v2.gif" alt="Serif platform — causal health intelligence infrastructure">
   <div class="gif-caption">Serif connects across health data sources to deliver individualized causal intelligence to platforms</div>
 </div>
 
 <p>My company, Serif, is middleware that sits in the existing health and longevity platforms. Our customers are the apps and platforms that already own the context layer — the wearable dashboards, the EHR portals, the longevity clinics that aggregate Apple Watch data, blood panels, sleep scores, and VO2 max tests into one place. Most of these platforms are in one of two stages:</p>
 
-<!-- Two Stages Visual -->
+<!-- Two Stages -->
 <div class="stages-block">
   <div class="stage-card">
     <div class="stage-num">Stage One</div>
@@ -226,15 +248,15 @@
 
 <p>Continuing to please these customers will mean needing to demonstrate clear non-commoditized intelligence. We currently do this through individualized Bayesian causal inference — a fundamentally different approach to intelligence than what an LLM provides. Where a foundation model draws on population-level training data to give you the average answer, our models treat each user as a sample size of one. They update continuously as new data arrives, build a posterior distribution specific to that individual's biology and history, and simulate counterfactuals.</p>
 
-<!-- Comparison: LLM vs Serif -->
+<!-- Comparison -->
 <div class="comparison">
   <div class="comp-side comp-llm">
-    <div class="comp-label">🧠 Generic LLM</div>
+    <div class="comp-label">Generic LLM</div>
     <div class="comp-output">"People who sleep more tend to have lower resting heart rates. Try going to bed earlier."</div>
     <div class="comp-type">Recommendation</div>
   </div>
   <div class="comp-side comp-serif">
-    <div class="comp-label">🎯 Serif</div>
+    <div class="comp-label">Serif</div>
     <div class="comp-output">"If you shift your sleep window by 45 minutes, your resting heart rate will improve 3–5 bpm over 6 weeks. Confidence: 78%, based on 14 months of your data."</div>
     <div class="comp-type">Confidence Interval</div>
   </div>
@@ -250,7 +272,7 @@
 
 <p>We validated this directly. We've been working with a partner in EHR middleware — a company whose platform touches over 150,000 providers across Epic, Cerner, and athenahealth. With combined thousands of years of dense longitudinal health data — quarterly blood work, VO2 max testing, continuous wearable streams – Serif can provide a differentiated intelligence, moving closer to actual health outcome ownership, answering the question: given everything in my history, what should I actually change, and how certain should I be that it'll work?</p>
 
-<!-- Closing Visual -->
+<!-- Closing -->
 <div class="closing-visual">
   <div class="cv-label">The Opportunity</div>
   <div class="cv-statement">In a world where intelligence is becoming a commodity, the companies that survive will be the ones that can take data, run it through intelligence superior to a language model for the use case, and tell a person — with quantified confidence — what will happen if they act.</div>
