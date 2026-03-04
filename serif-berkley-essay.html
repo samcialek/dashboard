@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Market & Customers — Serif</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.8;
+  }
+  
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0a4a3a, #0d6b4f);
+    color: white;
+    padding: 80px 20px 60px;
+    text-align: center;
+  }
+  .hero-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .hero-label {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 2.4em;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+  .hero .byline {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 0.9em;
+    opacity: 0.7;
+  }
+  
+  /* Content */
+  .content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+  .content p {
+    font-size: 1.1em;
+    margin-bottom: 1.6em;
+    text-align: justify;
+  }
+  .content p:first-of-type::first-letter {
+    font-size: 3.2em;
+    float: left;
+    line-height: 1;
+    margin-right: 8px;
+    margin-top: 4px;
+    color: #0d6b4f;
+    font-weight: 700;
+  }
+  
+  /* Images */
+  .essay-figure {
+    margin: 40px -40px;
+    text-align: center;
+  }
+  .essay-figure img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+  .essay-figure figcaption {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 12px;
+    font-style: italic;
+  }
+  
+  /* Inline diagram */
+  .diagram-embed {
+    margin: 48px -60px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .diagram-layers {
+    display: flex;
+    flex-direction: column;
+  }
+  .d-layer {
+    display: flex;
+    align-items: center;
+    padding: 24px 32px;
+  }
+  .d-layer:first-child { border-radius: 12px 12px 0 0; }
+  .d-layer:last-child { border-radius: 0 0 12px 12px; }
+  .d-context { background: #f0f0f0; }
+  .d-context .d-name { color: #aaa; font-size: 1.1em; font-weight: 700; }
+  .d-context .d-desc { color: #bbb; font-size: 0.85em; }
+  .d-context .d-tag { background: #ddd; color: #999; }
+  .d-intel { background: #f8f4ee; }
+  .d-intel .d-name { color: #b89860; font-size: 1.1em; font-weight: 700; }
+  .d-intel .d-desc { color: #c4a878; font-size: 0.85em; }
+  .d-intel .d-tag { background: #f0e0c0; color: #b89860; }
+  .d-outcomes { background: linear-gradient(135deg, #0a4a3a, #0d6b4f); }
+  .d-outcomes .d-name { color: #fff; font-size: 1.3em; font-weight: 700; }
+  .d-outcomes .d-desc { color: rgba(255,255,255,0.8); font-size: 0.85em; }
+  .d-outcomes .d-tag { background: rgba(255,255,255,0.2); color: #fff; }
+  .d-icon { font-size: 24px; width: 40px; flex-shrink: 0; text-align: center; }
+  .d-content { flex: 1; margin-left: 14px; }
+  .d-name { margin-bottom: 2px; }
+  .d-tag {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    margin-left: 16px;
+    flex-shrink: 0;
+  }
+  .diagram-caption {
+    text-align: center;
+    padding: 14px;
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 0.75em;
+    color: #999;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Pull quote */
+  .pull-quote {
+    border-left: 4px solid #0d6b4f;
+    padding: 20px 0 20px 28px;
+    margin: 40px 0;
+    font-size: 1.25em;
+    font-style: italic;
+    color: #0d6b4f;
+    line-height: 1.6;
+  }
+  
+  /* GIF section */
+  .gif-section {
+    margin: 48px -40px;
+    text-align: center;
+  }
+  .gif-section img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+  .gif-caption {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 12px;
+    font-style: italic;
+  }
+  
+  /* Section breaks */
+  .section-break {
+    text-align: center;
+    margin: 40px 0;
+    color: #ccc;
+    font-size: 1.4em;
+    letter-spacing: 8px;
+  }
+  
+  /* Footer */
+  .essay-footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    border-top: 1px solid #eee;
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 0.85em;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-weight: 700;
+    color: #0d6b4f;
+    letter-spacing: 1px;
+  }
+  
+  @media (max-width: 720px) {
+    .essay-figure, .diagram-embed, .gif-section { margin-left: 0; margin-right: 0; }
+    .hero h1 { font-size: 1.8em; }
+    .content p { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">NYU Berkley Center · Entrepreneurs Challenge</div>
+    <h1>Your Market &amp; Customers</h1>
+    <div class="byline">Sam Cialek · Serif · March 2026</div>
+  </div>
+</div>
+
+<div class="content">
+
+<p>The way software serves people is about to change fundamentally. In a world with agents — AI systems that can act on your behalf — the old SaaS model of "here's a dashboard, figure it out" stops making sense. The question becomes: what do users actually need from the products they pay for? We think the answer breaks down into three categories of value: context, intelligence, and outcomes.</p>
+
+<p>Context is the base layer. Aggregating your data, organizing it, making it accessible. This is what most health platforms do today — pull in your Apple Watch data, your lab results, your sleep scores, and put them in one place. It's necessary, but it's table stakes. Intelligence is the next layer — making sense of that data. Pattern recognition, correlations, recommendations. This is where LLMs have exploded onto the scene, and where most companies are racing to add an AI copilot to their product.</p>
+
+<p>But here's the problem: intelligence is commoditizing fast. If your value proposition is "we use AI to analyze your health data," you're competing with every foundation model on earth, and they're getting cheaper by the month. More importantly, LLMs have two structural limitations that matter enormously in health. First, <em>heterogeneity</em>. LLMs are trained on population-level data. They give you the average answer, the conventional wisdom. But health is deeply individual — your response to intermittent fasting or zone two cardio or creatine is not the population mean. Second, <em>causality</em>. LLMs can tell you that people who sleep eight hours tend to have lower resting heart rates. They cannot tell you whether <em>changing</em> your sleep will <em>change</em> your heart rate, or by how much, or how confident you should be in that prediction. They confuse correlation with mechanism.</p>
+
+<!-- DIAGRAM: Context → Intelligence → Outcomes -->
+<div class="diagram-embed">
+  <div class="diagram-layers">
+    <div class="d-layer d-context">
+      <div class="d-icon">📊</div>
+      <div class="d-content">
+        <div class="d-name">Context</div>
+        <div class="d-desc">Aggregate data, organize, make accessible. Apple Watch, labs, sleep scores in one place.</div>
+      </div>
+      <div class="d-tag">Table Stakes</div>
+    </div>
+    <div class="d-layer d-intel">
+      <div class="d-icon">🧠</div>
+      <div class="d-content">
+        <div class="d-name">Intelligence</div>
+        <div class="d-desc">Pattern recognition, correlations, recommendations. Where every AI copilot lives today.</div>
+      </div>
+      <div class="d-tag">Commoditizing</div>
+    </div>
+    <div class="d-layer d-outcomes">
+      <div class="d-icon">🎯</div>
+      <div class="d-content">
+        <div class="d-name">Outcomes</div>
+        <div class="d-desc">Quantified certainty that a specific action produces a specific result. Counterfactual simulation.</div>
+      </div>
+      <div class="d-tag">Serif</div>
+    </div>
+  </div>
+  <div class="diagram-caption">Where value lives in health software — and where it's migrating</div>
+</div>
+
+<p>This is where Serif comes in. We build the causal inference layer for health — individualized Bayesian models that update continuously as new data arrives. And we found our market in longevity, because longevity is where the heterogeneity premium is everything. Our users — biohackers, longevity-focused clinicians, quantified-self practitioners — are not naive consumers. They already know the conventional wisdom. They've read the studies, they've tried the protocols. What an LLM tells them isn't much of a premium, because they've already internalized the population-level knowledge. What they need is specificity: does this intervention work for <em>me</em>, given <em>my</em> biology, <em>my</em> history, <em>my</em> data?</p>
+
+<p>The Challenge helped us see this clearly. When we started, we were thinking about the general wellness consumer. But the general consumer doesn't have enough context to know what questions to ask, and doesn't have enough data to make the answers meaningful. The longevity community is different. They're data-rich, knowledge-rich, and outcome-obsessed. They're the perfect early market because they feel the gap between intelligence and outcomes most acutely.</p>
+
+<!-- GIF: Serif Platform -->
+<div class="gif-section">
+  <img src="https://discoverserif.com/upload/home-gif-v2.gif" alt="Serif platform — causal health intelligence infrastructure connecting wearables, labs, and clinical data">
+  <div class="gif-caption">Serif's platform integrates across health data sources to deliver individualized causal insights</div>
+</div>
+
+<p>We validated this directly. We've been working with a partner in EHR middleware — a company touching over 150,000 providers across Epic, Cerner, and athenahealth. Their CEO, who has four years of dense longitudinal health data — quarterly blood work, MRI scans, VO2 max, continuous wearable streams — volunteered as our first case study. He didn't need another dashboard. He needed to know: given everything in my data, what should I actually change, and how certain should I be that it'll work?</p>
+
+<div class="pull-quote">
+  Context is solved. Intelligence is commoditizing. But outcomes — giving someone a quantified level of certainty that if they take a specific course of action, they will get a specific result — that's where all the value is migrating.
+</div>
+
+<p>That question points to the real frontier: outcomes. Context is solved. Intelligence is commoditizing. But outcomes — giving someone a quantified level of certainty that if they take a specific course of action, they will get a specific result — that's where all the value is migrating. And it's where most software is completely failing.</p>
+
+<p>Think about it from the SaaS perspective. If your product tells me what happened and maybe why, but can't tell me what <em>will</em> happen if I act — you're a reporting tool. And reporting tools are about to get eaten alive by agents that can generate reports on the fly. The SaaS companies that survive the next five years will be the ones that can close the loop from data to decision to outcome with a measurable confidence interval. If you can't do that, you're going to go extinct.</p>
+
+<p>Serif is built for this world. Our Bayesian causal models don't just describe your data — they simulate counterfactuals. What would your biomarkers look like if you changed your training volume? Your sleep schedule? Your supplementation stack? And critically, how confident should you be in that prediction given the amount of data we have on <em>you</em> specifically? That's not a feature. That's the entire product.</p>
+
+<p>The biggest lesson from this process: the technology matters less than the framing. We had the causal inference engine from the start. But it took the Challenge — the workshops, the customer conversations, the pressure to articulate who we're actually for — to understand that outcomes aren't just a feature of our product. They're the entire reason the product needs to exist.</p>
+
+</div>
+
+<div class="essay-footer">
+  <div class="footer-logo">● serif</div>
+  <div>NYU Berkley Center · Entrepreneurs Challenge · 2026</div>
+</div>
+
+</body>
+</html>
