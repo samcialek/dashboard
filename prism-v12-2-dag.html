@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRISM v12.2 DAG Architecture</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #0a0a12; 
+            color: #e0e0e0;
+            font-size: 11px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; margin-bottom: 5px; font-size: 1.6em; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 25px; font-size: 12px; }
+        
+        .dag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+        
+        /* Layer styles */
+        .layer {
+            background: #12121e;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 8px 0;
+        }
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        .layer-id {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 4px;
+            min-width: 40px;
+            text-align: center;
+        }
+        .layer-name { font-size: 13px; font-weight: 600; }
+        .layer-type { font-size: 10px; color: #888; margin-left: auto; }
+        
+        /* Color coding */
+        .endo { border-left: 4px solid #3498db; }
+        .endo .layer-id { background: #3498db; color: white; }
+        .exo { border-left: 4px solid #e67e22; }
+        .exo .layer-id { background: #e67e22; color: white; }
+        .behavior { border-left: 4px solid #9b59b6; }
+        .behavior .layer-id { background: #9b59b6; color: white; }
+        
+        /* Node clusters */
+        .cluster {
+            margin: 10px 0;
+        }
+        .cluster-label {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .nodes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .node {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 9px;
+        }
+        .node-id { color: #74b9ff; font-weight: bold; }
+        .node-name { color: #aaa; margin-left: 4px; }
+        .node-cat { 
+            background: #2c3e50; 
+            color: #f39c12; 
+            font-size: 7px; 
+            padding: 1px 4px; 
+            border-radius: 2px; 
+            margin-left: 4px;
+        }
+        
+        /* L1 specific colors */
+        .l1-node .node-id { color: #2980b9; }
+        
+        /* L3 cluster colors */
+        .l3-ends .node-id { color: #e74c3c; }
+        .l3-means .node-id { color: #3498db; }
+        .l3-reality .node-id { color: #9b59b6; }
+        .l3-self .node-id { color: #27ae60; }
+        
+        /* Special: Parallel roots container */
+        .parallel-roots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .parallel-roots .layer {
+            margin: 0;
+        }
+        
+        /* Interaction box */
+        .interaction-box {
+            background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(39,174,96,0.05));
+            border: 2px dashed #27ae60;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .interaction-box h4 {
+            color: #2ecc71;
+            margin: 0 0 10px 0;
+            font-size: 12px;
+        }
+        .interaction-formula {
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            color: #4ec9b0;
+        }
+        .interaction-note {
+            font-size: 10px;
+            color: #888;
+            margin-top: 8px;
+        }
+        
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            padding: 12px;
+            background: #12121e;
+            border-radius: 6px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        
+        /* Notes */
+        .notes {
+            background: rgba(241,196,15,0.1);
+            border: 1px solid #f1c40f;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 10px;
+        }
+        .notes h4 { color: #f1c40f; margin: 0 0 8px 0; }
+        
+        /* Visual flow arrows */
+        .flow-indicator {
+            text-align: center;
+            font-size: 20px;
+            color: #444;
+            margin: 5px 0;
+        }
+        .flow-indicator.merge {
+            color: #27ae60;
+        }
+        
+        /* Salience note */
+        .salience-badge {
+            background: #1abc9c;
+            color: white;
+            font-size: 8px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+        
+        /* CAT-6 indicator */
+        .nominal-badge {
+            background: #9b59b6;
+            color: white;
+            font-size: 7px;
+            padding: 1px 4px;
+            border-radius: 2px;
+            margin-left: 4px;
+        }
+        
+        /* Dual pathway box */
+        .dual-path-box {
+            background: linear-gradient(135deg, rgba(155,89,182,0.1), rgba(142,68,173,0.05));
+            border: 2px dashed #9b59b6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .dual-path-box h4 {
+            color: #9b59b6;
+            margin: 0 0 10px 0;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>PRISM v12.2 — Corrected DAG Architecture</h1>
+    <p class="subtitle">Five-Layer Causal Model with Parallel Roots & Interaction Effects</p>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background:#3498db;"></div>
+            <span>Endogenous (Internal)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background:#e67e22;"></div>
+            <span>Exogenous (External)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background:#9b59b6;"></div>
+            <span>Behavior (Output)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background:#27ae60;"></div>
+            <span>Interaction Effect</span>
+        </div>
+    </div>
+
+    <div class="dag-container">
+        
+        <!-- ==================== PARALLEL ROOTS ==================== -->
+        <div class="parallel-roots">
+            <!-- L1: Personality Primitives -->
+            <div class="layer endo">
+                <div class="layer-header">
+                    <span class="layer-id">L1</span>
+                    <span class="layer-name">Personality Primitives</span>
+                    <span class="layer-type">ENDOGENOUS • ROOT</span>
+                </div>
+                
+                <div class="cluster">
+                    <div class="cluster-label">Fundamental Traits (6)</div>
+                    <div class="nodes">
+                        <div class="node l1-node">
+                            <span class="node-id">T</span>
+                            <span class="node-name">Threat Sensitivity</span>
+                            <span class="node-cat">CONT</span>
+                        </div>
+                        <div class="node l1-node">
+                            <span class="node-id">EC</span>
+                            <span class="node-name">Epistemic Curiosity</span>
+                            <span class="node-cat">CONT</span>
+                        </div>
+                        <div class="node l1-node">
+                            <span class="node-id">D</span>
+                            <span class="node-name">Defiance</span>
+                            <span class="node-cat">CONT</span>
+                        </div>
+                        <div class="node l1-node">
+                            <span class="node-id">G</span>
+                            <span class="node-name">Group Identification</span>
+                            <span class="node-cat">CONT</span>
+                        </div>
+                        <div class="node l1-node">
+                            <span class="node-id">COMP</span>
+                            <span class="node-name">Compassion</span>
+                            <span class="node-cat">CONT</span>
+                        </div>
+                        <div class="node l1-node">
+                            <span class="node-id">RC</span>
+                            <span class="node-name">Reality Calibration</span>
+                            <span class="node-cat">CONT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [F]: Formative Context -->
+            <div class="layer exo">
+                <div class="layer-header">
+                    <span class="layer-id">[F]</span>
+                    <span class="layer-name">Formative Context</span>
+                    <span class="layer-type">EXOGENOUS • ROOT</span>
+                </div>
+                
+                <div class="cluster">
+                    <div class="cluster-label">Formative Experiences (6)</div>
+                    <div class="nodes">
+                        <div class="node"><span class="node-id">PARENT</span><span class="node-name">Parental Socialization</span></div>
+                        <div class="node"><span class="node-id">REL_FORM</span><span class="node-name">Religious Formation</span></div>
+                        <div class="node"><span class="node-id">ECON_HARD</span><span class="node-name">Economic Hardship</span></div>
+                        <div class="node"><span class="node-id">DISCRIM</span><span class="node-name">Discrimination Experience</span></div>
+                        <div class="node"><span class="node-id">COMM_NORM</span><span class="node-name">Community Norms</span></div>
+                        <div class="node"><span class="node-id">MEDIA_ENV</span><span class="node-name">Media Environment</span></div>
+                    </div>
+                </div>
+                
+                <div class="cluster">
+                    <div class="cluster-label">Identity Norms (1)</div>
+                    <div class="nodes">
+                        <div class="node"><span class="node-id">CAT_NORM</span><span class="node-name">Category Norm Vector</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== INTERACTION EXPLANATION ==================== -->
+        <div class="interaction-box">
+            <h4>⚡ L1 × [F] Interaction → L3</h4>
+            <div class="interaction-formula">L3 = f(L1, [F], L1 × [F])</div>
+            <div class="interaction-note">
+                <strong>Key insight:</strong> The SAME L1 trait + DIFFERENT [F] context = DIFFERENT L3 disposition.<br><br>
+                <strong>Example:</strong> High <strong>T</strong> (Threat Sensitivity) + stable childhood → mild conservatism.<br>
+                High <strong>T</strong> (Threat Sensitivity) + war-zone childhood → fortress mentality.<br><br>
+                <strong>[F] moderates HOW L1 traits get expressed as political dispositions.</strong><br>
+                Neither L1 nor [F] alone determines L3 — the interaction matters.
+            </div>
+        </div>
+
+        <div class="flow-indicator merge">↓ ↓ ↓</div>
+
+        <!-- ==================== L3: Political Dispositions ==================== -->
+        <div class="layer endo">
+            <div class="layer-header">
+                <span class="layer-id">L3</span>
+                <span class="layer-name">Political Dispositions</span>
+                <span class="layer-type">ENDOGENOUS • CRYSTALLIZED</span>
+                <span class="salience-badge">All nodes have Position + Salience</span>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">ENDS — What You Want (4 nodes)</div>
+                <div class="nodes">
+                    <div class="node l3-ends"><span class="node-id">MAT</span><span class="node-name">Material Orientation</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-ends"><span class="node-id">CD</span><span class="node-name">Cultural Direction</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-ends"><span class="node-id">CU</span><span class="node-name">Cultural Uniformity</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-ends"><span class="node-id">MOR</span><span class="node-name">Moral Circle</span><span class="node-cat">CAT-6</span><span class="nominal-badge">NOMINAL</span></div>
+                </div>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">MEANS — How You Pursue It (4 nodes)</div>
+                <div class="nodes">
+                    <div class="node l3-means"><span class="node-id">PRO</span><span class="node-name">Proceduralism</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-means"><span class="node-id">EPS</span><span class="node-name">Epistemic Style</span><span class="node-cat">CAT-6</span><span class="nominal-badge">NOMINAL</span></div>
+                    <div class="node l3-means"><span class="node-id">AES</span><span class="node-name">Aesthetic Style</span><span class="node-cat">CAT-6</span><span class="nominal-badge">NOMINAL</span></div>
+                    <div class="node l3-means"><span class="node-id">COM</span><span class="node-name">Compromise</span><span class="node-cat">CONT</span></div>
+                </div>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">REALITY — How You See the World (4 nodes)</div>
+                <div class="nodes">
+                    <div class="node l3-reality"><span class="node-id">ZS</span><span class="node-name">Zero-Sum Orientation</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-reality"><span class="node-id">H</span><span class="node-name">Hierarchy Orientation</span><span class="node-cat">CAT-6</span><span class="nominal-badge">NOMINAL</span></div>
+                    <div class="node l3-reality"><span class="node-id">ONT-H</span><span class="node-name">Human Ontology</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-reality"><span class="node-id">ONT-S</span><span class="node-name">System Ontology</span><span class="node-cat">CONT</span></div>
+                </div>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">SELF — Political Identity (3 nodes)</div>
+                <div class="nodes">
+                    <div class="node l3-self"><span class="node-id">PF</span><span class="node-name">Political Fusion</span><span class="node-cat">CONT</span></div>
+                    <div class="node l3-self"><span class="node-id">TRB</span><span class="node-name">Tribe</span><span class="node-cat">CAT-6</span><span class="nominal-badge">NOMINAL</span></div>
+                    <div class="node l3-self"><span class="node-id">ENG</span><span class="node-name">Engagement Level</span><span class="node-cat">CONT</span></div>
+                </div>
+            </div>
+            
+            <div class="cluster" style="background: rgba(241,196,15,0.1); border: 1px dashed #f1c40f;">
+                <div class="cluster-label" style="color: #f1c40f;">COMPUTED — Derived from L1 × [F] (2 nodes)</div>
+                <div class="nodes">
+                    <div class="node" style="border-color: #f1c40f;">
+                        <span class="node-id" style="background: #d4ac0d; color: white;">RISK_TOL</span>
+                        <span class="node-name">Political Risk Tolerance</span>
+                        <span class="node-cat">CONT</span>
+                    </div>
+                    <div class="node" style="border-color: #f1c40f;">
+                        <span class="node-id" style="background: #d4ac0d; color: white;">TIME_HOR</span>
+                        <span class="node-name">Political Time Horizon</span>
+                        <span class="node-cat">CONT</span>
+                    </div>
+                </div>
+                <div style="font-size: 9px; color: #888; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(241,196,15,0.3);">
+                    <strong style="color:#f1c40f;">RISK_TOL</strong> ← f(T↓, D↑, EC↑) × [ECON_HARD, DISCRIM, PARENT]<br>
+                    <strong style="color:#f1c40f;">TIME_HOR</strong> ← f(T↓, RC↑, EC↑) × [ECON_HARD, PARENT, REL_FORM]
+                </div>
+            </div>
+        </div>
+
+        <div class="flow-indicator">↓</div>
+
+        <!-- ==================== [C]: Current Context ==================== -->
+        <div class="layer exo">
+            <div class="layer-header">
+                <span class="layer-id">[C]</span>
+                <span class="layer-name">Current Context</span>
+                <span class="layer-type">EXOGENOUS • ACTIVATING</span>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">Structural Conditions</div>
+                <div class="nodes">
+                    <div class="node"><span class="node-id">ECON_NOW</span><span class="node-name">Current Economic Conditions</span></div>
+                    <div class="node"><span class="node-id">THREAT_SAL</span><span class="node-name">Threat Salience (events)</span></div>
+                    <div class="node"><span class="node-id">GEO_NOW</span><span class="node-name">Current Geography</span></div>
+                </div>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">Electoral Context</div>
+                <div class="nodes">
+                    <div class="node"><span class="node-id">ELECT_CTX</span><span class="node-name">Electoral Context</span></div>
+                    <div class="node"><span class="node-id">CAND_CHAR</span><span class="node-name">Candidate Characteristics</span></div>
+                    <div class="node"><span class="node-id">ISSUE_AGD</span><span class="node-name">Issue Agenda</span></div>
+                </div>
+            </div>
+            
+            <div class="cluster">
+                <div class="cluster-label">Constraints & Opportunities</div>
+                <div class="nodes">
+                    <div class="node"><span class="node-id">BALLOT_ACC</span><span class="node-name">Ballot Access</span></div>
+                    <div class="node"><span class="node-id">MOBILIZ</span><span class="node-name">Mobilization Infrastructure</span></div>
+                    <div class="node"><span class="node-id">SOC_COST</span><span class="node-name">Social Cost of Action</span></div>
+                    <div class="node"><span class="node-id">TIME_AVAIL</span><span class="node-name">Time Availability</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CONTEXT BRANCH TO L5 ==================== -->
+        <div class="dual-path-box">
+            <h4>Context-Dependent Output</h4>
+            <div class="interaction-formula">[C] determines which L5 branch activates</div>
+            <div class="interaction-note">
+                <strong>If ELECT_CTX = elections exist:</strong> Compute FIT_SCORE per candidate → TURNOUT/VOTE<br>
+                <strong>If ELECT_CTX = no elections:</strong> Compute RCS (Regime Compliance Scale)<br><br>
+                <strong>ENG</strong> (Engagement Level) from L3 sets the participation floor for both branches.
+            </div>
+        </div>
+
+        <div class="flow-indicator" style="color: #9b59b6;">↓ ↓</div>
+
+        <!-- ==================== L5: Political Behavior ==================== -->
+        <div class="layer behavior">
+            <div class="layer-header">
+                <span class="layer-id">L5</span>
+                <span class="layer-name">Political Behavior</span>
+                <span class="layer-type">ENDOGENOUS • OUTPUT</span>
+            </div>
+            
+            <div class="cluster" style="background: rgba(52,152,219,0.15); border: 1px solid #3498db;">
+                <div class="cluster-label" style="color: #3498db;">ELECTORAL CONTEXT — If elections exist</div>
+                <div class="nodes">
+                    <div class="node"><span class="node-id">TURNOUT</span><span class="node-name">Did you vote?</span><span class="node-cat">BINARY</span></div>
+                    <div class="node"><span class="node-id">VOTE</span><span class="node-name">For whom?</span><span class="node-cat">CANDIDATE</span></div>
+                </div>
+                <div style="font-size: 9px; color: #aaa; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(52,152,219,0.3); line-height: 1.5;">
+                    <strong style="color:#3498db;">Decision rule:</strong><br>
+                    1. Compute <strong>FIT_SCORE</strong> for each candidate (from L3 disposition alignment)<br>
+                    2. <strong>ENG</strong> from L3 sets participation floor<br>
+                    3. If max(FIT_SCORE) &gt; ENG floor → <strong>TURNOUT = Yes</strong>, vote for argmax(FIT_SCORE)<br>
+                    4. If no candidate exceeds floor → <strong>TURNOUT = No</strong>
+                </div>
+            </div>
+            
+            <div class="cluster" style="background: rgba(231,76,60,0.15); border: 1px solid #e74c3c;">
+                <div class="cluster-label" style="color: #e74c3c;">NON-ELECTORAL CONTEXT — Regime Compliance Scale</div>
+                <div class="nodes">
+                    <div class="node"><span class="node-id">RCS</span><span class="node-name">Regime Compliance</span><span class="node-cat">-3 to +3</span></div>
+                </div>
+                <table style="width: 100%; font-size: 9px; color: #aaa; margin-top: 10px; border-collapse: collapse;">
+                    <tr style="border-top: 1px solid rgba(231,76,60,0.3);">
+                        <td style="padding: 4px; color: #e74c3c; font-weight: bold;">-3</td>
+                        <td style="padding: 4px;"><strong>Active Resistance</strong></td>
+                        <td style="padding: 4px; color: #888;">Underground organizing, sabotage, open dissidence</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #e74c3c; font-weight: bold;">-2</td>
+                        <td style="padding: 4px;"><strong>Public Opposition</strong></td>
+                        <td style="padding: 4px; color: #888;">Visible protest, vocal criticism despite risk</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #e74c3c; font-weight: bold;">-1</td>
+                        <td style="padding: 4px;"><strong>Quiet Non-Compliance</strong></td>
+                        <td style="padding: 4px; color: #888;">Passive resistance, non-participation, private dissent</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #888; font-weight: bold;">0</td>
+                        <td style="padding: 4px;"><strong>Apolitical Compliance</strong></td>
+                        <td style="padding: 4px; color: #888;">Goes along, neither supports nor resists</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #27ae60; font-weight: bold;">+1</td>
+                        <td style="padding: 4px;"><strong>Passive Support</strong></td>
+                        <td style="padding: 4px; color: #888;">Votes/participates when expected, doesn't volunteer</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #27ae60; font-weight: bold;">+2</td>
+                        <td style="padding: 4px;"><strong>Active Support</strong></td>
+                        <td style="padding: 4px; color: #888;">Enthusiastic participation in regime activities</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #27ae60; font-weight: bold;">+3</td>
+                        <td style="padding: 4px;"><strong>Regime Collaboration</strong></td>
+                        <td style="padding: 4px; color: #888;">Informing, enforcement, active promotion of regime</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== NOTES ==================== -->
+    <div class="notes">
+        <h4>Architecture Notes</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+            <li><strong>Parallel Roots:</strong> L1 and [F] are both root nodes (no parents). Neither causes the other.</li>
+            <li><strong>Interaction Effect:</strong> L3 is produced by the interaction of L1 × [F], not just their sum. Same trait + different context = different disposition.</li>
+            <li><strong>L1 Fundamentals:</strong> T (Threat Sensitivity), EC (Epistemic Curiosity), D (Defiance), G (Group Identification), COMP (Compassion), RC (Reality Calibration)</li>
+            <li><strong>Computed L3 Nodes:</strong> RISK_TOL and TIME_HOR are derived from specific L1 × [F] combinations, not primitives.</li>
+            <li><strong>CAT-6 Variables:</strong> MOR, EPS, AES, H, TRB are <strong>nominal</strong> (distinct unordered categories), not ordinal scales.</li>
+            <li><strong>Position + Salience:</strong> Every L3 node has two components. Context [C] primarily affects salience (activation), not position.</li>
+            <li><strong>L5 Electoral Branch:</strong> ENG sets participation floor. If any candidate's FIT_SCORE exceeds floor, vote for argmax. Otherwise abstain.</li>
+            <li><strong>L5 Non-Electoral Branch:</strong> RCS (Regime Compliance Scale) ranges from -3 (Active Resistance) to +3 (Regime Collaboration).</li>
+            <li><strong>One-Shot Model:</strong> Assumes single time-point prediction. No L5 → L3 feedback loop modeled.</li>
+        </ul>
+    </div>
+
+    <!-- ==================== CAUSAL SKELETON ==================== -->
+    <div style="background: #12121e; border-radius: 8px; padding: 20px; margin-top: 20px;">
+        <h4 style="color: #3498db; margin: 0 0 15px 0;">Formal Causal Skeleton</h4>
+        <pre style="font-family: 'Consolas', monospace; font-size: 12px; color: #4ec9b0; margin: 0; line-height: 1.6;">
+<span style="color: #6a9955;">// Roots (exogenous to model, no parents)</span>
+Roots: L1 (T, EC, D, G, COMP, RC), [F], [C]
+
+<span style="color: #6a9955;">// Disposition formation (interaction effect)</span>
+L3 ← f(L1, [F], L1 × [F])
+
+<span style="color: #6a9955;">// Computed L3 nodes (derived from specific L1 × [F] combinations)</span>
+RISK_TOL ← f(T↓, D↑, EC↑) × [ECON_HARD, DISCRIM, PARENT]
+TIME_HOR ← f(T↓, RC↑, EC↑) × [ECON_HARD, PARENT, REL_FORM]
+
+<span style="color: #6a9955;">// Behavior production — ELECTORAL CONTEXT</span>
+FIT_SCORE(candidate) ← g(L3, candidate_profile)
+TURNOUT ← 1 if max(FIT_SCORE) > ENG_floor else 0
+VOTE ← argmax(FIT_SCORE) if TURNOUT = 1
+
+<span style="color: #6a9955;">// Behavior production — NON-ELECTORAL CONTEXT</span>
+RCS ← h(L3, [C])  <span style="color: #6a9955;">// Regime Compliance Scale: -3 to +3</span>
+        </pre>
+    </div>
+
+    <!-- ==================== NODE COUNTS ==================== -->
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px;">
+        <div style="background: #12121e; border-radius: 6px; padding: 15px; text-align: center; border-top: 3px solid #3498db;">
+            <div style="font-size: 24px; font-weight: bold; color: #3498db;">6</div>
+            <div style="font-size: 9px; color: #888;">L1 NODES</div>
+        </div>
+        <div style="background: #12121e; border-radius: 6px; padding: 15px; text-align: center; border-top: 3px solid #e67e22;">
+            <div style="font-size: 24px; font-weight: bold; color: #e67e22;">7</div>
+            <div style="font-size: 9px; color: #888;">[F] NODES</div>
+        </div>
+        <div style="background: #12121e; border-radius: 6px; padding: 15px; text-align: center; border-top: 3px solid #2ecc71;">
+            <div style="font-size: 24px; font-weight: bold; color: #2ecc71;">17×2</div>
+            <div style="font-size: 9px; color: #888;">L3 (pos+sal)</div>
+        </div>
+        <div style="background: #12121e; border-radius: 6px; padding: 15px; text-align: center; border-top: 3px solid #e67e22;">
+            <div style="font-size: 24px; font-weight: bold; color: #e67e22;">10</div>
+            <div style="font-size: 9px; color: #888;">[C] NODES</div>
+        </div>
+        <div style="background: #12121e; border-radius: 6px; padding: 15px; text-align: center; border-top: 3px solid #9b59b6;">
+            <div style="font-size: 24px; font-weight: bold; color: #9b59b6;">3</div>
+            <div style="font-size: 9px; color: #888;">L5 OUTPUTS</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 25px; text-align: center; color: #666; font-size: 10px;">
+        PRISM v12.2 DAG Architecture | Corrected Causal Structure | January 2026
+    </div>
+</div>
+</body>
+</html>
