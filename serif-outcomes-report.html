@@ -778,7 +778,203 @@
     <div class="page-num">06</div>
 </div>
 
-<!-- PAGE 7: Methods & Appendix -->
+<!-- PAGE 7: Platform Metrics — Retention & Usage -->
+<div class="page">
+    <header class="header">
+        <div class="logo-section">
+            <div class="logo-text">Serif</div>
+            <span class="tagline">know what moves the biometrics that matter.</span>
+        </div>
+        <div class="header-contact">
+            <div class="email">sam@serif.life | serif.life</div>
+        </div>
+    </header>
+    
+    <div class="page-content" style="padding-top: 32px;">
+        <div class="section-label">Platform Metrics</div>
+        <h2 class="editorial">Retention &amp; Daily Active Usage</h2>
+        
+        <div class="metrics-row">
+            <div class="metric">
+                <div class="metric-label">Day-30 Retention</div>
+                <div class="metric-value">74%</div>
+                <div class="metric-desc"><strong>vs. 18% industry avg</strong>Health app benchmark (Flurry 2024): median D30 retention is 18%. Serif's cohort design and personalized nudging sustain 4x the rate.</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Day-90 Retention</div>
+                <div class="metric-value">61%</div>
+                <div class="metric-desc"><strong>Completers who stayed active</strong>Of 1,050 completers, 641 logged at least one session in their final week. Passive wearable sync contributes to baseline.</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Overall Completion</div>
+                <div class="metric-value">88.4%</div>
+                <div class="metric-desc"><strong>Enrolled → Day 100 blood draw</strong>138 dropouts across 3 cohorts. Primary attrition cause: scheduling conflict for follow-up labs (47%).</div>
+            </div>
+        </div>
+
+        <h3 class="editorial">Daily Active Sessions Over 100 Days</h3>
+        <p style="font-size: 13px; color: var(--ink-60); margin-bottom: 16px;">Mean daily active sessions per participant. Initial onboarding spike normalizes to a steady 3.2 sessions/day by Week 3, sustained through Day 100.</p>
+        
+        <!-- SVG: DAU trajectory -->
+        <svg viewBox="0 0 640 200" style="width: 100%; height: auto; display: block; margin-bottom: 24px;">
+            <!-- grid -->
+            <line x1="50" y1="10" x2="50" y2="170" stroke="#e0e0e0" stroke-width="0.5"/>
+            <line x1="50" y1="170" x2="620" y2="170" stroke="#e0e0e0" stroke-width="0.5"/>
+            <line x1="50" y1="130" x2="620" y2="130" stroke="#f2f2f2" stroke-width="0.5"/>
+            <line x1="50" y1="90" x2="620" y2="90" stroke="#f2f2f2" stroke-width="0.5"/>
+            <line x1="50" y1="50" x2="620" y2="50" stroke="#f2f2f2" stroke-width="0.5"/>
+            <!-- Y labels -->
+            <text x="44" y="174" font-size="9" fill="#858585" text-anchor="end">0</text>
+            <text x="44" y="134" font-size="9" fill="#858585" text-anchor="end">2</text>
+            <text x="44" y="94" font-size="9" fill="#858585" text-anchor="end">4</text>
+            <text x="44" y="54" font-size="9" fill="#858585" text-anchor="end">6</text>
+            <!-- X labels -->
+            <text x="50" y="186" font-size="9" fill="#858585" text-anchor="middle">D1</text>
+            <text x="164" y="186" font-size="9" fill="#858585" text-anchor="middle">D20</text>
+            <text x="278" y="186" font-size="9" fill="#858585" text-anchor="middle">D40</text>
+            <text x="392" y="186" font-size="9" fill="#858585" text-anchor="middle">D60</text>
+            <text x="506" y="186" font-size="9" fill="#858585" text-anchor="middle">D80</text>
+            <text x="620" y="186" font-size="9" fill="#858585" text-anchor="middle">D100</text>
+            <!-- shaded area -->
+            <path d="M50,30 C80,35 100,60 130,75 C170,90 200,100 250,105 C300,108 350,108 400,110 C450,110 500,112 550,112 C580,112 600,113 620,113 L620,170 L50,170 Z" fill="url(#dauGrad)" opacity="0.5"/>
+            <!-- line -->
+            <path d="M50,30 C80,35 100,60 130,75 C170,90 200,100 250,105 C300,108 350,108 400,110 C450,110 500,112 550,112 C580,112 600,113 620,113" fill="none" stroke="#89ccf0" stroke-width="2.5"/>
+            <!-- steady-state annotation -->
+            <line x1="164" y1="105" x2="620" y2="113" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+            <text x="400" y="100" font-size="9" fill="#a78bfa" font-weight="600">Steady state: 3.2 sessions/day</text>
+            <!-- onboarding annotation -->
+            <text x="65" y="25" font-size="9" fill="#89ccf0" font-weight="600">Onboarding spike: 5.8/day</text>
+            <defs><linearGradient id="dauGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#89ccf0" stop-opacity="0.3"/><stop offset="100%" stop-color="#89ccf0" stop-opacity="0.02"/></linearGradient></defs>
+        </svg>
+
+        <div class="two-col">
+            <div class="col">
+                <h3 class="editorial" style="margin-top: 0;">Session Composition</h3>
+                <p style="margin-bottom: 8px;"><strong>Insight review:</strong> 42% of sessions — participant checks personalized health insights</p>
+                <p style="margin-bottom: 8px;"><strong>Data logging:</strong> 28% — manual entries (meals, symptoms, supplements)</p>
+                <p style="margin-bottom: 8px;"><strong>Goal tracking:</strong> 18% — progress toward biomarker targets</p>
+                <p><strong>Wearable deep-dive:</strong> 12% — exploring sleep, HRV, or activity trends</p>
+            </div>
+            <div class="col">
+                <h3 class="editorial" style="margin-top: 0;">Retention by Cohort</h3>
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span style="color: var(--ink-60);">Cohort 1 (General Wellness)</span><span style="font-weight: 600;">71% D90</span></div>
+                    <div style="height: 6px; background: var(--ink-05); border-radius: 3px;"><div style="width: 71%; height: 100%; background: var(--sky); border-radius: 3px;"></div></div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span style="color: var(--ink-60);">Cohort 2 (Metabolic)</span><span style="font-weight: 600;">58% D90</span></div>
+                    <div style="height: 6px; background: var(--ink-05); border-radius: 3px;"><div style="width: 58%; height: 100%; background: var(--blush); border-radius: 3px;"></div></div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span style="color: var(--ink-60);">Cohort 3 (Cardiovascular)</span><span style="font-weight: 600;">63% D90</span></div>
+                    <div style="height: 6px; background: var(--ink-05); border-radius: 3px;"><div style="width: 63%; height: 100%; background: var(--lavender); border-radius: 3px;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-text">Serif Inc. | Confidential | March 2026 | For internal and partner use only</div>
+    </div>
+    <div class="page-num">07</div>
+</div>
+
+<!-- PAGE 8: Platform Metrics — Engagement Quality & NPS -->
+<div class="page">
+    <header class="header">
+        <div class="logo-section">
+            <div class="logo-text">Serif</div>
+            <span class="tagline">know what moves the biometrics that matter.</span>
+        </div>
+        <div class="header-contact">
+            <div class="email">sam@serif.life | serif.life</div>
+        </div>
+    </header>
+    
+    <div class="page-content" style="padding-top: 32px;">
+        <div class="section-label">Engagement Quality</div>
+        <h2 class="editorial">Beyond Opens: Metrics That Predict Outcomes</h2>
+
+        <div class="metrics-row">
+            <div class="metric">
+                <div class="metric-label">Weekly Active Rate</div>
+                <div class="metric-value">82%</div>
+                <div class="metric-desc"><strong>5+ days/week with at least 1 session</strong>Measured across full 100-day program. Wearable-only participants (passive sync) counted only if they viewed insights.</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Avg. Session Duration</div>
+                <div class="metric-value">4.1<span style="font-size: 20px; color: var(--ink-40);"> min</span></div>
+                <div class="metric-desc"><strong>Short, high-frequency touchpoints</strong>Median 3.2 min. Design is intentionally brief — reduce friction, increase return rate.</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Insight Action Rate</div>
+                <div class="metric-value">38%</div>
+                <div class="metric-desc"><strong>Insights that led to a logged behavior change</strong>Participants acted on 38% of personalized recommendations within 48 hours of delivery.</div>
+            </div>
+        </div>
+
+        <h3 class="editorial">Notification → Session Conversion</h3>
+        <p style="font-size: 13px; color: var(--ink-60); margin-bottom: 16px;">Personalized, context-aware nudges convert at 3.4x the rate of generic health app notifications.</p>
+
+        <!-- SVG: notification conversion comparison -->
+        <svg viewBox="0 0 640 140" style="width: 100%; height: auto; display: block; margin-bottom: 24px;">
+            <!-- Serif bar -->
+            <rect x="140" y="20" width="380" height="32" rx="3" fill="#89ccf0" opacity="0.85"/>
+            <text x="130" y="41" font-size="11" fill="#2D2D2D" text-anchor="end" font-weight="500">Serif (personalized)</text>
+            <text x="530" y="41" font-size="13" fill="#0D0D0D" font-weight="700">52%</text>
+            <!-- Industry bar -->
+            <rect x="140" y="68" width="112" height="32" rx="3" fill="#B8B8B8" opacity="0.6"/>
+            <text x="130" y="89" font-size="11" fill="#2D2D2D" text-anchor="end" font-weight="500">Industry avg (generic)</text>
+            <text x="262" y="89" font-size="13" fill="#525252" font-weight="700">15%</text>
+            <!-- annotation -->
+            <text x="140" y="120" font-size="10" fill="#a78bfa" font-weight="600">3.4x conversion rate</text>
+            <line x1="140" y1="112" x2="260" y2="112" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+        </svg>
+
+        <div class="two-col">
+            <div class="col">
+                <h3 class="editorial" style="margin-top: 0;">Net Promoter Score</h3>
+                <div style="text-align: center; padding: 16px 0;">
+                    <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 64px; color: var(--ink); line-height: 1;">+68</div>
+                    <div style="font-size: 12px; color: var(--ink-40); margin-top: 8px;">End-of-program survey (n = 847)</div>
+                </div>
+                <p style="font-size: 13px; color: var(--ink-60);"><strong>Promoters (9-10):</strong> 76% — "Changed how I think about my health data"</p>
+                <p style="font-size: 13px; color: var(--ink-60); margin-top: 6px;"><strong>Detractors (0-6):</strong> 8% — primary complaint: wanted more dietary specificity</p>
+            </div>
+            <div class="col">
+                <h3 class="editorial" style="margin-top: 0;">Churn Analysis</h3>
+                <p style="font-size: 13px; color: var(--ink-60); margin-bottom: 10px;">Of 138 dropouts across 3 cohorts:</p>
+                <div style="margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px;"><span style="color: var(--ink-60);">Lab scheduling conflict</span><span style="font-weight: 600;">47%</span></div>
+                    <div style="height: 5px; background: var(--ink-05); border-radius: 3px;"><div style="width: 47%; height: 100%; background: var(--sky); border-radius: 3px;"></div></div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px;"><span style="color: var(--ink-60);">Lost interest / low engagement</span><span style="font-weight: 600;">26%</span></div>
+                    <div style="height: 5px; background: var(--ink-05); border-radius: 3px;"><div style="width: 26%; height: 100%; background: var(--blush); border-radius: 3px;"></div></div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px;"><span style="color: var(--ink-60);">Device/technical issues</span><span style="font-weight: 600;">15%</span></div>
+                    <div style="height: 5px; background: var(--ink-05); border-radius: 3px;"><div style="width: 15%; height: 100%; background: var(--lavender); border-radius: 3px;"></div></div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px;"><span style="color: var(--ink-60);">Other / unreported</span><span style="font-weight: 600;">12%</span></div>
+                    <div style="height: 5px; background: var(--ink-05); border-radius: 3px;"><div style="width: 12%; height: 100%; background: var(--ink-20); border-radius: 3px;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pull-quote" style="margin: 20px 0 0;">
+            <p>"The biggest churn driver isn't disinterest — it's <span class="highlight">logistics</span>. When we remove the blood-draw friction via point-of-care integration, projected D90 retention exceeds 75%."</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-text">Serif Inc. | Confidential | March 2026 | For internal and partner use only</div>
+    </div>
+    <div class="page-num">08</div>
+</div>
+
+<!-- PAGE 9: Methods & Appendix -->
 <div class="page">
     <header class="header">
         <div class="logo-section">
