@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flag Litmus Test</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+
+h1 { font-size: 22px; text-align: center; margin-bottom: 6px; color: #fff; }
+.subtitle { font-size: 14px; color: #888; text-align: center; margin-bottom: 32px; }
+
+.pairs { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+
+.pair { display: flex; align-items: center; gap: 16px; justify-content: center; }
+.pair-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; width: 100%; text-align: center; margin-bottom: 4px; }
+
+.flag-btn {
+  width: 120px; height: 80px; border: 3px solid #222; border-radius: 8px;
+  cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; font-size: 48px;
+  background: #111; user-select: none;
+}
+.flag-btn:hover { border-color: #444; transform: scale(1.05); }
+.flag-btn.selected { border-color: #69f0ae; box-shadow: 0 0 16px rgba(105, 240, 174, 0.3); transform: scale(1.08); }
+.flag-btn.dimmed { opacity: 0.3; filter: grayscale(0.5); }
+
+.vs { font-size: 14px; color: #555; font-weight: 700; }
+
+.result-box {
+  background: #111122; border: 1px solid #222; border-radius: 12px;
+  padding: 24px; max-width: 400px; width: 100%; text-align: center;
+  min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.result-label { font-size: 13px; color: #888; margin-bottom: 8px; }
+.result-text { font-size: 20px; font-weight: 700; color: #69f0ae; }
+.result-desc { font-size: 13px; color: #aaa; margin-top: 8px; line-height: 1.5; }
+.result-box.empty .result-text { color: #444; font-size: 16px; font-weight: 400; }
+
+.reset-btn {
+  margin-top: 16px; background: none; border: 1px solid #333; color: #888;
+  padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.2s;
+}
+.reset-btn:hover { border-color: #666; color: #ccc; }
+
+.footer { margin-top: 32px; font-size: 11px; color: #444; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Which of these 3 do you support?</h1>
+<p class="subtitle">Pick one flag from each pair</p>
+
+<div class="pairs">
+  <div>
+    <div class="pair-label">Pair 1</div>
+    <div class="pair" data-pair="0">
+      <div class="flag-btn" data-side="a" onclick="pick(0,'a')">🇺🇦</div>
+      <span class="vs">vs</span>
+      <div class="flag-btn" data-side="b" onclick="pick(0,'b')">🇷🇺</div>
+    </div>
+  </div>
+  <div>
+    <div class="pair-label">Pair 2</div>
+    <div class="pair" data-pair="1">
+      <div class="flag-btn" data-side="a" onclick="pick(1,'a')">🇹🇼</div>
+      <span class="vs">vs</span>
+      <div class="flag-btn" data-side="b" onclick="pick(1,'b')">🇨🇳</div>
+    </div>
+  </div>
+  <div>
+    <div class="pair-label">Pair 3</div>
+    <div class="pair" data-pair="2">
+      <div class="flag-btn" data-side="a" onclick="pick(2,'a')">🇵🇸</div>
+      <span class="vs">vs</span>
+      <div class="flag-btn" data-side="b" onclick="pick(2,'b')">🇮🇱</div>
+    </div>
+  </div>
+</div>
+
+<div class="result-box empty" id="resultBox">
+  <div class="result-label">Your result</div>
+  <div class="result-text" id="resultText">Select one flag from each pair</div>
+  <div class="result-desc" id="resultDesc"></div>
+</div>
+
+<button class="reset-btn" onclick="reset()">Reset</button>
+
+<div class="footer">
+  A proxy quiz — illustrating why correlation ≠ causation in political models.<br>
+  From the PRISM framework at matricesofconfusion.com
+</div>
+
+<script>
+const picks = [null, null, null];
+
+// a = Ukraine, Taiwan, Palestine
+// b = Russia, China, Israel
+// Key: "aaa" = UA+TW+PS, "bbb" = RU+CN+IL, etc.
+
+const RESULTS = {
+  "aaa": { label: "Progressive Internationalist", desc: "You support sovereignty for small states, self-determination universally, and anti-colonial movements. Consistent universalist framework — but a proxy quiz can't tell you whether this comes from moral conviction, anti-hegemonic instinct, or coalition signaling." },
+  "aab": { label: "Liberal Hawk", desc: "Pro-democracy, pro-Western alliances, but draw the line at Israel. Classic center-left interventionist. The question is whether 'democracy promotion' is your actual principle or whether it's downstream of something deeper." },
+  "aba": { label: "Anti-Imperial Left", desc: "Pro-Ukraine and pro-Palestine but skeptical of Taiwan framing. You see Western hegemony as the common thread — except when Russia is the aggressor. The inconsistency is the interesting part." },
+  "abb": { label: "Contrarian Realist", desc: "Pro-Ukraine but aligned with China and Israel. You might be a national security hawk who sees Russia as the real threat but considers the Pacific and Middle East through a realpolitik lens." },
+  "baa": { label: "Multipolar Leftist", desc: "Anti-NATO but pro-self-determination elsewhere. You see the Ukraine conflict through a NATO-expansion lens but support sovereignty in Asia and the Middle East. Your model of the world has a very specific villain." },
+  "bab": { label: "Traditionalist Realist", desc: "Pro-Russia, pro-Taiwan, pro-Israel. You support strong states with clear identities and civilizational continuity. Sovereignty matters when it aligns with order." },
+  "bba": { label: "Anti-Western Populist", desc: "You oppose Western-aligned positions across the board except Palestine. Anti-hegemonic instinct is dominant — but the Palestine pick suggests universalist sympathies underneath the realpolitik." },
+  "bbb": { label: "Authoritarian Sympathizer", desc: "You picked every incumbent power. Either you genuinely believe in strong-state sovereignty, or you're doing this ironically. A proxy quiz literally cannot tell the difference — which is the point." },
+};
+
+function pick(pair, side) {
+  picks[pair] = side;
+  const pairEl = document.querySelectorAll(`.pair[data-pair="${pair}"] .flag-btn`);
+  pairEl.forEach(btn => {
+    const s = btn.dataset.side;
+    btn.classList.toggle('selected', s === side);
+    btn.classList.toggle('dimmed', s !== side);
+  });
+  checkResult();
+}
+
+function checkResult() {
+  const box = document.getElementById('resultBox');
+  const text = document.getElementById('resultText');
+  const desc = document.getElementById('resultDesc');
+  
+  if (picks.includes(null)) {
+    box.classList.add('empty');
+    const remaining = picks.filter(p => p === null).length;
+    text.textContent = `${remaining} pair${remaining > 1 ? 's' : ''} remaining`;
+    desc.textContent = '';
+    return;
+  }
+
+  const key = picks.join('');
+  const result = RESULTS[key];
+  box.classList.remove('empty');
+  text.textContent = result.label;
+  desc.textContent = result.desc;
+}
+
+function reset() {
+  picks[0] = picks[1] = picks[2] = null;
+  document.querySelectorAll('.flag-btn').forEach(btn => {
+    btn.classList.remove('selected', 'dimmed');
+  });
+  const box = document.getElementById('resultBox');
+  box.classList.add('empty');
+  document.getElementById('resultText').textContent = 'Select one flag from each pair';
+  document.getElementById('resultDesc').textContent = '';
+}
+</script>
+</body>
+</html>
