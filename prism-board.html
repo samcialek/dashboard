@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM Ship Board</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; padding: 20px; max-width: 900px; margin: 0 auto; }
+h1 { color: #fff; font-size: 24px; margin-bottom: 4px; }
+.subtitle { color: #888; font-size: 14px; margin-bottom: 24px; }
+.progress-bar { width: 100%; height: 8px; background: #1a1a2e; border-radius: 4px; margin-bottom: 24px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #00c853, #69f0ae); border-radius: 4px; transition: width 0.5s ease; }
+.stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat { background: #111122; border-radius: 8px; padding: 12px 16px; flex: 1; min-width: 120px; }
+.stat-num { font-size: 24px; font-weight: 700; color: #69f0ae; }
+.stat-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+.phase { margin-bottom: 24px; }
+.phase-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; }
+.phase-header h2 { font-size: 16px; font-weight: 600; }
+.phase-header .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+.badge-red { background: #3a1020; color: #ff5252; }
+.badge-yellow { background: #3a2d10; color: #ffd740; }
+.badge-green { background: #0a3a1a; color: #69f0ae; }
+.badge-blue { background: #0a1a3a; color: #448aff; }
+.task { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: #111122; border-radius: 6px; margin-bottom: 6px; transition: all 0.2s; }
+.task:hover { background: #161633; }
+.task.done { opacity: 0.5; }
+.task.done .task-name { text-decoration: line-through; }
+.task input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #69f0ae; cursor: pointer; flex-shrink: 0; }
+.task-info { flex: 1; }
+.task-name { font-size: 14px; line-height: 1.4; }
+.task-meta { font-size: 11px; color: #666; margin-top: 2px; }
+.task-hours { display: inline-block; background: #1a1a2e; padding: 1px 6px; border-radius: 3px; font-size: 11px; color: #888; margin-left: 4px; }
+.divider { border: none; border-top: 1px solid #1a1a2e; margin: 16px 0; }
+.footer { text-align: center; color: #444; font-size: 12px; margin-top: 32px; }
+</style>
+</head>
+<body>
+
+<h1>🔲 PRISM Ship Board</h1>
+<p class="subtitle">Interactive Political Disposition Model — Launch Tracker</p>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="doneCount">0</div><div class="stat-label">Done</div></div>
+  <div class="stat"><div class="stat-num" id="totalCount">0</div><div class="stat-label">Total</div></div>
+  <div class="stat"><div class="stat-num" id="hoursLeft">0h</div><div class="stat-label">Est. Hours Left</div></div>
+  <div class="stat"><div class="stat-num" id="pctDone">0%</div><div class="stat-label">Complete</div></div>
+</div>
+
+<!-- PHASE 1: MVP LAUNCH -->
+<div class="phase">
+  <div class="phase-header">
+    <h2>🔴 Phase 1 — MVP Launch</h2>
+    <span class="badge badge-red">BLOCKING</span>
+    <span class="task-hours">~10-12h</span>
+  </div>
+
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Quiz engine / scorer</div><div class="task-meta">prism_scorer_v156.js ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Quiz questions (dense quiz v7)</div><div class="task-meta">~170 questions, prism_dense_quiz_v7.html ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">111 calibrated archetypes</div><div class="task-meta">prism_archetypes_calibrated.js ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Results page (3-panel)</div><div class="task-meta">results-three-panel.html ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">L4 context overlay data</div><div class="task-meta">quiz_l4_data.js (266KB) ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Atlas visualization (v12.3)</div><div class="task-meta">prism_v12_3_atlas.html — also on GitHub Pages ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">DAG visualization (v12.2)</div><div class="task-meta">prism_v12_2_dag.html — also on GitHub Pages ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Population simulation + election calibration</div><div class="task-meta">R share 48.9% (actual 49.9%), turnout 61.7% ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Article Draft 1 (raw notes/outline)</div><div class="task-meta">drafts/prism-article-raw-notes.md ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Article Draft 2 ("The Cause of Our Politics")</div><div class="task-meta">Full essay ✅</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox" checked><div class="task-info"><div class="task-name">Article Draft 3 (Silver/Levine voice)</div><div class="task-meta">drafts/prism-draft3-silver-levine.md ✅</div></div></div>
+
+  <hr class="divider">
+
+  <div class="task" data-hours="2"><input type="checkbox"><div class="task-info"><div class="task-name">Pick quiz style variant</div><div class="task-meta">6+ styles exist (neon-noir, bauhaus, terminal, poolside, sunset, academic). Open each, pick one.</div></div></div>
+  <div class="task" data-hours="3"><input type="checkbox"><div class="task-info"><div class="task-name">Verify end-to-end quiz → scorer → results pipeline</div><div class="task-meta">Test with calibrated 111 archetypes. Fix any bugs.</div></div></div>
+  <div class="task" data-hours="3"><input type="checkbox"><div class="task-info"><div class="task-name">Final article edit pass</div><div class="task-meta">Pick sections from D1/D2/D3. One clean pass. Don't rewrite.</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Build index/landing page</div><div class="task-meta">Simple page linking quiz + article + atlas</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Format article for MoC website</div><div class="task-meta">HTML/CSS in matricesofconfusion.com template</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Upload to matricesofconfusion.com</div><div class="task-meta">FTP to Hostinger, test live</div></div></div>
+</div>
+
+<!-- PHASE 2: VISUAL ASSETS -->
+<div class="phase">
+  <div class="phase-header">
+    <h2>🟡 Phase 2 — Visual Assets</h2>
+    <span class="badge badge-yellow">IMPORTANT</span>
+    <span class="task-hours">~7h</span>
+  </div>
+
+  <div class="task" data-hours="2"><input type="checkbox"><div class="task-info"><div class="task-name">Confusion matrix animated GIF</div><div class="task-meta">Show how confusion matrices work visually. Matrices can build.</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">XOR logic gate diagram (JD Vance)</div><div class="task-meta">Sanders (1,0) / Romney (0,1) / Vance (1,1) table. Matrices can build.</div></div></div>
+  <div class="task" data-hours="2"><input type="checkbox"><div class="task-info"><div class="task-name">L1→L5 layer flow diagram</div><div class="task-meta">5-layer architecture visual. Matrices can build.</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Prism refraction metaphor visual</div><div class="task-meta">White light → prism → political spectrum. Matrices can build.</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Embed visuals in article</div><div class="task-meta">Insert images/GIFs into final article HTML</div></div></div>
+</div>
+
+<!-- PHASE 3: POLISH -->
+<div class="phase">
+  <div class="phase-header">
+    <h2>🟢 Phase 3 — Polish & UX</h2>
+    <span class="badge badge-green">NICE TO HAVE</span>
+    <span class="task-hours">~5h</span>
+  </div>
+
+  <div class="task" data-hours="2"><input type="checkbox"><div class="task-info"><div class="task-name">Mobile responsiveness testing + fixes</div><div class="task-meta">Quiz, results, article on phone</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Social sharing cards (OG tags)</div><div class="task-meta">Preview image + description for Twitter/LinkedIn/Reddit shares</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">SEO / meta tags</div><div class="task-meta">Title, description, keywords for search</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Basic analytics</div><div class="task-meta">Pageview tracking on MoC</div></div></div>
+</div>
+
+<!-- PHASE 4: PROMOTION -->
+<div class="phase">
+  <div class="phase-header">
+    <h2>🔵 Phase 4 — Promotion & Distribution</h2>
+    <span class="badge badge-blue">GROWTH</span>
+    <span class="task-hours">~6h</span>
+  </div>
+
+  <div class="task" data-hours="2"><input type="checkbox"><div class="task-info"><div class="task-name">LinkedIn article / post</div><div class="task-meta">Write LinkedIn post announcing PRISM. Link to quiz + article on MoC.</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Reddit strategy — acquire aged account</div><div class="task-meta">Research buying an old Reddit account for posting credibility. Target subreddits: r/politicalcompass, r/PoliticalScience, r/dataisbeautiful, r/neutralpolitics</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Reddit posts — draft + submit</div><div class="task-meta">Draft posts for 3-4 subreddits. Tone: "I built this thing, here's why, try it"</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Twitter/X thread</div><div class="task-meta">Thread format: hook → problem with existing quizzes → PRISM approach → link</div></div></div>
+  <div class="task" data-hours="1"><input type="checkbox"><div class="task-info"><div class="task-name">Hacker News post</div><div class="task-meta">"Show HN: A generative political model" — technical angle for HN audience</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox"><div class="task-info"><div class="task-name">Email to Nate Silver / Silver Bulletin</div><div class="task-meta">Cold outreach: "Built a generative political disposition model, thought you'd find it interesting"</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox"><div class="task-info"><div class="task-name">Email to Ground News (Harleen K.)</div><div class="task-meta">Via Kyle Finck intro. PRISM × source bias detection pitch.</div></div></div>
+</div>
+
+<!-- PHASE 5: EXTENDED -->
+<div class="phase">
+  <div class="phase-header">
+    <h2>⚪ Phase 5 — Extended Features</h2>
+    <span class="badge" style="background:#222;color:#888;">FUTURE</span>
+  </div>
+
+  <div class="task" data-hours="0"><input type="checkbox"><div class="task-info"><div class="task-name">Politracker ("Argue Better" module)</div><div class="task-meta">Compare your political map vs someone else's</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox"><div class="task-info"><div class="task-name">Expansion packs (additional question sets)</div><div class="task-meta">Deeper dives into specific policy areas</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox"><div class="task-info"><div class="task-name">Historical figures mode</div><div class="task-meta">Founding Fathers data already exists</div></div></div>
+  <div class="task" data-hours="0"><input type="checkbox"><div class="task-info"><div class="task-name">International predictions mode</div><div class="task-meta">20+ countries of exogenous data already built</div></div></div>
+</div>
+
+<div class="footer">
+  PRISM v12.3 · 111 Archetypes · ~170 Questions · 20+ Countries<br>
+  Last updated: March 11, 2026
+</div>
+
+<script>
+// Load state from localStorage
+const STORAGE_KEY = 'prism-board-state';
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+const tasks = document.querySelectorAll('.task');
+const state = loadState();
+
+tasks.forEach((task, i) => {
+  const cb = task.querySelector('input[type="checkbox"]');
+  // Restore state (only for non-pre-checked items)
+  if (state[i] !== undefined) {
+    cb.checked = state[i];
+  }
+  if (cb.checked) task.classList.add('done');
+
+  cb.addEventListener('change', () => {
+    state[i] = cb.checked;
+    saveState(state);
+    task.classList.toggle('done', cb.checked);
+    updateStats();
+  });
+});
+
+function updateStats() {
+  let done = 0, total = 0, hoursLeft = 0;
+  tasks.forEach(task => {
+    total++;
+    const cb = task.querySelector('input[type="checkbox"]');
+    if (cb.checked) { done++; }
+    else { hoursLeft += parseFloat(task.dataset.hours) || 0; }
+  });
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('hoursLeft').textContent = hoursLeft + 'h';
+  document.getElementById('pctDone').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+updateStats();
+</script>
+</body>
+</html>
