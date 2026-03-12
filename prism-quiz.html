@@ -1,0 +1,3467 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM Comprehensive Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="prism_archetypes_calibrated.js"></script>
+<script src="archetype_behaviors.js"></script>
+<script src="prism_scorer_v156.js"></script>
+<style>
+        :root {
+            --pool: #d1f6ff;
+            --pool-deep: #89ccf0;
+            --pool-shadow: #6BB8D9;
+            --flesh: #fa8072;
+            --flesh-light: #FFB4A8;
+            --cream: #ede2ab;
+            --white: #FFFEF8;
+            --ink: #1a1a1a;
+            --ink-light: #4a4a4a;
+            --ink-faint: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background: var(--pool);
+            color: var(--ink);
+            line-height: 1.7;
+            font-size: 18px;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 2px solid var(--ink);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .header-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: var(--ink-light);
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-indicator {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: var(--pool-deep);
+            border: 2px solid var(--ink);
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem 0 1.5rem 0;
+            padding: 0.75rem 1rem;
+            background: var(--cream);
+            border: 2px solid var(--ink);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .section-number {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: var(--white);
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--ink);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: lowercase;
+            letter-spacing: -0.01em;
+        }
+
+        .question {
+            background: var(--white);
+            border: 2px solid var(--ink);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 4px 4px 0 var(--pool-shadow);
+            transition: all 0.15s;
+        }
+
+        .question:hover {
+            box-shadow: 6px 6px 0 var(--pool-shadow);
+            transform: translate(-2px, -2px);
+        }
+
+        .question.answered {
+            border-color: var(--flesh);
+            box-shadow: 4px 4px 0 var(--flesh);
+        }
+
+        .question-meta { display: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-id {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            color: var(--white);
+            background: var(--ink);
+            padding: 0.25rem 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .question-type {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            color: var(--ink-light);
+            padding: 0.2rem 0.5rem;
+            border: 1px dashed var(--ink-light);
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .question-subtext {
+            font-size: 0.9rem;
+            color: var(--ink-light);
+            font-style: italic;
+            margin-top: -0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .likert-labels {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            color: var(--ink-faint);
+            text-transform: lowercase;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .likert-scale {
+            display: flex;
+            gap: 0;
+        }
+
+        .likert-option {
+            flex: 1;
+        }
+
+        .likert-option input { display: none; }
+
+        .likert-option label {
+            display: block;
+            padding: 0.75rem 0.25rem;
+            border: 2px solid var(--ink);
+            border-right: none;
+            background: var(--pool);
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            text-align: center;
+            transition: all 0.1s;
+        }
+
+        .likert-option:last-child label {
+            border-right: 2px solid var(--ink);
+        }
+
+        .likert-option label:hover {
+            background: var(--pool-deep);
+        }
+
+        .likert-option input:checked + label {
+            background: var(--flesh);
+            color: var(--white);
+        }
+
+        .slider-container {
+            padding: 1rem 0;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            color: var(--ink-faint);
+            text-transform: lowercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .slider-track-bg {
+            height: 8px;
+            background: linear-gradient(90deg, var(--pool-deep), var(--cream), var(--flesh-light));
+            border: 1px solid var(--ink);
+            margin-bottom: -8px;
+            position: relative;
+        }
+
+        .slider-input {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border: 2px solid var(--ink);
+            cursor: pointer;
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .slider-input::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border: 2px solid var(--ink);
+            cursor: pointer;
+        }
+
+        .slider-value {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.2rem;
+            color: var(--flesh);
+            margin-top: 0.75rem;
+            font-weight: 700;
+        }
+
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mc-option input { display: none; }
+
+        .mc-option label {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--ink);
+            background: var(--pool);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .mc-option label:hover {
+            background: var(--pool-deep);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .mc-option input:checked + label {
+            background: var(--cream);
+            box-shadow: 3px 3px 0 var(--flesh);
+        }
+
+        .mc-marker {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .mc-option input:checked + label .mc-marker {
+            background: var(--flesh);
+            color: var(--white);
+        }
+
+        /* ENGAGE_STYLE multi-select styling */
+        .engage-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--ink);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .engage-option:hover {
+            background: var(--pool-deep);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .engage-option.selected {
+            background: var(--cream);
+            box-shadow: 3px 3px 0 var(--flesh);
+            border-color: var(--flesh);
+        }
+
+        .engage-option.selected .mc-marker {
+            background: var(--flesh);
+            color: var(--white);
+        }
+
+        .mc-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Page 1: bold small-caps for response text */
+        #page-1 .mc-text,
+        #page-1 .slider-labels span,
+        #page-1 .slider-value,
+        #page-1 .conjoint-label,
+        #page-1 .param-value,
+        #page-1 .salience-label {
+            font-variant: small-caps;
+            font-weight: 600;
+        }
+
+        .conjoint-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .conjoint-option {
+            padding: 1.25rem;
+            border: 2px solid var(--ink);
+            background: var(--pool);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .conjoint-option:hover {
+            background: var(--pool-deep);
+        }
+
+        .conjoint-option.selected {
+            background: var(--cream);
+            box-shadow: 3px 3px 0 var(--flesh);
+        }
+
+        .conjoint-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dashed var(--ink-light);
+        }
+
+        .conjoint-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .conjoint-params {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .conjoint-params li {
+            padding: 0.4rem 0;
+            border-bottom: 1px dotted var(--pool-shadow);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .conjoint-params li:last-child {
+            border-bottom: none;
+        }
+
+        .conjoint-params .param-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            min-width: 90px;
+            flex-shrink: 0;
+            padding-right: 1rem;
+        }
+
+        .conjoint-params .param-value {
+            flex: 1;
+            font-weight: 600;
+            padding-left: 0.5rem;
+        }
+
+        /* Color coding for conjoint values */
+        .conjoint-params .param-value.high {
+            color: #c44;
+        }
+
+        .conjoint-params .param-value.medium,
+        .conjoint-params .param-value.neutral {
+            color: var(--ink-light);
+        }
+
+        .conjoint-params .param-value.low {
+            color: #2a7;
+        }
+
+        .ranking-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            user-select: none;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 3px solid var(--ink);
+            background: var(--pool);
+            cursor: grab;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.1s;
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .ranking-item:hover {
+            background: var(--pool-deep);
+            transform: translateX(4px);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .ranking-item:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+            box-shadow: 6px 6px 0 var(--ink);
+            z-index: 10;
+        }
+
+        .ranking-item.dragging {
+            opacity: 0.7;
+            border-style: dashed;
+            background: var(--cream);
+            transform: rotate(1deg) scale(1.02);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .ranking-item.drag-over {
+            border-color: var(--flesh);
+            background: #fff5f3;
+        }
+
+        .ranking-shape {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            border: 2px solid var(--ink);
+        }
+
+        .ranking-shape.circle { border-radius: 50%; }
+        .ranking-shape.square { border-radius: 2px; }
+        .ranking-shape.diamond { transform: rotate(45deg); width: 16px; height: 16px; margin: 2px; }
+        .ranking-shape.triangle {
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 18px solid currentColor;
+            background: transparent !important;
+        }
+        .ranking-shape.hexagon { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+        .ranking-shape.star { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+
+        .ranking-shape.color-1 { background: #E74C3C; } /* Red */
+        .ranking-shape.color-2 { background: #3498DB; } /* Blue */
+        .ranking-shape.color-3 { background: #2ECC71; } /* Green */
+        .ranking-shape.color-4 { background: #F39C12; } /* Orange */
+        .ranking-shape.color-5 { background: #9B59B6; } /* Purple */
+        .ranking-shape.color-6 { background: #1ABC9C; } /* Teal */
+
+        .ranking-number {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ranking-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .ranking-handle {
+            font-family: 'Courier Prime', monospace;
+            color: var(--ink-light);
+            font-size: 1.4rem;
+            cursor: grab;
+            padding: 0 0.25rem;
+        }
+
+        .ranking-handle:active {
+            cursor: grabbing;
+        }
+
+        .allocation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .allocation-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .allocation-label {
+            flex: 1;
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .allocation-slider {
+            flex: 2;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--pool-deep);
+            border: 1px solid var(--ink);
+        }
+
+        .allocation-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--flesh);
+            border: 2px solid var(--ink);
+            cursor: pointer;
+        }
+
+        .allocation-value {
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .allocation-total {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: var(--pool);
+            border: 1px solid var(--ink);
+        }
+
+        .allocation-total.valid { color: #059669; }
+        .allocation-total.invalid { color: #dc2626; }
+
+        .checkbox-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--ink);
+            background: var(--pool);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .checkbox-item:hover {
+            background: var(--pool-deep);
+        }
+
+        .checkbox-item.selected {
+            background: var(--cream);
+        }
+
+        .checkbox-item input {
+            display: none;
+        }
+
+        .checkbox-box {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox-item.selected .checkbox-box {
+            background: var(--flesh);
+        }
+
+        .checkbox-item.selected .checkbox-box::after {
+            content: '✓';
+            color: var(--white);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .calibration-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--pool-shadow);
+        }
+
+        .calibration-row:last-child {
+            border-bottom: none;
+        }
+
+        .calibration-question {
+            font-size: 0.95rem;
+        }
+
+        .calibration-inputs {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .calibration-estimate {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .calibration-estimate input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid var(--ink);
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .confidence-buttons {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .confidence-btn {
+            padding: 0.4rem 0.75rem;
+            border: 2px solid var(--ink);
+            background: var(--pool);
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            transition: all 0.1s;
+        }
+
+        .confidence-btn:hover {
+            background: var(--pool-deep);
+        }
+
+        .confidence-btn.selected {
+            background: var(--flesh);
+            color: var(--white);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .demo-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--ink-light);
+        }
+
+        .demo-select {
+            padding: 0.5rem;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            font-family: 'EB Garamond', serif;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .submit-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--flesh);
+            color: var(--white);
+            border: 2px solid var(--ink);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: lowercase;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 var(--ink);
+            transition: all 0.1s;
+        }
+
+        .submit-btn:hover {
+            background: var(--cream);
+            color: var(--ink);
+            box-shadow: 6px 6px 0 var(--ink);
+            transform: translate(-2px, -2px);
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px dashed var(--pool-shadow);
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: var(--ink-light);
+            text-align: center;
+            text-transform: lowercase;
+            letter-spacing: 0.03em;
+        }
+
+        .ranking-chip {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--ink);
+            margin-right: 0.5rem;
+        }
+        .chip-red { background: #ef4444; }
+        .chip-blue { background: #3b82f6; }
+        .chip-green { background: #22c55e; }
+        .chip-yellow { background: #eab308; }
+        .chip-purple { background: #a855f7; }
+        .chip-orange { background: #f97316; }
+
+        /* Multi-page navigation */
+        .quiz-page { display: none; }
+        .quiz-page.active { display: block; }
+
+        .page-header {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-number {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--ink-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85rem;
+            color: var(--ink-light);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-top: 2px solid var(--ink);
+        }
+
+        .nav-btn {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            padding: 1rem 2rem;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.15s ease;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+
+        .nav-btn:hover {
+            background: var(--cream);
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0 var(--ink);
+        }
+
+        .nav-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--ink);
+        }
+
+        .nav-btn.primary {
+            background: var(--pool-deep);
+        }
+
+        .nav-btn.primary:hover {
+            background: var(--pool);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-dots {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .page-dot.active {
+            background: var(--pool-deep);
+        }
+
+        .page-dot.completed {
+            background: var(--cream);
+        }
+
+        .category-color-ends { border-left: 4px solid #1a1a1a; }
+        .category-color-means { border-left: 4px solid #1a1a1a; }
+        .category-color-reality { border-left: 4px solid #1a1a1a; }
+        .category-color-self { border-left: 4px solid #1a1a1a; }
+
+        /* Node signal indicators */
+        .node-indicator {
+            display: inline-flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+            font-size: 0.7rem;
+        }
+        .node-badge {
+            background: #2a2a2a;
+            color: #888;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .node-badge.hot {
+            background: #4a2a2a;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+        }
+
+        /* Max-Diff (Best-Worst Scaling) Question Type */
+        .maxdiff-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .maxdiff-header {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            gap: 1rem;
+            padding: 0 0.5rem 0.75rem 0.5rem;
+            border-bottom: 2px solid var(--ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .maxdiff-header span {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink-light);
+            text-align: center;
+        }
+
+        .maxdiff-header span:nth-child(2) {
+            text-align: left;
+        }
+
+        .maxdiff-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.75rem 0.5rem;
+            border: 2px solid var(--ink);
+            background: var(--pool);
+            transition: all 0.15s;
+        }
+
+        .maxdiff-row:hover {
+            background: var(--pool-deep);
+        }
+
+        .maxdiff-row.selected-most {
+            background: #e8f5e9;
+            border-color: #2e7d32;
+        }
+
+        .maxdiff-row.selected-least {
+            background: #ffebee;
+            border-color: #c62828;
+        }
+
+        .maxdiff-btn {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.1s;
+            margin: 0 auto;
+        }
+
+        .maxdiff-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        .maxdiff-btn.most-btn {
+            border-radius: 50%;
+        }
+
+        .maxdiff-btn.most-btn.selected {
+            background: #2e7d32;
+            color: var(--white);
+            border-color: #1b5e20;
+        }
+
+        .maxdiff-btn.least-btn {
+            border-radius: 4px;
+        }
+
+        .maxdiff-btn.least-btn.selected {
+            background: #c62828;
+            color: var(--white);
+            border-color: #b71c1c;
+        }
+
+        .maxdiff-label {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .maxdiff-instruction {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--ink-light);
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--cream);
+            border: 1px dashed var(--ink-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Importance scale questions */
+        .importance-scale {
+            display: flex;
+            gap: 0;
+        }
+
+        .importance-option {
+            flex: 1;
+        }
+
+        .importance-option input { display: none; }
+
+        .importance-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.75rem 0.25rem;
+            border: 2px solid var(--ink);
+            border-right: none;
+            background: var(--pool);
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            text-align: center;
+            transition: all 0.1s;
+            min-height: 70px;
+        }
+
+        .importance-option:last-child label {
+            border-right: 2px solid var(--ink);
+        }
+
+        .importance-option label:hover {
+            background: var(--pool-deep);
+        }
+
+        .importance-option input:checked + label {
+            background: var(--flesh);
+            color: var(--white);
+        }
+
+        .importance-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .importance-text {
+            font-size: 0.6rem;
+            line-height: 1.2;
+        }
+
+        /* Importance Toggle - inline checkbox for "this matters to me" */
+        .importance-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--cream);
+            border: 1px dashed var(--ink-light);
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .importance-toggle:hover {
+            background: #e8e0a0;
+            border-color: var(--ink);
+        }
+
+        .importance-toggle.checked {
+            background: var(--flesh-light);
+            border-color: var(--flesh);
+            border-style: solid;
+        }
+
+        .importance-toggle input {
+            display: none;
+        }
+
+        .importance-toggle-box {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--ink);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.1s;
+        }
+
+        .importance-toggle.checked .importance-toggle-box {
+            background: var(--flesh);
+            border-color: var(--flesh);
+        }
+
+        .importance-toggle.checked .importance-toggle-box::after {
+            content: '✓';
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .importance-toggle-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--ink-light);
+            letter-spacing: 0.02em;
+        }
+
+        .importance-toggle.checked .importance-toggle-label {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        /* Conjoint strong preference styling */
+        .conjoint-strong-toggle {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+<div>
+<div class="header-title">Political Reasoning &amp; Identity Synthesis Model</div>
+<div class="header-meta">prism comprehensive assessment</div>
+</div>
+<div class="progress-indicator">
+<span id="answered">0</span> / <span id="total">0</span>
+</div>
+</div>
+<div class="container"><div class="quiz-page active" id="page-1"><div class="section-header" style="border-left: 4px solid #89ccf0;"><span class="section-number">section i</span><span class="section-title">Let's Begin</span><span class="section-subtitle">A quick tour of your political world</span></div>
+<div class="question" data-q="q1b">
+<div class="question-text">How many days per week do you typically consume political content (news, podcasts, social media, discussions)?</div>
+<div class="mc-options">
+<div class="mc-option">
+<input id="q1b-a" name="q1b" type="radio" value="0"/>
+<label for="q1b-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">Rarely or never (less than once a week)</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q1b-b" name="q1b" type="radio" value="1-2"/>
+<label for="q1b-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">1-2 days per week</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q1b-c" name="q1b" type="radio" value="5-6"/>
+<label for="q1b-c">
+<span class="mc-marker">c</span>
+<span class="mc-text">5-6 days per week</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q1b-d" name="q1b" type="radio" value="3-4"/>
+<label for="q1b-d">
+<span class="mc-marker">d</span>
+<span class="mc-text">3-4 days per week</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q1b-e" name="q1b" type="radio" value="daily"/>
+<label for="q1b-e">
+<span class="mc-marker">e</span>
+<span class="mc-text">Every day</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-category="self" data-q="q1">
+<div class="question-text">How central is your political identity to your overall sense of self?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>not at all central</span>
+<span>extremely central</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q1" oninput="document.getElementById('q1-value').textContent=this.value" type="range" value="0"/>
+<div class="slider-value"><span id="q1-value">0</span></div>
+</div>
+</div>
+
+<!-- CULTURE_POS: Direct cultural position (1-7 slider) -->
+<div class="question" data-category="ends" data-q="CULTURE_POS">
+<div class="question-text">Thinking about cultural and social issues in American politics—such as immigration levels, LGBTQ+ rights, abortion access, the role of religion in public life, and traditional family structures—where would you place your own views?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>strongly traditional / conservative</span>
+<span>mixed or moderate</span>
+<span>strongly progressive / liberal</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="1" name="CULTURE_POS" step="0.5" oninput="document.getElementById('CULTURE_POS-value').textContent=['Strongly Traditional','Traditional','Lean Traditional','Moderate','Lean Progressive','Progressive','Strongly Progressive'][Math.round(this.value)-1] || 'Moderate'" type="range" value="4"/>
+<div class="slider-value"><span id="CULTURE_POS-value">Moderate</span></div>
+</div>
+<div class="salience-slider-container" style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 6px;">
+<div class="salience-label" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">How important are cultural/social issues to your political views?</div>
+<div class="slider-container" style="margin-bottom: 0;">
+<div class="slider-labels" style="font-size: 0.75rem;">
+<span>not important at all</span>
+<span>extremely important</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="CULTURE_SAL" type="range" value="50" oninput="document.getElementById('CULTURE_SAL-value').textContent=this.value"/>
+<div class="slider-value"><span id="CULTURE_SAL-value">50</span></div>
+</div>
+</div>
+</div>
+
+<!-- ENGAGE_STYLE: Political engagement motivation (select top 2) -->
+<div class="question" data-category="self" data-q="ENGAGE_STYLE">
+<div class="question-text">What MOST motivates your political engagement?</div>
+<div class="question-subtext">Select your top 2 motivations (click to select, click again to deselect)</div>
+<div class="mc-options engage-style-options" data-max-select="2">
+<div class="mc-option engage-option" data-value="MOVEMENT" onclick="toggleEngageStyle(this)">
+<span class="mc-marker">a</span>
+<span class="mc-text"><strong>Movement:</strong> Being part of something bigger—collective action, shared vision</span>
+</div>
+<div class="mc-option engage-option" data-value="POLICY" onclick="toggleEngageStyle(this)">
+<span class="mc-marker">b</span>
+<span class="mc-text"><strong>Policy:</strong> Achieving specific outcomes—I care about results, not rhetoric</span>
+</div>
+<div class="mc-option engage-option" data-value="RESISTANCE" onclick="toggleEngageStyle(this)">
+<span class="mc-marker">c</span>
+<span class="mc-text"><strong>Resistance:</strong> Fighting against threats—powerful interests, bad actors</span>
+</div>
+<div class="mc-option engage-option" data-value="DUTY" onclick="toggleEngageStyle(this)">
+<span class="mc-marker">d</span>
+<span class="mc-text"><strong>Duty:</strong> Civic responsibility—participating is important regardless of outcome</span>
+</div>
+<div class="mc-option engage-option" data-value="INDEPENDENCE" onclick="toggleEngageStyle(this)">
+<span class="mc-marker">e</span>
+<span class="mc-text"><strong>Independence:</strong> Thinking for myself—I distrust establishments and movements alike</span>
+</div>
+</div>
+<input name="ENGAGE_STYLE" type="hidden" value=""/>
+</div>
+
+<div class="question" data-q="q4b">
+<div class="question-text">Which policy bundle would you prefer?</div>
+
+<div class="conjoint-container" style="margin-top: 1.5rem;">
+<div class="conjoint-option" data-value="A" onclick="selectConjoint(this, 'q4b')">
+<div class="conjoint-label">Approach A</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Surveillance</span><span class="param-value neutral">Minimal government surveillance</span></li>
+<li><span class="param-label">Enforcement</span><span class="param-value neutral">Strong local police presence and enforcement</span></li>
+<li><span class="param-label">Due Process</span><span class="param-value neutral">Expedited trials for serious crimes</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="B" onclick="selectConjoint(this, 'q4b')">
+<div class="conjoint-label">Approach B</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Surveillance</span><span class="param-value neutral">Expanded digital surveillance and monitoring</span></li>
+<li><span class="param-label">Enforcement</span><span class="param-value neutral">Community-based alternatives to policing</span></li>
+<li><span class="param-label">Due Process</span><span class="param-value neutral">Full due process protections even if slower</span></li>
+</ul>
+</div>
+</div>
+<input name="q4b" type="hidden" value=""/>
+</div>
+<div class="question" data-q="q53">
+<div class="question-text">To win an election, is it better to:</div>
+<div class="mc-options">
+<div class="mc-option">
+<input id="cc-a" name="q53" type="radio" value="tent"/>
+<label for="cc-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">Dilute the message to build a broader coalition with people you disagree with.</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="cc-b" name="q53" type="radio" value="purity"/>
+<label for="cc-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">Maintain a clear, principled message, even if it alienates moderate voters.</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-q="q56">
+<div class="question-text">A fixed budget can either save 10 lives domestically or 100 lives abroad. What should it do?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>Save more lives abroad</span>
+<span>Prioritize our own citizens</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q56" type="range" value="50"/>
+<div class="slider-value"><span id="q56-value">50</span></div>
+</div>
+</div>
+<div class="question" data-q="q125">
+<div class="question-text">When politics comes up at social gatherings, you typically:</div>
+<div class="mc-options">
+<div class="mc-option"><input id="pol3-a" name="q125" type="radio" value="share_views"/><label for="pol3-a"><span class="mc-marker">a</span><span class="mc-text">Share your views but try to keep it civil</span></label></div>
+<div class="mc-option"><input id="pol3-b" name="q125" type="radio" value="avoid_entirely"/><label for="pol3-b"><span class="mc-marker">b</span><span class="mc-text">Avoid entirely—politics ruins social situations</span></label></div>
+<div class="mc-option"><input id="pol3-c" name="q125" type="radio" value="change_subject"/><label for="pol3-c"><span class="mc-marker">c</span><span class="mc-text">Try to change the subject—not the place</span></label></div>
+<div class="mc-option"><input id="pol3-d" name="q125" type="radio" value="engage_passionately"/><label for="pol3-d"><span class="mc-marker">d</span><span class="mc-text">Engage passionately—these conversations matter</span></label></div>
+<div class="mc-option"><input id="pol3-e" name="q125" type="radio" value="listen_mostly"/><label for="pol3-e"><span class="mc-marker">e</span><span class="mc-text">Listen mostly, share selectively</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q6">
+<div class="question-text">Which approach to climate and energy do you prefer?</div>
+<div class="conjoint-container">
+<div class="conjoint-option" data-value="A" onclick="selectConjoint(this, 'q6')">
+<div class="conjoint-label">Approach A</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Timeline</span><span class="param-value neutral">Aggressive emissions reductions now</span></li>
+<li><span class="param-label">Jobs</span><span class="param-value neutral">Accept short-term economic disruption for green transition</span></li>
+<li><span class="param-label">Energy Cost</span><span class="param-value neutral">Higher costs acceptable for clean energy</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="B" onclick="selectConjoint(this, 'q6')">
+<div class="conjoint-label">Approach B</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Timeline</span><span class="param-value neutral">Gradual transition as technology improves</span></li>
+<li><span class="param-label">Jobs</span><span class="param-value neutral">Protect existing energy jobs</span></li>
+<li><span class="param-label">Energy Cost</span><span class="param-value neutral">Keep energy affordable for families</span></li>
+</ul>
+</div>
+</div>
+<input name="q6" type="hidden" value=""/>
+<div class="conjoint-container" style="margin-top: 1.5rem;">
+<div class="conjoint-option" data-value="A" onclick="selectConjoint(this, 'q6b')">
+<div class="conjoint-label">Approach A</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Method</span><span class="param-value neutral">Carbon tax letting market find solutions</span></li>
+<li><span class="param-label">Sources</span><span class="param-value neutral">All low-carbon sources including nuclear</span></li>
+<li><span class="param-label">Cost</span><span class="param-value neutral">Costs passed to consumers (polluter pays)</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="B" onclick="selectConjoint(this, 'q6b')">
+<div class="conjoint-label">Approach B</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Method</span><span class="param-value neutral">Direct regulation and mandates</span></li>
+<li><span class="param-label">Sources</span><span class="param-value neutral">Renewables only (solar, wind)</span></li>
+<li><span class="param-label">Cost</span><span class="param-value neutral">Subsidized transition, government absorbs cost</span></li>
+</ul>
+</div>
+</div>
+<input name="q6b" type="hidden" value=""/>
+</div>
+<div class="question" data-q="q69">
+<div class="question-text">You have 30 minutes to read one article in the New York Times. Which headline do you click?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="ec1-a" name="q69" type="radio" value="tradition"/><label for="ec1-a"><span class="mc-marker">a</span><span class="mc-text">The proven principles that have guided successful societies for centuries</span></label></div>
+<div class="mc-option"><input id="ec1-b" name="q69" type="radio" value="novelty"/><label for="ec1-b"><span class="mc-marker">b</span><span class="mc-text">A bizarre new scientific theory that upends everything we know about physics</span></label></div>
+<div class="mc-option"><input id="ec1-c" name="q69" type="radio" value="practical"/><label for="ec1-c"><span class="mc-marker">c</span><span class="mc-text">Ten practical tips to organize your home and life</span></label></div>
+<div class="mc-option"><input id="ec1-d" name="q69" type="radio" value="tribal"/><label for="ec1-d"><span class="mc-marker">d</span><span class="mc-text">Why the other political side is even worse than you thought</span></label></div>
+</div>
+</div>
+<div class="page-nav"><div class="page-dots"><span class="page-dot active" data-page="1"></span><span class="page-dot" data-page="2"></span><span class="page-dot" data-page="3"></span><span class="page-dot" data-page="4"></span><span class="page-dot" data-page="5"></span></div><button class="nav-btn primary" onclick="goToPage(2)" type="button">Continue</button></div></div>
+<div class="quiz-page" id="page-2"><div class="section-header" style="border-left: 4px solid #ede2ab;"><span class="section-number">section ii</span><span class="section-title">Values &amp; Tradeoffs</span><span class="section-subtitle">What matters most to you</span></div>
+<div class="question" data-q="q80">
+<div class="question-text">What do you think the current top marginal federal income tax rate is?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>0%</span>
+<span>100%</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q80" type="range" value="0"/>
+<div class="slider-value"><span id="q80-value">0</span>%</div>
+</div>
+</div>
+<div class="question" data-q="q57">
+<div class="question-text">What should the top marginal federal income tax rate be?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>0%</span>
+<span>100%</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q57" type="range" value="0"/>
+<div class="slider-value"><span id="q57-value">0</span>%</div>
+</div>
+</div>
+<div class="question" data-q="q13">
+<div class="question-text">A prestigious university is deciding how to allocate limited spots. Which approach do you support?</div>
+<div class="mc-options">
+<div class="mc-option">
+<input id="q11-a" name="q13" type="radio" value="economic_aa"/>
+<label for="q11-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">Merit plus consideration for economic disadvantage</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q11-b" name="q13" type="radio" value="lottery"/>
+<label for="q11-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">Lottery among all qualified applicants</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q11-c" name="q13" type="radio" value="quotas"/>
+<label for="q11-c">
+<span class="mc-marker">c</span>
+<span class="mc-text">Quotas to ensure proportional representation of all groups</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q11-d" name="q13" type="radio" value="pure_merit"/>
+<label for="q11-d">
+<span class="mc-marker">d</span>
+<span class="mc-text">Purely by academic merit (test scores, grades)</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-q="q58">
+<div class="question-text">What portion of economic inequality is caused by each? (Must sum to 100%)</div>
+<div class="allocation-container" id="q45-allocation">
+<div class="allocation-row">
+<span class="allocation-label">Individual effort and choices</span>
+<input class="allocation-slider" max="100" min="0" name="q58a" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Family background/inherited advantages</span>
+<input class="allocation-slider" max="100" min="0" name="q58b" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Discrimination and bias</span>
+<input class="allocation-slider" max="100" min="0" name="q58c" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Luck and random chance</span>
+<input class="allocation-slider" max="100" min="0" name="q58d" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-total">Total: <span>0</span>%</div>
+</div>
+</div>
+<div class="question" data-q="q7">
+<div class="question-text">Which criminal justice approach do you prefer?</div>
+<div class="conjoint-container">
+<div class="conjoint-option" data-value="A" onclick="selectConjoint(this, 'q7')">
+<div class="conjoint-label">Approach A</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Philosophy</span><span class="param-value neutral">Focus on rehabilitation and reform</span></li>
+<li><span class="param-label">Sentencing</span><span class="param-value neutral">Reduce incarceration/alternatives to prison</span></li>
+<li><span class="param-label">Prevention</span><span class="param-value neutral">Address root causes (poverty, addiction, mental health)</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="B" onclick="selectConjoint(this, 'q7')">
+<div class="conjoint-label">Approach B</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Philosophy</span><span class="param-value neutral">Focus on punishment and deterrence</span></li>
+<li><span class="param-label">Sentencing</span><span class="param-value neutral">Longer sentences for violent crime</span></li>
+<li><span class="param-label">Prevention</span><span class="param-value neutral">Protect society by removing criminals from streets</span></li>
+</ul>
+</div>
+</div>
+<input name="q7" type="hidden" value=""/>
+<div class="conjoint-container" style="margin-top: 1.5rem;">
+<div class="conjoint-option" data-value="A" onclick="selectConjoint(this, 'q7b')">
+<div class="conjoint-label">Approach A</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Investment</span><span class="param-value neutral">Heavy funding for prevention programs</span></li>
+<li><span class="param-label">Sentencing</span><span class="param-value neutral">Shorter sentences with early release options</span></li>
+<li><span class="param-label">Victims</span><span class="param-value neutral">Restorative justice, victim compensation focus</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="B" onclick="selectConjoint(this, 'q7b')">
+<div class="conjoint-label">Approach B</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Investment</span><span class="param-value neutral">Balanced funding across system</span></li>
+<li><span class="param-label">Sentencing</span><span class="param-value neutral">Mandatory minimums, truth in sentencing</span></li>
+<li><span class="param-label">Victims</span><span class="param-value neutral">Incapacitation focus (keep offenders away)</span></li>
+</ul>
+</div>
+</div>
+<input name="q7b" type="hidden" value=""/>
+</div>
+<div class="question" data-q="q25">
+<div class="question-text">What's the maximum acceptable ratio between CEO pay and average worker pay?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="q19-a" name="q25" type="radio" value="10"/><label for="q19-a"><span class="mc-marker">a</span><span class="mc-text">10:1 or less</span></label></div>
+<div class="mc-option"><input id="q19-b" name="q25" type="radio" value="50"/><label for="q19-b"><span class="mc-marker">b</span><span class="mc-text">50:1</span></label></div>
+<div class="mc-option"><input id="q19-c" name="q25" type="radio" value="100"/><label for="q19-c"><span class="mc-marker">c</span><span class="mc-text">100:1</span></label></div>
+<div class="mc-option"><input id="q19-d" name="q25" type="radio" value="300"/><label for="q19-d"><span class="mc-marker">d</span><span class="mc-text">300:1 (about current average)</span></label></div>
+<div class="mc-option"><input id="q19-e" name="q25" type="radio" value="no_limit"/><label for="q19-e"><span class="mc-marker">e</span><span class="mc-text">No limit - the market should decide</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q29">
+<div class="question-text">How do you view human progress over time?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="q23-a" name="q29" type="radio" value="progress"/><label for="q23-a"><span class="mc-marker">a</span><span class="mc-text">Humanity is generally progressing - things get better over time</span></label></div>
+<div class="mc-option"><input id="q23-b" name="q29" type="radio" value="cycles"/><label for="q23-b"><span class="mc-marker">b</span><span class="mc-text">History moves in cycles - neither improving nor declining overall</span></label></div>
+<div class="mc-option"><input id="q23-c" name="q29" type="radio" value="illusion"/><label for="q23-c"><span class="mc-marker">c</span><span class="mc-text">Progress is mostly an illusion - human nature doesn't change</span></label></div>
+</div>
+<div class="importance-toggle" onclick="toggleImportance(this)">
+<span class="importance-toggle-box"></span>
+<span class="importance-toggle-label">My view of human nature and progress matters a lot to my politics</span>
+<input type="checkbox" name="imp_ont" value="1"/>
+</div>
+</div>
+<div class="question" data-q="q43">
+<div class="question-text">When bad things happen in politics or the economy, what portion of the blame belongs to each cause? (Must sum to 100%)</div>
+<div class="allocation-container" id="q43-allocation">
+<div class="allocation-row">
+<span class="allocation-label">Complex forces nobody controls</span>
+<input class="allocation-slider" max="100" min="0" name="q43a" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Powerful people acting incompetently</span>
+<input class="allocation-slider" max="100" min="0" name="q43b" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Powerful people acting with selfish motivations</span>
+<input class="allocation-slider" max="100" min="0" name="q43c" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Ordinary people's individual choices</span>
+<input class="allocation-slider" max="100" min="0" name="q43d" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Random chance / bad luck</span>
+<input class="allocation-slider" max="100" min="0" name="q43e" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-total">Total: <span>0</span>%</div>
+</div>
+</div>
+<div class="question" data-q="q15">
+<div class="question-text">A controversial speaker is invited to a university. They have views many find deeply offensive but haven't called for violence. What should happen?</div>
+<div class="mc-options">
+<div class="mc-option">
+<input id="q13-a" name="q15" type="radio" value="cancel"/>
+<label for="q13-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">Cancel the event - some views shouldn't be platformed</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q13-b" name="q15" type="radio" value="restrict"/>
+<label for="q13-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">Allow but with some restrictions on content</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q13-c" name="q15" type="radio" value="allow_counter"/>
+<label for="q13-c">
+<span class="mc-marker">c</span>
+<span class="mc-text">Allow but also provide platform for counter-speech</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q13-d" name="q15" type="radio" value="allow_full"/>
+<label for="q13-d">
+<span class="mc-marker">d</span>
+<span class="mc-text">Allow them to speak with no restrictions</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-q="calibration">
+<div class="question-text">Give your best estimate for each, along with your confidence:</div>
+<div class="calibration-row">
+<div class="calibration-question">What % of U.S. prisoners are incarcerated for violent crimes?</div>
+<div class="calibration-inputs">
+<div class="calibration-estimate">
+<input max="100" min="0" name="q81" placeholder="" type="number" value=""/>
+<span>%</span>
+</div>
+<div class="confidence-buttons" data-for="q19">
+<button class="confidence-btn" data-value="guess" type="button">Guess</button>
+<button class="confidence-btn" data-value="low" type="button">Low</button>
+<button class="confidence-btn" data-value="medium" type="button">Medium</button>
+<button class="confidence-btn" data-value="high" type="button">High</button>
+</div>
+<input name="q87" type="hidden" value=""/>
+</div>
+</div>
+<div class="calibration-row">
+<div class="calibration-question">What % of the U.S. population is foreign-born?</div>
+<div class="calibration-inputs">
+<div class="calibration-estimate">
+<input max="100" min="0" name="q82" placeholder="" type="number" value=""/>
+<span>%</span>
+</div>
+<div class="confidence-buttons" data-for="q20">
+<button class="confidence-btn" data-value="guess" type="button">Guess</button>
+<button class="confidence-btn" data-value="low" type="button">Low</button>
+<button class="confidence-btn" data-value="medium" type="button">Medium</button>
+<button class="confidence-btn" data-value="high" type="button">High</button>
+</div>
+<input name="q88" type="hidden" value=""/>
+</div>
+</div>
+<div class="calibration-row">
+<div class="calibration-question">What % of U.S. wealth is owned by the top 1%?</div>
+<div class="calibration-inputs">
+<div class="calibration-estimate">
+<input max="100" min="0" name="q83" placeholder="" type="number" value=""/>
+<span>%</span>
+</div>
+<div class="confidence-buttons" data-for="q21">
+<button class="confidence-btn" data-value="guess" type="button">Guess</button>
+<button class="confidence-btn" data-value="low" type="button">Low</button>
+<button class="confidence-btn" data-value="medium" type="button">Medium</button>
+<button class="confidence-btn" data-value="high" type="button">High</button>
+</div>
+<input name="q89" type="hidden" value=""/>
+</div>
+</div>
+<div class="calibration-row">
+<div class="calibration-question">What % of climate scientists agree human-caused climate change is occurring?</div>
+<div class="calibration-inputs">
+<div class="calibration-estimate">
+<input max="100" min="0" name="q84" placeholder="" type="number" value=""/>
+<span>%</span>
+</div>
+<div class="confidence-buttons" data-for="q22">
+<button class="confidence-btn" data-value="guess" type="button">Guess</button>
+<button class="confidence-btn" data-value="low" type="button">Low</button>
+<button class="confidence-btn" data-value="medium" type="button">Medium</button>
+<button class="confidence-btn" data-value="high" type="button">High</button>
+</div>
+<input name="q90" type="hidden" value=""/>
+</div>
+</div>
+<div class="calibration-row">
+<div class="calibration-question">What % of U.S. energy comes from renewable sources?</div>
+<div class="calibration-inputs">
+<div class="calibration-estimate">
+<input max="100" min="0" name="q85" placeholder="" type="number" value=""/>
+<span>%</span>
+</div>
+<div class="confidence-buttons" data-for="q88">
+<button class="confidence-btn" data-value="guess" type="button">Guess</button>
+<button class="confidence-btn" data-value="low" type="button">Low</button>
+<button class="confidence-btn" data-value="medium" type="button">Medium</button>
+<button class="confidence-btn" data-value="high" type="button">High</button>
+</div>
+<input name="q91" type="hidden" value=""/>
+</div>
+</div>
+<div class="calibration-row">
+<div class="calibration-question">What % of Americans have experienced food insecurity in the past year?</div>
+<div class="calibration-inputs">
+<div class="calibration-estimate">
+<input max="100" min="0" name="q86" placeholder="" type="number" value=""/>
+<span>%</span>
+</div>
+<div class="confidence-buttons" data-for="q89">
+<button class="confidence-btn" data-value="guess" type="button">Guess</button>
+<button class="confidence-btn" data-value="low" type="button">Low</button>
+<button class="confidence-btn" data-value="medium" type="button">Medium</button>
+<button class="confidence-btn" data-value="high" type="button">High</button>
+</div>
+<input name="q92" type="hidden" value=""/>
+</div>
+</div>
+</div>
+<div class="page-nav"><button class="nav-btn" onclick="goToPage(1)" type="button">Back</button><div class="page-dots"><span class="page-dot completed" data-page="1"></span><span class="page-dot active" data-page="2"></span><span class="page-dot" data-page="3"></span><span class="page-dot" data-page="4"></span><span class="page-dot" data-page="5"></span></div><button class="nav-btn primary" onclick="goToPage(3)" type="button">Continue</button></div></div>
+<div class="quiz-page" id="page-3"><div class="section-header" style="border-left: 4px solid #d1f6ff;"><span class="section-number">section iii</span><span class="section-title">How You Think</span><span class="section-subtitle">Your approach to knowledge and decisions</span></div>
+<div class="question" data-q="q_rank_policy">
+<div class="question-text">A new law will significantly affect your community. Rank who should have the MOST say in shaping it (drag to reorder, 1 = most influence):</div>
+<div class="ranking-container" id="rank-policy-container">
+<div class="ranking-item" data-value="scientists" draggable="true"><span class="ranking-shape circle color-1"></span><span class="ranking-number">1</span><span class="ranking-text">Researchers who have studied the issue</span><span class="ranking-handle">⋮⋮</span></div>
+<div class="ranking-item" data-value="affected" draggable="true"><span class="ranking-shape square color-2"></span><span class="ranking-number">2</span><span class="ranking-text">Organized and active residents who will be directly affected</span><span class="ranking-handle">⋮⋮</span></div>
+<div class="ranking-item" data-value="elected" draggable="true"><span class="ranking-shape diamond color-3"></span><span class="ranking-number">3</span><span class="ranking-text">Elected officials accountable to voters</span><span class="ranking-handle">⋮⋮</span></div>
+<div class="ranking-item" data-value="traditions" draggable="true"><span class="ranking-shape hexagon color-4"></span><span class="ranking-number">4</span><span class="ranking-text">Community elders and religious leaders</span><span class="ranking-handle">⋮⋮</span></div>
+<div class="ranking-item" data-value="markets" draggable="true"><span class="ranking-shape star color-5"></span><span class="ranking-number">5</span><span class="ranking-text">Business owners and economic stakeholders</span><span class="ranking-handle">⋮⋮</span></div>
+</div>
+<input name="q_rank_policy" type="hidden" value="scientists,affected,elected,traditions,markets"/>
+</div>
+<div class="question" data-q="q9">
+<div class="question-text">Which trait is more important to teach children?</div>
+<div class="question-subtext">Select one from each pair</div>
+<div style="margin-bottom: 1.5rem;">
+<div style="font-family: 'Courier Prime', monospace; font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.5rem; text-transform: uppercase;">Pair 1</div>
+<div class="mc-options" style="flex-direction: row; gap: 1rem;">
+<div class="mc-option" style="flex: 1;">
+<input id="q9a-a" name="q9a" type="radio" value="A"/>
+<label for="q9a-a" style="justify-content: center;">
+<span class="mc-text" style="text-align: center;">Independence</span>
+</label>
+</div>
+<div class="mc-option" style="flex: 1;">
+<input id="q9a-b" name="q9a" type="radio" value="B"/>
+<label for="q9a-b" style="justify-content: center;">
+<span class="mc-text" style="text-align: center;">Respect for elders</span>
+</label>
+</div>
+</div>
+</div>
+<div>
+<div style="font-family: 'Courier Prime', monospace; font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 0.5rem; text-transform: uppercase;">Pair 2</div>
+<div class="mc-options" style="flex-direction: row; gap: 1rem;">
+<div class="mc-option" style="flex: 1;">
+<input id="q9b-a" name="q9b" type="radio" value="A"/>
+<label for="q9b-a" style="justify-content: center;">
+<span class="mc-text" style="text-align: center;">Obedience</span>
+</label>
+</div>
+<div class="mc-option" style="flex: 1;">
+<input id="q9b-b" name="q9b" type="radio" value="B"/>
+<label for="q9b-b" style="justify-content: center;">
+<span class="mc-text" style="text-align: center;">Self-reliance</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q59">
+<div class="question-text">In criminal trials, which type of error is worse?</div>
+<div class="mc-options" onchange="showErrorRatio('err1', this)">
+<div class="mc-option"><input id="err1-a" name="q59" type="radio" value="fp"/><label for="err1-a"><span class="mc-marker">a</span><span class="mc-text">Convicting an innocent person</span></label></div>
+<div class="mc-option"><input id="err1-b" name="q59" type="radio" value="fn"/><label for="err1-b"><span class="mc-marker">b</span><span class="mc-text">Letting a guilty person go free</span></label></div>
+<div class="mc-option"><input id="err1-c" name="q59" type="radio" value="eq"/><label for="err1-c"><span class="mc-marker">c</span><span class="mc-text">Both roughly equally bad</span></label></div>
+</div>
+<div class="error-ratio" id="err1-ratio" style="display:none;margin-top:1rem;padding:1rem;background:#f5f5f5;border:2px solid #1a1a1a;">
+<div id="err1-ratio-text" style="font-size:0.9rem;margin-bottom:0.75rem;">How much worse? Select a ratio:</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>1:1.5</span><span>1:2</span><span>1:3</span><span>1:5</span><span>1:10</span><span>1:25</span><span>1:50</span><span>&gt;1:50</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="0" name="err1_ratio" oninput="updateRatioDisplay('err1', this.value)" step="1" type="range" value="1"/>
+<div class="slider-value" id="err1-ratio-value">1:2</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q70">
+<div class="question-text">For your next vacation, which would you prefer?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="ec4-a" name="q70" type="radio" value="novel"/><label for="ec4-a"><span class="mc-marker">a</span><span class="mc-text">Visit somewhere completely new and unfamiliar</span></label></div>
+<div class="mc-option"><input id="ec4-b" name="q70" type="radio" value="familiar"/><label for="ec4-b"><span class="mc-marker">b</span><span class="mc-text">Return to a favorite destination you know well</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q60">
+<div class="question-text">In welfare programs, which error is worse?</div>
+<div class="mc-options" onchange="showErrorRatio('err2', this)">
+<div class="mc-option"><input id="err2-a" name="q60" type="radio" value="fn"/><label for="err2-a"><span class="mc-marker">a</span><span class="mc-text">Denying benefits to someone who genuinely needs them</span></label></div>
+<div class="mc-option"><input id="err2-b" name="q60" type="radio" value="fp"/><label for="err2-b"><span class="mc-marker">b</span><span class="mc-text">Giving benefits to someone who doesn't qualify</span></label></div>
+<div class="mc-option"><input id="err2-c" name="q60" type="radio" value="eq"/><label for="err2-c"><span class="mc-marker">c</span><span class="mc-text">Both roughly equally bad</span></label></div>
+</div>
+<div class="error-ratio" id="err2-ratio" style="display:none;margin-top:1rem;padding:1rem;background:#f5f5f5;border:2px solid #1a1a1a;">
+<div id="err2-ratio-text" style="font-size:0.9rem;margin-bottom:0.75rem;">How much worse? Select a ratio:</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>1:1.5</span><span>1:2</span><span>1:3</span><span>1:5</span><span>1:10</span><span>1:25</span><span>1:50</span><span>&gt;1:50</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="0" name="err2_ratio" oninput="updateRatioDisplay('err2', this.value)" step="1" type="range" value="1"/>
+<div class="slider-value" id="err2-ratio-value">1:2</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q71">
+<div class="question-text">Think back to the COVID-19 pandemic. Assuming you could confirm indoor mask use reduced spread of the virus moderately, how acceptable is a mask mandate for indoor public spaces during a surge?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="d3-a" name="q71" type="radio" value="mixed"/><label for="d3-a"><span class="mc-marker">a</span><span class="mc-text">Mixed feelings—understand the goal but dislike the mandate</span></label></div>
+<div class="mc-option"><input id="d3-b" name="q71" type="radio" value="oppose"/><label for="d3-b"><span class="mc-marker">b</span><span class="mc-text">Strongly oppose any mandate—no authority should mandate personal choices</span></label></div>
+<div class="mc-option"><input id="d3-c" name="q71" type="radio" value="full_support"/><label for="d3-c"><span class="mc-marker">c</span><span class="mc-text">Fully support—public health requires collective action</span></label></div>
+<div class="mc-option"><input id="d3-d" name="q71" type="radio" value="resent"/><label for="d3-d"><span class="mc-marker">d</span><span class="mc-text">Resent as overreach—even if masks help</span></label></div>
+<div class="mc-option"><input id="d3-e" name="q71" type="radio" value="accept"/><label for="d3-e"><span class="mc-marker">e</span><span class="mc-text">Accept—reasonable given the circumstances</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q10_ranking">
+<div class="question-text">A major factory in your region announces it's closing, eliminating 2,000 jobs. Rank these causes from most to least responsible:</div>
+<div class="ranking-container" id="q10-ranking">
+<div class="ranking-item" data-value="company" draggable="true">
+<span class="ranking-shape circle color-1"></span>
+<span class="ranking-number">1</span>
+<span class="ranking-text">The company prioritized profits over workers</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="government" draggable="true">
+<span class="ranking-shape square color-2"></span>
+<span class="ranking-number">2</span>
+<span class="ranking-text">Government policies (trade deals, regulations) failed to protect local industry</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="market" draggable="true">
+<span class="ranking-shape diamond color-3"></span>
+<span class="ranking-number">3</span>
+<span class="ranking-text">Inevitable market forces and global competition</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="workers" draggable="true">
+<span class="ranking-shape hexagon color-4"></span>
+<span class="ranking-number">4</span>
+<span class="ranking-text">Workers and unions priced themselves out of the market</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+</div>
+<input name="q10_ranking" type="hidden" value="company,government,market,workers"/>
+</div>
+<div class="question" data-q="q61">
+<div class="question-text">Information Control: Platforms and governments must balance two risks. Which error is worse?</div>
+<div class="mc-options" onchange="showErrorRatio('err3', this)">
+<div class="mc-option"><input id="err3-a" name="q61" type="radio" value="silence"/><label for="err3-a"><span class="mc-marker">a</span><span class="mc-text">Empowering authorities to decide what is true, potentially silencing dissent</span></label></div>
+<div class="mc-option"><input id="err3-b" name="q61" type="radio" value="disinfo"/><label for="err3-b"><span class="mc-marker">b</span><span class="mc-text">Allowing disinformation to spread, causing harm</span></label></div>
+<div class="mc-option"><input id="err3-c" name="q61" type="radio" value="eq"/><label for="err3-c"><span class="mc-marker">c</span><span class="mc-text">Both roughly equally bad</span></label></div>
+</div>
+<div class="error-ratio" id="err3-ratio" style="display:none;margin-top:1rem;padding:1rem;background:#f5f5f5;border:2px solid #1a1a1a;">
+<div id="err3-ratio-text" style="font-size:0.9rem;margin-bottom:0.75rem;">How much worse? Select a ratio:</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>1:1.5</span><span>1:2</span><span>1:3</span><span>1:5</span><span>1:10</span><span>1:25</span><span>1:50</span><span>&gt;1:50</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="0" name="err3_ratio" oninput="updateRatioDisplay('err3', this.value)" step="1" type="range" value="1"/>
+<div class="slider-value" id="err3-ratio-value">1:2</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q38">
+<div class="question-text">Looking at the last 50 years of global trade, countries that significantly opened their economies generally...</div>
+<div class="mc-options">
+<div class="mc-option"><input id="q38-a" name="q38" type="radio" value="mixed"/><label for="q38-a"><span class="mc-marker">a</span><span class="mc-text">Saw mixed results - some sectors and groups gained, others lost</span></label></div>
+<div class="mc-option"><input id="q38-b" name="q38" type="radio" value="hurt"/><label for="q38-b"><span class="mc-marker">b</span><span class="mc-text">Often stagnated or fell behind more protectionist countries</span></label></div>
+<div class="mc-option"><input id="q38-c" name="q38" type="radio" value="winner_takes"/><label for="q38-c"><span class="mc-marker">c</span><span class="mc-text">Grew wealthier, often at trading partners' expense</span></label></div>
+<div class="mc-option"><input id="q38-d" name="q38" type="radio" value="varied"/><label for="q38-d"><span class="mc-marker">d</span><span class="mc-text">Results varied too much by country to generalize</span></label></div>
+<div class="mc-option"><input id="q38-e" name="q38" type="radio" value="mutual_gain"/><label for="q38-e"><span class="mc-marker">e</span><span class="mc-text">Grew wealthier, as did their trading partners</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q93">
+<div class="question-text">Combining the Wall Street Journal, Bloomberg, and New York Times: what percentage of their factual claims do you believe are accurate?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>0%</span>
+<span>100%</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q93" type="range" value="50"/>
+<div class="slider-value"><span id="q93-value">50</span>%</div>
+</div>
+</div>
+<div class="question" data-q="q62">
+<div class="question-text">Immigration Enforcement: Immigration enforcement can be stricter or looser. Which error is worse?</div>
+<div class="mc-options" onchange="showErrorRatio('err4', this)">
+<div class="mc-option"><input id="err4-a" name="q62" type="radio" value="deport_legal"/><label for="err4-a"><span class="mc-marker">a</span><span class="mc-text">Deporting someone who is legally eligible to stay</span></label></div>
+<div class="mc-option"><input id="err4-b" name="q62" type="radio" value="allow_illegal"/><label for="err4-b"><span class="mc-marker">b</span><span class="mc-text">Allowing someone to stay who should be deported</span></label></div>
+<div class="mc-option"><input id="err4-c" name="q62" type="radio" value="eq"/><label for="err4-c"><span class="mc-marker">c</span><span class="mc-text">Equally bad</span></label></div>
+</div>
+<div class="error-ratio" id="err4-ratio" style="display:none;margin-top:1rem;padding:1rem;background:#f5f5f5;border:2px solid #1a1a1a;">
+<div id="err4-ratio-text" style="font-size:0.9rem;margin-bottom:0.75rem;">How much worse? Select a ratio:</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>1:1.5</span><span>1:2</span><span>1:3</span><span>1:5</span><span>1:10</span><span>1:25</span><span>1:50</span><span>&gt;1:50</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="0" name="err4_ratio" oninput="updateRatioDisplay('err4', this.value)" step="1" type="range" value="1"/>
+<div class="slider-value" id="err4-ratio-value">1:2</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q37">
+<div class="question-text">Where do the biggest threats to America come from?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="q31-a" name="q37" type="radio" value="external"/><label for="q31-a"><span class="mc-marker">a</span><span class="mc-text">External - foreign powers, terrorism, immigration</span></label></div>
+<div class="mc-option"><input id="q31-b" name="q37" type="radio" value="both"/><label for="q31-b"><span class="mc-marker">b</span><span class="mc-text">Both roughly equally</span></label></div>
+<div class="mc-option"><input id="q31-c" name="q37" type="radio" value="internal"/><label for="q31-c"><span class="mc-marker">c</span><span class="mc-text">Internal - domestic extremism, inequality, institutional decay</span></label></div>
+</div>
+</div>
+<div class="question" data-q="rea4">
+<div class="question-text">What percentage of the people comprising each group do you think...</div>
+<div class="battery-subquestion">
+<div class="subquestion-text">...want what's best for the country — DEMOCRATS:</div>
+<div class="slider-container">
+<div class="slider-labels"><span>0%</span><span>100%</span></div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q65a" type="range" value="0"/>
+<div class="slider-value"><span id="q65a-value">0</span>%</div>
+</div>
+</div>
+<div class="battery-subquestion">
+<div class="subquestion-text">...want what's best for the country — REPUBLICANS:</div>
+<div class="slider-container">
+<div class="slider-labels"><span>0%</span><span>100%</span></div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q65b" type="range" value="0"/>
+<div class="slider-value"><span id="q65b-value">0</span>%</div>
+</div>
+</div>
+<div class="battery-subquestion">
+<div class="subquestion-text">...share your basic values — DEMOCRATS:</div>
+<div class="slider-container">
+<div class="slider-labels"><span>0%</span><span>100%</span></div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q65c" type="range" value="0"/>
+<div class="slider-value"><span id="q65c-value">0</span>%</div>
+</div>
+</div>
+<div class="battery-subquestion">
+<div class="subquestion-text">...share your basic values — REPUBLICANS:</div>
+<div class="slider-container">
+<div class="slider-labels"><span>0%</span><span>100%</span></div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q65d" type="range" value="0"/>
+<div class="slider-value"><span id="q65d-value">0</span>%</div>
+</div>
+</div>
+</div>
+
+<div class="page-nav"><button class="nav-btn" onclick="goToPage(2)" type="button">Back</button><div class="page-dots"><span class="page-dot completed" data-page="1"></span><span class="page-dot completed" data-page="2"></span><span class="page-dot active" data-page="3"></span><span class="page-dot" data-page="4"></span><span class="page-dot" data-page="5"></span></div><button class="nav-btn primary" onclick="goToPage(4)" type="button">Continue</button></div></div>
+<div class="quiz-page" id="page-4"><div class="section-header" style="border-left: 4px solid #fa8072;"><span class="section-number">section iv</span><span class="section-title">Your World</span><span class="section-subtitle">How you see society and systems</span></div>
+<div class="question" data-q="q63">
+<div class="question-text">Medical Regulation: The FDA must balance speed vs. safety in approving new treatments. Which error is worse?</div>
+<div class="mc-options" onchange="showErrorRatio('err5', this)">
+<div class="mc-option"><input id="err5-a" name="q63" type="radio" value="too_slow"/><label for="err5-a"><span class="mc-marker">a</span><span class="mc-text">Blocking a treatment that would have helped patients (FDA too slow)</span></label></div>
+<div class="mc-option"><input id="err5-b" name="q63" type="radio" value="too_fast"/><label for="err5-b"><span class="mc-marker">b</span><span class="mc-text">Approving a treatment that causes harm (FDA too fast)</span></label></div>
+<div class="mc-option"><input id="err5-c" name="q63" type="radio" value="eq"/><label for="err5-c"><span class="mc-marker">c</span><span class="mc-text">Equally bad</span></label></div>
+</div>
+<div class="error-ratio" id="err5-ratio" style="display:none;margin-top:1rem;padding:1rem;background:#f5f5f5;border:2px solid #1a1a1a;">
+<div id="err5-ratio-text" style="font-size:0.9rem;margin-bottom:0.75rem;">How much worse? Select a ratio:</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>1:1.5</span><span>1:2</span><span>1:3</span><span>1:5</span><span>1:10</span><span>1:25</span><span>1:50</span><span>&gt;1:50</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="0" name="err5_ratio" oninput="updateRatioDisplay('err5', this.value)" step="1" type="range" value="1"/>
+<div class="slider-value" id="err5-ratio-value">1:2</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q35">
+<div class="question-text">Your workplace implements a new rule everyone agrees is stupid but technically required by policy. What do you do?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="q35-a" name="q35" type="radio" value="compliant"/><label for="q35-a"><span class="mc-marker">a</span><span class="mc-text">Follow it - rules are rules</span></label></div>
+<div class="mc-option"><input id="q35-b" name="q35" type="radio" value="bypass"/><label for="q35-b"><span class="mc-marker">b</span><span class="mc-text">Quietly ignore when possible</span></label></div>
+<div class="mc-option"><input id="q35-c" name="q35" type="radio" value="reform"/><label for="q35-c"><span class="mc-marker">c</span><span class="mc-text">Follow while working through proper channels to change it</span></label></div>
+<div class="mc-option"><input id="q35-d" name="q35" type="radio" value="subvert"/><label for="q35-d"><span class="mc-marker">d</span><span class="mc-text">Malicious compliance to expose the absurdity</span></label></div>
+</div>
+<div class="importance-toggle" onclick="toggleImportance(this)">
+<span class="importance-toggle-box"></span>
+<span class="importance-toggle-label">How I approach rules and procedures matters a lot to my politics</span>
+<input type="checkbox" name="imp_rules" value="1"/>
+</div>
+</div>
+<div class="question" data-q="q39">
+<div class="question-text">What portion of people who vote for the party you oppose fall into each category? (Must sum to 100%)</div>
+<div class="allocation-container" id="q25-allocation">
+<div class="allocation-row">
+<span class="allocation-label">Have different but legitimate values</span>
+<input class="allocation-slider" max="100" min="0" name="q39a" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Are misinformed or lack information</span>
+<input class="allocation-slider" max="100" min="0" name="q39b" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Are acting out of self-interest</span>
+<input class="allocation-slider" max="100" min="0" name="q39c" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-row">
+<span class="allocation-label">Have genuinely bad motives</span>
+<input class="allocation-slider" max="100" min="0" name="q39d" type="range" value="0"/>
+<span class="allocation-value">0%</span>
+</div>
+<div class="allocation-total">Total: <span>0</span>%</div>
+</div>
+<div class="importance-toggle" onclick="toggleImportance(this)">
+<span class="importance-toggle-box"></span>
+<span class="importance-toggle-label">How I view political opponents matters a lot to my identity</span>
+<input type="checkbox" name="imp_opponents" value="1"/>
+</div>
+</div>
+<div class="question" data-q="q64">
+<div class="question-text">Electoral Security: Election rules can prioritize access or security. Which error is worse?</div>
+<div class="mc-options" onchange="showErrorRatio('err6', this)">
+<div class="mc-option"><input id="err6-a" name="q64" type="radio" value="disenfranchise"/><label for="err6-a"><span class="mc-marker">a</span><span class="mc-text">Preventing a legitimate voter from voting (disenfranchisement)</span></label></div>
+<div class="mc-option"><input id="err6-b" name="q64" type="radio" value="fraud"/><label for="err6-b"><span class="mc-marker">b</span><span class="mc-text">Allowing an illegitimate vote to count (voter fraud)</span></label></div>
+<div class="mc-option"><input id="err6-c" name="q64" type="radio" value="eq"/><label for="err6-c"><span class="mc-marker">c</span><span class="mc-text">Both roughly equally bad</span></label></div>
+</div>
+<div class="error-ratio" id="err6-ratio" style="display:none;margin-top:1rem;padding:1rem;background:#f5f5f5;border:2px solid #1a1a1a;">
+<div id="err6-ratio-text" style="font-size:0.9rem;margin-bottom:0.75rem;">How much worse? Select a ratio:</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>1:1.5</span><span>1:2</span><span>1:3</span><span>1:5</span><span>1:10</span><span>1:25</span><span>1:50</span><span>&gt;1:50</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="7" min="0" name="err6_ratio" oninput="updateRatioDisplay('err6', this.value)" step="1" type="range" value="1"/>
+<div class="slider-value" id="err6-ratio-value">1:2</div>
+</div>
+</div>
+</div>
+<div class="question" data-q="q40">
+<div class="question-text">What percentage of your close friends voted differently from you in the last presidential election?</div>
+<div class="mc-options">
+<div class="mc-option">
+<input id="q40-a" name="q40" type="radio" value="0"/>
+<label for="q40-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">0% - None of them</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q40-b" name="q40" type="radio" value="10-25"/>
+<label for="q40-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">Around 10-25%</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q40-c" name="q40" type="radio" value="25-50"/>
+<label for="q40-c">
+<span class="mc-marker">c</span>
+<span class="mc-text">Around 25-50%</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q40-d" name="q40" type="radio" value="50+"/>
+<label for="q40-d">
+<span class="mc-marker">d</span>
+<span class="mc-text">More than 50%</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q40-e" name="q40" type="radio" value="unknown"/>
+<label for="q40-e">
+<span class="mc-marker">e</span>
+<span class="mc-text">I don't know how most of them voted</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-q="q55">
+<div class="question-text">If you didn't know what position you would occupy (rich or poor, lucky or unlucky), which society would you choose to live in?</div>
+<div class="conjoint-container" style="grid-template-columns: 1fr 1fr 1fr;">
+<div class="conjoint-option" data-value="A" onclick="selectConjoint(this, 'q55_conjoint')">
+<div class="conjoint-label">Society A</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Average</span><span class="param-value neutral">$90,000</span></li>
+<li><span class="param-label">Top 10%</span><span class="param-value neutral">$300,000+</span></li>
+<li><span class="param-label">Bottom 10%</span><span class="param-value neutral">$15,000</span></li>
+<li><span class="param-label">Inequality</span><span class="param-value neutral">High (20:1 ratio)</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="B" onclick="selectConjoint(this, 'q55_conjoint')">
+<div class="conjoint-label">Society B</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Average</span><span class="param-value neutral">$70,000</span></li>
+<li><span class="param-label">Top 10%</span><span class="param-value neutral">$120,000</span></li>
+<li><span class="param-label">Bottom 10%</span><span class="param-value neutral">$40,000</span></li>
+<li><span class="param-label">Inequality</span><span class="param-value neutral">Moderate (3:1 ratio)</span></li>
+</ul>
+</div>
+<div class="conjoint-option" data-value="C" onclick="selectConjoint(this, 'q55_conjoint')">
+<div class="conjoint-label">Society C</div>
+<ul class="conjoint-params">
+<li><span class="param-label">Average</span><span class="param-value neutral">$60,000</span></li>
+<li><span class="param-label">Top 10%</span><span class="param-value neutral">$65,000</span></li>
+<li><span class="param-label">Bottom 10%</span><span class="param-value neutral">$55,000</span></li>
+<li><span class="param-label">Inequality</span><span class="param-value neutral">Very Low (1.2:1 ratio)</span></li>
+</ul>
+</div>
+</div>
+<input name="q55_conjoint" type="hidden" value=""/>
+</div>
+<div class="question" data-q="self1">
+<div class="question-text">How much do you think your political views have changed in the past 10 years?</div>
+<div class="slider-container">
+<div class="slider-labels">
+<span>Not at all</span>
+<span>Completely different</span>
+</div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="self1" type="range" value="0"/>
+<div class="slider-value"><span id="self1-value">0</span></div>
+</div>
+</div>
+<div class="question" data-q="q94">
+<div class="question-text">Which has changed more minds throughout history?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="comm2-a" name="q94" type="radio" value="logical_arguments"/><label for="comm2-a"><span class="mc-marker">a</span><span class="mc-text">Logical arguments and empirical evidence</span></label></div>
+<div class="mc-option"><input id="comm2-b" name="q94" type="radio" value="compelling_narratives"/><label for="comm2-b"><span class="mc-marker">b</span><span class="mc-text">Compelling narratives and storytelling</span></label></div>
+<div class="mc-option"><input id="comm2-c" name="q94" type="radio" value="religious_spiritual"/><label for="comm2-c"><span class="mc-marker">c</span><span class="mc-text">Religious and spiritual experiences</span></label></div>
+<div class="mc-option"><input id="comm2-d" name="q94" type="radio" value="economic_necessity"/><label for="comm2-d"><span class="mc-marker">d</span><span class="mc-text">Economic necessity and material conditions</span></label></div>
+<div class="mc-option"><input id="comm2-e" name="q94" type="radio" value="art_music"/><label for="comm2-e"><span class="mc-marker">e</span><span class="mc-text">Art, music, and cultural expression</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q46">
+<div class="question-text">Emotional availability of primary caregivers growing up:</div>
+<div style="margin-bottom:1rem">
+<div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem">
+<span style="font-size:0.9rem;font-weight:600;min-width:140px">Mother/maternal figure:</span>
+<label style="display:inline-flex;align-items:center;gap:0.25rem;cursor:pointer;font-size:0.85rem">
+<input checked="" id="q46_mom_present" name="q46_mom_present" style="margin:0" type="radio" value="present"/>
+                        Present
+                    </label>
+<label style="display:inline-flex;align-items:center;gap:0.25rem;cursor:pointer;font-size:0.85rem">
+<input id="q46_mom_absent" name="q46_mom_present" style="margin:0" type="radio" value="absent"/>
+                        Not present
+                    </label>
+</div>
+<div id="q46_mom_sliders">
+<div class="slider-labels"><span>emotionally distant</span><span>warm and available</span></div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q79a" type="range" value="0"/>
+<div class="slider-value"><span id="q79a-value">0</span></div>
+</div>
+</div>
+<div style="margin-bottom:1rem">
+<div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem">
+<span style="font-size:0.9rem;font-weight:600;min-width:140px">Father/paternal figure:</span>
+<label style="display:inline-flex;align-items:center;gap:0.25rem;cursor:pointer;font-size:0.85rem">
+<input checked="" id="q46_dad_present" name="q46_dad_present" style="margin:0" type="radio" value="present"/>
+                        Present
+                    </label>
+<label style="display:inline-flex;align-items:center;gap:0.25rem;cursor:pointer;font-size:0.85rem">
+<input id="q46_dad_absent" name="q46_dad_present" style="margin:0" type="radio" value="absent"/>
+                        Not present
+                    </label>
+</div>
+<div id="q46_dad_sliders">
+<div class="slider-labels"><span>emotionally distant</span><span>warm and available</span></div>
+<div class="slider-track-bg"></div>
+<input class="slider-input" max="100" min="0" name="q79b" type="range" value="0"/>
+<div class="slider-value"><span id="q79b-value">0</span></div>
+</div>
+</div>
+</div>
+<div class="question" data-q="self4">
+<div class="question-text">When your political views conflict with those of close friends or family...</div>
+<div class="mc-options">
+<div class="mc-option">
+<input id="self4-a" name="self4" type="radio" value="discuss"/>
+<label for="self4-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">I engage in discussion but stay respectful</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="self4-b" name="self4" type="radio" value="quiet"/>
+<label for="self4-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">I usually keep quiet to avoid conflict</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="self4-c" name="self4" type="radio" value="argue"/>
+<label for="self4-c">
+<span class="mc-marker">c</span>
+<span class="mc-text">I argue my position strongly—truth matters more</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="self4-d" name="self4" type="radio" value="mention"/>
+<label for="self4-d">
+<span class="mc-marker">d</span>
+<span class="mc-text">I'll mention my view but won't argue</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-q="q110">
+<div class="question-text">Social progress achieved in the last century is:</div>
+<div class="mc-options">
+<div class="mc-option"><input id="inst6-a" name="q110" type="radio" value="illusory_superficial"/><label for="inst6-a"><span class="mc-marker">a</span><span class="mc-text">Mostly illusory—superficial changes hiding deeper problems</span></label></div>
+<div class="mc-option"><input id="inst6-b" name="q110" type="radio" value="fragile_reversible"/><label for="inst6-b"><span class="mc-marker">b</span><span class="mc-text">Fragile—could easily be reversed</span></label></div>
+<div class="mc-option"><input id="inst6-c" name="q110" type="radio" value="solid_continue"/><label for="inst6-c"><span class="mc-marker">c</span><span class="mc-text">Solid—likely to continue expanding</span></label></div>
+<div class="mc-option"><input id="inst6-d" name="q110" type="radio" value="real_contested"/><label for="inst6-d"><span class="mc-marker">d</span><span class="mc-text">Real but contested—requires constant defense</span></label></div>
+<div class="mc-option"><input id="inst6-e" name="q110" type="radio" value="permanent_irreversible"/><label for="inst6-e"><span class="mc-marker">e</span><span class="mc-text">Permanent—these gains are essentially irreversible</span></label></div>
+</div>
+<div class="importance-toggle" onclick="toggleImportance(this)">
+<span class="importance-toggle-box"></span>
+<span class="importance-toggle-label">How I view societal progress matters a lot to my politics</span>
+<input type="checkbox" name="imp_progress" value="1"/>
+</div>
+</div>
+<div class="question" data-q="q129">
+<div class="question-text">Which of the following should be expected of immigrants for proper integration into American society? (Select all that apply)</div>
+<div class="mc-options">
+<div class="mc-option"><input id="civic1-a" name="q129_english" type="checkbox" value="1"/><label for="civic1-a"><span class="mc-text">Learn to speak English</span></label></div>
+<div class="mc-option"><input id="civic1-b" name="q129_civics" type="checkbox" value="1"/><label for="civic1-b"><span class="mc-text">Learn American history and civics</span></label></div>
+<div class="mc-option"><input id="civic1-c" name="q129_values" type="checkbox" value="1"/><label for="civic1-c"><span class="mc-text">Adhere to core American values (democracy, freedom, rule of law)</span></label></div>
+<div class="mc-option"><input id="civic1-d" name="q129_laws" type="checkbox" value="1"/><label for="civic1-d"><span class="mc-text">Follow American laws</span></label></div>
+<div class="mc-option"><input id="civic1-e" name="q129_work" type="checkbox" value="1"/><label for="civic1-e"><span class="mc-text">Work and contribute economically</span></label></div>
+<div class="mc-option"><input id="civic1-f" name="q129_customs" type="checkbox" value="1"/><label for="civic1-f"><span class="mc-text">Adopt American customs and traditions</span></label></div>
+<div class="mc-option"><input id="civic1-g" name="q129_loyalty" type="checkbox" value="1"/><label for="civic1-g"><span class="mc-text">Identify primarily as American</span></label></div>
+<div class="mc-option"><input id="civic1-h" name="q129_abandon" type="checkbox" value="1"/><label for="civic1-h"><span class="mc-text">Abandon previous cultural practices</span></label></div>
+<div class="mc-option"><input id="civic1-i" name="q129_none" type="checkbox" value="1"/><label for="civic1-i"><span class="mc-text">None of the above—integration should not be expected</span></label></div>
+</div>
+<div class="importance-toggle" onclick="toggleImportance(this)">
+<span class="importance-toggle-box"></span>
+<span class="importance-toggle-label">Immigration and national identity matter a lot to my politics</span>
+<input type="checkbox" name="imp_immigration" value="1"/>
+</div>
+</div>
+<div class="question" data-q="q_nat_1">
+<div class="question-text">When you think about what makes someone "truly American," which matters most?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="nat1-a" name="q_nat_1" type="radio" value="shared_values"/><label for="nat1-a"><span class="mc-marker">a</span><span class="mc-text">Sharing core American values and beliefs (freedom, democracy, opportunity)</span></label></div>
+<div class="mc-option"><input id="nat1-b" name="q_nat_1" type="radio" value="born_raised"/><label for="nat1-b"><span class="mc-marker">b</span><span class="mc-text">Being born and raised in America</span></label></div>
+<div class="mc-option"><input id="nat1-c" name="q_nat_1" type="radio" value="legal_status"/><label for="nat1-c"><span class="mc-marker">c</span><span class="mc-text">Having legal citizenship status</span></label></div>
+<div class="mc-option"><input id="nat1-d" name="q_nat_1" type="radio" value="cultural_adoption"/><label for="nat1-d"><span class="mc-marker">d</span><span class="mc-text">Adopting American culture, customs, and way of life</span></label></div>
+<div class="mc-option"><input id="nat1-e" name="q_nat_1" type="radio" value="none_matters"/><label for="nat1-e"><span class="mc-marker">e</span><span class="mc-text">None of these—anyone can be truly American regardless</span></label></div>
+</div>
+</div>
+<div class="page-nav"><button class="nav-btn" onclick="goToPage(3)" type="button">Back</button><div class="page-dots"><span class="page-dot completed" data-page="1"></span><span class="page-dot completed" data-page="2"></span><span class="page-dot completed" data-page="3"></span><span class="page-dot active" data-page="4"></span><span class="page-dot" data-page="5"></span></div><button class="nav-btn primary" onclick="goToPage(5)" type="button">Continue</button></div></div>
+<div class="quiz-page" id="page-5"><div class="section-header" style="border-left: 4px solid #FFD700;"><span class="section-number">section v</span><span class="section-title">Who You Are</span><span class="section-subtitle">Your political identity and story</span></div>
+<div class="question" data-q="q73">
+<div class="question-text">How would you describe your parents' or guardians' political views when you were growing up?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="fpp-a" name="q73" type="radio" value="strong_lib"/><label for="fpp-a"><span class="mc-marker">a</span><span class="mc-text">Strongly liberal/progressive</span></label></div>
+<div class="mc-option"><input id="fpp-b" name="q73" type="radio" value="some_lib"/><label for="fpp-b"><span class="mc-marker">b</span><span class="mc-text">Somewhat liberal/progressive</span></label></div>
+<div class="mc-option"><input id="fpp-c" name="q73" type="radio" value="mixed"/><label for="fpp-c"><span class="mc-marker">c</span><span class="mc-text">Mixed or moderate</span></label></div>
+<div class="mc-option"><input id="fpp-d" name="q73" type="radio" value="apolitical"/><label for="fpp-d"><span class="mc-marker">d</span><span class="mc-text">Apolitical—politics was rarely discussed</span></label></div>
+<div class="mc-option"><input id="fpp-e" name="q73" type="radio" value="some_con"/><label for="fpp-e"><span class="mc-marker">e</span><span class="mc-text">Somewhat conservative</span></label></div>
+<div class="mc-option"><input id="fpp-f" name="q73" type="radio" value="strong_con"/><label for="fpp-f"><span class="mc-marker">f</span><span class="mc-text">Strongly conservative</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q75">
+<div class="question-text">How would you describe the role of religion in your upbringing?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="fr-a" name="q75" type="radio" value="secular"/><label for="fr-a"><span class="mc-marker">a</span><span class="mc-text">Secular—raised without religion or with explicit non-religious worldview</span></label></div>
+<div class="mc-option"><input id="fr-b" name="q75" type="radio" value="minimal"/><label for="fr-b"><span class="mc-marker">b</span><span class="mc-text">Minimal—rarely attended services or discussed religion</span></label></div>
+<div class="mc-option"><input id="fr-c" name="q75" type="radio" value="moderate"/><label for="fr-c"><span class="mc-marker">c</span><span class="mc-text">Moderate—some religious exposure but not a major influence</span></label></div>
+<div class="mc-option"><input id="fr-d" name="q75" type="radio" value="important"/><label for="fr-d"><span class="mc-marker">d</span><span class="mc-text">Important—regular practice and religious identity, but not all-encompassing</span></label></div>
+<div class="mc-option"><input id="fr-e" name="q75" type="radio" value="central"/><label for="fr-e"><span class="mc-marker">e</span><span class="mc-text">Central—religion shaped daily life, values, and community</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q2">
+<div class="question-text">Think of times you changed your mind on a significant political issue in the past couple of years. What caused the change? <em>(Check all that apply)</em></div>
+<div class="mc-options multi-select">
+<div class="mc-option">
+<input id="q2-a" name="q2" type="checkbox" value="data"/>
+<label for="q2-a">
+<span class="mc-marker">a</span>
+<span class="mc-text">Read a study, article, or book with new data</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q2-b" name="q2" type="checkbox" value="conversation"/>
+<label for="q2-b">
+<span class="mc-marker">b</span>
+<span class="mc-text">Conversation with someone who disagreed with me</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q2-c" name="q2" type="checkbox" value="experience"/>
+<label for="q2-c">
+<span class="mc-marker">c</span>
+<span class="mc-text">Personal experience that contradicted my view</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q2-d" name="q2" type="checkbox" value="values"/>
+<label for="q2-d">
+<span class="mc-marker">d</span>
+<span class="mc-text">Realized my position conflicted with my deeper values</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q2-e" name="q2" type="checkbox" value="community"/>
+<label for="q2-e">
+<span class="mc-marker">e</span>
+<span class="mc-text">Saw trusted figures in my community change their view</span>
+</label>
+</div>
+<div class="mc-option">
+<input id="q2-f" name="q2" type="checkbox" value="none"/>
+<label for="q2-f">
+<span class="mc-marker">f</span>
+<span class="mc-text">I can't recall changing my mind on anything significant</span>
+</label>
+</div>
+</div>
+</div>
+<div class="question" data-q="q130">
+<div class="question-text">The most effective political leaders are those who:</div>
+<div class="mc-options">
+<div class="mc-option"><input id="lead1-a" name="q130" type="radio" value="channel_anger"/><label for="lead1-a"><span class="mc-marker">a</span><span class="mc-text">Channel popular anger and frustration into political energy</span></label></div>
+<div class="mc-option"><input id="lead1-b" name="q130" type="radio" value="compelling_vision"/><label for="lead1-b"><span class="mc-marker">b</span><span class="mc-text">Paint a compelling vision of what the country could become</span></label></div>
+<div class="mc-option"><input id="lead1-c" name="q130" type="radio" value="fight_win"/><label for="lead1-c"><span class="mc-marker">c</span><span class="mc-text">Fight hard and win—results matter more than style</span></label></div>
+<div class="mc-option"><input id="lead1-d" name="q130" type="radio" value="policy_detail"/><label for="lead1-d"><span class="mc-marker">d</span><span class="mc-text">Master policy details and explain complex tradeoffs clearly</span></label></div>
+<div class="mc-option"><input id="lead1-e" name="q130" type="radio" value="expert_coalitions"/><label for="lead1-e"><span class="mc-marker">e</span><span class="mc-text">Build expert coalitions and institutional support</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q74">
+<div class="question-text">How politically engaged were your parents or guardians when you were growing up?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="fpe-a" name="q74" type="radio" value="somewhat"/><label for="fpe-a"><span class="mc-marker">a</span><span class="mc-text">Somewhat engaged—they voted and occasionally discussed politics</span></label></div>
+<div class="mc-option"><input id="fpe-b" name="q74" type="radio" value="minimal"/><label for="fpe-b"><span class="mc-marker">b</span><span class="mc-text">Minimally engaged—they rarely discussed politics or participated</span></label></div>
+<div class="mc-option"><input id="fpe-c" name="q74" type="radio" value="very"/><label for="fpe-c"><span class="mc-marker">c</span><span class="mc-text">Very engaged—politics was frequently discussed, they voted regularly, may have been activists</span></label></div>
+<div class="mc-option"><input id="fpe-d" name="q74" type="radio" value="none"/><label for="fpe-d"><span class="mc-marker">d</span><span class="mc-text">Not at all—politics was essentially absent from my upbringing</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q77">
+<div class="question-text">During your childhood and teenage years, how safe did you feel in your neighborhood?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="fs-a" name="q77" type="radio" value="mostly_safe"/><label for="fs-a"><span class="mc-marker">a</span><span class="mc-text">Mostly safe—occasional concerns but generally secure</span></label></div>
+<div class="mc-option"><input id="fs-b" name="q77" type="radio" value="very_unsafe"/><label for="fs-b"><span class="mc-marker">b</span><span class="mc-text">Very unsafe—violence or crime was a constant presence</span></label></div>
+<div class="mc-option"><input id="fs-c" name="q77" type="radio" value="somewhat_unsafe"/><label for="fs-c"><span class="mc-marker">c</span><span class="mc-text">Somewhat unsafe—regularly aware of crime or danger</span></label></div>
+<div class="mc-option"><input id="fs-d" name="q77" type="radio" value="very_safe"/><label for="fs-d"><span class="mc-marker">d</span><span class="mc-text">Very safe—crime and danger were not concerns</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q132">
+<div class="question-text">What matters more in a political leader?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="vis1-a" name="q132" type="radio" value="coherent_vision"/><label for="vis1-a"><span class="mc-marker">a</span><span class="mc-text">Articulating a coherent vision that connects all their positions</span></label></div>
+<div class="mc-option"><input id="vis1-b" name="q132" type="radio" value="gets_results"/><label for="vis1-b"><span class="mc-marker">b</span><span class="mc-text">A track record of actually getting results</span></label></div>
+<div class="mc-option"><input id="vis1-c" name="q132" type="radio" value="expert_team"/><label for="vis1-c"><span class="mc-marker">c</span><span class="mc-text">Surrounding themselves with experts who craft smart policy</span></label></div>
+<div class="mc-option"><input id="vis1-d" name="q132" type="radio" value="fighting_spirit"/><label for="vis1-d"><span class="mc-marker">d</span><span class="mc-text">The will to fight for their side against opposition</span></label></div>
+<div class="mc-option"><input id="vis1-e" name="q132" type="radio" value="right_positions"/><label for="vis1-e"><span class="mc-marker">e</span><span class="mc-text">Having the right position on each individual issue</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q18_ranking">
+<div class="question-text">Which identities feel most important to you politically? Rank from most to least:</div>
+<div class="ranking-container" id="q16-ranking">
+<div class="ranking-item" data-value="national" draggable="true">
+<span class="ranking-shape square color-1"></span>
+<span class="ranking-number">1</span>
+<span class="ranking-text">National identity (American)</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="ideological" draggable="true">
+<span class="ranking-shape circle color-2"></span>
+<span class="ranking-number">2</span>
+<span class="ranking-text">Ideological (liberal, conservative, etc.)</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="religious" draggable="true">
+<span class="ranking-shape diamond color-3"></span>
+<span class="ranking-number">3</span>
+<span class="ranking-text">Religious identity</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="class" draggable="true">
+<span class="ranking-shape hexagon color-4"></span>
+<span class="ranking-number">4</span>
+<span class="ranking-text">Class (working, middle, etc.)</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="ethnic" draggable="true">
+<span class="ranking-shape star color-5"></span>
+<span class="ranking-number">5</span>
+<span class="ranking-text">Ethnic/racial identity</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+<div class="ranking-item" data-value="global" draggable="true">
+<span class="ranking-shape circle color-6"></span>
+<span class="ranking-number">6</span>
+<span class="ranking-text">Global citizen</span>
+<span class="ranking-handle">⋮⋮</span>
+</div>
+</div>
+<input name="q18_ranking" type="hidden" value=""/>
+</div>
+<div class="question" data-q="q133">
+<div class="question-text">Which political pitch would resonate most with you?</div>
+<div class="mc-options">
+<div class="mc-option"><input id="vis2-a" name="q133" type="radio" value="data_driven"/><label for="vis2-a"><span class="mc-marker">a</span><span class="mc-text">"The data shows these three interventions will have the highest impact"</span></label></div>
+<div class="mc-option"><input id="vis2-b" name="q133" type="radio" value="enemy_focus"/><label for="vis2-b"><span class="mc-marker">b</span><span class="mc-text">"The other side is destroying everything—we have to stop them"</span></label></div>
+<div class="mc-option"><input id="vis2-c" name="q133" type="radio" value="unified_narrative"/><label for="vis2-c"><span class="mc-marker">c</span><span class="mc-text">"Here's my vision for what this country can become and how we get there"</span></label></div>
+<div class="mc-option"><input id="vis2-d" name="q133" type="radio" value="policy_specifics"/><label for="vis2-d"><span class="mc-marker">d</span><span class="mc-text">"Here are my 12 detailed policy proposals with cost estimates"</span></label></div>
+<div class="mc-option"><input id="vis2-e" name="q133" type="radio" value="practical_results"/><label for="vis2-e"><span class="mc-marker">e</span><span class="mc-text">"I've done it before and I'll do it again—check my record"</span></label></div>
+</div>
+</div>
+<div class="question" data-q="q98">
+<div class="question-text">When a political movement develops strong aesthetics (flags, songs, slogans), this is:</div>
+<div class="mc-options">
+<div class="mc-option"><input id="comm6-a" name="q98" type="radio" value="sometimes_necessary"/><label for="comm6-a"><span class="mc-marker">a</span><span class="mc-text">Sometimes necessary but should be viewed skeptically</span></label></div>
+<div class="mc-option"><input id="comm6-b" name="q98" type="radio" value="natural_healthy"/><label for="comm6-b"><span class="mc-marker">b</span><span class="mc-text">Natural and healthy—movements need identity</span></label></div>
+<div class="mc-option"><input id="comm6-c" name="q98" type="radio" value="essential_power"/><label for="comm6-c"><span class="mc-marker">c</span><span class="mc-text">Essential—aesthetic power is political power</span></label></div>
+<div class="mc-option"><input id="comm6-d" name="q98" type="radio" value="warning_sign"/><label for="comm6-d"><span class="mc-marker">d</span><span class="mc-text">A warning sign—substance is being replaced by style</span></label></div>
+<div class="mc-option"><input id="comm6-e" name="q98" type="radio" value="neutral_tool"/><label for="comm6-e"><span class="mc-marker">e</span><span class="mc-text">A neutral tool—depends how it's used</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="demo">
+<div class="demo-grid">
+<div class="demo-item">
+<span class="demo-label">Age</span>
+<select class="demo-select" name="demo_age">
+<option value="">Select...</option>
+<option value="18-24">18-24</option>
+<option value="25-34">25-34</option>
+<option value="35-44">35-44</option>
+<option value="45-54">45-54</option>
+<option value="55-64">55-64</option>
+<option value="65+">65+</option>
+</select>
+</div>
+<div class="demo-item">
+<span class="demo-label">Gender</span>
+<select class="demo-select" name="demo_gender">
+<option value="">Select...</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="nonbinary">Non-binary</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="demo-item">
+<span class="demo-label">Education</span>
+<select class="demo-select" name="demo_education">
+<option value="">Select...</option>
+<option value="hs">High school or less</option>
+<option value="some_college">Some college</option>
+<option value="bachelors">Bachelor's degree</option>
+<option value="graduate">Graduate degree</option>
+</select>
+</div>
+<div class="demo-item">
+<span class="demo-label">Party</span>
+<select class="demo-select" name="demo_party">
+<option value="">Select...</option>
+<option value="dem_strong">Strong Democrat</option>
+<option value="dem_lean">Lean Democrat</option>
+<option value="independent">Independent</option>
+<option value="rep_lean">Lean Republican</option>
+<option value="rep_strong">Strong Republican</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="demo-item">
+<span class="demo-label">Region</span>
+<select class="demo-select" name="demo_region">
+<option value="">Select...</option>
+<option value="northeast">Northeast</option>
+<option value="midwest">Midwest</option>
+<option value="south">South</option>
+<option value="west">West</option>
+</select>
+</div>
+<div class="demo-item">
+<span class="demo-label">Area</span>
+<select class="demo-select" name="demo_area">
+<option value="">Select...</option>
+<option value="urban">Urban</option>
+<option value="suburban">Suburban</option>
+<option value="rural">Rural</option>
+</select>
+</div>
+</div>
+</div>
+<div class="page-nav"><button class="nav-btn" onclick="goToPage(4)" type="button">Back</button><div class="page-dots"><span class="page-dot completed" data-page="1"></span><span class="page-dot completed" data-page="2"></span><span class="page-dot completed" data-page="3"></span><span class="page-dot completed" data-page="4"></span><span class="page-dot active" data-page="5"></span><span class="page-dot" data-page="6"></span></div><button class="nav-btn primary" onclick="goToPage(6)" type="button">Continue</button></div></div>
+
+<!-- PAGE 6: Issue Salience (Max-Diff + Importance) -->
+<div class="quiz-page" id="page-6">
+<div class="section-header" style="border-left: 4px solid #9B59B6;">
+<span class="section-number">section vi</span>
+<span class="section-title">What Matters Most</span>
+<span class="section-subtitle">Comparing issue importance directly</span>
+</div>
+
+<div class="maxdiff-instruction">
+For each set below, select ONE issue that matters MOST to you politically, and ONE that matters LEAST.<br/>
+This helps us understand your priorities beyond just your positions.
+</div>
+
+<!-- Max-Diff Set 1: Economic vs Cultural Trade-offs -->
+<div class="question" data-q="md1">
+<div class="question-text">Which of these political issues matters MOST and LEAST to you personally?</div>
+<div class="maxdiff-container">
+<div class="maxdiff-header">
+<span>Matters Most</span>
+<span>Issue</span>
+<span>Matters Least</span>
+</div>
+<div class="maxdiff-row" data-value="economic_inequality">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md1', 'most')" type="button">●</button>
+<span class="maxdiff-label">Economic inequality and wealth distribution</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md1', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="cultural_traditions">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md1', 'most')" type="button">●</button>
+<span class="maxdiff-label">Preserving cultural traditions and values</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md1', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="religious_freedom">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md1', 'most')" type="button">●</button>
+<span class="maxdiff-label">Religious freedom and moral values in public life</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md1', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="tribal_loyalty">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md1', 'most')" type="button">●</button>
+<span class="maxdiff-label">Loyalty to my political community/movement</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md1', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="hierarchy_order">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md1', 'most')" type="button">●</button>
+<span class="maxdiff-label">Social order and respect for authority</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md1', 'least')" type="button">■</button>
+</div>
+</div>
+<input name="md1_most" type="hidden" value=""/>
+<input name="md1_least" type="hidden" value=""/>
+</div>
+
+<!-- Max-Diff Set 2: Governance and Identity -->
+<div class="question" data-q="md2">
+<div class="question-text">Which of these concerns is MOST and LEAST central to your political thinking?</div>
+<div class="maxdiff-container">
+<div class="maxdiff-header">
+<span>Most Central</span>
+<span>Concern</span>
+<span>Least Central</span>
+</div>
+<div class="maxdiff-row" data-value="procedural_rules">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md2', 'most')" type="button">●</button>
+<span class="maxdiff-label">Following proper procedures and rule of law</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md2', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="civic_engagement">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md2', 'most')" type="button">●</button>
+<span class="maxdiff-label">Civic participation and democratic engagement</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md2', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="national_identity">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md2', 'most')" type="button">●</button>
+<span class="maxdiff-label">National identity and who belongs in America</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md2', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="partisan_victory">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md2', 'most')" type="button">●</button>
+<span class="maxdiff-label">Ensuring my party/side wins elections</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md2', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="power_distribution">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md2', 'most')" type="button">●</button>
+<span class="maxdiff-label">How power is distributed in society</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md2', 'least')" type="button">■</button>
+</div>
+</div>
+<input name="md2_most" type="hidden" value=""/>
+<input name="md2_least" type="hidden" value=""/>
+</div>
+
+<!-- Max-Diff Set 3: Epistemics and Worldview -->
+<div class="question" data-q="md3">
+<div class="question-text">When evaluating political claims, which matters MOST and LEAST to you?</div>
+<div class="maxdiff-container">
+<div class="maxdiff-header">
+<span>Most Important</span>
+<span>Criterion</span>
+<span>Least Important</span>
+</div>
+<div class="maxdiff-row" data-value="empirical_evidence">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md3', 'most')" type="button">●</button>
+<span class="maxdiff-label">Empirical evidence and scientific consensus</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md3', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="moral_intuition">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md3', 'most')" type="button">●</button>
+<span class="maxdiff-label">Moral intuition and gut feeling about right/wrong</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md3', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="system_optimism">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md3', 'most')" type="button">●</button>
+<span class="maxdiff-label">Whether it matches my sense of where society is heading</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md3', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="human_nature">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md3', 'most')" type="button">●</button>
+<span class="maxdiff-label">Whether it accounts for human nature realistically</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md3', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="zero_sum">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md3', 'most')" type="button">●</button>
+<span class="maxdiff-label">Who gains and who loses from the policy</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md3', 'least')" type="button">■</button>
+</div>
+</div>
+<input name="md3_most" type="hidden" value=""/>
+<input name="md3_least" type="hidden" value=""/>
+</div>
+
+<!-- Max-Diff Set 4: Social and Moral Priorities -->
+<div class="question" data-q="md4">
+<div class="question-text">Which social/moral concern do you prioritize MOST and LEAST?</div>
+<div class="maxdiff-container">
+<div class="maxdiff-header">
+<span>Highest Priority</span>
+<span>Concern</span>
+<span>Lowest Priority</span>
+</div>
+<div class="maxdiff-row" data-value="universal_rights">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md4', 'most')" type="button">●</button>
+<span class="maxdiff-label">Universal human rights that apply to everyone equally</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md4', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="family_community">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md4', 'most')" type="button">●</button>
+<span class="maxdiff-label">Family and local community obligations first</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md4', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="cultural_assimilation">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md4', 'most')" type="button">●</button>
+<span class="maxdiff-label">Immigrants adopting American culture and values</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md4', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="partisan_fusion">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md4', 'most')" type="button">●</button>
+<span class="maxdiff-label">Uniting around shared party/movement identity</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md4', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="compromise_bipartisan">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md4', 'most')" type="button">●</button>
+<span class="maxdiff-label">Finding bipartisan compromise even if imperfect</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md4', 'least')" type="button">■</button>
+</div>
+</div>
+<input name="md4_most" type="hidden" value=""/>
+<input name="md4_least" type="hidden" value=""/>
+</div>
+
+<!-- Max-Diff Set 5: Political Aesthetics and Process -->
+<div class="question" data-q="md5">
+<div class="question-text">What aspect of politics engages you MOST and LEAST?</div>
+<div class="maxdiff-container">
+<div class="maxdiff-header">
+<span>Most Engaging</span>
+<span>Aspect</span>
+<span>Least Engaging</span>
+</div>
+<div class="maxdiff-row" data-value="inspirational_vision">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md5', 'most')" type="button">●</button>
+<span class="maxdiff-label">Inspirational vision and bold leadership</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md5', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="technical_policy">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md5', 'most')" type="button">●</button>
+<span class="maxdiff-label">Technical policy details and implementation</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md5', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="outcome_results">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md5', 'most')" type="button">●</button>
+<span class="maxdiff-label">Achieving concrete outcomes regardless of process</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md5', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="principled_consistency">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md5', 'most')" type="button">●</button>
+<span class="maxdiff-label">Principled consistency even when unpopular</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md5', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="coalition_building">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md5', 'most')" type="button">●</button>
+<span class="maxdiff-label">Building winning coalitions across divides</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md5', 'least')" type="button">■</button>
+</div>
+</div>
+<input name="md5_most" type="hidden" value=""/>
+<input name="md5_least" type="hidden" value=""/>
+</div>
+
+<!-- Max-Diff Set 6: Core Identity Trade-offs -->
+<div class="question" data-q="md6">
+<div class="question-text">When you think about your political identity, which element is MOST and LEAST defining?</div>
+<div class="maxdiff-container">
+<div class="maxdiff-header">
+<span>Most Defining</span>
+<span>Element</span>
+<span>Least Defining</span>
+</div>
+<div class="maxdiff-row" data-value="economic_views">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md6', 'most')" type="button">●</button>
+<span class="maxdiff-label">My views on economic policy (taxes, spending, markets)</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md6', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="cultural_views">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md6', 'most')" type="button">●</button>
+<span class="maxdiff-label">My views on cultural issues (tradition, social change)</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md6', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="party_affiliation">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md6', 'most')" type="button">●</button>
+<span class="maxdiff-label">My party affiliation and political team</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md6', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="moral_framework">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md6', 'most')" type="button">●</button>
+<span class="maxdiff-label">My moral/ethical framework and values</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md6', 'least')" type="button">■</button>
+</div>
+<div class="maxdiff-row" data-value="governance_approach">
+<button class="maxdiff-btn most-btn" onclick="selectMaxDiff(this, 'md6', 'most')" type="button">●</button>
+<span class="maxdiff-label">My approach to governance and process</span>
+<button class="maxdiff-btn least-btn" onclick="selectMaxDiff(this, 'md6', 'least')" type="button">■</button>
+</div>
+</div>
+<input name="md6_most" type="hidden" value=""/>
+<input name="md6_least" type="hidden" value=""/>
+</div>
+
+<div class="page-nav">
+<button class="nav-btn" onclick="goToPage(5)" type="button">Back</button>
+<div class="page-dots">
+<span class="page-dot completed" data-page="1"></span>
+<span class="page-dot completed" data-page="2"></span>
+<span class="page-dot completed" data-page="3"></span>
+<span class="page-dot completed" data-page="4"></span>
+<span class="page-dot completed" data-page="5"></span>
+<span class="page-dot active" data-page="6"></span>
+</div>
+<button class="nav-btn" onclick="exportResponses()" type="button" style="margin-right: 8px;">Export JSON</button>
+<button class="nav-btn primary" onclick="submitQuiz()" type="button">See Results</button>
+</div>
+</div>
+
+<div class="footer-note">prism comprehensive assessment — matrices of confusion research collective</div>
+</div>
+<script>
+        // Page navigation
+        let currentPage = 1;
+        const totalPages = 6;
+        const pageIds = ['page-1', 'page-2', 'page-3', 'page-4', 'page-5', 'page-6'];
+
+        function showPage(pageNum) {
+            // Hide all pages
+            document.querySelectorAll('.quiz-page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById(pageIds[pageNum - 1]);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                currentPage = pageNum;
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Update all page dots across all pages
+                updateAllPageDots();
+            }
+        }
+
+        function updateAllPageDots() {
+            document.querySelectorAll('.page-dots').forEach(dotsContainer => {
+                dotsContainer.querySelectorAll('.page-dot').forEach((dot, index) => {
+                    dot.classList.remove('active', 'completed');
+                    if (index + 1 === currentPage) {
+                        dot.classList.add('active');
+                    } else if (index + 1 < currentPage) {
+                        dot.classList.add('completed');
+                    }
+                });
+            });
+        }
+
+        function validateCurrentPage() {
+            const currentPageEl = document.getElementById(pageIds[currentPage - 1]);
+            const questions = currentPageEl.querySelectorAll('.question');
+            const unanswered = [];
+
+            questions.forEach(q => {
+                if (!q.classList.contains('answered')) {
+                    const qId = q.querySelector('.question-id');
+                    unanswered.push(qId ? qId.textContent : q.dataset.q);
+                }
+            });
+
+            return unanswered;
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                const unanswered = validateCurrentPage();
+                if (unanswered.length > 0) {
+                    alert('Please answer all questions before continuing.\n\nUnanswered: ' + unanswered.join(', '));
+                    // Scroll to first unanswered question
+                    const currentPageEl = document.getElementById(pageIds[currentPage - 1]);
+                    const firstUnanswered = currentPageEl.querySelector('.question:not(.answered)');
+                    if (firstUnanswered) {
+                        firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+                showPage(currentPage + 1);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        }
+
+        function goToPage(pageNum) {
+            showPage(pageNum);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make page dots clickable
+            document.querySelectorAll('.page-dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const pageNum = parseInt(this.dataset.page);
+                    showPage(pageNum);
+                });
+            });
+
+            // Initialize quiz components
+            updateQuestionCount();
+            initRankings();
+            initSliders();
+            initAllocations();
+            initConfidenceButtons();
+            initParentPresence();
+            initDemographics();
+            initNodeIndicators();
+        });
+
+        // Node-to-question mapping with importance weights for visual indicators
+        // Format: { nodes: [...], importance: 0-1 score based on weight in scorer }
+        const QUESTION_NODE_MAP = {
+            // Sliders (importance = max weight from SLIDER_MAPPINGS)
+            q1: { nodes: ['MAT','ZS'], importance: 0.8 },
+            q27: { nodes: ['ONT_H'], importance: 0.9 },
+            q28: { nodes: ['ONT_S'], importance: 0.9 },
+            q34: { nodes: ['ZS'], importance: 0.9 },
+            q40: { nodes: ['TRB','PF'], importance: 0.7 },
+            q50: { nodes: ['PRO'], importance: 0.9 },
+            q55: { nodes: ['MOR'], importance: 0.9 },
+            q56: { nodes: ['MOR'], importance: 1.0 },
+            q57: { nodes: ['MAT'], importance: 0.7 },
+            q58: { nodes: ['ZS','H'], importance: 0.6 },
+            q80: { nodes: ['CAL'], importance: 1.0 },
+            // Calibration estimates (q81-q85) and confidence (q87-q91)
+            q81: { nodes: ['CAL'], importance: 0.8 },  // violent prisoners estimate
+            q82: { nodes: ['CAL'], importance: 0.8 },  // foreign-born estimate
+            q83: { nodes: ['CAL'], importance: 0.8 },  // wealth top 1% estimate
+            q84: { nodes: ['CAL'], importance: 0.8 },  // climate consensus estimate
+            q85: { nodes: ['CAL'], importance: 0.8 },  // renewables estimate
+            q86: { nodes: ['CAL'], importance: 0.8 },  // food insecurity estimate
+            q87: { nodes: ['CAL'], importance: 0.4 },  // confidence
+            q88: { nodes: ['CAL'], importance: 0.4 },
+            q89: { nodes: ['CAL'], importance: 0.4 },
+            q90: { nodes: ['CAL'], importance: 0.4 },
+            q91: { nodes: ['CAL'], importance: 0.4 },
+            q92: { nodes: ['CAL'], importance: 0.4 },  // food insecurity confidence
+            q65a: { nodes: ['ZS','ONT_H'], importance: 0.5 },
+            q65b: { nodes: ['ZS','ONT_H'], importance: 0.5 },
+            q65c: { nodes: ['TRB'], importance: 0.4 },
+            q65d: { nodes: ['TRB'], importance: 0.4 },
+            q66: { nodes: ['ZS','EPS'], importance: 0.6 },
+            q93: { nodes: ['EPS','ZS'], importance: 0.7 },  // Elite media accuracy estimate
+            q93_conf: { nodes: ['CAL'], importance: 0.3 },  // confidence
+            q78a: { nodes: ['MAT'], importance: 0.3 },
+            q78b: { nodes: ['ENG'], importance: 0.4 },
+            q78c: { nodes: ['CD'], importance: 0.4 },
+            q78d: { nodes: ['CU'], importance: 0.4 },
+            q78e: { nodes: ['ZS','MOR'], importance: 0.5 },
+            // MC questions (importance based on score magnitude / 100)
+            q10: { nodes: ['H','ZS'], importance: 0.7 },
+            q11: { nodes: ['PRO'], importance: 0.8 },
+            q13: { nodes: ['MOR','MAT'], importance: 0.7 },
+            q14: { nodes: ['ONT_S','EPS'], importance: 0.6 },
+            q15: { nodes: ['COM','PRO'], importance: 0.7 },
+            q24: { nodes: ['MAT','MOR'], importance: 0.8 },
+            q25: { nodes: ['MAT','ZS'], importance: 0.7 },
+            q26: { nodes: ['EPS','ONT_S'], importance: 0.6 },
+            q29: { nodes: ['ONT_H','ONT_S'], importance: 0.7 },
+            q30: { nodes: ['ONT_H'], importance: 0.8 },
+            q35: { nodes: ['PRO','H'], importance: 0.7 },
+            q38: { nodes: ['ZS','ONT_S','MAT'], importance: 0.75 },  // Trade economics (historical)
+            q94: { nodes: ['ZS','ONT_S'], importance: 0.7 },         // Geopolitical influence
+            q41: { nodes: ['COM','PF'], importance: 0.6 },
+            q42: { nodes: ['TRB'], importance: 0.8 },
+            q43: { nodes: ['TRB','MOR'], importance: 0.7 },
+            q49: { nodes: ['PRO'], importance: 0.9 },
+            q53: { nodes: ['COM','TRB'], importance: 0.7 },
+            q68: { nodes: ['AES'], importance: 0.8 },
+            // Conjoints
+            q3: { nodes: ['MAT'], importance: 0.6 },
+            q4: { nodes: ['MAT','MOR'], importance: 0.6 },
+            // q5 removed - immigration question removed
+            q6: { nodes: ['MAT','EPS'], importance: 0.6 },
+            q7: { nodes: ['ONT_H','PRO'], importance: 0.6 },
+            q8: { nodes: ['PRO','COM'], importance: 0.6 },
+            q55_conjoint: { nodes: ['MAT'], importance: 0.5 },
+            // Rankings
+            q16_ranking: { nodes: ['MAT','PRO'], importance: 0.5 },
+            q17_ranking: { nodes: ['EPS','ZS'], importance: 0.5 },
+            q18_ranking: { nodes: ['TRB'], importance: 0.5 },
+            // Allocations
+            q39: { nodes: ['ZS','ONT_H'], importance: 0.8 },
+            q58a: { nodes: ['MAT','H'], importance: 0.7 }
+        };
+
+        function initNodeIndicators() {
+            // Count how many questions feed each node
+            const nodeCounts = {};
+            for (const data of Object.values(QUESTION_NODE_MAP)) {
+                data.nodes.forEach(n => { nodeCounts[n] = (nodeCounts[n] || 0) + 1; });
+            }
+            const avgCount = Object.values(nodeCounts).reduce((a,b) => a+b, 0) / Object.keys(nodeCounts).length;
+            const hotThreshold = avgCount * 1.5;
+
+            // Add indicators to questions
+            document.querySelectorAll('.question').forEach(q => {
+                // Find field names in this question
+                const inputs = q.querySelectorAll('input[name], select[name]');
+                const fieldNames = new Set();
+                inputs.forEach(i => fieldNames.add(i.name.replace(/[a-d]$/, ''))); // normalize allocation fields
+
+                // Collect all nodes and max importance for this question
+                const affectedNodes = new Set();
+                let maxImportance = 0;
+                fieldNames.forEach(f => {
+                    if (QUESTION_NODE_MAP[f]) {
+                        QUESTION_NODE_MAP[f].nodes.forEach(n => affectedNodes.add(n));
+                        maxImportance = Math.max(maxImportance, QUESTION_NODE_MAP[f].importance);
+                    }
+                });
+
+                if (affectedNodes.size > 0) {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'node-indicator';
+
+                    // Add importance score first
+                    const impBadge = document.createElement('span');
+                    impBadge.className = 'node-badge';
+                    impBadge.style.background = maxImportance >= 0.8 ? '#2a4a2a' : (maxImportance >= 0.5 ? '#3a3a2a' : '#2a2a2a');
+                    impBadge.style.color = maxImportance >= 0.8 ? '#6bff6b' : (maxImportance >= 0.5 ? '#ffff6b' : '#888');
+                    impBadge.textContent = `w:${maxImportance.toFixed(1)}`;
+                    impBadge.title = `Importance weight: ${maxImportance} (higher = more impact on node scores)`;
+                    indicator.appendChild(impBadge);
+
+                    // Add node badges
+                    affectedNodes.forEach(node => {
+                        const badge = document.createElement('span');
+                        badge.className = 'node-badge' + (nodeCounts[node] > hotThreshold ? ' hot' : '');
+                        badge.textContent = node + (nodeCounts[node] > hotThreshold ? '⚡' : '');
+                        badge.title = `${node}: ${nodeCounts[node]} questions (${nodeCounts[node] > hotThreshold ? 'high signal' : 'normal'})`;
+                        indicator.appendChild(badge);
+                    });
+                    const meta = q.querySelector('.question-meta');
+                    if (meta) meta.appendChild(indicator);
+                }
+            });
+        }
+
+        function initDemographics() {
+            const demoQuestion = document.querySelector('[data-q="demo"]');
+            if (!demoQuestion) return;
+
+            const selects = demoQuestion.querySelectorAll('.demo-select');
+            selects.forEach(select => {
+                select.addEventListener('change', () => {
+                    // Check if all selects have values
+                    let allFilled = true;
+                    selects.forEach(s => {
+                        if (!s.value) allFilled = false;
+                    });
+                    if (allFilled) {
+                        markAnswered('demo');
+                    }
+                });
+            });
+        }
+
+        let answered = new Set();
+        let totalQuestions = 0;
+
+        function updateQuestionCount() {
+            const questions = document.querySelectorAll('.question[data-q]');
+            totalQuestions = questions.length;
+            const totalEl = document.getElementById('total');
+            const answeredEl = document.getElementById('answered');
+            if (totalEl) totalEl.textContent = totalQuestions;
+            if (answeredEl) answeredEl.textContent = answered.size;
+            console.log('Question counter initialized:', answered.size, '/', totalQuestions);
+        }
+
+        function markAnswered(qId) {
+            if (!qId) return;
+            const q = document.querySelector(`[data-q="${qId}"]`);
+            if (q && !answered.has(qId)) {
+                q.classList.add('answered');
+                answered.add(qId);
+                const answeredEl = document.getElementById('answered');
+                if (answeredEl) answeredEl.textContent = answered.size;
+            }
+        }
+
+        // Mark a specific question element as answered (handles duplicate data-q)
+        function markQuestionAnswered(qElement) {
+            if (!qElement || qElement.classList.contains('answered')) return;
+            qElement.classList.add('answered');
+            const qId = qElement.dataset.q;
+            if (qId && !answered.has(qId)) {
+                answered.add(qId);
+                const answeredEl = document.getElementById('answered');
+                if (answeredEl) answeredEl.textContent = answered.size;
+            }
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const q = input.closest('.question');
+                if (q) markQuestionAnswered(q);
+            });
+        });
+
+        function initSliders() {
+            document.querySelectorAll('.slider-input').forEach(slider => {
+                const valueDisplay = document.getElementById(slider.name + '-value');
+                // Add input listener
+                slider.addEventListener('input', function() {
+                    if (valueDisplay) {
+                        valueDisplay.textContent = this.value;
+                    }
+                    const q = this.closest('.question');
+                    if (q) markQuestionAnswered(q);
+                });
+                // Also sync initial display value
+                if (valueDisplay) {
+                    valueDisplay.textContent = slider.value;
+                }
+            });
+        }
+
+        function selectConjoint(el, qName) {
+            el.parentElement.querySelectorAll('.conjoint-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            document.querySelector(`input[name="${qName}"]`).value = el.dataset.value;
+            const q = el.closest('.question');
+            if (q) markQuestionAnswered(q);
+        }
+
+        // ENGAGE_STYLE: Toggle selection for top-2 multi-select
+        function toggleEngageStyle(el) {
+            const container = el.closest('.engage-style-options');
+            const maxSelect = parseInt(container.dataset.maxSelect) || 2;
+            const selected = container.querySelectorAll('.engage-option.selected');
+
+            if (el.classList.contains('selected')) {
+                // Deselect
+                el.classList.remove('selected');
+            } else {
+                // Select (if under max)
+                if (selected.length < maxSelect) {
+                    el.classList.add('selected');
+                } else {
+                    // Already at max - deselect oldest and select new
+                    selected[0].classList.remove('selected');
+                    el.classList.add('selected');
+                }
+            }
+
+            // Update hidden input with selected values
+            const nowSelected = container.querySelectorAll('.engage-option.selected');
+            const values = Array.from(nowSelected).map(opt => opt.dataset.value);
+            document.querySelector('input[name="ENGAGE_STYLE"]').value = values.join(',');
+
+            // Mark question as answered if at least one selected
+            const q = el.closest('.question');
+            if (q && values.length > 0) markQuestionAnswered(q);
+        }
+
+        const ratioValues = ['1:1.5', '1:2', '1:3', '1:5', '1:10', '1:25', '1:50', '>1:50'];
+
+        function updateRatioDisplay(errId, sliderValue) {
+            const displayEl = document.getElementById(errId + '-ratio-value');
+            if (displayEl) {
+                displayEl.textContent = ratioValues[parseInt(sliderValue)];
+            }
+        }
+
+        function showErrorRatio(errId, container) {
+            const selected = container.querySelector('input[type="radio"]:checked');
+            const ratioDiv = document.getElementById(errId + '-ratio');
+
+            if (!selected || !ratioDiv) return;
+
+            const val = selected.value;
+
+            // Hide ratio input if "equally bad" is selected
+            if (val === 'eq') {
+                ratioDiv.style.display = 'none';
+                return;
+            }
+
+            // Show ratio input for non-equal selections
+            ratioDiv.style.display = 'block';
+        }
+
+        function toggleCheckbox(el) {
+            el.classList.toggle('selected');
+            el.querySelector('input').checked = el.classList.contains('selected');
+            if (el.querySelector('input').value === 'none' && el.classList.contains('selected')) {
+                el.parentElement.querySelectorAll('.checkbox-item').forEach(i => {
+                    if (i !== el) { i.classList.remove('selected'); i.querySelector('input').checked = false; }
+                });
+            } else if (el.querySelector('input').value !== 'none' && el.classList.contains('selected')) {
+                const none = el.parentElement.querySelector('input[value="none"]');
+                if (none) { none.checked = false; none.closest('.checkbox-item').classList.remove('selected'); }
+            }
+            const q = el.closest('.question');
+            if (q) markQuestionAnswered(q);
+        }
+
+        function toggleParentNA(el, prefix) {
+            el.classList.toggle('selected');
+            el.querySelector('input').checked = el.classList.contains('selected');
+            const sliders = document.getElementById(prefix + '_sliders');
+            if (sliders) sliders.style.display = el.classList.contains('selected') ? 'none' : 'block';
+        }
+
+        // Importance Toggle handler
+        function toggleImportance(el) {
+            el.classList.toggle('checked');
+            const input = el.querySelector('input');
+            input.checked = el.classList.contains('checked');
+            // Don't mark question as answered just for toggling importance
+            // The question itself needs to be answered
+        }
+
+        // Max-Diff (Best-Worst Scaling) handler
+        function selectMaxDiff(btn, qName, type) {
+            const container = btn.closest('.maxdiff-container');
+            const question = btn.closest('.question');  // Hidden inputs are in question div, not container
+            const row = btn.closest('.maxdiff-row');
+            const value = row.dataset.value;
+
+            // Get hidden inputs (they're in the question div, not the maxdiff-container)
+            const mostInput = question.querySelector(`input[name="${qName}_most"]`);
+            const leastInput = question.querySelector(`input[name="${qName}_least"]`);
+
+            if (type === 'most') {
+                // Clear previous most selection
+                container.querySelectorAll('.most-btn.selected').forEach(b => b.classList.remove('selected'));
+                container.querySelectorAll('.maxdiff-row.selected-most').forEach(r => r.classList.remove('selected-most'));
+
+                // If clicking same item, deselect
+                if (mostInput.value === value) {
+                    mostInput.value = '';
+                } else {
+                    // Select new most
+                    btn.classList.add('selected');
+                    row.classList.add('selected-most');
+                    mostInput.value = value;
+
+                    // If this was also least, clear least
+                    if (leastInput.value === value) {
+                        leastInput.value = '';
+                        row.querySelector('.least-btn').classList.remove('selected');
+                        row.classList.remove('selected-least');
+                    }
+                }
+            } else {
+                // Clear previous least selection
+                container.querySelectorAll('.least-btn.selected').forEach(b => b.classList.remove('selected'));
+                container.querySelectorAll('.maxdiff-row.selected-least').forEach(r => r.classList.remove('selected-least'));
+
+                // If clicking same item, deselect
+                if (leastInput.value === value) {
+                    leastInput.value = '';
+                } else {
+                    // Select new least
+                    btn.classList.add('selected');
+                    row.classList.add('selected-least');
+                    leastInput.value = value;
+
+                    // If this was also most, clear most
+                    if (mostInput.value === value) {
+                        mostInput.value = '';
+                        row.querySelector('.most-btn').classList.remove('selected');
+                        row.classList.remove('selected-most');
+                    }
+                }
+            }
+
+            // Mark question as answered if both selections made
+            if (question && mostInput.value && leastInput.value) {
+                markQuestionAnswered(question);
+            }
+        }
+
+        // Handle parent presence radio buttons
+        function initParentPresence() {
+            ['mom', 'dad'].forEach(parent => {
+                const radios = document.querySelectorAll(`input[name="q46_${parent}_present"]`);
+                const sliders = document.getElementById(`q46_${parent}_sliders`);
+                radios.forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        if (sliders) {
+                            sliders.style.display = radio.value === 'absent' ? 'none' : 'block';
+                        }
+                        const q = radio.closest('.question');
+                        if (q) markQuestionAnswered(q);
+                    });
+                });
+            });
+        }
+
+        function initRankings() {
+            document.querySelectorAll('.ranking-container').forEach(container => {
+                let dragged = null;
+                container.querySelectorAll('.ranking-item').forEach(item => {
+                    item.addEventListener('dragstart', () => { dragged = item; item.classList.add('dragging'); });
+                    item.addEventListener('dragend', () => { dragged = null; item.classList.remove('dragging'); updateRankingNumbers(container); updateRankingValue(container); });
+                    item.addEventListener('dragover', e => {
+                        e.preventDefault();
+                        if (dragged && dragged !== item) {
+                            const rect = item.getBoundingClientRect();
+                            if (e.clientY < rect.top + rect.height/2) container.insertBefore(dragged, item);
+                            else container.insertBefore(dragged, item.nextSibling);
+                        }
+                    });
+                });
+                // Initialize hidden input with default order on page load
+                updateRankingValue(container);
+            });
+        }
+
+        function updateRankingNumbers(c) {
+            c.querySelectorAll('.ranking-item').forEach((item, i) => item.querySelector('.ranking-number').textContent = i + 1);
+            const q = c.closest('.question');
+            if (q) markQuestionAnswered(q);
+        }
+
+        function updateRankingValue(c) {
+            const vals = [];
+            c.querySelectorAll('.ranking-item').forEach(i => vals.push(i.dataset.value));
+            const input = c.parentElement.querySelector('input[type="hidden"]');
+            if (input) input.value = vals.join(',');
+        }
+
+        function initAllocations() {
+            document.querySelectorAll('.allocation-container').forEach(container => {
+                const sliders = container.querySelectorAll('.allocation-slider');
+                const totalSpan = container.querySelector('.allocation-total span');
+                sliders.forEach(s => {
+                    s.addEventListener('input', () => {
+                        s.parentElement.querySelector('.allocation-value').textContent = s.value + '%';
+                        let total = 0;
+                        sliders.forEach(sl => total += parseInt(sl.value));
+                        totalSpan.textContent = total;
+                        const td = container.querySelector('.allocation-total');
+                        td.classList.toggle('valid', total === 100);
+                        td.classList.toggle('invalid', total !== 100);
+                        const q = container.closest('.question');
+                        if (q) markQuestionAnswered(q);
+                    });
+                });
+            });
+        }
+
+        function initConfidenceButtons() {
+            document.querySelectorAll('.confidence-buttons').forEach(c => {
+                const btns = c.querySelectorAll('.confidence-btn');
+                const hidden = c.parentElement.querySelector('input[type="hidden"]');
+                btns.forEach(b => {
+                    b.addEventListener('click', () => {
+                        btns.forEach(x => x.classList.remove('selected'));
+                        b.classList.add('selected');
+                        if (hidden) hidden.value = b.dataset.value;
+                        const q = c.closest('.question');
+                        if (q) markQuestionAnswered(q);
+                    });
+                });
+            });
+        }
+
+        // Export quiz responses to JSON file for auditing
+        function exportResponses() {
+            // Collect all responses (same logic as submitQuiz)
+            const responses = {};
+            document.querySelectorAll('input, select').forEach(i => {
+                if (i.type === 'checkbox') {
+                    if (!responses[i.name]) responses[i.name] = [];
+                    if (i.checked) responses[i.name].push(i.value);
+                } else if (i.type === 'radio') {
+                    if (i.checked) responses[i.name] = i.value;
+                } else if (i.value) {
+                    responses[i.name] = i.value;
+                }
+            });
+
+            // Also compute L3 profile if scorer is available
+            let exportData = {
+                timestamp: new Date().toISOString(),
+                responses: responses
+            };
+
+            if (typeof scoreQuizToL3Profile === 'function') {
+                try {
+                    const profile = scoreQuizToL3Profile(responses);
+                    exportData.l3Profile = profile;
+                } catch (e) {
+                    exportData.l3ProfileError = e.message;
+                }
+            }
+
+            if (typeof matchArchetypeFromProfile === 'function' && exportData.l3Profile) {
+                try {
+                    const archetypeResult = matchArchetypeFromProfile(exportData.l3Profile);
+                    exportData.archetypeResult = {
+                        archetype: archetypeResult.archetype,
+                        score: archetypeResult.score,
+                        matchConfidence: archetypeResult.matchConfidence,
+                        allMatches: archetypeResult.allMatches?.slice(0, 10) // Top 10 matches
+                    };
+                } catch (e) {
+                    exportData.archetypeError = e.message;
+                }
+            }
+
+            // Create and download JSON file
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prism_responses_${new Date().toISOString().slice(0,19).replace(/[T:]/g, '-')}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            console.log('Exported responses:', exportData);
+        }
+
+        function submitQuiz() {
+            // Collect all responses
+            const responses = {};
+            document.querySelectorAll('input, select').forEach(i => {
+                if (i.type === 'checkbox') {
+                    if (!responses[i.name]) responses[i.name] = [];
+                    if (i.checked) responses[i.name].push(i.value);
+                } else if (i.type === 'radio') {
+                    if (i.checked) responses[i.name] = i.value;
+                } else if (i.value) {
+                    responses[i.name] = i.value;
+                }
+            });
+
+            console.log('Quiz responses:', responses);
+
+            // Use 153-archetype client-side scorer
+            if (typeof processQuizAndShowResults === 'function') {
+                const results = processQuizAndShowResults(responses);
+
+                // Convert L3 profile to format expected by alignment map
+                // Map: CD→CSO, CU→CNA (old variable names used by map)
+                const profile = results.profile;
+                // Build archetype data including multiple matches
+                const archetypeResult = results.archetypeResult;
+                const allMatches = archetypeResult?.allMatches || [];
+                const hasMultiple = archetypeResult?.hasMultipleMatches || false;
+
+                // Log node signal coverage diagnostic
+                if (profile._signalCounts) {
+                    console.log('=== NODE SIGNAL COVERAGE ===');
+                    const counts = Object.entries(profile._signalCounts)
+                        .map(([node, data]) => ({ node, ...data }))
+                        .sort((a, b) => b.count - a.count);
+                    const avgCount = counts.reduce((sum, c) => sum + c.count, 0) / counts.length;
+                    console.log('Average signal count:', avgCount.toFixed(2));
+                    console.log('Oversignaled (>1.5x avg):', counts.filter(c => c.count > avgCount * 1.5).map(c => `${c.node}:${c.count}`).join(', ') || 'None');
+                    console.log('Undersignaled (<0.5x avg):', counts.filter(c => c.count < avgCount * 0.5).map(c => `${c.node}:${c.count}`).join(', ') || 'None');
+                    console.table(counts);
+                }
+
+                const mapData = {
+                    l2: {
+                        MAT: profile.MAT?.position || 50,
+                        PRO: profile.PRO?.position || 50,
+                        CSO: profile.CD?.position || 50,   // CD maps to CSO
+                        CNA: profile.CU?.position || 50,   // CU maps to CNA
+                        MOR: profile.MOR?.position || 50,
+                        EPS: profile.EPS?.position || 50
+                    },
+                    archetype: {
+                        name: archetypeResult?.archetype?.name || 'Unknown',
+                        desc: archetypeResult?.archetype?.description || '',
+                        id: archetypeResult?.archetype?.id || '',
+                        tier: archetypeResult?.archetype?.tier || '',
+                        examples: archetypeResult?.archetype?.examples || '',
+                        confidence: archetypeResult?.matchConfidence || 0
+                    },
+                    // NEW: All strong matches for display
+                    allArchetypes: allMatches.map(m => ({
+                        name: m.archetype.name,
+                        desc: m.archetype.description,
+                        id: m.archetype.id,
+                        tier: m.archetype.tier,
+                        examples: m.archetype.examples || '',
+                        matchPercent: m.matchPercent,
+                        fitScore: m.fitScore
+                    })),
+                    hasMultipleMatches: hasMultiple,
+                    // Also store full results for detailed view
+                    fullProfile: profile,
+                    behavior: results.behavior,
+                    // NEW: Raw quiz responses for export (includes CULTURE_POS, ENGAGE_STYLE, etc.)
+                    rawResponses: responses
+                };
+
+                // Save to localStorage for alignment map
+                localStorage.setItem('prism_quiz_results', JSON.stringify(mapData));
+
+                // Redirect to three-panel results page
+                window.location.href = 'results-three-panel.html';
+            } else {
+                alert('Scorer not loaded. Please refresh the page.');
+            }
+        }
+    </script>
+</body>
+</html>
