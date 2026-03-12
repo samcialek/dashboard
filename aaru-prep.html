@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaru Work Trial — 3-Week Prep Plan</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #2C3E50; background: #fff; line-height: 1.6; padding: 1rem; max-width: 860px; margin: 0 auto; }
+h1 { font-size: 1.8rem; margin-bottom: .25rem; }
+h2 { font-size: 1.4rem; margin-top: 2rem; border-bottom: 3px solid #5BA8D9; padding-bottom: .3rem; margin-bottom: 1rem; color: #5BA8D9; }
+h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: .5rem; }
+p, li { margin-bottom: .4rem; }
+ul, ol { padding-left: 1.2rem; }
+a { color: #5BA8D9; }
+blockquote { border-left: 4px solid #5BA8D9; padding: .5rem 1rem; margin: 1rem 0; background: #f8fbfe; font-style: italic; }
+code { background: #f0f4f8; padding: .15em .4em; border-radius: 3px; font-size: .9em; }
+.meta { color: #7f8c8d; margin-bottom: 1.5rem; }
+.task { display: flex; align-items: flex-start; gap: .5rem; margin-bottom: .35rem; }
+.task input[type="checkbox"] { margin-top: .35rem; accent-color: #5BA8D9; min-width: 16px; }
+.task label { flex: 1; }
+details { margin: .75rem 0; }
+details summary { cursor: pointer; font-weight: 600; color: #5BA8D9; padding: .4rem 0; }
+details summary:hover { text-decoration: underline; }
+details[open] summary { margin-bottom: .5rem; }
+.table-wrap { overflow-x: auto; margin: 1rem 0; }
+table { border-collapse: collapse; width: 100%; min-width: 500px; font-size: .9rem; }
+th, td { border: 1px solid #dce3ea; padding: .45rem .6rem; text-align: left; }
+th { background: #5BA8D9; color: #fff; }
+tr:nth-child(even) { background: #f8fbfe; }
+.priority { display: inline-block; width: 1.1em; text-align: center; }
+hr { border: none; border-top: 1px solid #dce3ea; margin: 1.5rem 0; }
+.section-intro { font-style: italic; color: #5f6d7a; margin-bottom: 1rem; }
+strong { color: #2C3E50; }
+@media print { body { padding: 0; font-size: 11pt; } h2 { break-after: avoid; } details { open; } details[open] summary::after { display: none; } .task input[type="checkbox"] { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+
+<h1>Aaru Work Trial — 3-Week Prep Plan</h1>
+<p class="meta"><strong>Created:</strong> March 12, 2026 &nbsp;|&nbsp; <strong>Trial starts:</strong> ~April 1, 2026<br>
+<strong>Goal:</strong> Hit the ground running. Show fluency in their stack, their problems, and their domain.</p>
+
+<hr>
+
+<h2>What You Know From Inside (Two Office Visits)</h2>
+<p>You have two transcripts from two separate visits. This is deep insider context.</p>
+<ul>
+<li><strong>Visit 1 transcript:</strong> <code>transcripts/aaru-visit-2-standup.md</code> — standup + conversations with Matt Hauer, John, Cameron, Patrick (~55 min)</li>
+<li><strong>Visit 2 transcript:</strong> <code>transcripts/yundak-meeting.md</code> — walking conversation with Yundak + John's live coding session (~2.5 hrs)</li>
+</ul>
+
+<details>
+<summary>Their Internal Systems &amp; Active Projects</summary>
+<ul>
+<li><strong>Audience Gen</strong> — their agent generation system. Matt Hauer is building a "logical consistency replacement module" inside it. PRs stacked, going through review. "The results look really good, like really good."</li>
+<li><strong>Second-generation tenement traits</strong> — new version of agent personality traits, waiting on internal protocol. Being finished on iOS.</li>
+<li><strong>Dynamic chart rendering</strong> — John is building a system where the composer writes TSX code for charts, stored in DB, dynamically rendered as React components. Not pre-templated. "Every chart would be fully tailored every time."</li>
+<li><strong>Composer pipeline</strong> — generates simulation reports. Being redesigned by "Mover" the designer.</li>
+<li><strong>Agent SDK</strong> — Patrick reviewing SDK items. Building developer tools for clients.</li>
+<li><strong>ClickHouse</strong> — used for reporting/analytics infrastructure. Someone building "RxC reporting with ClickHouse."</li>
+<li><strong>Genesis Myrkator</strong> — internal project/meeting</li>
+<li><strong>Adaptive compute allocation for Diffuser</strong> — resource optimization experiment</li>
+<li><strong>Backtesting with web search result ablation</strong> — John's idea for validating simulations</li>
+<li><strong>CRM</strong> — being set up, needs stage definitions, about to launch</li>
+<li><strong>Dignitasys</strong> — collaborative email tool being evaluated</li>
+<li><strong>Agent inconsistencies</strong> — bug where agents were generated "behind the script." Matt resolving. Active pain point.</li>
+<li><strong>Mississippi elections</strong> — upcoming political test case (midterms)</li>
+<li><strong>Executive summary on results</strong> — someone building with Kevin, using ClickHouse</li>
+</ul>
+</details>
+
+<details>
+<summary>People You Met</summary>
+<ul>
+<li><strong>John Kessler</strong> (CTO) — Showed you live coding. Uses Claude/Gemini for chart generation. Cares deeply about aesthetics. Utilitarian philosophy. Chicago kid, lived in Sydney/Toronto/Cleveland/SF/NYC/Japan/South Africa. Runner. "Venture dollars change you to the wrong things sometimes."</li>
+<li><strong>Matt Hauer</strong> (Head of Agent Development) — FSU professor, Cozzarelli Prize winner. Has a ~60-page manuscript he offered to share. <strong>Ask to read it on Day 1.</strong> Working on logical consistency in Audience Gen.</li>
+<li><strong>Cameron Fink</strong> (CEO) — Manages product weekly planning, weekly commits. Actively hiring. "Don't forget to get hyped."</li>
+<li><strong>Yundak</strong> — Operations/infrastructure. Background: CS professor father, worked at university hospital center for dementia (speech analysis/NLP for cognitive decline detection). Korean, grew up partly in Canada and Florida. Deep on statistical methodology, PCA, causality.</li>
+<li><strong>Patrick</strong> — "Builds the revenue machine." BD/sales. "Like herding cats — hard to pin down, but once you do, you can dairy farm them."</li>
+<li><strong>"Mover"</strong> — Designer, "a fucking beast." Redesigning results/report UI.</li>
+<li><strong>Sarah</strong> — met briefly</li>
+<li><strong>Kevin, Isabelle, Vlad, Andrew, Shashank, Ishan Singh</strong> — team members on various workstreams</li>
+</ul>
+</details>
+
+<details>
+<summary>Technical Challenges They Told You About</summary>
+<ol>
+<li><strong>Cross-sectional vs. longitudinal:</strong> Most client work is cross-sectional ("a snapshot"). Rolling simulations forward is aspirational but not current.</li>
+<li><strong>Interaction complexity:</strong> "The hardest thing for us is dealing with interactions and regressive components" — agent-agent effects create computational explosion.</li>
+<li><strong>Markov assumption limitations:</strong> First-order Markov misses long-range dependencies ("decisions you made 20 years ago might affect today").</li>
+<li><strong>Environment vs. stimulus:</strong> Formally separating environment from agent is unsolved.</li>
+<li><strong>PCA for scenario reduction:</strong> PCA's objective (variance) may not align with causal importance.</li>
+<li><strong>Butterfly effect:</strong> Small parameter changes → wildly different outcomes. Reproducibility challenge.</li>
+<li><strong>Agent inconsistencies:</strong> Logical consistency in generated agents is an active problem.</li>
+<li><strong>Agents generated behind the script:</strong> Bug in the pipeline.</li>
+<li><strong>Topological sort for DAGs:</strong> Works for acyclic computation, but cycles (agent interactions) break this.</li>
+</ol>
+</details>
+
+<details>
+<summary>What You Showed Them</summary>
+<ul>
+<li>PRISM archetype model (L1→L5 layers), 123 archetypes at the time</li>
+<li>The "which error do you prefer" quiz question design</li>
+<li>Your Monet-inspired map visualization</li>
+<li>MoC blog and the interactive approach</li>
+<li>Full Serif pitch: Bayesian online workflow, causal graph, confounders, partial pooling, B2B pivot, customer outcomes</li>
+</ul>
+</details>
+
+<details>
+<summary>Your Self-Intro at Standup</summary>
+<blockquote>"I've spent about a decade operationalizing interventional models. Three domains: DE Shaw (securities simulation from alt data), CDO at Malka (proptech, building occupancy simulation), founded Serif (consumer health, causal rigor for lifestyle-health recommendations)."</blockquote>
+</details>
+
+<details>
+<summary>Their Reaction &amp; Team Context</summary>
+<ul>
+<li>Matt: offered to share his manuscript — peer-level trust</li>
+<li>John: "It's insane" (re: 123 archetypes), showed internal tools unprompted, bonded over running/philosophy/causality</li>
+<li>Yundak: engaged deeply on partial pooling, PCA, causal inference — treated you as peer</li>
+<li>Cameron: positive energy, "don't forget to get hyped"</li>
+<li>"Early DE Shaw above a bookstore" vibes — small, intense, riffing on ideas</li>
+</ul>
+<p><strong>Team Size:</strong> 24 people at Visit 1, "growing quickly." Trajectory to ~80. All three founders present every day. Hiring actively.</p>
+</details>
+
+<hr>
+
+<h2>Week 1: Stack &amp; Tooling (Mar 12–18)</h2>
+<p class="section-intro">Theme: Be able to sit down and code on Day 1</p>
+
+<h3>Python at Scale (2 days)</h3>
+<p>You have the deep-dive TTS: <code>Aaru/08_Python_Technical_TTS_v3.md</code> (10 parts of audio). Build things as you go:</p>
+<div class="task"><input type="checkbox" id="w1-1"><label for="w1-1">Build a toy agent population (10K agents) using <code>dataclasses</code> with <code>slots=True</code></label></div>
+<div class="task"><input type="checkbox" id="w1-2"><label for="w1-2">Implement grouping/accumulation patterns (DefaultDict, Counter) for archetype bucketing</label></div>
+<div class="task"><input type="checkbox" id="w1-3"><label for="w1-3">Profile memory: compare dict-backed vs slots-backed agent objects at 100K scale</label></div>
+<div class="task"><input type="checkbox" id="w1-4"><label for="w1-4">Port your PRISM scorer from JS to Python (partial pooling, salience weighting)</label></div>
+<div class="task"><input type="checkbox" id="w1-5"><label for="w1-5">Practice: async patterns with <code>asyncio</code> for concurrent agent evaluation</label></div>
+<div class="task"><input type="checkbox" id="w1-6"><label for="w1-6">Get comfortable with Polars (faster than Pandas, they might use it)</label></div>
+
+<h3>React / Next.js / TypeScript (2 days)</h3>
+<p><strong>Critical.</strong> John's main project right now is dynamic TSX chart rendering.</p>
+<div class="task"><input type="checkbox" id="w1-7"><label for="w1-7">Spin up a Next.js 14+ app with TypeScript + Tailwind</label></div>
+<div class="task"><input type="checkbox" id="w1-8"><label for="w1-8">Build a dynamic chart renderer: JSON simulation results → React chart code → render</label></div>
+<div class="task"><input type="checkbox" id="w1-9"><label for="w1-9">Use a chart library they'd likely use (Recharts, Nivo, or Victory)</label></div>
+<div class="task"><input type="checkbox" id="w1-10"><label for="w1-10">Implement a "composer output → dynamic visualization" prototype</label></div>
+<div class="task"><input type="checkbox" id="w1-11"><label for="w1-11">Understand App Router, server components vs client components, dynamic imports</label></div>
+
+<h3>FastAPI (1 day)</h3>
+<div class="task"><input type="checkbox" id="w1-12"><label for="w1-12">POST <code>/simulate</code> — accepts scenario params, returns agent response distribution</label></div>
+<div class="task"><input type="checkbox" id="w1-13"><label for="w1-13">GET <code>/agents/{archetype}</code> — returns agents matching an archetype</label></div>
+<div class="task"><input type="checkbox" id="w1-14"><label for="w1-14">Pydantic models for agent profiles, scenario configs, response schemas</label></div>
+<div class="task"><input type="checkbox" id="w1-15"><label for="w1-15">Type everything — they're a TypeScript-first frontend shop</label></div>
+
+<h3>Tooling (half day)</h3>
+<div class="task"><input type="checkbox" id="w1-16"><label for="w1-16">Set up <strong>Linear</strong> (free tier) — issues → projects → cycles</label></div>
+<div class="task"><input type="checkbox" id="w1-17"><label for="w1-17">Review <strong>Notion</strong> workspace patterns for engineering docs</label></div>
+<div class="task"><input type="checkbox" id="w1-18"><label for="w1-18"><strong>Slack:</strong> threads, huddles, Canvas</label></div>
+<div class="task"><input type="checkbox" id="w1-19"><label for="w1-19"><strong>ClickHouse:</strong> read the docs, understand columnar analytics</label></div>
+<div class="task"><input type="checkbox" id="w1-20"><label for="w1-20">Git workflow: feature branches, stacked PRs, conventional commits</label></div>
+
+<p><strong>Listen while working:</strong> <code>16_Aaru_Tech_Stack.mp3</code>, <code>17_Working_In_Linear_Notion_Slack.mp3</code></p>
+
+<hr>
+
+<h2>Week 2: Domain &amp; Architecture (Mar 19–25)</h2>
+<p class="section-intro">Theme: Understand their problems better than they expect you to</p>
+
+<h3>Agent Architecture Deep-Dive (2 days)</h3>
+<p>Re-read and internalize:</p>
+<div class="task"><input type="checkbox" id="w2-1"><label for="w2-1"><code>16_Aaru_Tech_Stack_TTS.md</code> — John's 3 stages (LLM → fine-tuned → classical ML hybrid)</label></div>
+<div class="task"><input type="checkbox" id="w2-2"><label for="w2-2"><code>05_ABM_vs_Microsimulation_Research_Brief.md</code> — foundational concepts</label></div>
+<div class="task"><input type="checkbox" id="w2-3"><label for="w2-3"><code>03_PRISM_to_Aaru_Connection.md</code> — your unique angle</label></div>
+<div class="task"><input type="checkbox" id="w2-4"><label for="w2-4"><code>04_Modeling_Assumptions_Implications.md</code></label></div>
+<div class="task"><input type="checkbox" id="w2-5"><label for="w2-5"><strong>Ask Matt Hauer for his manuscript</strong> — he offered. Read it before you start.</label></div>
+
+<p><strong>Key concepts to be fluent in:</strong></p>
+<ul>
+<li>Mode collapse in LLM-based simulation</li>
+<li>Why classical ML supplements LLMs for distributional fidelity</li>
+<li>ASMMA (self-assembling knowledge graph)</li>
+<li>Tabular dataset fusion</li>
+<li>Automated clustering vs theory-driven archetypes</li>
+<li>Partial pooling: cohort priors → individual posteriors</li>
+<li><strong>Logical consistency in agent generation</strong> — Matt's current problem</li>
+<li><strong>"Second-generation tenement traits"</strong> — what's changing</li>
+</ul>
+
+<h3>Build a Mini Aaru (2 days)</h3>
+<div class="task"><input type="checkbox" id="w2-6"><label for="w2-6">Create 10K synthetic agents with demographic + psychographic profiles</label></div>
+<div class="task"><input type="checkbox" id="w2-7"><label for="w2-7">Implement scenario evaluation (e.g., "how does this population respond to X policy?")</label></div>
+<div class="task"><input type="checkbox" id="w2-8"><label for="w2-8">Add a calibration step: compare synthetic distribution against known real distribution</label></div>
+<div class="task"><input type="checkbox" id="w2-9"><label for="w2-9"><strong>Demonstrate the mode collapse problem</strong> — pure LLM → mode-collapsed; structured priors fix it</label></div>
+<div class="task"><input type="checkbox" id="w2-10"><label for="w2-10">Implement a basic backtesting pipeline: simulate a past event, compare to actual outcome</label></div>
+<div class="task"><input type="checkbox" id="w2-11"><label for="w2-11"><strong>Build the heat map visualization</strong> — like John's hardware store ICE sensitivity example</label></div>
+<div class="task"><input type="checkbox" id="w2-12"><label for="w2-12"><strong>Implement a logical consistency checker</strong> — validate agent trait combinations are internally coherent</label></div>
+
+<h3>Calibration &amp; Validation (1 day)</h3>
+<div class="task"><input type="checkbox" id="w2-13"><label for="w2-13">Backtesting methodology: evaluate synthetic population predictions against real data</label></div>
+<div class="task"><input type="checkbox" id="w2-14"><label for="w2-14"><strong>Web search result ablation</strong> — John's specific backtesting idea</label></div>
+<div class="task"><input type="checkbox" id="w2-15"><label for="w2-15">Spearman correlation (their EY study metric) — when appropriate, when misleading</label></div>
+<div class="task"><input type="checkbox" id="w2-16"><label for="w2-16">Bayesian calibration: posterior predictive checks, calibration plots</label></div>
+<div class="task"><input type="checkbox" id="w2-17"><label for="w2-17"><strong>The 2024 presidential prediction miss:</strong> Harris 53-47 prediction. Prepare structural bias analysis.</label></div>
+<div class="task"><input type="checkbox" id="w2-18"><label for="w2-18"><strong>Cross-sectional → longitudinal:</strong> How to extend snapshots to temporal predictions?</label></div>
+<div class="task"><input type="checkbox" id="w2-19"><label for="w2-19"><strong>Topological sort limitations:</strong> Approach to interaction modeling when cycles break DAGs?</label></div>
+
+<p><strong>Listen while working:</strong> <code>09_Emergence_vs_ABM_TTS.mp3</code>, <code>11_RL_World_Models_PRISM_TTS.mp3</code>, <code>13_Inference_Extrapolation_Epistemology_TTS.mp3</code></p>
+
+<hr>
+
+<h2>Week 3: Soft Skills &amp; Edge (Mar 26–31)</h2>
+<p class="section-intro">Theme: Show you're not just technical — you bring network, judgment, and vision</p>
+
+<h3>Client-Facing Prep (1 day)</h3>
+<div class="task"><input type="checkbox" id="w3-1"><label for="w3-1">Review the EY case study framing (90% Spearman correlation)</label></div>
+<div class="task"><input type="checkbox" id="w3-2"><label for="w3-2">Practice explaining "why synthetic > traditional survey" to a skeptical CMO</label></div>
+<div class="task"><input type="checkbox" id="w3-3"><label for="w3-3">Understand IPG partnership and Accenture Song integration</label></div>
+<div class="task"><input type="checkbox" id="w3-4"><label for="w3-4">Prepare 2-3 "here's how I'd scope a client engagement" examples</label></div>
+<div class="task"><input type="checkbox" id="w3-5"><label for="w3-5"><strong>Know current clients by name:</strong> Spencer, HOMA, Mississippi elections</label></div>
+<div class="task"><input type="checkbox" id="w3-6"><label for="w3-6">Yundak said clients are diverse — from "percentage of juice in Fanta" to political elections. Be ready to flex.</label></div>
+
+<h3>Your Unique Value Props (1 day)</h3>
+<div class="task"><input type="checkbox" id="w3-7"><label for="w3-7">Review <code>briefs/aaru-role-proposal.md</code> — comprehensive brief with 6-month project plan</label></div>
+<div class="task"><input type="checkbox" id="w3-8"><label for="w3-8">PRISM → Aaru mapping: theory-driven archetypes as structured priors for classical ML layer</label></div>
+<div class="task"><input type="checkbox" id="w3-9"><label for="w3-9"><strong>The "shared base layer" pitch:</strong> L1 personality traits → branch into politics, health, consumer. Refine it.</label></div>
+<div class="task"><input type="checkbox" id="w3-10"><label for="w3-10">Build on Matt's resonance with "capturing heterogeneity" framing</label></div>
+<div class="task"><input type="checkbox" id="w3-11"><label for="w3-11"><strong>Network map:</strong> Vim (150K providers), EY connections, NYU Berkley Center, political data contacts</label></div>
+<div class="task"><input type="checkbox" id="w3-12"><label for="w3-12">The "25th employee" philosophy: BD + technical + credibility</label></div>
+
+<h3>Technical Polish (2 days)</h3>
+<div class="task"><input type="checkbox" id="w3-13"><label for="w3-13"><strong>Mock "Day 1 at Aaru":</strong> Clone a repo, set up dev env, find something to improve, submit a stacked PR</label></div>
+<div class="task"><input type="checkbox" id="w3-14"><label for="w3-14">Practice reading unfamiliar Python codebases quickly (Mesa, AgentPy)</label></div>
+<div class="task"><input type="checkbox" id="w3-15"><label for="w3-15">GPU/compute concepts: H100s, batch inference, model serving (vLLM, TGI). They bought 20K H100 GPU hours.</label></div>
+<div class="task"><input type="checkbox" id="w3-16"><label for="w3-16">NumPy vectorization at population scale</label></div>
+<div class="task"><input type="checkbox" id="w3-17"><label for="w3-17"><strong>Dynamic React chart generation</strong> — have a working prototype</label></div>
+<div class="task"><input type="checkbox" id="w3-18"><label for="w3-18"><strong>ClickHouse basics</strong> — write some analytical queries</label></div>
+<div class="task"><input type="checkbox" id="w3-19"><label for="w3-19"><strong>Speech/NLP basics</strong> — builds rapport with Yundak</label></div>
+
+<h3>The Night Before</h3>
+<div class="task"><input type="checkbox" id="w3-20"><label for="w3-20">Re-listen: <code>10_Two_Page_Cheat_Sheet.md</code> / <code>10_Cheat_Sheet_TTS</code></label></div>
+<div class="task"><input type="checkbox" id="w3-21"><label for="w3-21">Review: <code>06_Vocabulary_and_Framing.md</code> — speak their language from minute one</label></div>
+<div class="task"><input type="checkbox" id="w3-22"><label for="w3-22">Have your PRISM demo ready (v12.3 Atlas, the quiz, the article draft)</label></div>
+<div class="task"><input type="checkbox" id="w3-23"><label for="w3-23"><strong>Have the dynamic chart prototype ready</strong> — your "I already started working on this" moment</label></div>
+<div class="task"><input type="checkbox" id="w3-24"><label for="w3-24">Review both visit transcripts for names and details</label></div>
+
+<hr>
+
+<h2>Daily Habits (All 3 Weeks)</h2>
+
+<p><strong>Morning (30 min):</strong> Read one Aaru-adjacent paper or blog post:</p>
+<ul>
+<li>Park et al. 2023 — "Generative Agents: Interactive Simulacra of Human Behavior"</li>
+<li>Argyle et al. 2023 — "Out of One, Many: Using Language Models to Simulate Human Samples"</li>
+<li>Bai et al. 2024 — "Measuring the Persuasion Power of LLMs"</li>
+<li>Hauer's published demography papers (his Google Scholar page)</li>
+<li>Any new Aaru press/blog posts</li>
+</ul>
+
+<p><strong>Evening (20 min):</strong> Listen to one of the existing Aaru TTS audio files.</p>
+
+<hr>
+
+<h2>What to Have Ready on Day 1</h2>
+
+<ol>
+<li><strong>Laptop set up:</strong> Python 3.11+, Node 20+, pnpm, VS Code, Docker, git configured</li>
+<li><strong>PRISM demo:</strong> Atlas, quiz, calibration results — proof you build population models</li>
+<li><strong>Dynamic chart renderer prototype</strong> — Next.js + React + TSX generation from simulation data</li>
+<li><strong>Mini Aaru simulation</strong> — 10K agents, scenario evaluation, calibration pipeline, logical consistency checker</li>
+<li><strong>Heat map visualization</strong> — Geospatial agent sensitivity map</li>
+<li><strong>Questions prepared:</strong>
+<ul>
+<li>"Matt, can I read your manuscript? You mentioned it last time."</li>
+<li>"How's the logical consistency module going? I built a prototype consistency checker — happy to compare approaches."</li>
+<li>"How are you thinking about longitudinal validation now that most work is cross-sectional?"</li>
+<li>"What does the web search result ablation backtesting look like in practice?"</li>
+<li>"Where does the composer pipeline hand off to the chart renderer?"</li>
+<li>"How do you separate environment parameters from agent parameters in the scoring function?"</li>
+<li>"What's the second-gen tenement trait schema look like vs first gen?"</li>
+</ul>
+</li>
+<li><strong>Network map:</strong> A one-pager of connections you can introduce to Aaru</li>
+<li><strong>Names memorized:</strong> John, Cameron, Ned, Matt, Yundak, Patrick, Mover, Sarah, Kevin, Isabelle, Vlad, Andrew, Shashank</li>
+</ol>
+
+<hr>
+
+<h2>Audio Library (Re-Listen Queue)</h2>
+
+<p>All in <code>C:\Users\samci\Downloads\polmodel-final\Aaru\</code>:</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Priority</th><th>File</th><th>Topic</th><th>~Length</th></tr></thead>
+<tbody>
+<tr><td><span class="priority">🔴</span></td><td><code>16_Aaru_Tech_Stack.mp3</code></td><td>Their confirmed architecture (post-visit)</td><td>~10 min</td></tr>
+<tr><td><span class="priority">🔴</span></td><td><code>08_Python_Technical_*.mp3</code> (10 parts)</td><td>Python at population scale</td><td>~45 min</td></tr>
+<tr><td><span class="priority">🔴</span></td><td><code>10_Cheat_Sheet_*.mp3</code> (3 parts)</td><td>Quick reference, all concepts</td><td>~15 min</td></tr>
+<tr><td><span class="priority">🟡</span></td><td><code>17_Working_In_Linear_Notion_Slack.mp3</code></td><td>Their tooling workflow</td><td>~10 min</td></tr>
+<tr><td><span class="priority">🟡</span></td><td><code>09_Emergence_vs_ABM_*.mp3</code> (4 parts)</td><td>ABM theory</td><td>~15 min</td></tr>
+<tr><td><span class="priority">🟡</span></td><td><code>11_RL_World_Models_*.mp3</code> (5 parts)</td><td>RL + world models + PRISM</td><td>~20 min</td></tr>
+<tr><td><span class="priority">🟡</span></td><td><code>13_Inference_*.mp3</code> (3 parts)</td><td>Epistemology of prediction</td><td>~15 min</td></tr>
+<tr><td><span class="priority">🟢</span></td><td><code>18_RL_Framework_*.mp3</code></td><td>RL framework + research agenda</td><td>~10 min</td></tr>
+<tr><td><span class="priority">🟢</span></td><td><code>15_Role_Proposal_TTS.md</code> → audio</td><td>Your pitch</td><td>~10 min</td></tr>
+<tr><td><span class="priority">🟢</span></td><td><code>12_Declared_Revealed_*.mp3</code></td><td>Bayesian workflow</td><td>~15 min</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Also in <code>transcripts/</code>:</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Priority</th><th>File</th><th>Topic</th><th>~Length</th></tr></thead>
+<tbody>
+<tr><td><span class="priority">🔴</span></td><td><code>aaru-intel-briefing.mp3</code></td><td>Intel briefing</td><td>~12 min</td></tr>
+<tr><td><span class="priority">🟡</span></td><td><code>yoonduk-prep-full.mp3</code></td><td>Full Yundak prep</td><td>~23 min</td></tr>
+<tr><td><span class="priority">🟡</span></td><td><code>five-questions-yoonduk.mp3</code></td><td>5 questions for Yundak</td><td>~6 min</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr>
+
+<h2>The Meta-Strategy</h2>
+
+<p>You visited twice. You attended their standup. You introduced yourself to the full team. You walked the neighborhood with Yundak for 2.5 hours. You saw John live-code. You read Matt's facial expression when he talked about logical consistency. The play is:</p>
+
+<ol>
+<li><strong>Show you listened.</strong> Reference specific things from both visits — the dynamic chart rendering, the logical consistency module, the agent inconsistencies, the cross-sectional limitation, the ClickHouse reporting pipeline.</li>
+<li><strong>Show you already started.</strong> Have prototypes of things they're building (chart renderer, consistency checker, heat map viz, calibration pipeline).</li>
+<li><strong>Show the shared base layer.</strong> PRISM → Aaru isn't a stretch. It's the same architecture. Health → politics → consumer all start from L1. You already pitched this to both Matt and Yundak and they engaged.</li>
+<li><strong>Show the rolodex.</strong> Vim's 150K providers. NYU Berkley Center. Political data contacts. You don't just bring code — you bring clients.</li>
+<li><strong>Show the taste.</strong> John cares about aesthetics. Your PRISM Atlas, the MoC blog, the ECG display — you have visual taste. This matters.</li>
+<li><strong>Remember the names.</strong> You were at their standup. Remembering details signals you were paying attention and already feel like a team member.</li>
+</ol>
+
+</body>
+</html>
