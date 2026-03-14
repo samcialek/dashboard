@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companion Piece Outline — How Light Refracts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+        :root { --bg: #E8E4DC; --bg2: #D4CFC4; --coral: #E07A5F; --green: #2D5A3D; --blue: #4A90A4; --text: #1a1a1a; --text2: #4a4a4a; --fig-bg: #1a1a1a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'EB Garamond', Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 18px; }
+        header { text-align: center; padding: 2.5rem 1rem 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
+        .site-title { font-family: 'EB Garamond', serif; font-size: 1.8rem; font-weight: 400; font-style: italic; color: var(--coral); }
+        .site-subtitle { font-family: 'Courier Prime', monospace; font-size: 0.75rem; color: var(--text2); text-transform: lowercase; letter-spacing: 0.05em; }
+        .content { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.3rem; text-transform: lowercase; }
+        .meta { font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text2); margin-bottom: 2rem; }
+        .thesis { background: var(--bg2); padding: 1.2rem 1.5rem; border-radius: 6px; margin-bottom: 2.5rem; border-left: 3px solid var(--coral); font-style: italic; }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 600; margin: 2.5rem 0 0.8rem; text-transform: lowercase; color: var(--text); border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 0.3rem; }
+        .layer-tag { font-family: 'Courier Prime', monospace; font-size: 0.7rem; background: var(--coral); color: #fff; padding: 2px 8px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+        .layer-tag.l2 { background: var(--green); }
+        .layer-tag.l3 { background: var(--blue); }
+        .layer-tag.l4 { background: #8B5CF6; }
+        .layer-tag.l5 { background: #6B7280; }
+        .layer-tag.meta { background: var(--text2); }
+        h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 500; margin: 1.2rem 0 0.4rem; color: var(--text2); }
+        ul { margin: 0.5rem 0 1rem 1.5rem; }
+        li { margin-bottom: 0.4rem; }
+        blockquote { border-left: 3px solid var(--coral); padding: 0.5rem 1rem; margin: 1rem 0; color: var(--text2); font-style: italic; background: rgba(224,122,95,0.05); }
+        .transform { font-family: 'Courier Prime', monospace; font-size: 0.85rem; color: var(--coral); margin: 0.8rem 0; }
+        .figures { background: var(--fig-bg); color: #ccc; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .figures h3 { color: #E07A5F; }
+        .figures li { color: #aaa; }
+        .titles { display: flex; flex-wrap: wrap; gap: 8px; margin: 1rem 0; }
+        .title-option { font-family: 'Courier Prime', monospace; font-size: 0.8rem; padding: 4px 12px; border: 1px solid var(--coral); border-radius: 4px; color: var(--coral); }
+    </style>
+</head>
+<body>
+<header>
+    <div class="site-title">matrices of confusion<span style="font-style:normal;font-weight:700">!</span></div>
+    <div class="site-subtitle">companion piece outline — working draft</div>
+</header>
+<div class="content">
+
+<h1>how light refracts</h1>
+<div class="meta">march 2026 &middot; companion to "the cause of our politics"</div>
+
+<div class="thesis">"Liberal" and "conservative" are not fundamental forces — they are principal components. Like PCA in statistics, they compress a high-dimensional disposition space into convenient axes that capture the most variance in a given era. But principal components are artifacts of the decomposition, not the underlying reality. They rotate when the data changes. The thing underneath — the actual multi-dimensional state space of political disposition — doesn't rotate. PRISM maps that state space.</div>
+
+<h2><span class="layer-tag meta">framing</span> I. "liberal" and "conservative" are principal components, not causes</h2>
+
+<blockquote>"Liberal" and "conservative" are the names we give to the first two principal components of political behavior in a given era. They are not real forces. They are summary statistics.</blockquote>
+
+<ul>
+    <li>PCA analogy: "left-right" is PC1 of American politics. "Libertarian-authoritarian" is PC2. They feel real because they explain a lot. But they're projections, not primitives.</li>
+    <li>The components rotate across eras. What "liberal" captures in 1972 (Great Society, labor unions, anti-war) is not what it captures in 2024 (identity politics, credentialism, technocratic governance). Same label, different loading vector.</li>
+    <li>If you build a model on the components, it breaks every time the political landscape rearranges. If you build on the underlying dimensions, it survives. That's the difference between descriptive and generative.</li>
+</ul>
+
+<blockquote>"After creating this framework that could be applied broadly, I applied it broadly."</blockquote>
+
+<h2><span class="layer-tag">L1</span> II. temperament: the priors you were born with</h2>
+
+<p><strong>What it is:</strong> Cognitive style, risk tolerance, time horizon, openness, comfort with ambiguity, need for order, universalism vs. parochialism. The hardware.</p>
+<p><strong>Key insight:</strong> L1 defines a <em>range</em> of possible political dispositions, not a single one. It sets the boundaries; L2 selects within them.</p>
+
+<h3>justification for L1 priors selected</h3>
+<ul>
+    <li><strong>Conflict orientation</strong> — how much you seek or avoid confrontation. Downstream of Big Five Agreeableness but more specific. Determines whether politics feels like a battle to win or a problem to solve.</li>
+    <li><strong>Rule orientation</strong> — comfort with explicit structure vs. contextual judgment. A rule-oriented universalist produces very different politics than a rule-oriented tribalist.</li>
+    <li><strong>Abstraction tolerance</strong> — willingness to reason about systems vs. concrete cases. Predicts whether someone engages with policy as mechanism design or as moral narrative.</li>
+    <li><strong>Ambiguity tolerance</strong> — capacity to hold uncertainty without resolving it prematurely. Low ambiguity tolerance + high threat sensitivity = very specific political phenotype.</li>
+    <li><strong>Time horizon</strong> — how far forward you optimize. Short time horizons favor concrete, immediate policy; long favor systemic, structural thinking.</li>
+    <li><strong>Universalism vs. parochialism</strong> — the radius of your moral circle. The single most consequential L1 dimension for predicting coalition membership.</li>
+</ul>
+
+<p><strong>Bayesian framing:</strong> L1 priors are literally Bayesian priors. Given someone's expressed politics, what are the possible L1 configurations that could have produced them? PRISM inverts the generative process.</p>
+
+<h2><span class="layer-tag l2">L2</span> III. formative context: the prism itself</h2>
+
+<p><strong>What it is:</strong> Where you grew up, class position, education, religion, region, ethnic status, economic volatility, media exposure, institutional trust, direct experience with disorder or exclusion.</p>
+
+<div class="transform">transformation: L1 &rarr; L2 (endogenous meets exogenous)</div>
+
+<ul>
+    <li>White light (L1 temperament) enters a prism (L2 formative context) and separates into a spectrum (L3 disposition). Same light through a different prism = different spectrum. But the <em>range</em> is the same.</li>
+    <li>L2 doesn't override L1 — it <em>selects</em> from the possibility space that L1 defines.</li>
+    <li>The nationalism test: would a MAGA nationalist of the JD Vance variety be the same kind of nationalist if born into the majority religion/ethnicity of a different country? If yes, L1 dominates. If no, L2 dominates. PRISM says: some of each, and the ratio is measurable.</li>
+</ul>
+
+<blockquote>"I Know This About Myself, I Assume as Much for Other People" — the title for the declared vs. revealed preferences section.</blockquote>
+
+<ul>
+    <li>Self-report introduces systematic bias. One way to get at revealed preferences: have someone else answer the questions about you.</li>
+    <li>The quiz triangulates revealed preferences by asking questions whose political valence isn't immediately obvious.</li>
+</ul>
+
+<h2><span class="layer-tag l3">L3</span> IV. political disposition: the spectrum after refraction</h2>
+
+<div class="transform">transformation: L2 &rarr; L3 (selection from possibility space)</div>
+
+<ul>
+    <li>Not a point on a left-right line, but a position in a multi-dimensional space mapping to one of the archetypes.</li>
+    <li>The 10 disposition dimensions emerge here: markets, coercion, hierarchy, pluralism, national identity, moral traditionalism, elite stewardship, zero-sum conflict, social change, etc.</li>
+    <li>Someone can score high on public order and low on economic hierarchy, or high on pluralism and high on technocratic control — real politics contains these cross-currents.</li>
+    <li>"Liberal" and "conservative" are lossy compressions — they capture the dominant axis of a given era's coalitional sorting but erase the cross-pressures.</li>
+</ul>
+
+<h3>why ~132 archetypes and not 2</h3>
+<ul>
+    <li>Two archetypes = PCA with k=2. You've thrown away most of the information.</li>
+    <li>The archetype count is empirical — it's the resolution at which prediction stops improving.</li>
+</ul>
+
+<h2><span class="layer-tag l4">L4</span> V. current context: the temporal overlay</h2>
+
+<p><strong>What it is:</strong> Economic shocks, war, migration, elite failure, technological change, charismatic candidates, institutional decay, crime waves, perceived humiliation, party sorting.</p>
+
+<div class="transform">transformation: L3 &rarr; L4 (reinforcement learning connection)</div>
+
+<ul>
+    <li>L4 doesn't change who you are (L1-L3). It changes which parts of who you are become <em>salient</em>.</li>
+    <li>Maps to reinforcement learning: L3 disposition = policy function. L4 = environment/reward signal. Same policy function, different actions under different conditions.</li>
+    <li><strong>Explore vs. exploit:</strong> L1 (openness, ambiguity tolerance) sets the explore/exploit ratio. L4 (how threatening the environment is) shifts it. Under threat, exploit dominates — people retreat to coalition defaults.</li>
+    <li>This is how realignment happens: not by people becoming fundamentally different, but by different parts of their latent structure becoming activated.</li>
+</ul>
+
+<h3>the endogenous-exogenous handoff</h3>
+<ul>
+    <li>L1-L3 = endogenous (internal, relatively stable). L4 = exogenous (external, changing).</li>
+    <li>Pre-compute all combinations of political behaviors for each archetype across L4 conditions. Master lookup instead of runtime computation.</li>
+    <li>Connection to Aaru: archetypes are cluster centers, L4 dynamics are the environmental simulation layer.</li>
+</ul>
+
+<h2><span class="layer-tag l5">L5</span> VI. political behavior: the observable output</h2>
+
+<div class="transform">transformation: L4 &rarr; L5 (activation &rarr; action)</div>
+
+<ul>
+    <li>Votes, issue positions, party affiliation, candidate support, movement participation, abstention. The thing everyone measures.</li>
+    <li>L5 is where most models start and stop. Decent snapshot, poor transfer.</li>
+    <li>The same L5 can be generated by completely different L1-L4 configurations — the overdetermination problem.</li>
+    <li>"Two voters, one survey score" — same output, different generators, different futures.</li>
+</ul>
+
+<h2><span class="layer-tag meta">meta</span> VII. concept drift and the three-body problem</h2>
+
+<blockquote>Politics exhibits massive concept drift. Three forces act on each other — a genuine three-body problem.</blockquote>
+
+<ul>
+    <li>The three forces: (1) elite positioning, (2) mass sentiment, (3) institutional/media framing.</li>
+    <li>Each influences the other two, making equilibria temporary.</li>
+    <li>Simple models assume stationarity. PRISM assumes non-stationarity and models the drift mechanism.</li>
+    <li>This is why "liberal" rotates: the coalitional sorting algorithm changed what the first principal component captures.</li>
+</ul>
+
+<h2><span class="layer-tag meta">meta</span> VIII. applications</h2>
+
+<ul>
+    <li><strong>Coalition simulation:</strong> Not who wins, but who aligns with whom under different conditions.</li>
+    <li><strong>The Politracker:</strong> Put your map against someone else's and find actual overlap vs. assumed opposition.</li>
+    <li><strong>Historical extension:</strong> Apply PRISM to the Founding Fathers — what were their L1s?</li>
+    <li><strong>Expansion packs:</strong> Modular additions for going deeper on specific policy areas.</li>
+</ul>
+
+<div class="figures">
+    <h3>figures to build</h3>
+    <ul>
+        <li><strong>The Time Warp</strong> — Steve's label changes by era, latent traits stay stable <em>(already built)</em></li>
+        <li><strong>The Onion Peel</strong> — L5&rarr;L1 concentric rings <em>(already built)</em></li>
+        <li><strong>PRISM layer diagram</strong> — L1 &rarr; L2 (prism) &rarr; L3 &rarr; L4 &rarr; L5 <em>(new)</em></li>
+        <li><strong>PCA rotation visualization</strong> — "liberal-conservative" axis rotates across decades while underlying dimensions stay fixed <em>(new)</em></li>
+        <li><strong>Endogenous-exogenous handoff diagram</strong> — where the RL connection lives <em>(new)</em></li>
+        <li><strong>Where/How/Where diagram</strong> — three boxes + Identity as separate external box <em>(new)</em></li>
+    </ul>
+</div>
+
+<h3>working titles</h3>
+<div class="titles">
+    <span class="title-option">How Light Refracts</span>
+    <span class="title-option">The Prism Itself</span>
+    <span class="title-option">Five Layers Deep</span>
+    <span class="title-option">What Refracts Into "Liberal"</span>
+    <span class="title-option">The Political Spectrum Is a Projection</span>
+</div>
+
+</div>
+</body>
+</html>
