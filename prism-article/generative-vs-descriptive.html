@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative vs Descriptive Political Models</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@400;600;700&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #E8E4DC;
+  --fig-bg: #1a1a1a;
+  --coral: #E07A5F;
+  --green: #2D5A3D;
+  --blue: #4A90A4;
+  --text: #2a2a2a;
+  --light-text: #d4d4d4;
+  --muted: #999;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'EB Garamond',serif; font-size:18px; line-height:1.6; }
+.page { max-width:960px; margin:0 auto; padding:40px 20px; }
+h1 { font-family:'Space Grotesk',sans-serif; font-size:2.4em; font-weight:700; margin-bottom:8px; }
+h1 span { color:var(--coral); }
+.subtitle { font-style:italic; color:var(--muted); margin-bottom:48px; font-size:1.1em; }
+.figure { margin-bottom:56px; }
+.fig-label { font-family:'Courier Prime',monospace; font-size:13px; color:var(--coral); text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
+.fig-title { font-family:'Space Grotesk',sans-serif; font-size:1.5em; font-weight:600; margin-bottom:16px; }
+.fig-box { background:var(--fig-bg); border-radius:12px; padding:32px; color:var(--light-text); position:relative; overflow:hidden; }
+.fig-caption { font-size:14px; color:var(--muted); margin-top:12px; font-style:italic; }
+button { font-family:'Space Grotesk',sans-serif; background:var(--coral); color:#fff; border:none; padding:10px 22px; border-radius:6px; cursor:pointer; font-size:14px; font-weight:600; transition:background .2s; }
+button:hover { background:#c96a50; }
+button.secondary { background:var(--blue); }
+button.secondary:hover { background:#3a7a94; }
+button.green { background:var(--green); }
+button.green:hover { background:#1d4a2d; }
+
+/* ===== FIGURE 1: PREDICTION GAP ===== */
+.f1-panels { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.f1-panel { background:rgba(255,255,255,.05); border-radius:8px; padding:20px; }
+.f1-panel h3 { font-family:'Space Grotesk',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; text-align:center; }
+.f1-panel.desc h3 { color:var(--muted); }
+.f1-panel.gen h3 { color:var(--coral); }
+.f1-dots { display:flex; gap:8px; justify-content:center; margin-bottom:16px; }
+.f1-dot { width:14px; height:14px; border-radius:50%; }
+.f1-dot.left { background:var(--blue); }
+.f1-dot.right { background:var(--coral); }
+.f1-dot.center { background:var(--muted); }
+.f1-label-box { text-align:center; padding:12px; background:rgba(255,255,255,.08); border-radius:6px; font-family:'Courier Prime',monospace; font-size:16px; }
+.f1-predictions { margin-top:12px; }
+.f1-pred-row { display:flex; align-items:center; margin-bottom:8px; font-family:'Courier Prime',monospace; font-size:13px; }
+.f1-pred-topic { width:120px; }
+.f1-pred-bar-bg { flex:1; height:16px; background:rgba(255,255,255,.1); border-radius:3px; position:relative; overflow:hidden; }
+.f1-pred-bar { height:100%; border-radius:3px; transition:width .4s; }
+.f1-pred-conf { width:40px; text-align:right; font-size:12px; color:var(--muted); }
+.f1-reveal-area { margin-top:12px; min-height:80px; }
+.f1-reveal-row { display:flex; align-items:center; margin-bottom:6px; font-family:'Courier Prime',monospace; font-size:13px; }
+.f1-check { width:20px; font-size:16px; }
+.f1-actual { font-size:12px; color:var(--muted); margin-left:8px; }
+.f1-no-data { text-align:center; color:var(--muted); font-style:italic; padding:20px; font-family:'EB Garamond',serif; }
+
+/* ===== FIGURE 2: SHUFFLE TEST ===== */
+.f2-cards { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:20px; }
+.f2-card { background:rgba(255,255,255,.08); border-radius:6px; padding:8px 12px; font-family:'Courier Prime',monospace; font-size:12px; text-align:center; min-width:80px; transition:all .3s; border:1px solid rgba(255,255,255,.1); }
+.f2-card .issue { margin-bottom:4px; }
+.f2-card .lean { font-size:18px; }
+.f2-models { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px; }
+.f2-model { background:rgba(255,255,255,.05); border-radius:8px; padding:16px; }
+.f2-model h3 { font-family:'Space Grotesk',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; text-align:center; }
+.f2-desc-label { text-align:center; font-family:'Courier Prime',monospace; font-size:18px; padding:10px; transition:all .15s; }
+.f2-desc-label.flicker { opacity:0.3; }
+.f2-latent-container { position:relative; }
+.f2-latent-node { display:inline-block; background:var(--green); color:#fff; padding:4px 10px; border-radius:16px; font-family:'Courier Prime',monospace; font-size:11px; margin:4px; }
+.f2-stable-label { text-align:center; font-family:'Courier Prime',monospace; font-size:11px; color:var(--green); margin-top:8px; }
+.f2-btn-row { text-align:center; margin-top:16px; }
+
+/* ===== FIGURE 3: TIME WARP ===== */
+.f3-profile { text-align:center; margin-bottom:16px; font-family:'Space Grotesk',sans-serif; font-size:20px; }
+.f3-profile span { color:var(--coral); }
+.f3-slider-row { text-align:center; margin-bottom:20px; }
+.f3-slider-row input[type=range] { width:80%; accent-color:var(--coral); }
+.f3-year-display { font-family:'Courier Prime',monospace; font-size:28px; color:var(--coral); margin-bottom:8px; }
+.f3-models { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.f3-model { background:rgba(255,255,255,.05); border-radius:8px; padding:20px; text-align:center; }
+.f3-model h3 { font-family:'Space Grotesk',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+.f3-desc-out { font-family:'Courier Prime',monospace; font-size:20px; min-height:60px; display:flex; align-items:center; justify-content:center; }
+.f3-radar { display:block; margin:0 auto; }
+
+/* ===== FIGURE 4: TWO VOTERS ===== */
+.f4-voters { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.f4-voter { background:rgba(255,255,255,.05); border-radius:8px; padding:20px; text-align:center; }
+.f4-voter h3 { font-family:'Space Grotesk',sans-serif; font-size:15px; margin-bottom:8px; }
+.f4-score { font-family:'Courier Prime',monospace; font-size:24px; color:var(--coral); margin-bottom:12px; transition:all .4s; }
+.f4-silhouette { font-size:64px; margin-bottom:8px; opacity:.6; }
+.f4-tree { margin-top:12px; text-align:left; font-family:'Courier Prime',monospace; font-size:13px; line-height:1.8; display:none; }
+.f4-tree.show { display:block; }
+.f4-tree .root { color:var(--coral); font-weight:bold; }
+.f4-tree .arrow { color:var(--muted); }
+.f4-tree .leaf { color:var(--blue); }
+.f4-btn-row { text-align:center; margin-top:20px; display:flex; gap:12px; justify-content:center; }
+
+/* ===== FIGURE 5: ONION PEEL ===== */
+.f5-container { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+.f5-onion { position:relative; width:320px; height:320px; margin:0 auto; }
+.f5-ring { position:absolute; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .5s; border:2px solid rgba(255,255,255,.15); }
+.f5-ring:hover { border-color:var(--coral); }
+.f5-ring.peeled { opacity:0; transform:scale(1.3); pointer-events:none; }
+.f5-ring-label { font-family:'Courier Prime',monospace; font-size:10px; text-align:center; pointer-events:none; position:absolute; }
+.f5-info { background:rgba(255,255,255,.05); border-radius:8px; padding:20px; min-height:200px; }
+.f5-info h3 { font-family:'Space Grotesk',sans-serif; font-size:15px; margin-bottom:12px; }
+.f5-info p { font-family:'EB Garamond',serif; font-size:15px; line-height:1.5; }
+.f5-model-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+.f5-model-box { background:rgba(255,255,255,.05); border-radius:6px; padding:12px; text-align:center; }
+.f5-model-box h4 { font-family:'Space Grotesk',sans-serif; font-size:12px; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; color:var(--muted); }
+.f5-model-box.desc-box .highlight { color:var(--muted); }
+.f5-model-box.gen-box .highlight { color:var(--coral); }
+.f5-reset-btn { margin-top:12px; }
+</style>
+</head>
+<body>
+<div class="page">
+<h1>Generative <span>vs</span> Descriptive</h1>
+<p class="subtitle">Five interactive illustrations on two ways to model a political mind</p>
+
+<!-- ===== FIGURE 1 ===== -->
+<div class="figure" id="fig1">
+  <div class="fig-label">Figure 1</div>
+  <div class="fig-title">The Prediction Gap</div>
+  <div class="fig-box">
+    <p style="font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-bottom:16px;">INPUT: 5 quiz answers (Healthcare ← | Guns → | Climate ← | Trade ← | Taxes →)</p>
+    <div class="f1-panels">
+      <div class="f1-panel desc">
+        <h3>Descriptive Model</h3>
+        <div class="f1-dots">
+          <div class="f1-dot left"></div>
+          <div class="f1-dot right"></div>
+          <div class="f1-dot left"></div>
+          <div class="f1-dot left"></div>
+          <div class="f1-dot right"></div>
+        </div>
+        <div class="f1-label-box">Center-Left</div>
+        <div class="f1-no-data">
+          <div style="font-size:32px;margin-bottom:8px;">🚫</div>
+          No predictions for unseen topics.<br>Model only summarizes what it was given.
+        </div>
+      </div>
+      <div class="f1-panel gen">
+        <h3>Generative Model</h3>
+        <div class="f1-dots">
+          <div class="f1-dot left"></div>
+          <div class="f1-dot right"></div>
+          <div class="f1-dot left"></div>
+          <div class="f1-dot left"></div>
+          <div class="f1-dot right"></div>
+        </div>
+        <div class="f1-label-box" style="color:var(--coral);">Latent profile inferred → generating predictions…</div>
+        <div class="f1-predictions" id="f1-preds"></div>
+        <div style="text-align:center;margin-top:12px;">
+          <button onclick="f1Reveal()">Reveal Actual Positions</button>
+        </div>
+        <div class="f1-reveal-area" id="f1-reveal"></div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-caption">The descriptive model summarizes; the generative model extrapolates. Same 5 inputs, vastly different outputs.</p>
+</div>
+
+<!-- ===== FIGURE 2 ===== -->
+<div class="figure" id="fig2">
+  <div class="fig-label">Figure 2</div>
+  <div class="fig-title">The Shuffle Test</div>
+  <div class="fig-box">
+    <div class="f2-cards" id="f2-cards"></div>
+    <div class="f2-btn-row">
+      <button onclick="f2Shuffle()">⟳ Shuffle Era</button>
+    </div>
+    <div class="f2-models">
+      <div class="f2-model">
+        <h3 style="color:var(--muted);">Descriptive Model</h3>
+        <div class="f2-desc-label" id="f2-desc-label">Conservative</div>
+      </div>
+      <div class="f2-model">
+        <h3 style="color:var(--coral);">Generative Model</h3>
+        <div style="text-align:center;" id="f2-latent-nodes">
+          <div class="f2-latent-node">Threat Sensitivity</div>
+          <div class="f2-latent-node">Universalism</div>
+          <div class="f2-latent-node">Hierarchy Pref.</div>
+          <div class="f2-latent-node">Market Trust</div>
+        </div>
+        <div class="f2-stable-label">✓ Stable across all shuffles</div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-caption">Reshuffle which party "owns" each issue. Descriptive labels break; latent traits hold.</p>
+</div>
+
+<!-- ===== FIGURE 3 ===== -->
+<div class="figure" id="fig3">
+  <div class="fig-label">Figure 3</div>
+  <div class="fig-title">The Time Warp</div>
+  <div class="fig-box">
+    <div class="f3-profile">Profile: <span>Steve</span> — same person, same values</div>
+    <div class="f3-slider-row">
+      <div class="f3-year-display" id="f3-year">1970</div>
+      <input type="range" min="1970" max="2024" value="1970" step="1" oninput="f3Update(this.value)">
+    </div>
+    <div class="f3-models">
+      <div class="f3-model">
+        <h3 style="color:var(--muted);">Descriptive Model</h3>
+        <div class="f3-desc-out" id="f3-desc-label">Rockefeller Republican</div>
+      </div>
+      <div class="f3-model">
+        <h3 style="color:var(--coral);">Generative Model</h3>
+        <canvas class="f3-radar" id="f3-radar" width="220" height="220"></canvas>
+        <div style="font-family:'Courier Prime',monospace;font-size:11px;color:var(--green);margin-top:6px;">✓ Stable across all eras</div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-caption">Steve didn't change. The labels did. Drag the slider to watch descriptive categories fail a stable person.</p>
+</div>
+
+<!-- ===== FIGURE 4 ===== -->
+<div class="figure" id="fig4">
+  <div class="fig-label">Figure 4</div>
+  <div class="fig-title">Two Voters, One Survey Score</div>
+  <div class="fig-box">
+    <div class="f4-voters">
+      <div class="f4-voter">
+        <h3>Voter A</h3>
+        <div class="f4-silhouette">🧑</div>
+        <div class="f4-score" id="f4-scoreA">Patriotism: 7/7</div>
+        <div class="f4-tree" id="f4-treeA">
+          <span class="root">Constitutional Principles</span><br>
+          <span class="arrow">&nbsp;&nbsp;└→</span> Rule of Law<br>
+          <span class="arrow">&nbsp;&nbsp;&nbsp;&nbsp;└→</span> Institutional Trust<br>
+          <span class="arrow">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└→</span> <span class="leaf">Patriotism (principled)</span>
+        </div>
+      </div>
+      <div class="f4-voter">
+        <h3>Voter B</h3>
+        <div class="f4-silhouette">🧑</div>
+        <div class="f4-score" id="f4-scoreB">Patriotism: 7/7</div>
+        <div class="f4-tree" id="f4-treeB">
+          <span class="root">Tribal Identity</span><br>
+          <span class="arrow">&nbsp;&nbsp;└→</span> In-Group Loyalty<br>
+          <span class="arrow">&nbsp;&nbsp;&nbsp;&nbsp;└→</span> Cultural Belonging<br>
+          <span class="arrow">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└→</span> <span class="leaf">Patriotism (identity)</span>
+        </div>
+      </div>
+    </div>
+    <div class="f4-btn-row">
+      <button onclick="f4OpenHood()">🔧 Open the Hood</button>
+      <button class="secondary" onclick="f4FastForward()" id="f4-ff-btn" style="display:none;">⏩ Fast Forward to 2020</button>
+    </div>
+  </div>
+  <p class="fig-caption">Same survey score, different generators, different futures. The descriptive model sees twins; the generative model sees divergence waiting to happen.</p>
+</div>
+
+<!-- ===== FIGURE 5 ===== -->
+<div class="figure" id="fig5">
+  <div class="fig-label">Figure 5</div>
+  <div class="fig-title">The Onion Peel</div>
+  <div class="fig-box">
+    <div class="f5-container">
+      <div>
+        <div class="f5-onion" id="f5-onion"></div>
+        <div style="text-align:center;margin-top:8px;">
+          <button class="f5-reset-btn green" onclick="f5Reset()">↺ Reset Layers</button>
+        </div>
+      </div>
+      <div class="f5-info" id="f5-info">
+        <h3>Click a ring to peel it away</h3>
+        <p>Each layer reveals deeper structure beneath surface politics.</p>
+        <div class="f5-model-row">
+          <div class="f5-model-box desc-box">
+            <h4>Descriptive</h4>
+            <div style="font-family:'Courier Prime',monospace;font-size:12px;" class="highlight">Sees only the outer ring</div>
+          </div>
+          <div class="f5-model-box gen-box">
+            <h4>Generative</h4>
+            <div style="font-family:'Courier Prime',monospace;font-size:12px;" class="highlight">Traces causal flow from core → surface</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-caption">Descriptive models read bumper stickers. Generative models trace the causal chain from temperament to vote.</p>
+</div>
+
+</div>
+
+<script>
+// ===== FIGURE 1: PREDICTION GAP =====
+const f1Topics = [
+  {topic:'Immigration', pred:62, dir:'left', actual:'left', color:'var(--blue)'},
+  {topic:'Policing', pred:55, dir:'left', actual:'center', color:'var(--blue)'},
+  {topic:'Education', pred:78, dir:'left', actual:'left', color:'var(--blue)'},
+  {topic:'Military', pred:45, dir:'right', actual:'right', color:'var(--coral)'},
+  {topic:'Speech', pred:58, dir:'left', actual:'left', color:'var(--blue)'}
+];
+(function(){
+  const c=document.getElementById('f1-preds');
+  f1Topics.forEach(t=>{
+    c.innerHTML+=`<div class="f1-pred-row"><span class="f1-pred-topic">${t.topic}</span><div class="f1-pred-bar-bg"><div class="f1-pred-bar" style="width:${t.pred}%;background:${t.color};"></div></div><span class="f1-pred-conf">${t.pred}%</span></div>`;
+  });
+})();
+function f1Reveal(){
+  const c=document.getElementById('f1-reveal');
+  c.innerHTML='';
+  f1Topics.forEach(t=>{
+    const match=t.dir===t.actual;
+    c.innerHTML+=`<div class="f1-reveal-row"><span class="f1-check">${match?'✅':'⚠️'}</span><span class="f1-pred-topic">${t.topic}</span><span class="f1-actual">${match?'Predicted correctly':'Close — off by one position'}</span></div>`;
+  });
+}
+
+// ===== FIGURE 2: SHUFFLE TEST =====
+const f2Issues=['Guns','Immigration','Trade','Healthcare','Speech','Military','Taxes','Environment','Policing','Education'];
+let f2Leans=[1,0,1,0,0,1,1,0,1,0]; // 0=left, 1=right
+const f2Labels=['Far Left','Center-Left','Liberal','Progressive','Moderate','Centrist','Center-Right','Conservative','Right-Populist','Libertarian'];
+function f2Render(){
+  const c=document.getElementById('f2-cards');
+  c.innerHTML='';
+  f2Issues.forEach((iss,i)=>{
+    const lean=f2Leans[i];
+    c.innerHTML+=`<div class="f2-card" style="border-color:${lean?'var(--coral)':'var(--blue)'}"><div class="issue">${iss}</div><div class="lean" style="color:${lean?'var(--coral)':'var(--blue)'}">${lean?'→':'←'}</div></div>`;
+  });
+}
+function f2Shuffle(){
+  f2Leans=f2Issues.map(()=>Math.random()>.5?1:0);
+  f2Render();
+  const el=document.getElementById('f2-desc-label');
+  el.classList.add('flicker');
+  let flicks=0;
+  const iv=setInterval(()=>{
+    el.textContent=f2Labels[Math.floor(Math.random()*f2Labels.length)];
+    flicks++;
+    if(flicks>6){clearInterval(iv);el.classList.remove('flicker');el.textContent=f2Labels[Math.floor(Math.random()*f2Labels.length)];}
+  },100);
+}
+f2Render();
+
+// ===== FIGURE 3: TIME WARP =====
+const f3Labels={1970:'Rockefeller Republican',1975:'Rockefeller Republican',1980:'Conservative',1985:'Reagan Conservative',1990:'Moderate Republican',1995:'Moderate Republican',2000:'Moderate',2005:'Compassionate Conservative',2010:'RINO',2015:'Establishment GOP',2020:'Never-Trumper',2024:'Politically Homeless'};
+const f3Traits=[.7,.65,.5,.6,.75]; // openness,threat-sens,fairness,order,individualism — STABLE
+const f3TraitNames=['Openness','Threat Sensitivity','Fairness Instinct','Need for Order','Individualism'];
+function f3Update(v){
+  document.getElementById('f3-year').textContent=v;
+  // find nearest label
+  const years=Object.keys(f3Labels).map(Number).sort((a,b)=>a-b);
+  let best=years[0];
+  for(const y of years) if(y<=+v) best=y;
+  document.getElementById('f3-desc-label').textContent=f3Labels[best];
+  f3DrawRadar();
+}
+function f3DrawRadar(){
+  const canvas=document.getElementById('f3-radar');
+  const ctx=canvas.getContext('2d');
+  const w=canvas.width,h=canvas.height,cx=w/2,cy=h/2,r=80;
+  ctx.clearRect(0,0,w,h);
+  const n=f3Traits.length;
+  // grid
+  for(let ring=1;ring<=4;ring++){
+    ctx.beginPath();
+    for(let i=0;i<=n;i++){
+      const a=Math.PI*2*i/n-Math.PI/2;
+      const rr=r*ring/4;
+      const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.stroke();
+  }
+  // axes + labels
+  for(let i=0;i<n;i++){
+    const a=Math.PI*2*i/n-Math.PI/2;
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
+    ctx.strokeStyle='rgba(255,255,255,.15)';ctx.stroke();
+    const lx=cx+Math.cos(a)*(r+14),ly=cy+Math.sin(a)*(r+14);
+    ctx.fillStyle='#999';ctx.font='9px Courier Prime';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(f3TraitNames[i],lx,ly);
+  }
+  // data
+  ctx.beginPath();
+  for(let i=0;i<=n;i++){
+    const idx=i%n;
+    const a=Math.PI*2*idx/n-Math.PI/2;
+    const x=cx+Math.cos(a)*r*f3Traits[idx],y=cy+Math.sin(a)*r*f3Traits[idx];
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.fillStyle='rgba(224,122,95,.25)';ctx.fill();
+  ctx.strokeStyle='var(--coral)';ctx.lineWidth=2;ctx.stroke();
+  // dots
+  for(let i=0;i<n;i++){
+    const a=Math.PI*2*i/n-Math.PI/2;
+    const x=cx+Math.cos(a)*r*f3Traits[i],y=cy+Math.sin(a)*r*f3Traits[i];
+    ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='var(--coral)';ctx.fill();
+  }
+}
+f3DrawRadar();
+
+// ===== FIGURE 4: TWO VOTERS =====
+let f4HoodOpen=false,f4FF=false;
+function f4OpenHood(){
+  document.getElementById('f4-treeA').classList.add('show');
+  document.getElementById('f4-treeB').classList.add('show');
+  document.getElementById('f4-ff-btn').style.display='inline-block';
+  f4HoodOpen=true;
+}
+function f4FastForward(){
+  document.getElementById('f4-scoreA').textContent='Patriotism: 3/7';
+  document.getElementById('f4-scoreA').style.color='var(--muted)';
+  document.getElementById('f4-scoreB').textContent='Patriotism: 7/7';
+  f4FF=true;
+}
+
+// ===== FIGURE 5: ONION PEEL =====
+const f5Layers=[
+  {label:'Votes & Bumper Stickers',tag:'L5',color:'rgba(224,122,95,.35)',desc:'The visible surface — yard signs, voting records, social media posts. This is all a descriptive model sees.', r:150},
+  {label:'Issue Positions',tag:'L3/L4',color:'rgba(74,144,164,.3)',desc:'Where someone stands on specific policies — healthcare, guns, immigration. Still surface-level, but more structured than raw votes.', r:112},
+  {label:'Dispositions',tag:'L2/L3',color:'rgba(45,90,61,.35)',desc:'Stable psychological tendencies — authoritarianism, social dominance orientation, openness to experience. These generate the issue positions above.', r:75},
+  {label:'Temperament',tag:'L1',color:'rgba(224,122,95,.5)',desc:'The deepest layer — threat sensitivity, disgust threshold, need for closure. Largely innate. The ultimate generator.', r:38}
+];
+function f5Build(){
+  const c=document.getElementById('f5-onion');
+  c.innerHTML='';
+  f5Layers.forEach((l,i)=>{
+    const size=l.r*2;
+    const offset=(300-size)/2;
+    const ring=document.createElement('div');
+    ring.className='f5-ring';
+    ring.id='f5-ring-'+i;
+    ring.style.cssText=`width:${size}px;height:${size}px;left:${offset+10}px;top:${offset+10}px;background:${l.color};`;
+    ring.onclick=()=>f5Peel(i);
+    const lbl=document.createElement('div');
+    lbl.className='f5-ring-label';
+    lbl.innerHTML=`<div style="font-size:11px;color:#fff;">${l.tag}</div><div style="font-size:9px;color:var(--muted);">${l.label}</div>`;
+    ring.appendChild(lbl);
+    c.appendChild(ring);
+  });
+}
+function f5Peel(i){
+  document.getElementById('f5-ring-'+i).classList.add('peeled');
+  const l=f5Layers[i];
+  const info=document.getElementById('f5-info');
+  info.innerHTML=`<h3>${l.tag}: ${l.label}</h3><p>${l.desc}</p>
+    <div class="f5-model-row">
+      <div class="f5-model-box desc-box"><h4>Descriptive</h4><div style="font-family:'Courier Prime',monospace;font-size:12px;" class="highlight">${i===0?'✓ Visible':'✗ Not modeled'}</div></div>
+      <div class="f5-model-box gen-box"><h4>Generative</h4><div style="font-family:'Courier Prime',monospace;font-size:12px;" class="highlight">✓ Layer ${4-i} of causal chain</div></div>
+    </div>`;
+}
+function f5Reset(){
+  f5Build();
+  document.getElementById('f5-info').innerHTML='<h3>Click a ring to peel it away</h3><p>Each layer reveals deeper structure beneath surface politics.</p><div class="f5-model-row"><div class="f5-model-box desc-box"><h4>Descriptive</h4><div style="font-family:\'Courier Prime\',monospace;font-size:12px;" class="highlight">Sees only the outer ring</div></div><div class="f5-model-box gen-box"><h4>Generative</h4><div style="font-family:\'Courier Prime\',monospace;font-size:12px;" class="highlight">Traces causal flow from core → surface</div></div></div>';
+}
+f5Build();
+</script>
+</body>
+</html>
