@@ -509,114 +509,54 @@
 
         <p>More recently, the political compass has gotten the post-irony, trending slop treatment — capturing political vibes through what amount to PCA-like heuristics, where the trick is finding a single declared belief that happens to be unusually predictive. One quiz I came across shows the flags of Palestine, Ukraine, and Taiwan alongside their pairwise geopolitical antagonist (Israel, Russia, and the PRC) and infers your ideological disposition from which flag you pick in each pair. I've recreated it below with the labels it assigns.</p>
 
-        <!-- FIGURE 4: Flag Quiz Recreation -->
-        <details class="figure-container" open>
-            <summary>
-                <span class="figure-number">Figure 4</span>
-                <span class="figure-title">Flag Quiz Recreation</span>
-                <span class="figure-expand-icon">+</span>
-            </summary>
+        <!-- FIGURE 4: Flag Quiz Animation -->
+        <div class="figure-container" style="margin:2rem auto;max-width:700px">
             <div class="figure-content">
-                <div class="flag-quiz-container">
-                    <h3>Which of these 3 do you support?</h3>
-                    <p class="fq-subtitle">pick one flag from each pair</p>
-
-                    <div class="fq-pairs">
-                        <div>
-                            <div class="fq-pair-label">Pair 1</div>
-                            <div class="fq-pair" data-pair="0">
-                                <div class="fq-btn" data-side="a" onclick="fqPick(0,'a')"><svg viewBox="0 0 90 56"><rect width="90" height="28" fill="#005BBB"/><rect y="28" width="90" height="28" fill="#FFD500"/></svg></div>
-                                <span class="fq-vs">vs</span>
-                                <div class="fq-btn" data-side="b" onclick="fqPick(0,'b')"><svg viewBox="0 0 90 56"><rect width="90" height="18.67" fill="#fff"/><rect y="18.67" width="90" height="18.67" fill="#0039A6"/><rect y="37.33" width="90" height="18.67" fill="#D52B1E"/></svg></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="fq-pair-label">Pair 2</div>
-                            <div class="fq-pair" data-pair="1">
-                                <div class="fq-btn" data-side="a" onclick="fqPick(1,'a')"><svg viewBox="0 0 90 56"><rect width="90" height="56" fill="#FE0000"/><rect width="45" height="28" fill="#000095"/><circle cx="22.5" cy="14" r="8" fill="#fff"/><circle cx="22.5" cy="14" r="5.5" fill="#000095"/></svg></div>
-                                <span class="fq-vs">vs</span>
-                                <div class="fq-btn" data-side="b" onclick="fqPick(1,'b')"><svg viewBox="0 0 90 56"><rect width="90" height="56" fill="#DE2910"/><g transform="translate(15,10)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(28,4) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(32,9) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(32,16) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(28,21) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g></svg></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="fq-pair-label">Pair 3</div>
-                            <div class="fq-pair" data-pair="2">
-                                <div class="fq-btn" data-side="a" onclick="fqPick(2,'a')"><svg viewBox="0 0 90 56"><rect width="90" height="18.67" fill="#000"/><rect y="18.67" width="90" height="18.67" fill="#fff"/><rect y="37.33" width="90" height="18.67" fill="#007A3D"/><polygon points="0,0 30,28 0,56" fill="#CE1126"/></svg></div>
-                                <span class="fq-vs">vs</span>
-                                <div class="fq-btn" data-side="b" onclick="fqPick(2,'b')"><svg viewBox="0 0 90 56"><rect width="90" height="56" fill="#fff"/><rect width="90" height="10" y="5" fill="#0038b8"/><rect width="90" height="10" y="41" fill="#0038b8"/><polygon points="45,16 49.5,26 60,26 51.5,32 55,42 45,36 35,42 38.5,32 30,26 40.5,26" fill="none" stroke="#0038b8" stroke-width="1.5"/></svg></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="fq-result" id="fqResultBox">
-                        <div class="fq-result-label">your result</div>
-                        <div class="fq-result-text" id="fqResultText" style="color: #555; font-weight: 400; font-size: 0.85rem;">Select one flag from each pair</div>
-                        <div class="fq-result-desc" id="fqResultDesc"></div>
-                    </div>
-
-                    <button class="fq-reset" onclick="fqReset()">reset</button>
+                <div id="flagAnim" style="text-align:center;padding:24px 0">
+                    <div id="flagRow" style="display:flex;justify-content:center;gap:16px;margin-bottom:16px"></div>
+                    <div id="flagLabel" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:#E07A5F;min-height:1.6em;transition:opacity 0.4s"></div>
                 </div>
-                <p class="figure-caption">A proxy quiz — illustrating why correlation ≠ causation in political models. Three flag pairs map you to one of 8 political disposition labels. Each choice reveals a layer of your political identity, but the quiz can't distinguish <em>why</em> you chose what you chose.</p>
             </div>
-        </details>
+        </div>
 
         <script>
         (function(){
-            const fqPicks = [null, null, null];
-            const FQ_RESULTS = {
-                "aaa": { label: "Progressive Internationalist", desc: "You support sovereignty for small states, self-determination universally, and anti-colonial movements. Consistent universalist framework — but a proxy quiz can't tell you whether this comes from moral conviction, anti-hegemonic instinct, or coalition signaling." },
-                "aab": { label: "Liberal Hawk", desc: "Pro-democracy, pro-Western alliances, but draw the line at Israel. Classic center-left interventionist. The question is whether 'democracy promotion' is your actual principle or whether it's downstream of something deeper." },
-                "aba": { label: "Anti-Imperial Left", desc: "Pro-Ukraine and pro-Palestine but skeptical of Taiwan framing. You see Western hegemony as the common thread — except when Russia is the aggressor. The inconsistency is the interesting part." },
-                "abb": { label: "Contrarian Realist", desc: "Pro-Ukraine but aligned with China and Israel. You might be a national security hawk who sees Russia as the real threat but considers the Pacific and Middle East through a realpolitik lens." },
-                "baa": { label: "Multipolar Leftist", desc: "Anti-NATO but pro-self-determination elsewhere. You see the Ukraine conflict through a NATO-expansion lens but support sovereignty in Asia and the Middle East. Your model of the world has a very specific villain." },
-                "bab": { label: "Traditionalist Realist", desc: "Pro-Russia, pro-Taiwan, pro-Israel. You support strong states with clear identities and civilizational continuity. Sovereignty matters when it aligns with order." },
-                "bba": { label: "Anti-Western Populist", desc: "You oppose Western-aligned positions across the board except Palestine. Anti-hegemonic instinct is dominant — but the Palestine pick suggests universalist sympathies underneath the realpolitik." },
-                "bbb": { label: "Authoritarian Sympathizer", desc: "You picked every incumbent power. Either you genuinely believe in strong-state sovereignty, or you're doing this ironically. A proxy quiz literally cannot tell the difference — which is the point." },
+            // SVG flags — correct renderings
+            const FLAGS = {
+                ua: `<svg viewBox="0 0 90 56" width="72" height="45"><rect width="90" height="28" fill="#005BBB"/><rect y="28" width="90" height="28" fill="#FFD500"/></svg>`,
+                ru: `<svg viewBox="0 0 90 56" width="72" height="45"><rect width="90" height="18.67" fill="#fff"/><rect y="18.67" width="90" height="18.67" fill="#0039A6"/><rect y="37.33" width="90" height="18.67" fill="#D52B1E"/></svg>`,
+                tw: `<svg viewBox="0 0 90 56" width="72" height="45"><rect width="90" height="56" fill="#FE0000"/><rect width="45" height="28" fill="#000095"/><circle cx="22.5" cy="14" r="7" fill="#fff"/><g transform="translate(22.5,14)"><g id="twRay">${[...Array(12)].map((_,i)=>`<line x1="0" y1="-4" x2="0" y2="-7" stroke="#fff" stroke-width="1" transform="rotate(${i*30})"/>`).join('')}</g></g><circle cx="22.5" cy="14" r="4" fill="#000095"/></svg>`,
+                cn: `<svg viewBox="0 0 90 56" width="72" height="45"><rect width="90" height="56" fill="#DE2910"/><g transform="translate(15,10)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(28,4) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(32,9) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(32,16) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(28,21) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g></svg>`,
+                ps: `<svg viewBox="0 0 90 56" width="72" height="45"><rect width="90" height="18.67" fill="#000"/><rect y="18.67" width="90" height="18.67" fill="#fff"/><rect y="37.33" width="90" height="18.67" fill="#007A3D"/><polygon points="0,0 30,28 0,56" fill="#CE1126"/></svg>`,
+                il: `<svg viewBox="0 0 90 56" width="72" height="45"><rect width="90" height="56" fill="#fff"/><rect width="90" height="9" y="5" fill="#0038b8"/><rect width="90" height="9" y="42" fill="#0038b8"/><g transform="translate(45,28)"><polygon points="0,-12 10.4,6 -10.4,6" fill="none" stroke="#0038b8" stroke-width="1.8"/><polygon points="0,12 10.4,-6 -10.4,-6" fill="none" stroke="#0038b8" stroke-width="1.8"/></g></svg>`
             };
 
-            window.fqPick = function(pair, side) {
-                fqPicks[pair] = side;
-                const pairEl = document.querySelectorAll(`.fq-pair[data-pair="${pair}"] .fq-btn`);
-                pairEl.forEach(btn => {
-                    const s = btn.dataset.side;
-                    btn.classList.toggle('fq-selected', s === side);
-                    btn.classList.toggle('fq-dimmed', s !== side);
-                });
-                fqCheckResult();
-            };
+            const combos = [
+                { flags: ['ua','tw','ps'], label: 'Progressive Internationalist' },
+                { flags: ['ru','cn','il'], label: 'Authoritarian Sympathizer' },
+                { flags: ['ua','tw','il'], label: 'Liberal Hawk' },
+                { flags: ['ru','cn','ps'], label: 'Anti-Western Populist' }
+            ];
 
-            function fqCheckResult() {
-                const text = document.getElementById('fqResultText');
-                const desc = document.getElementById('fqResultDesc');
-                if (fqPicks.includes(null)) {
-                    const remaining = fqPicks.filter(p => p === null).length;
-                    text.textContent = `${remaining} pair${remaining > 1 ? 's' : ''} remaining`;
-                    text.style.color = '#555';
-                    text.style.fontWeight = '400';
-                    text.style.fontSize = '0.85rem';
-                    desc.textContent = '';
-                    return;
-                }
-                const key = fqPicks.join('');
-                const result = FQ_RESULTS[key];
-                text.textContent = result.label;
-                text.style.color = '#E07A5F';
-                text.style.fontWeight = '700';
-                text.style.fontSize = '1rem';
-                desc.textContent = result.desc;
+            const row = document.getElementById('flagRow');
+            const label = document.getElementById('flagLabel');
+            let idx = 0;
+
+            function show(i) {
+                const c = combos[i];
+                label.style.opacity = '0';
+                setTimeout(() => {
+                    row.innerHTML = c.flags.map(f => {
+                        const el = `<div style="width:76px;height:49px;border:2px solid #444;border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#1a1a1a">${FLAGS[f]}</div>`;
+                        return el;
+                    }).join('<span style="color:#555;font-size:0.8rem;align-self:center;margin:0 2px">+</span>');
+                    label.textContent = c.label;
+                    label.style.opacity = '1';
+                }, 400);
             }
 
-            window.fqReset = function() {
-                fqPicks[0] = fqPicks[1] = fqPicks[2] = null;
-                document.querySelectorAll('.fq-btn').forEach(btn => {
-                    btn.classList.remove('fq-selected', 'fq-dimmed');
-                });
-                document.getElementById('fqResultText').textContent = 'Select one flag from each pair';
-                document.getElementById('fqResultText').style.color = '#555';
-                document.getElementById('fqResultText').style.fontWeight = '400';
-                document.getElementById('fqResultText').style.fontSize = '0.85rem';
-                document.getElementById('fqResultDesc').textContent = '';
-            };
+            show(0);
+            setInterval(() => { idx = (idx + 1) % combos.length; show(idx); }, 3000);
         })();
         </script>
 
