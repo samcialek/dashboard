@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../imgs/favicon.png">
+    <title>The Cause of Our Politics - matrices of confusion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300..700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #E8E4DC;
+            --bg-secondary: #D4CFC4;
+            --accent-coral: #E07A5F;
+            --accent-green: #2D5A3D;
+            --accent-pink: #C97B98;
+            --accent-gold: #C9A227;
+            --accent-blue: #4A90A4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --figure-bg: #F5F3EF;
+        }
+        
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 19px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .site-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--accent-coral);
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .site-title-exclaim {
+            font-family: 'Space Grotesk', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+        }
+        
+        .site-subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-coral);
+        }
+        
+        .article-header {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 2rem;
+        }
+
+        .article-header-text {
+            flex: 1;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .article-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+        }
+
+        .article-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: lowercase;
+        }
+        
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+        
+        .content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+        }
+        
+        .content strong {
+            font-weight: 600;
+        }
+        
+        .content em {
+            font-style: italic;
+        }
+
+        .content a {
+            color: var(--accent-coral);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin: 3rem 0;
+        }
+        
+        /* Figure Containers */
+        .figure-container {
+            margin: 2.5rem -2rem;
+            background: #1a1a1a;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .figure-container summary {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85rem;
+            color: #999;
+            list-style: none;
+            transition: background 0.2s ease;
+        }
+        
+        .figure-container summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .figure-container summary:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        
+        .figure-container[open] summary {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .figure-number {
+            font-weight: 500;
+            color: var(--accent-coral);
+            margin-right: 0.75rem;
+        }
+        
+        .figure-title {
+            flex: 1;
+            color: #ccc;
+        }
+        
+        .figure-expand-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: var(--accent-coral);
+        }
+        
+        .figure-container[open] .figure-expand-icon {
+            transform: rotate(45deg);
+        }
+        
+        .figure-content {
+            padding: 2rem;
+        }
+        
+        .figure-caption {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 1.5rem;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+
+        /* Flag Quiz Styles */
+        .flag-quiz-container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .flag-quiz-container h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .flag-quiz-container .fq-subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 24px;
+        }
+
+        .fq-pairs {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .fq-pair-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .fq-pair {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .fq-btn {
+            width: 100px;
+            height: 66px;
+            border: 2px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            background: #111;
+            user-select: none;
+        }
+
+        .fq-btn:hover {
+            border-color: #555;
+            transform: scale(1.05);
+        }
+
+        .fq-btn.fq-selected {
+            border-color: var(--accent-coral);
+            box-shadow: 0 0 12px rgba(224, 122, 95, 0.3);
+            transform: scale(1.08);
+        }
+
+        .fq-btn.fq-dimmed {
+            opacity: 0.25;
+            filter: grayscale(0.5);
+        }
+
+        .fq-vs {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: #555;
+            font-weight: 700;
+        }
+
+        .fq-result {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .fq-result-label {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .fq-result-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+        }
+
+        .fq-result-desc {
+            font-family: 'EB Garamond', serif;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .fq-reset {
+            margin-top: 12px;
+            background: none;
+            border: 1px solid #333;
+            color: #888;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .fq-reset:hover {
+            border-color: #666;
+            color: #ccc;
+        }
+
+        /* Two Steves canvas styles */
+        .two-steves-wrap {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .two-steves-wrap canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .two-steves-slider {
+            max-width: 860px;
+            margin: 10px auto 0;
+        }
+
+        .two-steves-slider input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        .two-steves-slider input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .footer-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .related-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .related-link {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-coral);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        .related-link:hover {
+            background: var(--accent-coral);
+            color: white;
+        }
+        
+        @media (max-width: 600px) {
+            .back-link {
+                position: static;
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .article-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-header-text {
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .content {
+                padding: 0 1.5rem 4rem;
+            }
+
+            .figure-container {
+                margin: 2rem -1.5rem;
+            }
+
+            .fq-btn {
+                width: 80px;
+                height: 54px;
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../essays-preview.html" class="back-link">← essays</a>
+        <a href="../index.html"><img src="../imgs/matrices-logo.png" class="img-fluid" style="max-width: 400px;"></a>
+    </header>
+    
+    <div class="article-header">
+        <div class="article-header-text">
+            <h1 class="article-title">the cause of our politics</h1>
+            <div class="article-meta">march 2026</div>
+        </div>
+    </div>
+    
+    <article class="content">
+
+        <p>The political compass has been a fixture of internet culture for as long as I can remember. Quizzes in the early aughts sorted me onto a right-left spectrum and permanently planted the idea that every political concept had a hidden "liberal" or "conservative" charge — latent states you could infer by watching which party's electeds were for or against something. If most Democrats supported it and most Republicans opposed it, it was liberal (which in those days meant something like holding Keynesian views on economics and whatever the socially progressive position was on the cultural debate du jour). If, like the 2003 authorization of force in Iraq, virtually all Republicans voted yes and about half of Democrats did too, then opposing it put you on the far left. I distinctly remember "against the war in Iraq" being coded as a very liberal position, which tells you something about how these inferences age.</p>
+
+        <p>Later, the two-dimensional diamond-shaped compass came along and added a libertarian-authoritarian axis (and I discovered that, like Stalin, I was a left "statist," which struck me as odd since I was not, to my knowledge, a fan). You answer some questions, geometry happens, and you get a coordinate to compare with your friends.</p>
+
+        <p>More recently, the political compass has gotten the post-irony, trending slop treatment — capturing political vibes through what amount to PCA-like heuristics, where the trick is finding a single declared belief that happens to be unusually predictive. One quiz I came across shows the flags of Palestine, Ukraine, and Taiwan alongside their pairwise geopolitical antagonist (Israel, Russia, and the PRC) and infers your ideological disposition from which flag you pick in each pair. I've recreated it below with the labels it assigns.</p>
+
+        <!-- FIGURE 4: Flag Quiz Recreation -->
+        <details class="figure-container" open>
+            <summary>
+                <span class="figure-number">Figure 4</span>
+                <span class="figure-title">Flag Quiz Recreation</span>
+                <span class="figure-expand-icon">+</span>
+            </summary>
+            <div class="figure-content">
+                <div class="flag-quiz-container">
+                    <h3>Which of these 3 do you support?</h3>
+                    <p class="fq-subtitle">pick one flag from each pair</p>
+
+                    <div class="fq-pairs">
+                        <div>
+                            <div class="fq-pair-label">Pair 1</div>
+                            <div class="fq-pair" data-pair="0">
+                                <div class="fq-btn" data-side="a" onclick="fqPick(0,'a')">🇺🇦</div>
+                                <span class="fq-vs">vs</span>
+                                <div class="fq-btn" data-side="b" onclick="fqPick(0,'b')">🇷🇺</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fq-pair-label">Pair 2</div>
+                            <div class="fq-pair" data-pair="1">
+                                <div class="fq-btn" data-side="a" onclick="fqPick(1,'a')">🇹🇼</div>
+                                <span class="fq-vs">vs</span>
+                                <div class="fq-btn" data-side="b" onclick="fqPick(1,'b')">🇨🇳</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fq-pair-label">Pair 3</div>
+                            <div class="fq-pair" data-pair="2">
+                                <div class="fq-btn" data-side="a" onclick="fqPick(2,'a')">🇵🇸</div>
+                                <span class="fq-vs">vs</span>
+                                <div class="fq-btn" data-side="b" onclick="fqPick(2,'b')">🇮🇱</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fq-result" id="fqResultBox">
+                        <div class="fq-result-label">your result</div>
+                        <div class="fq-result-text" id="fqResultText" style="color: #555; font-weight: 400; font-size: 0.85rem;">Select one flag from each pair</div>
+                        <div class="fq-result-desc" id="fqResultDesc"></div>
+                    </div>
+
+                    <button class="fq-reset" onclick="fqReset()">reset</button>
+                </div>
+                <p class="figure-caption">A proxy quiz — illustrating why correlation ≠ causation in political models. Three flag pairs map you to one of 8 political disposition labels. Each choice reveals a layer of your political identity, but the quiz can't distinguish <em>why</em> you chose what you chose.</p>
+            </div>
+        </details>
+
+        <script>
+        (function(){
+            const fqPicks = [null, null, null];
+            const FQ_RESULTS = {
+                "aaa": { label: "Progressive Internationalist", desc: "You support sovereignty for small states, self-determination universally, and anti-colonial movements. Consistent universalist framework — but a proxy quiz can't tell you whether this comes from moral conviction, anti-hegemonic instinct, or coalition signaling." },
+                "aab": { label: "Liberal Hawk", desc: "Pro-democracy, pro-Western alliances, but draw the line at Israel. Classic center-left interventionist. The question is whether 'democracy promotion' is your actual principle or whether it's downstream of something deeper." },
+                "aba": { label: "Anti-Imperial Left", desc: "Pro-Ukraine and pro-Palestine but skeptical of Taiwan framing. You see Western hegemony as the common thread — except when Russia is the aggressor. The inconsistency is the interesting part." },
+                "abb": { label: "Contrarian Realist", desc: "Pro-Ukraine but aligned with China and Israel. You might be a national security hawk who sees Russia as the real threat but considers the Pacific and Middle East through a realpolitik lens." },
+                "baa": { label: "Multipolar Leftist", desc: "Anti-NATO but pro-self-determination elsewhere. You see the Ukraine conflict through a NATO-expansion lens but support sovereignty in Asia and the Middle East. Your model of the world has a very specific villain." },
+                "bab": { label: "Traditionalist Realist", desc: "Pro-Russia, pro-Taiwan, pro-Israel. You support strong states with clear identities and civilizational continuity. Sovereignty matters when it aligns with order." },
+                "bba": { label: "Anti-Western Populist", desc: "You oppose Western-aligned positions across the board except Palestine. Anti-hegemonic instinct is dominant — but the Palestine pick suggests universalist sympathies underneath the realpolitik." },
+                "bbb": { label: "Authoritarian Sympathizer", desc: "You picked every incumbent power. Either you genuinely believe in strong-state sovereignty, or you're doing this ironically. A proxy quiz literally cannot tell the difference — which is the point." },
+            };
+
+            window.fqPick = function(pair, side) {
+                fqPicks[pair] = side;
+                const pairEl = document.querySelectorAll(`.fq-pair[data-pair="${pair}"] .fq-btn`);
+                pairEl.forEach(btn => {
+                    const s = btn.dataset.side;
+                    btn.classList.toggle('fq-selected', s === side);
+                    btn.classList.toggle('fq-dimmed', s !== side);
+                });
+                fqCheckResult();
+            };
+
+            function fqCheckResult() {
+                const text = document.getElementById('fqResultText');
+                const desc = document.getElementById('fqResultDesc');
+                if (fqPicks.includes(null)) {
+                    const remaining = fqPicks.filter(p => p === null).length;
+                    text.textContent = `${remaining} pair${remaining > 1 ? 's' : ''} remaining`;
+                    text.style.color = '#555';
+                    text.style.fontWeight = '400';
+                    text.style.fontSize = '0.85rem';
+                    desc.textContent = '';
+                    return;
+                }
+                const key = fqPicks.join('');
+                const result = FQ_RESULTS[key];
+                text.textContent = result.label;
+                text.style.color = '#E07A5F';
+                text.style.fontWeight = '700';
+                text.style.fontSize = '1rem';
+                desc.textContent = result.desc;
+            }
+
+            window.fqReset = function() {
+                fqPicks[0] = fqPicks[1] = fqPicks[2] = null;
+                document.querySelectorAll('.fq-btn').forEach(btn => {
+                    btn.classList.remove('fq-selected', 'fq-dimmed');
+                });
+                document.getElementById('fqResultText').textContent = 'Select one flag from each pair';
+                document.getElementById('fqResultText').style.color = '#555';
+                document.getElementById('fqResultText').style.fontWeight = '400';
+                document.getElementById('fqResultText').style.fontSize = '0.85rem';
+                document.getElementById('fqResultDesc').textContent = '';
+            };
+        })();
+        </script>
+
+        <p>I decided to build my own political compass for two reasons. In keeping with the only consistent theme of this blog, the first is that I want to make something <em>generative</em> — a goal whose difficulty I would not fully appreciate until I had sunk enough time into it to make quitting psychologically untenable.</p>
+
+        <p>What I mean by generative: rather than classifying your beliefs by matching them against a menu of archetypal positions (which is more of a sorting exercise than inference), I want to infer the upstream factors that <em>produce</em> your political beliefs from your responses. Most political compasses essentially sum up and read back to you the information you gave them (<a href="https://youtu.be/UYbpo5Vm01Y?si=iNGrv9Yeg14F0J34">this video</a> explains the problem well). Understanding what latent structure of temperament and experience generates the positions you hold lets the model predict positions you haven't been asked about — that's what makes it generative.</p>
+
+        <!-- FIGURE: Generative vs Classificatory Model diagram -->
+
+        <p>Suppose you build a very good classifier for current American political alignment. It asks about guns, pronouns, student debt, masks, Elon Musk, and whether you think the New York Times is biased. This will probably work to identify who you voted for in the last election. But most of what it learns are the correlational decorations of your voting coalition — not the upstream causal factors that produced your vote. That's fine if your goal is short-term prediction. But the real prize in modeling isn't to describe; it's to predict under conditions you haven't seen yet (counterfactual reasoning). A non-generative model can interpolate inside its training world. It struggles to extrapolate outside it. So I set out to build more of an engine than a map — one that models the causal forces that political behavior is downstream from.</p>
+
+        <hr>
+
+        <p>The second reason was to take a run at improving what surveys and quizzes are presumably trying to do, which is to derive insight about the beliefs that are directly upstream of behavior from stated preferences. Self-reported beliefs are notoriously lossy: ask someone to explain why they made a decision and you get an answer that sounds reasonable and is almost completely inconsistent with what actually drove the decision. One explanation for this is that people don't introspect on their actual decision process. They construct a narrative that sounds like one and report that instead. The survey response you get back isn't a degraded version of the truth — it's a different signal entirely, one that tells you more about what the respondent thinks a person like them is supposed to believe than about the machinery that actually produced their behavior.</p>
+
+        <!-- FIGURE: Signal Decomposition — same survey answer, multiple generators -->
+
+        <p>The obvious workaround in the real world is to observe the person's behavior rather than query their beliefs. If the thing you're trying to predict is behavior, you'd rather not travel through the lossy intermediary of stated preferences when you could just examine behavior directly and build a model from there.</p>
+
+        <p>In a quiz, obviously, I still have to rely on self-report. There's no practical alternative. But I think self-report can be improved in clever ways that better approximate observable action. The key is asking questions so that latent dispositions emerge from the <em>pattern</em> of answers rather than from a person's explicit self-description. In practice, that means attacking a topic from more than one angle: asking not just what you believe, but how you react when competing values are forced into tension, how much that issue matters to your politics at all, and sometimes what kind of person or coalition you take yourself to belong to. If I ask "do you believe in free speech?" almost everyone says yes. If I ask whether a university should disinvite a speaker whose views most students find repugnant, I force a tradeoff between principles people prefer to claim they hold simultaneously. The direction you break tells me more about the hierarchy of priorities you actually operate under than the one you'd recite at a dinner party. And if I then ask a second question hitting the same latent trait from a different side — say, whether convicting an innocent person is worse than letting a guilty person go free, or how much rules and procedures matter to your politics — I can start to tell whether I'm seeing a stable disposition rather than a one-off opinion. One question finds the narrative. Two or three questions, aimed at the same construct from different angles, begin to triangulate the underlying structure. The gap between the abstract principle, the situated judgment, and the salience of the issue is where the signal lives.</p>
+
+        <hr>
+
+        <p>With the goal of predicting political behavior established, it's worth drawing a line between what most political compasses do and what's needed to predict who actually turns out for whom in an election (or, for that matter, what political behavior you'd observe in a place that doesn't hold elections). Political compasses focus almost exclusively on ideology — specifically, on the <em>ends</em> you prefer on particular issues: safe and legal abortion vs. abortion restricted, progressive taxation vs. flat tax, and so on. Ideology matters, obviously. But it's only one reason people vote, and for some voters it drives significantly more of their political behavior than for others.</p>
+
+        <p>There are people who vote on vibes. There are people who vote on identity — not "identity politics" in the culture-war sense, but the basic question of which team they belong to, updated less by policy positions than by social signaling and group membership. There are people who vote on one issue and one issue only, and there are people who barely vote at all but would if the right kind of candidate said the right kind of thing. A model that captures only ideology — the declared policy preferences — misses the engine underneath. It gets the bumper sticker but not the car.</p>
+
+        <p>This is where the project got genuinely hard. And where I ran into problems I didn't anticipate.</p>
+
+        <hr>
+
+        <h2>the xor problem of identity</h2>
+
+        <p>The thing I want the generative model to predict is political behavior. The validation strategy is straightforward enough: backtest against elections the respondent has already voted in (or affirmatively abstained from) to confirm the model interpolates, then forecast how they might behave under counterfactual conditions — if a candidate with X attributes ran against a candidate with Y attributes, or how a respondent would have behaved in an election they didn't live through.</p>
+
+        <p>But there's a deep problem at the intersection of identity and belief, and the interaction between these two factors is genuinely difficult to put into a causal graph. Does identity lead to belief, or belief to identity? For most people it probably goes both ways, which is exactly the kind of thing that makes causal modeling miserable.</p>
+
+        <p>Ultranationalists are a useful case study here (as are their inverse — <a href="https://en.wikipedia.org/wiki/Tankie">tankies</a>, who are worth their own essay). Take an American whose political disposition manifested in 2002 as what I'd call a "compassionate conservative." Call him Steve. Steve is upper-middle-class, lives in a beautiful suburban house. He's always flown the American flag outside, lowered it to half-mast after 9/11 and left it there for months. Steve defends the tenets of America to anyone who'll listen — the Constitution, democracy, freedom of speech, rule of law. He loves it all and says so, loudly and proudly.</p>
+
+        <p>Here is the question that is wildly difficult to reveal but wildly important for a causal model of Steve's politics: is Steve's nationalism an expression of <em>identity</em> or of <em>ideology</em>?</p>
+
+        <p>If it's ideology — if Steve genuinely believes in constitutional democracy, individual rights, the rule of law, and American exceptionalism as a <em>set of ideas</em> — then his political behavior should be predictable from those ideas. When a politician undermines the rule of law, ideological Steve opposes them regardless of party. When the Constitution is selectively invoked to justify something it clearly doesn't support, Steve notices. His nationalism is downstream of principles, and the principles do the causal work.</p>
+
+        <p>If it's identity — if Steve's flag-waving is fundamentally an expression of belonging to Team America, of being a certain kind of person from a certain kind of place — then his political behavior follows the team. When the team's leader says the election was stolen, Steve might go along, because the flag on his porch was never really about the Constitution. It was about the tribe the Constitution symbolized. His nationalism is downstream of group membership, and the group does the causal work.</p>
+
+        <p>Same bumper sticker. Same yard sign. Same survey response to "How patriotic are you?" on a 1-to-7 scale. Completely different causal structure, completely different predictions about what Steve does when the coalition reshuffles. A political compass that treats "patriotism: 7" as a primitive has no way to distinguish these two Steves. A generative model has to.</p>
+
+        <!-- FIGURE: XOR Truth Table — identity vs ideology -->
+
+        <p>This is, in a precise sense, an <a href="https://www.youtube.com/watch?v=kNPGXgzxoHw">XOR problem</a>. Identity and ideology are the two input bits. Observed political behavior is the output. When they agree (identity says R, ideology says R), the output is easy to predict. When they disagree (identity says R, ideology says "wait, this violates everything I claimed to believe"), the output is non-linearly separable — you can't draw a straight line through it. You need a hidden layer. In this model, that hidden layer is the deeper dispositional structure: how much of Steve's politics is driven by principle versus by belonging, and what happens when those two forces pull in opposite directions.</p>
+
+        <p>The 2016-2024 period in American politics was, among other things, a natural experiment that sorted the Steves. The ones whose nationalism was ideological broke from the coalition. The ones whose nationalism was identity-based stayed and adapted their stated beliefs to match — and if you'd surveyed them in 2002, they would have given you identical answers.</p>
+
+        <!-- FIGURE 5: Two Steves Divergence -->
+        <details class="figure-container" open>
+            <summary>
+                <span class="figure-number">Figure 5</span>
+                <span class="figure-title">Two Steves Divergence</span>
+                <span class="figure-expand-icon">+</span>
+            </summary>
+            <div class="figure-content">
+                <div class="two-steves-wrap">
+                    <canvas id="c5" width="900" height="360"></canvas>
+                    <div class="two-steves-slider">
+                        <input type="range" id="sl5" min="2002" max="2024" value="2024" step="1">
+                        <div class="slider-label"><span>2002</span><span id="sl5val" style="color:#E07A5F;font-weight:bold">2024</span><span>2024</span></div>
+                    </div>
+                </div>
+                <p class="figure-caption">Ideological Steve and Identity Steve start identical in 2002 — same flag on the porch, same survey responses. Key political events push them apart: one follows ideas, the other follows tribe. By 2024, their voting behavior has completely diverged despite starting from the same declared beliefs. Drag the slider to watch the split happen.</p>
+            </div>
+        </details>
+
+        <script>
+        (function(){
+            const canvas = document.getElementById('c5'), ctx = canvas.getContext('2d'), sl = document.getElementById('sl5');
+            const events = [
+                {year:2003, label:'Iraq War'},
+                {year:2008, label:'Obama'},
+                {year:2010, label:'Tea Party'},
+                {year:2016, label:'Trump'},
+                {year:2021, label:'Jan 6'},
+                {year:2024, label:'2024'}
+            ];
+            const ideoData = [[2002,50],[2005,52],[2008,48],[2010,46],[2014,44],[2016,42],[2018,40],[2021,38],[2024,35]];
+            const identData = [[2002,50],[2005,58],[2008,62],[2010,70],[2014,68],[2016,80],[2018,82],[2021,88],[2024,90]];
+
+            function lerp(pts, yr) {
+                for (let i = 0; i < pts.length - 1; i++) {
+                    if (yr >= pts[i][0] && yr <= pts[i+1][0]) {
+                        let t = (yr - pts[i][0]) / (pts[i+1][0] - pts[i][0]);
+                        return pts[i][1] + (pts[i+1][1] - pts[i][1]) * t;
+                    }
+                }
+                return yr <= pts[0][0] ? pts[0][1] : pts[pts.length-1][1];
+            }
+
+            function draw() {
+                const maxY = +sl.value;
+                document.getElementById('sl5val').textContent = maxY;
+                const W = canvas.width, H = canvas.height, p = {l:80, r:20, t:40, b:40};
+                ctx.clearRect(0, 0, W, H);
+
+                // axes
+                ctx.strokeStyle = '#ffffff20';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(p.l, p.t);
+                ctx.lineTo(p.l, H - p.b);
+                ctx.lineTo(W - p.r, H - p.b);
+                ctx.stroke();
+
+                // y-axis labels & grid
+                ctx.fillStyle = '#888';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'right';
+                [0, 25, 50, 75, 100].forEach(v => {
+                    let py = p.t + ((100 - v) / 100) * (H - p.t - p.b);
+                    ctx.fillText(v + '%', p.l - 28, py + 4);
+                    ctx.strokeStyle = '#ffffff10';
+                    ctx.beginPath();
+                    ctx.moveTo(p.l - 4, py);
+                    ctx.lineTo(W - p.r, py);
+                    ctx.stroke();
+                });
+
+                // y-axis title
+                ctx.save();
+                ctx.translate(14, p.t + (H - p.t - p.b) / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.font = '11px sans-serif';
+                ctx.fillText('Likelihood to vote Republican (President)', 0, 0);
+                ctx.restore();
+
+                // x-axis labels
+                ctx.textAlign = 'center';
+                for (let y = 2002; y <= 2024; y += 2) {
+                    let x = p.l + (y - 2002) / 22 * (W - p.l - p.r);
+                    ctx.fillText(y, x, H - p.b + 16);
+                }
+
+                // events
+                events.forEach(ev => {
+                    if (ev.year <= maxY) {
+                        let x = p.l + (ev.year - 2002) / 22 * (W - p.l - p.r);
+                        ctx.strokeStyle = '#ffffff15';
+                        ctx.setLineDash([2, 3]);
+                        ctx.beginPath();
+                        ctx.moveTo(x, p.t);
+                        ctx.lineTo(x, H - p.b);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                        ctx.fillStyle = '#ffffff40';
+                        ctx.font = '10px sans-serif';
+                        ctx.fillText(ev.label, x, p.t - 4);
+                    }
+                });
+
+                function drawLine(data, color) {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    for (let y = 2002; y <= maxY; y += 0.5) {
+                        let x = p.l + (y - 2002) / 22 * (W - p.l - p.r);
+                        let v = lerp(data, y);
+                        let py = p.t + ((100 - v) / 100) * (H - p.t - p.b);
+                        y === 2002 ? ctx.moveTo(x, py) : ctx.lineTo(x, py);
+                    }
+                    ctx.stroke();
+                }
+
+                drawLine(ideoData, '#4ecdc4');
+                drawLine(identData, '#E07A5F');
+
+                // legend
+                ctx.font = '12px sans-serif';
+                ctx.fillStyle = '#4ecdc4';
+                ctx.textAlign = 'left';
+                ctx.fillText('● Ideological Steve', p.l + 10, p.t + 16);
+                ctx.fillStyle = '#E07A5F';
+                ctx.fillText('● Identity Steve', p.l + 170, p.t + 16);
+            }
+
+            sl.addEventListener('input', draw);
+            draw();
+        })();
+        </script>
+
+        <p>The same problem shows up everywhere in politics. A progressive might support immigration out of universal human concern, anti-nationalism, identification with immigrants as an in-group, class solidarity, a growth-oriented economic model, or simply because those are the positions their coalition treats as morally serious. A conservative might support law and order out of a genuine preference for procedural stability, deference to hierarchy, threat sensitivity, resentment of perceived disorderly out-groups, or because that's what the respectable right in their milieu says one ought to support. In both cases the observable policy preference is the same. The generators are completely different.</p>
+
+        <p>So a major design challenge of this quiz was trying to separate: what people want, how they justify wanting it, what identity they experience themselves as belonging to, and whether that identity is the cause or the consequence of their beliefs. That turns out to be much harder than it sounds. People are generally good at telling you what they believe and remarkably bad at telling you whether the belief is doing the causal work or merely decorating a prior allegiance.</p>
+
+        <h2>belief bundles are overdetermined</h2>
+
+        <p>A related problem: many political issue bundles are downstream of several latent traits at once. Take support for speech restrictions. That could come from low tolerance for social harm, high trust in expert moderation, strong in-group identification, low commitment to procedural neutrality, or a simply strategic calculation that the institutions currently doing the censoring happen to be on your side. Those are all different causal paths to the same policy position. Collapse them into one "speech-regulation" variable and you've confused several distinct generators into a single score.</p>
+
+        <!-- FIGURE: Overdetermination Web — multiple traits feeding one position -->
+
+        <p>This is why I ended up thinking in terms of nodes rather than ideologies. Some nodes concern ends — what kind of social order a person prefers. Some concern means — what sort of process, rhetoric, or evidence they regard as legitimate. Some concern reality — whether the world is fundamentally zero-sum, whether hierarchy is natural, whether human beings are fixed or improvable, whether complex systems are controllable or emergent. And some concern self — how fused politics is with identity, how tribal someone is, how disposed they are toward engagement at all.</p>
+
+        <!-- FIGURE: Disposition Node Map — force-directed graph of nodes by type -->
+
+        <p>A person's political behavior isn't the output of any one of these. It's the output of their interaction. The reason the quiz asks so many apparently weirdly paired questions is that I'm trying to locate the respondent somewhere in that interaction space. A question about immigration is never only about immigration. A question about disinviting a speaker is never only about speech. A question about whether your close friends vote like you is not sociological trivia. Each is a partial glimpse of a deeper structure, and the structure only comes into focus when you have enough angles on it.</p>
+
+        <h2>the same issue means different things to different people</h2>
+
+        <p>One more problem, and then we can get to the model itself. Issue positions are not stable symbols. The same position can mean different things in different eras and to different people. Being "for free trade" in 1995, in 2016, and in 2025 are not the same political signal. Being "for democracy" can mean reverence for institutions, faith in mass participation, suspicion of elite technocracy, or merely dislike of whoever currently holds power. A useful model needs to tolerate the fact that object-level beliefs drift while latent dispositions remain stable — that the surface of politics is noisy and the depth of it is slow-moving.</p>
+
+        <!-- FIGURE: Issue Drift / Correlation Decay — partisan valence crossing over time -->
+
+        <p>This is why I think the real target is not ideology in the way most compasses use the word. It's political temperament plus identity plus experienced world-model — the structure that makes certain beliefs feel intuitive, certain coalitions feel natural, and certain forms of political behavior feel obligatory. People don't choose their politics the way they choose a meal from a menu. They discover their politics the way they discover their taste — gradually, socially, and with far less conscious deliberation than they'd like to believe.</p>
+
+        <!-- FIGURE: Taste Discovery — a dot walking through a political landscape -->
+
+        <p>What I set out to build, then, is not a better sorting hat for current issue positions. It's an attempt to get a little closer to the thing upstream of them — the cause of our politics.</p>
+
+    </article>
+    
+    <footer>
+        <div class="footer-text">tags</div>
+        <div class="related-links">
+            <span class="related-link">function v form</span>
+            <span class="related-link">measurement error</span>
+            <span class="related-link">declaration v revelation</span>
+        </div>
+    </footer>
+
+</body>
+</html>
