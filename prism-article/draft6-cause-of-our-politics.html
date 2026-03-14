@@ -274,16 +274,30 @@
         .fq-btn {
             width: 100px;
             height: 66px;
-            border: 2px solid #333;
-            border-radius: 6px;
+            border: 2px solid #444;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
-            background: #111;
+            background: #1a1a1a;
             user-select: none;
+            overflow: hidden;
+            position: relative;
+        }
+        .fq-btn svg {
+            width: 90px;
+            height: 56px;
+            filter: saturate(0.55) brightness(0.85);
+            transition: filter 0.2s;
+        }
+        .fq-btn:hover svg {
+            filter: saturate(0.7) brightness(0.95);
+        }
+        .fq-btn.fq-selected svg {
+            filter: saturate(0.8) brightness(1);
         }
 
         .fq-btn:hover {
@@ -511,25 +525,25 @@
                         <div>
                             <div class="fq-pair-label">Pair 1</div>
                             <div class="fq-pair" data-pair="0">
-                                <div class="fq-btn" data-side="a" onclick="fqPick(0,'a')">🇺🇦</div>
+                                <div class="fq-btn" data-side="a" onclick="fqPick(0,'a')"><svg viewBox="0 0 90 56"><rect width="90" height="28" fill="#005BBB"/><rect y="28" width="90" height="28" fill="#FFD500"/></svg></div>
                                 <span class="fq-vs">vs</span>
-                                <div class="fq-btn" data-side="b" onclick="fqPick(0,'b')">🇷🇺</div>
+                                <div class="fq-btn" data-side="b" onclick="fqPick(0,'b')"><svg viewBox="0 0 90 56"><rect width="90" height="18.67" fill="#fff"/><rect y="18.67" width="90" height="18.67" fill="#0039A6"/><rect y="37.33" width="90" height="18.67" fill="#D52B1E"/></svg></div>
                             </div>
                         </div>
                         <div>
                             <div class="fq-pair-label">Pair 2</div>
                             <div class="fq-pair" data-pair="1">
-                                <div class="fq-btn" data-side="a" onclick="fqPick(1,'a')">🇹🇼</div>
+                                <div class="fq-btn" data-side="a" onclick="fqPick(1,'a')"><svg viewBox="0 0 90 56"><rect width="90" height="56" fill="#FE0000"/><rect width="45" height="28" fill="#000095"/><circle cx="22.5" cy="14" r="8" fill="#fff"/><circle cx="22.5" cy="14" r="5.5" fill="#000095"/></svg></div>
                                 <span class="fq-vs">vs</span>
-                                <div class="fq-btn" data-side="b" onclick="fqPick(1,'b')">🇨🇳</div>
+                                <div class="fq-btn" data-side="b" onclick="fqPick(1,'b')"><svg viewBox="0 0 90 56"><rect width="90" height="56" fill="#DE2910"/><g transform="translate(15,10)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(28,4) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(32,9) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(32,16) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g><g transform="translate(28,21) scale(0.35)"><polygon points="0,-8 1.8,-2.5 8,-2.5 3.1,1 5,7 0,3.2 -5,7 -3.1,1 -8,-2.5 -1.8,-2.5" fill="#FFDE00"/></g></svg></div>
                             </div>
                         </div>
                         <div>
                             <div class="fq-pair-label">Pair 3</div>
                             <div class="fq-pair" data-pair="2">
-                                <div class="fq-btn" data-side="a" onclick="fqPick(2,'a')">🇵🇸</div>
+                                <div class="fq-btn" data-side="a" onclick="fqPick(2,'a')"><svg viewBox="0 0 90 56"><rect width="90" height="18.67" fill="#000"/><rect y="18.67" width="90" height="18.67" fill="#fff"/><rect y="37.33" width="90" height="18.67" fill="#007A3D"/><polygon points="0,0 30,28 0,56" fill="#CE1126"/></svg></div>
                                 <span class="fq-vs">vs</span>
-                                <div class="fq-btn" data-side="b" onclick="fqPick(2,'b')">🇮🇱</div>
+                                <div class="fq-btn" data-side="b" onclick="fqPick(2,'b')"><svg viewBox="0 0 90 56"><rect width="90" height="56" fill="#fff"/><rect width="90" height="10" y="5" fill="#0038b8"/><rect width="90" height="10" y="41" fill="#0038b8"/><polygon points="45,16 49.5,26 60,26 51.5,32 55,42 45,36 35,42 38.5,32 30,26 40.5,26" fill="none" stroke="#0038b8" stroke-width="1.5"/></svg></div>
                             </div>
                         </div>
                     </div>
@@ -671,7 +685,7 @@
                         <div class="slider-label"><span>2002</span><span id="sl5val" style="color:#E07A5F;font-weight:bold">2024</span><span>2024</span></div>
                     </div>
                 </div>
-                <p class="figure-caption">Ideological Steve and Identity Steve start identical in 2002 — same flag on the porch, same survey responses. Key political events push them apart: one follows ideas, the other follows tribe. By 2024, their voting behavior has completely diverged despite starting from the same declared beliefs. Drag the slider to watch the split happen.</p>
+                <p class="figure-caption">Ideological Nationalist Steve and Identity Nationalist Steve start identical in 2002 — both at ~10% likelihood of voting Democratic, same flag on the porch, same survey responses. As political events accumulate, Ideological Steve's principles pull him away from the coalition while Identity Steve stays loyal to the tribe. By 2024, their voting behavior has completely diverged despite starting from the same declared beliefs. Drag the slider to watch the split happen.</p>
             </div>
         </details>
 
@@ -686,8 +700,8 @@
                 {year:2021, label:'Jan 6'},
                 {year:2024, label:'2024'}
             ];
-            const ideoData = [[2002,50],[2005,52],[2008,48],[2010,46],[2014,44],[2016,42],[2018,40],[2021,38],[2024,35]];
-            const identData = [[2002,50],[2005,58],[2008,62],[2010,70],[2014,68],[2016,80],[2018,82],[2021,88],[2024,90]];
+            const ideoData = [[2002,10],[2005,12],[2008,18],[2010,22],[2014,28],[2016,38],[2018,48],[2021,58],[2024,65]];
+            const identData = [[2002,10],[2005,9],[2008,8],[2010,7],[2014,8],[2016,6],[2018,5],[2021,4],[2024,5]];
 
             function lerp(pts, yr) {
                 for (let i = 0; i < pts.length - 1; i++) {
@@ -734,7 +748,7 @@
                 ctx.rotate(-Math.PI / 2);
                 ctx.textAlign = 'center';
                 ctx.font = '11px sans-serif';
-                ctx.fillText('Likelihood to vote Republican (President)', 0, 0);
+                ctx.fillText('Likelihood to vote Democratic (President)', 0, 0);
                 ctx.restore();
 
                 // x-axis labels
@@ -781,9 +795,9 @@
                 ctx.font = '12px sans-serif';
                 ctx.fillStyle = '#4ecdc4';
                 ctx.textAlign = 'left';
-                ctx.fillText('● Ideological Steve', p.l + 10, p.t + 16);
+                ctx.fillText('● Ideological Nationalist Steve', p.l + 10, p.t + 16);
                 ctx.fillStyle = '#E07A5F';
-                ctx.fillText('● Identity Steve', p.l + 170, p.t + 16);
+                ctx.fillText('● Identity Nationalist Steve', p.l + 260, p.t + 16);
             }
 
             sl.addEventListener('input', draw);
