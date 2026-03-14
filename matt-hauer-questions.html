@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matt Hauer Questions - Tuesday March 17</title>
+<style>
+body{max-width:700px;margin:40px auto;padding:0 20px;font-family:Georgia,serif;line-height:1.7;color:#e0e0e0;background:#1a1a2e}
+h1{font-size:1.6em;margin-bottom:0.3em;color:#fff}
+h2{font-size:1.3em;margin-top:2em;color:#8ecae6}
+h3{font-size:1.1em;margin-top:1.5em;color:#a8d5ba}
+p{margin-bottom:1em}
+hr{border:none;border-top:1px solid #333;margin:2em 0}
+strong{color:#fff}em{color:#f0c674}
+li{margin-bottom:0.5em}ol,ul{padding-left:1.5em}
+a{color:#8ecae6}
+</style></head><body>
+<h1>Questions for Matt Hauer — Tuesday March 17 (Wanda&#x27;s Tavern)</h1>
+<p><strong>Context:</strong> Drinks/casual, not an interview. Matt is Head of Agent Development at Aaru, FSU professor, Cozzarelli Prize winner. You attended their standup, walked the neighborhood with Yundak, saw John live-code. Work trial starts ~April 1. Goal: extract intel that lets you prepare so well it&#x27;s almost unfair.</p>
+<p><strong>Strategy:</strong> Don&#x27;t interrogate. Let conversation flow. Seed topics, let Matt talk. He&#x27;s an academic — he likes explaining things. Buy him a drink and let him riff.</p>
+<hr>
+<h2>Tier 1: High-Priority Intel (Must Get)</h2>
+<h3>Tooling &amp; Environment</h3>
+<ol>
+<li><strong>What IDE does the team use?</strong> VS Code? Cursor? JetBrains? Looked like John was using Cursor during the office visit — confirm. Whole team on Cursor, or mixed? Any shared config/extensions?</li>
+<li><strong>What&#x27;s the dev environment setup process?</strong> When a new engineer joins, what does Day 1 look like? Is there a setup script, a README, a buddy system? How long until someone ships their first PR?</li>
+<li><strong>Git workflow:</strong> Stacked PRs (saw Matt doing this), conventional commits, branch naming? Monorepo or multi-repo?</li>
+<li><strong>Beyond Linear/Notion/Slack</strong> — what else? Figma? Vercel? AWS/GCP? Any internal tools that are homegrown?</li>
+<li><strong>CI/CD setup?</strong> GitHub Actions? What does the deploy flow look like?</li>
+<li><strong>Local dev environment:</strong> Docker, virtual envs, or bare metal?</li>
+<li><strong>Python environment:</strong> Poetry, pip, conda? Python version? Any strong opinions on typing/linting (mypy, ruff)?</li>
+</ol>
+<h3>Tech Stack (So You Can Practice)</h3>
+<ol>
+<li><strong>Python/TypeScript split:</strong> Is the simulation engine Python and the product layer TypeScript? What&#x27;s the ratio?</li>
+<li><strong>LLM providers:</strong> OpenAI, Anthropic, open-source models? Mix of all three?</li>
+<li><strong>Databases:</strong> How do they store/query synthetic population data at scale? Postgres? ClickHouse for analytics — what&#x27;s the primary store?</li>
+<li><strong>Frameworks:</strong> FastAPI confirmed for backend — Next.js for frontend? Anything custom?</li>
+</ol>
+<h3>The Work Trial Itself</h3>
+<ol>
+<li><strong>What should I actually expect?</strong> Is there a defined project/task, or is it &quot;here&#x27;s a codebase, find something useful to do&quot;? Who will I report to / pair with?</li>
+<li><strong>What would make someone crush a work trial vs. just pass it?</strong> What separates &quot;this person is good&quot; from &quot;we need to hire this person immediately&quot;?</li>
+<li><strong>What&#x27;s the biggest gap on the team right now?</strong> Where is there work piling up that nobody has bandwidth for?</li>
+</ol>
+<h3>Architecture &amp; Current Problems</h3>
+<ol>
+<li><strong>How&#x27;s the logical consistency module going?</strong> Last time you were putting out &quot;little embers.&quot; Did the approach land, or did it need a rethink?</li>
+<li><strong>What does the Audience Gen pipeline look like end-to-end?</strong> Input → trait generation → validation → output. Where are the bottlenecks?</li>
+<li><strong>The manuscript</strong> — &quot;I&#x27;d love to read it before I start. Can you send it to me?&quot; (He offered during the standup visit. Follow through.)</li>
+</ol>
+<h2>Tier 2: Strategic Intel (Get If Conversation Goes There)</h2>
+<h3>Technical Depth</h3>
+<ol>
+<li><strong>How do you think about agent fidelity vs. compute cost?</strong> At what point do you stop adding complexity to an agent? Is there a target &quot;resolution&quot; for different use cases?</li>
+<li><strong>Second-gen tenement traits</strong> — what changed from first gen? What was wrong/missing?</li>
+<li><strong>How are you validating agent populations against ground truth?</strong> The EY study used Spearman correlation. Is that still the standard? What metrics does the team trust?</li>
+<li><strong>What&#x27;s the hardest thing about the classical ML layer?</strong> John described 3 stages (off-shelf LLM → fine-tuned → classical ML hybrid). Where does the classical ML part break?</li>
+<li><strong>Cross-sectional → longitudinal:</strong> Is anyone working on rolling simulations forward in time, or is that still aspirational?</li>
+</ol>
+<h3>Team &amp; Culture</h3>
+<ol>
+<li><strong>What does a typical week look like for an engineer?</strong> Standup cadence, how much is solo vs. pairing, how much is meetings vs. heads-down?</li>
+<li><strong>How does work get assigned?</strong> Top-down from Cameron/John, or do people pick from a backlog? How autonomous are engineers?</li>
+<li><strong>What&#x27;s the code review culture like?</strong> Fast approvals, or deep review? Who reviews whose code?</li>
+<li><strong>How does the team handle disagreements about approach?</strong> When Matt the academic and John the systems builder disagree on methodology, how does that resolve?</li>
+</ol>
+<h3>Product &amp; Clients</h3>
+<ol>
+<li><strong>What kind of client work would I touch?</strong> Is the trial focused on internal tooling, or would I be near client-facing work?</li>
+<li><strong>What happened with the 2024 election prediction?</strong> Harris 53-47 vs. reality. Was there a post-mortem? What did the team learn?</li>
+<li><strong>Mississippi midterms</strong> — is that still the next political test case? What&#x27;s the approach?</li>
+</ol>
+<h3>Your Angle</h3>
+<ol>
+<li><strong>Where do you see the biggest methodological gap?</strong> As an FSU demographer looking at this from the academic side, what&#x27;s the thing that keeps you up at night about their approach?</li>
+<li><strong>How does the team think about theory-driven vs. data-driven archetypes?</strong> You&#x27;ve been doing automated clustering — has anyone proposed using structured priors from social science theory? (This is the PRISM pitch without calling it PRISM.)</li>
+</ol>
+<h2>Tier 3: Rapport &amp; Relationship (Organic, Don&#x27;t Force)</h2>
+<ol>
+<li><strong>How&#x27;s the FSU → Aaru transition been?</strong> Academic to startup culture. What surprised him?</li>
+<li><strong>What&#x27;s he working on outside Aaru?</strong> Still publishing? Any active research?</li>
+<li><strong>What does he think about the &quot;simulation as a product&quot; market?</strong> Other companies doing similar things?</li>
+<li><strong>Running?</strong> John&#x27;s a runner, Sam&#x27;s a runner. Is Matt?</li>
+<li><strong>The neighborhood</strong> — Wanda&#x27;s Tavern is in Greenpoint/Williamsburg area. Does he live nearby?</li>
+</ol>
+<hr>
+<h2>Things to AVOID</h2>
+<ul>
+<li>Don&#x27;t oversell PRISM. Let him ask about it. If he does, keep it to &quot;I built a political disposition model with 111 archetypes, theory-driven layers, calibrated against real elections. Happy to show you.&quot;</li>
+<li>Don&#x27;t ask about compensation/equity during drinks. That&#x27;s a separate conversation.</li>
+<li>Don&#x27;t trash their 2024 election miss. Ask about it with genuine curiosity, not &quot;here&#x27;s what you did wrong.&quot;</li>
+<li>Don&#x27;t monopolize the conversation. He&#x27;s a professor — he has interesting things to say. Let him talk 60% of the time.</li>
+</ul>
+<hr>
+<h2>After the Meeting</h2>
+<ul>
+<li>Update this file with answers</li>
+<li>Update `briefs/aaru-work-trial-3-week-plan.md` with any new intel</li>
+<li>Send Matt a thank-you text the next day</li>
+<li>If he sends the manuscript, read it within 48 hours and send specific comments</li>
+</ul>
+</body></html>
