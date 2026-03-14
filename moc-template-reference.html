@@ -1,0 +1,1147 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="imgs/favicon.png">
+    <title>The Geometry of Preference - matrices of confusion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300..700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #E8E4DC;
+            --bg-secondary: #D4CFC4;
+            --accent-coral: #E07A5F;
+            --accent-green: #2D5A3D;
+            --accent-pink: #C97B98;
+            --accent-gold: #C9A227;
+            --accent-blue: #4A90A4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --figure-bg: #F5F3EF;
+        }
+        
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 19px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .site-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--accent-coral);
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .site-title-exclaim {
+            font-family: 'Space Grotesk', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+        }
+        
+        .site-subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-coral);
+        }
+        
+        .article-header {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 2rem;
+        }
+
+        .article-header-text {
+            flex: 1;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .article-header-gif {
+            flex-shrink: 0;
+            width: 280px;
+            height: 280px;
+        }
+
+        .article-header-gif img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .article-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+        }
+
+        .article-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: lowercase;
+        }
+        
+        .series-nav {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+        
+        .series-nav a {
+            color: var(--accent-coral);
+            text-decoration: none;
+        }
+        
+        .series-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+        
+        .content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+        }
+        
+        .content strong {
+            font-weight: 600;
+        }
+        
+        .content em {
+            font-style: italic;
+        }
+        
+        /* Figure Expandable Containers */
+        .figure-container {
+            margin: 2.5rem -2rem;
+            background: var(--figure-bg);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .figure-container summary {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            list-style: none;
+            transition: background 0.2s ease;
+        }
+        
+        .figure-container summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .figure-container summary:hover {
+            background: rgba(0,0,0,0.03);
+        }
+        
+        .figure-container[open] summary {
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .figure-number {
+            font-weight: 500;
+            color: var(--accent-coral);
+            margin-right: 0.75rem;
+        }
+        
+        .figure-title {
+            flex: 1;
+        }
+        
+        .figure-expand-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: var(--accent-coral);
+        }
+        
+        .figure-container[open] .figure-expand-icon {
+            transform: rotate(45deg);
+        }
+        
+        .figure-content {
+            padding: 2rem;
+        }
+        
+        .figure-caption {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 1.5rem;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+        
+        .viz-container {
+            background: white;
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+        
+        /* Math-like formatting */
+        .math {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9em;
+            background: rgba(0,0,0,0.04);
+            padding: 0.15em 0.4em;
+            border-radius: 3px;
+        }
+        
+        .equation {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.95rem;
+            background: var(--figure-bg);
+            padding: 1.25rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            text-align: center;
+            border-left: 3px solid var(--accent-coral);
+        }
+        
+        /* Inline DAG styles */
+        .inline-dag {
+            margin: 1.5rem 0;
+            background: var(--figure-bg);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        
+        .dag-svg {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .footer-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .related-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .related-link {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-coral);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        .related-link:hover {
+            background: var(--accent-coral);
+            color: white;
+        }
+        
+        @media (max-width: 600px) {
+            .back-link {
+                position: static;
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .article-header {
+                padding: 2rem 1.5rem;
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+
+            .article-header-text {
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .article-header-gif {
+                width: 200px;
+                height: 200px;
+            }
+
+            .content {
+                padding: 0 1.5rem 4rem;
+            }
+
+            .figure-container {
+                margin: 2rem -1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="essays-preview.html" class="back-link">ΓåÉ essays</a>
+        <a href="index.html"><img src="imgs/matrices-logo.png" class="img-fluid" style="max-width: 400px;"></a>
+    </header>
+    
+    <div class="article-header">
+        <div class="article-header-text">
+            <h1 class="article-title">The Geometry of Preference</h1>
+            <div class="article-meta">september 2025 ┬╖ 13 min read</div>
+            <div class="series-nav">part 2 of 3 ┬╖ previously: <a href="ending-capital-asset-pricing-geocentric-era.html">Ending Capital Asset Pricing's Geocentric Era</a></div>
+        </div>
+        <div class="article-header-gif">
+            <img src="imgs/geometry_of_preference.gif" alt="Geometry of Preference">
+        </div>
+    </div>
+    
+    <article class="content">
+        <p>The previous article argued that factor models mistake descriptions for causes. Beta isn't an intrinsic property of assets. It's an artifact of variance decomposition. The equity risk premium isn't compensation for bearing "risk" in some abstract sense. It emerges from how investors actually price uncertain distributions. This article develops that last point.</p>
+
+        <p>If ERP isn't compensation for risk, what is it? And once we understand its source, how should that change the way we construct portfolios?</p>
+
+        <h2>In Search of Capital Asset Pricing Coherence</h2>
+
+        <p>Standard financial theory assumes you should maximize expected returns for a given level of variance. The expected return is the probability-weighted average across all possible outcomes, the mean of the distribution of outcomes, of which only one will come to pass. The mean is an ensemble average. It's what you'd get if you could run the same investment across a thousand parallel universes and average the results. In some universes you'd do well, in others poorly, but the average across all of them is the expected value.</p>
+
+        <p>You don't live in a thousand parallel universes. You experience a single path through time, and you cannot average across the paths you didn't take. The ensemble average is a property of a population of hypothetical yous. It's not a property of your actual financial life.</p>
+
+        <p>This distinction between ensemble averages and time averages is called non-ergodicity. A process is ergodic if the time average equals the ensemble average; you can swap between "average across many runs" and "average across time in one run" and get the same answer. Coin flips are ergodic. But wealth accumulation is not. The sequence of returns matters, not just their average. A 50% loss followed by a 100% gain leaves you exactly where you started. A 100% gain followed by a 50% loss does too. But a sequence that wipes you out early means you never recover, even if subsequent years are spectacular. You can't participate in the good years if the bad year already ended your game.</p>
+
+        <p>The ensemble average ignores this. It weights the paths where you went bust just as heavily as the paths where you survived. But the time average, what you actually experience, is dominated by whether you survive.</p>
+
+        <h2>'A Kelly'</h2>
+
+        <p>The Kelly criterion offers a different objective: size your bets to maximize long-run growth, not expected wealth. The distinction matters because maximizing expected wealth can involve bets so large that a string of bad outcomes wipes you out. Kelly sizing survives bad runs while still capturing growth. It's more conservative than mean-maximization, but it's the strategy that actually maximizes wealth for a single agent living through time.</p>
+
+        <p>Consider a biased coin that lands heads 51% of the time. You win your bet on heads, lose it on tails. How much of your bankroll should you wager on each flip? Maximizing expected value says bet everythingΓÇöthe expected return is positive, so more is better. But bet everything and you're guaranteed to go bust eventually; one tails wipes you out. Kelly says bet 2% of your bankroll (the formula is edge divided by odds: 0.51 - 0.49 = 0.02). At 2%, you survive the inevitable losing streaks while your wealth compounds. After 10,000 flips, the Kelly bettor is rich; the max-expected-value bettor is broke. The edge was identical. The difference was position sizingΓÇörespecting the path, not just the destination.</p>
+
+        <!-- FIGURE: Kelly Survival Animation -->
+        <details class="figure-container" open>
+            <summary>
+                <span class="figure-number">Figure 1</span>
+                <span class="figure-title">Survival of Paths</span>
+                <span class="figure-expand-icon">+</span>
+            </summary>
+            <div class="figure-content">
+                <div class="viz-container" style="padding: 0; background: #F5F3EF;">
+                    <svg viewBox="0 0 650 380" id="kelly-viz" style="width: 100%; display: block;">
+                        <!-- Background -->
+                        <rect x="0" y="0" width="650" height="380" fill="#F5F3EF"/>
+                        
+                        <!-- Chart area -->
+                        <rect x="70" y="30" width="550" height="290" fill="white" rx="4"/>
+                        
+                        <!-- Grid lines -->
+                        <g stroke="#eee" stroke-width="1">
+                            <line x1="70" y1="90" x2="620" y2="90"/>
+                            <line x1="70" y1="150" x2="620" y2="150"/>
+                            <line x1="70" y1="210" x2="620" y2="210"/>
+                            <line x1="70" y1="270" x2="620" y2="270"/>
+                        </g>
+                        
+                        <!-- Axes -->
+                        <line x1="70" y1="320" x2="620" y2="320" stroke="#999" stroke-width="1"/>
+                        <line x1="70" y1="30" x2="70" y2="320" stroke="#999" stroke-width="1"/>
+                        
+                        <!-- Ruin threshold line -->
+                        <line x1="70" y1="310" x2="620" y2="310" stroke="#C97B98" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <text x="625" y="314" font-family="Courier Prime" font-size="9" fill="#C97B98">Ruin</text>
+                        
+                        <!-- Y-axis labels -->
+                        <text x="60" y="290" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#999">$100</text>
+                        <text x="60" y="232" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#999">$1k</text>
+                        <text x="60" y="175" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#999">$10k</text>
+                        <text x="60" y="117" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#999">$100k</text>
+                        <text x="60" y="60" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#999">$1M</text>
+                        
+                        <!-- X-axis labels -->
+                        <text x="70" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#999">0</text>
+                        <text x="207" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#999">2.5k</text>
+                        <text x="345" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#999">5k</text>
+                        <text x="482" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#999">7.5k</text>
+                        <text x="620" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#999">10k</text>
+                        
+                        <!-- Axis titles -->
+                        <text x="345" y="365" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="#666">Coin Flips</text>
+                        <text x="25" y="175" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="#666" transform="rotate(-90, 25, 175)">Wealth (log scale)</text>
+                        
+                        <!-- Strategy label -->
+                        <text id="strategy-label" x="345" y="22" font-family="Syne, sans-serif" font-size="14" font-weight="600" text-anchor="middle" fill="#666"></text>
+                        
+                        <!-- Path groups -->
+                        <g id="paths"></g>
+                        
+                        <!-- Ruin markers group -->
+                        <g id="ruin-markers"></g>
+                        
+                        <!-- Legend -->
+                        <g transform="translate(85, 42)">
+                            <line x1="0" y1="0" x2="20" y2="0" stroke="#2D5A3D" stroke-width="2.5"/>
+                            <text x="25" y="4" font-family="Courier Prime" font-size="8" fill="#666">┬╜├ù Kelly (1%)</text>
+                            
+                            <line x1="105" y1="0" x2="125" y2="0" stroke="#E07A5F" stroke-width="2.5"/>
+                            <text x="130" y="4" font-family="Courier Prime" font-size="8" fill="#666">1├ù Kelly (2%)</text>
+                            
+                            <line x1="210" y1="0" x2="230" y2="0" stroke="#C97B98" stroke-width="2.5"/>
+                            <text x="235" y="4" font-family="Courier Prime" font-size="8" fill="#666">3├ù Kelly (6%)</text>
+                        </g>
+                    </svg>
+                </div>
+                <p class="figure-caption">Simulated wealth paths over 10,000 flips of a 51% biased coin. Kelly sizing (2% per flip, coral) maximizes long-run growth. Half-Kelly (green) grows slower but with less volatility. Triple-Kelly (pink) overbets and frequently hits ruin. Same edge, different outcomesΓÇöposition sizing determines survival. Click to run a new simulation.</p>
+            </div>
+        </details>
+
+        <script>
+        (function() {
+            const WIN_PROB = 0.51;
+            const KELLY_FRACTION = 0.02; // Edge / odds = 0.51 - 0.49 = 0.02
+            const TOTAL_FLIPS = 10000;
+            const LEFT = 70, RIGHT = 620, TOP = 40, BOTTOM = 310;
+            const WIDTH = RIGHT - LEFT, HEIGHT = BOTTOM - TOP;
+            const DRAW_DURATION = 4000, PAUSE_BETWEEN = 300;
+            
+            const strategies = [
+                { name: 'half-kelly', betFraction: KELLY_FRACTION * 0.5, color: '#2D5A3D', label: '┬╜├ù Kelly (1%)' },
+                { name: 'kelly', betFraction: KELLY_FRACTION, color: '#E07A5F', label: '1├ù Kelly (2%)' },
+                { name: 'triple-kelly', betFraction: KELLY_FRACTION * 3, color: '#C97B98', label: '3├ù Kelly (6%)' }
+            ];
+            
+            function wealthToY(wealth) {
+                const minWealth = 1, maxWealth = 10000000;
+                const logMin = Math.log(minWealth), logMax = Math.log(maxWealth);
+                const logWealth = Math.log(Math.max(wealth, minWealth));
+                return BOTTOM - ((logWealth - logMin) / (logMax - logMin)) * HEIGHT;
+            }
+            
+            function flipToX(flip) { return LEFT + (flip / TOTAL_FLIPS) * WIDTH; }
+            
+            function simulatePath(betFraction) {
+                let wealth = 100;
+                const path = [wealth];
+                const sampleRate = 20; // Record every 20th flip for performance
+                
+                for (let i = 0; i < TOTAL_FLIPS; i++) {
+                    const win = Math.random() < WIN_PROB;
+                    const bet = wealth * betFraction;
+                    
+                    if (win) {
+                        wealth += bet;
+                    } else {
+                        wealth -= bet;
+                    }
+                    
+                    if (wealth < 1) {
+                        path.push(0);
+                        return { path, ruinFlip: i + 1, sampleRate };
+                    }
+                    
+                    if (i % sampleRate === 0 || i === TOTAL_FLIPS - 1) {
+                        path.push(wealth);
+                    }
+                }
+                return { path, ruinFlip: null, sampleRate };
+            }
+            
+            function createPathString(pathData, sampleRate) {
+                let d = `M ${flipToX(0)} ${wealthToY(pathData[0])}`;
+                for (let i = 1; i < pathData.length; i++) {
+                    if (pathData[i] === 0) break;
+                    const flip = (i - 1) * sampleRate;
+                    d += ` L ${flipToX(Math.min(flip, TOTAL_FLIPS))} ${wealthToY(pathData[i])}`;
+                }
+                return d;
+            }
+            
+            let animationId = 0;
+            
+            async function runFullAnimation() {
+                const currentAnimationId = ++animationId;
+                const pathsGroup = document.getElementById('paths');
+                const ruinMarkers = document.getElementById('ruin-markers');
+                const strategyLabel = document.getElementById('strategy-label');
+                
+                pathsGroup.innerHTML = '';
+                ruinMarkers.innerHTML = '';
+                strategyLabel.textContent = '';
+                
+                while (animationId === currentAnimationId) {
+                    pathsGroup.innerHTML = '';
+                    ruinMarkers.innerHTML = '';
+                    await sleep(200);
+                    
+                    if (animationId !== currentAnimationId) return;
+                    
+                    for (let s = 0; s < strategies.length; s++) {
+                        if (animationId !== currentAnimationId) return;
+                        
+                        const strategy = strategies[s];
+                        strategyLabel.textContent = strategy.label;
+                        strategyLabel.style.fill = strategy.color;
+                        
+                        const result = simulatePath(strategy.betFraction);
+                        
+                        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        pathEl.setAttribute('d', createPathString(result.path, result.sampleRate));
+                        pathEl.setAttribute('fill', 'none');
+                        pathEl.setAttribute('stroke', strategy.color);
+                        pathEl.setAttribute('stroke-width', '2.5');
+                        pathEl.setAttribute('stroke-opacity', '0.9');
+                        pathEl.setAttribute('stroke-linecap', 'round');
+                        pathsGroup.appendChild(pathEl);
+                        
+                        const length = pathEl.getTotalLength();
+                        pathEl.style.strokeDasharray = length;
+                        pathEl.style.strokeDashoffset = length;
+                        
+                        const startTime = performance.now();
+                        
+                        await new Promise(resolve => {
+                            function animate(currentTime) {
+                                if (animationId !== currentAnimationId) { resolve(); return; }
+                                
+                                const elapsed = currentTime - startTime;
+                                const progress = Math.min(elapsed / DRAW_DURATION, 1);
+                                const eased = 1 - Math.pow(1 - progress, 3);
+                                
+                                pathEl.style.strokeDashoffset = length * (1 - eased);
+                                
+                                if (result.ruinFlip !== null) {
+                                    const ruinProgress = result.ruinFlip / TOTAL_FLIPS;
+                                    if (eased >= ruinProgress && !pathEl.dataset.ruinMarked) {
+                                        pathEl.dataset.ruinMarked = 'true';
+                                        const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                                        marker.setAttribute('cx', flipToX(result.ruinFlip));
+                                        marker.setAttribute('cy', BOTTOM);
+                                        marker.setAttribute('r', '6');
+                                        marker.setAttribute('fill', strategy.color);
+                                        marker.style.opacity = '0';
+                                        marker.style.transition = 'opacity 0.2s ease';
+                                        ruinMarkers.appendChild(marker);
+                                        requestAnimationFrame(() => marker.style.opacity = '1');
+                                    }
+                                }
+                                
+                                if (progress < 1) requestAnimationFrame(animate);
+                                else resolve();
+                            }
+                            requestAnimationFrame(animate);
+                        });
+                        
+                        if (s < strategies.length - 1) await sleep(PAUSE_BETWEEN);
+                    }
+                    
+                    strategyLabel.textContent = '';
+                    await sleep(2500);
+                }
+            }
+            
+            function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+            
+            // Start animation when figure is opened
+            const details = document.querySelector('details:has(#kelly-viz)');
+            if (details) {
+                details.addEventListener('toggle', () => {
+                    if (details.open) runFullAnimation();
+                    else animationId++;
+                });
+                if (details.open) runFullAnimation();
+            }
+            
+            // Restart on click
+            document.getElementById('kelly-viz').addEventListener('click', () => runFullAnimation());
+        })();
+        </script>
+
+        <p>Kelly has limitations, and we need a framework that preserves its core insight (the time average matters, not the ensemble average) while allowing for uncertainty about distributions, finite horizons, and varying tolerance for drawdowns. But before introducing that framework, it's worth being explicit about what's wrong with the standard alternative.</p>
+
+        <h2>Decomposing Volatility</h2>
+
+        <p>When I worked in finance from 2011 to 2017, Sharpe was the canonical metric for risk-adjusted performance: excess return divided by volatility. But volatility is a description, not an explanation. It's the residue of several distinct causal phenomena compressed into a single number.</p>
+
+        <p>Volatility penalizes a stock that goes up 50% just as harshly as one that goes down 50%. But no investor actually experiences these as equivalent. One of these outcomes lets you retire early. The other one means you can't retire at all. A metric that treats them identically has, at some level, failed to understand what it's measuring.</p>
+
+        <p>Two portfolios with identical Sharpe ratios can have completely different left tails. One might have steady returns with occasional small losses. Another might have the same average return and the same volatility, but achieve it through rare large gains offset by frequent moderate losses. Standard metrics say these are equivalent. An investor who must survive to participate in the long run knows they are not.</p>
+
+        <p>The problem compounds when you consider correlation. Volatility is typically estimated from historical data, and so is correlation. But correlations aren't stableΓÇöthey're conditional on the state of the world. In 2022, stocks and bonds fell together for the first time in two decades. The diversification benefit of bonds (the thing that justified holding them despite low yields) turned out to be a feature of a specific interest rate environment, not a law of nature. Investors discovered this at the worst possible time, which is when you always discover these things.</p>
+
+        <p>Different events activate different correlation structures. A Fed rate shock moves stocks and bonds together. A flight-to-quality panic moves them opposite. An inflation surprise hits both but through different channels. A single correlation number, estimated from a mix of these regimes, captures none of this. It's an average across states that never recur in the same mix.</p>
+
+        <p>We need a framework that focuses on the left tail directly, rather than using a symmetric proxy that hopes downside and upside cancel out in the math.</p>
+
+        <h2>The Correct Two Parameters</h2>
+
+        <p>The framework I find most useful has two parameters that control how you translate uncertain future distributions into portfolio decisions.</p>
+
+        <p>The first parameter is <strong>CVaR(x%)</strong>, the conditional value at risk at the xth percentile. This answers: which part of the distribution am I pricing against? CVaR-50 is the expected value of the worse-than-median outcomes, what you get on average when things go wrong. CVaR-10 is the expected value of the worst 10% of outcomes, what you get when things go very wrong. Lower x means more focus on the left tail, more concern with survival over optimization.</p>
+
+        <p>The second parameter is <strong>╬╗ (lambda)</strong>, the tradeoff coefficient between expected return and tail risk. This answers: how much expected return am I willing to sacrifice to improve my left tail? Higher ╬╗ means more weight on the CVaR term relative to expected return. It's the intensity of your conservatism.</p>
+
+        <p>Together, these parameters define a preference function:</p>
+
+        <div class="equation">
+            Maximize: E[R] ΓêÆ ╬╗ ├ù CVaR<sub>x</sub>(R)
+        </div>
+
+        <p>This says: I want high expected returns, but I penalize portfolios that have bad left tails. How bad is "bad" depends on x (where I look in the distribution), and how much I penalize depends on ╬╗ (how much I care).</p>
+
+        <p>Kelly is a special case of this framework, one that maximizes long-run growth without explicit tail constraints. But most investors should be more conservative than Kelly, because most investors have finite horizons, face career risk, have specific liabilities to meet, and can't psychologically tolerate the drawdowns Kelly permits.</p>
+
+        <!-- FIGURE 2: The Two Parameters -->
+        <details class="figure-container" open>
+            <summary>
+                <span class="figure-number">Figure 2</span>
+                <span class="figure-title">The Two Parameters of Preference</span>
+                <span class="figure-expand-icon">+</span>
+            </summary>
+            <div class="figure-content">
+                <div class="viz-container" style="padding: 0; background: white;">
+                    <svg viewBox="0 0 650 350" id="cvar-viz" style="width: 100%; display: block;">
+                        <rect x="0" y="0" width="650" height="350" fill="white"/>
+                        <rect x="70" y="30" width="520" height="250" fill="#fafafa" rx="4"/>
+                        <line x1="70" y1="30" x2="70" y2="280" stroke="#999" stroke-width="1"/>
+                        <text x="25" y="155" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="#666" transform="rotate(-90, 25, 155)">Probability ├ù ╬╗ penalty</text>
+                        <line x1="70" y1="280" x2="590" y2="280" stroke="#999" stroke-width="1"/>
+                        <text x="330" y="310" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="#666">Return outcomes (worst ΓåÆ best)</text>
+                        <text x="70" y="295" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#999">-30%</text>
+                        <text x="200" y="295" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#999">-10%</text>
+                        <text x="330" y="295" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#999">+10%</text>
+                        <text x="460" y="295" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#999">+30%</text>
+                        <text x="590" y="295" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#999">+45%</text>
+                        <g id="histogram-bars"></g>
+                        <line id="mean-line" x1="380" y1="30" x2="380" y2="280" stroke="#2D5A3D" stroke-width="2"/>
+                        <text x="380" y="22" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#2D5A3D">Mean</text>
+                        <line id="effective-line" x1="300" y1="30" x2="300" y2="280" stroke="#C9A227" stroke-width="2.5" stroke-dasharray="4 2"/>
+                        <text id="effective-label" x="300" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#C9A227">Effective value</text>
+                        <g transform="translate(450, 50)">
+                            <rect x="0" y="0" width="130" height="55" rx="4" fill="white" stroke="#ddd"/>
+                            <line x1="10" y1="18" x2="35" y2="18" stroke="#2D5A3D" stroke-width="2"/>
+                            <text x="42" y="22" font-family="Courier Prime" font-size="8" fill="#666">Mean return</text>
+                            <line x1="10" y1="38" x2="35" y2="38" stroke="#C9A227" stroke-width="2.5" stroke-dasharray="4 2"/>
+                            <text x="42" y="42" font-family="Courier Prime" font-size="8" fill="#666">Effective value</text>
+                        </g>
+                    </svg>
+                    <div style="display: flex; justify-content: center; gap: 3rem; padding: 1rem; background: #F5F3EF; font-family: 'Courier Prime', monospace;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
+                            <span style="font-size: 0.85rem; font-weight: 500; color: #E07A5F;">CVaR(x%)</span>
+                            <span style="font-size: 0.65rem; color: #999; text-align: center;">Which bad outcomes<br/>you're protecting against</span>
+                            <input type="range" id="cvar-slider" min="1" max="50" value="25" step="1" style="width: 140px; cursor: pointer;"/>
+                            <span style="font-size: 1rem; font-weight: 600; color: #E07A5F;" id="cvar-value">25%</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
+                            <span style="font-size: 0.85rem; font-weight: 500; color: #C9A227;">╬╗ (lambda)</span>
+                            <span style="font-size: 0.65rem; color: #999; text-align: center;">How much you're<br/>protecting against them</span>
+                            <input type="range" id="lambda-slider" min="0" max="4" value="1" step="0.1" style="width: 140px; cursor: pointer;"/>
+                            <span style="font-size: 1rem; font-weight: 600; color: #C9A227;" id="lambda-value">1.0</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="figure-caption">A stylized distribution of annual returns for global equity capital markets (~98% of historical outcomes). CVaR(x%) selects which bad outcomes you're protecting against (the worst x%, shown in coral). Lambda (╬╗) determines how heavily those outcomes are penalized, making the coral bars taller. The effective value line shows the mean of this distorted distribution: what you're actually optimizing for. Higher ╬╗ pulls the effective value leftward, meaning you price more conservatively.</p>
+            </div>
+        </details>
+
+        <script>
+        (function() {
+            const NUM_BARS = 20;
+            const CHART_LEFT = 70, CHART_RIGHT = 590, CHART_TOP = 30, CHART_BOTTOM = 280;
+            const CHART_WIDTH = CHART_RIGHT - CHART_LEFT;
+            const CHART_HEIGHT = CHART_BOTTOM - CHART_TOP;
+            const BAR_WIDTH = CHART_WIDTH / NUM_BARS - 4;
+            
+            // Range: -30% to +45% (captures ~98% of global equity annual returns)
+            // Mean ~7.6%, StdDev ~16%
+            const MIN_RETURN = -0.30;
+            const MAX_RETURN = 0.45;
+            const RANGE = MAX_RETURN - MIN_RETURN;
+            
+            const returns = [];
+            const probabilities = [];
+            
+            // Target mean of 7.6% with ~16% volatility, slight negative skew
+            const targetMean = 0.076;
+            const spread = 0.16;
+            const skew = -0.25;
+            
+            for (let i = 0; i < NUM_BARS; i++) {
+                const returnVal = MIN_RETURN + (i / (NUM_BARS - 1)) * RANGE;
+                returns.push(returnVal);
+                
+                let prob = Math.exp(-Math.pow(returnVal - targetMean, 2) / (2 * spread * spread));
+                if (returnVal < targetMean) {
+                    prob *= (1 + skew * (targetMean - returnVal));
+                }
+                probabilities.push(prob);
+            }
+            
+            const totalProb = probabilities.reduce((a, b) => a + b, 0);
+            for (let i = 0; i < probabilities.length; i++) {
+                probabilities[i] /= totalProb;
+            }
+            
+            let meanReturn = 0;
+            for (let i = 0; i < NUM_BARS; i++) {
+                meanReturn += returns[i] * probabilities[i];
+            }
+            
+            function returnToX(r) {
+                return CHART_LEFT + ((r - MIN_RETURN) / RANGE) * CHART_WIDTH;
+            }
+            
+            function draw() {
+                const cvarPercent = parseInt(document.getElementById('cvar-slider').value);
+                const lambda = parseFloat(document.getElementById('lambda-slider').value);
+                
+                document.getElementById('cvar-value').textContent = cvarPercent + '%';
+                document.getElementById('lambda-value').textContent = lambda.toFixed(1);
+                
+                let cumProb = 0;
+                let cvarIndex = 0;
+                for (let i = 0; i < NUM_BARS; i++) {
+                    cumProb += probabilities[i];
+                    if (cumProb >= cvarPercent / 100) {
+                        cvarIndex = i;
+                        break;
+                    }
+                }
+                
+                const barsGroup = document.getElementById('histogram-bars');
+                barsGroup.innerHTML = '';
+                
+                const displayWeights = [];
+                for (let i = 0; i < NUM_BARS; i++) {
+                    const isInCvar = i <= cvarIndex;
+                    const weight = isInCvar ? probabilities[i] * (1 + lambda) : probabilities[i];
+                    displayWeights.push(weight);
+                }
+                
+                const totalDisplayWeight = displayWeights.reduce((a, b) => a + b, 0);
+                
+                let effectiveValue = 0;
+                for (let i = 0; i < NUM_BARS; i++) {
+                    effectiveValue += returns[i] * (displayWeights[i] / totalDisplayWeight);
+                }
+                
+                const maxDisplayWeight = Math.max(...displayWeights);
+                const maxBarHeight = CHART_HEIGHT * 0.85;
+                
+                for (let i = 0; i < NUM_BARS; i++) {
+                    const x = CHART_LEFT + (i / NUM_BARS) * CHART_WIDTH + 2;
+                    const isInCvar = i <= cvarIndex;
+                    const displayHeight = (displayWeights[i] / maxDisplayWeight) * maxBarHeight * 0.6;
+                    
+                    const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    bar.setAttribute('x', x);
+                    bar.setAttribute('y', CHART_BOTTOM - displayHeight);
+                    bar.setAttribute('width', BAR_WIDTH);
+                    bar.setAttribute('height', displayHeight);
+                    bar.setAttribute('rx', 2);
+                    
+                    if (isInCvar) {
+                        bar.setAttribute('fill', '#E07A5F');
+                        bar.setAttribute('fill-opacity', 0.7 + lambda * 0.15);
+                    } else {
+                        bar.setAttribute('fill', '#2D5A3D');
+                        bar.setAttribute('fill-opacity', 0.4);
+                    }
+                    
+                    barsGroup.appendChild(bar);
+                }
+                
+                const meanX = returnToX(meanReturn);
+                document.getElementById('mean-line').setAttribute('x1', meanX);
+                document.getElementById('mean-line').setAttribute('x2', meanX);
+                
+                const effectiveX = returnToX(effectiveValue);
+                document.getElementById('effective-line').setAttribute('x1', effectiveX);
+                document.getElementById('effective-line').setAttribute('x2', effectiveX);
+                document.getElementById('effective-label').setAttribute('x', effectiveX);
+                document.getElementById('effective-label').textContent = 'Effective: ' + (effectiveValue * 100).toFixed(1) + '%';
+            }
+            
+            document.getElementById('cvar-slider').addEventListener('input', draw);
+            document.getElementById('lambda-slider').addEventListener('input', draw);
+            draw();
+        })();
+        </script>
+
+        <h2>Where the Premium Comes From</h2>
+
+        <p>This framework explains the equity risk premium without invoking "risk" as a circular concept.</p>
+
+        <p>Imagine two ways of pricing an uncertain asset. The first way prices at the expected value, the mean of the distribution. The second way prices at something more conservative: the median, or CVaR-50, or CVaR-25. For any right-skewed distribution (and wealth accumulation is right-skewed because multiplicative compounding amplifies outliers), the conservative price is lower than the mean-based price.</p>
+
+        <p>Now observe what happens over time. Realized returns converge toward the mean of the true distribution. That's what the law of large numbers guarantees. But the asset was priced at something below the mean. The gap between what investors priced for and what they actually received is the premium.</p>
+
+        <p>This isn't compensation for "risk" in the abstract. It's the mathematical consequence of conservative pricing meeting realized outcomes. And the conservative pricing isn't irrational. It's the correct response for agents who live through time, can't average across parallel universes, and must survive bad paths to capture the average.</p>
+
+        <p>The premium persists because the conservative pricing is structural, not behavioral. It's not that investors are irrationally afraid and could be educated out of it. It's that they face real constraints. Bank capital requirements force CVaR-style thinking. Pension funds must meet liabilities even in bad scenarios. Asset managers face career risk from drawdowns. Individuals have finite lives and specific goals. All of these push toward conservative pricing, and none of them is a mistake.</p>
+
+        <p>Different CVaR levels produce different implied premiums. My analysis of historical equity returns suggests that pricing at CVaR-10 to CVaR-25 produces gaps from the mean in the 5-7% range, consistent with observed equity risk premiums. This isn't a proof, since we can't observe investors' subjective distributions. But it's a consistency check: the framework produces the right order of magnitude.</p>
+
+        <!-- FIGURE 3: The Premium as Gap -->
+        <details class="figure-container">
+            <summary>
+                <span class="figure-number">Figure 3</span>
+                <span class="figure-title">The Equity Risk Premium as Pricing Gap</span>
+                <span class="figure-expand-icon">+</span>
+            </summary>
+            <div class="figure-content">
+                <div class="viz-container">
+                    <svg viewBox="0 0 550 380" style="width: 100%; max-width: 550px; display: block; margin: 0 auto;">
+                        <rect x="0" y="0" width="550" height="380" fill="white"/>
+                        
+                        <!-- Central asset icon -->
+                        <rect x="200" y="150" width="150" height="80" rx="8" fill="white" stroke="#666" stroke-width="2"/>
+                        <text x="275" y="185" text-anchor="middle" font-family="Syne" font-size="13" font-weight="600" fill="#1a1a1a">S&P 500</text>
+                        <text x="275" y="205" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#666">Same asset, same cash flows</text>
+                        
+                        <!-- Left side: Ensemble/God's eye view -->
+                        <g transform="translate(50, 60)">
+                            <rect x="0" y="0" width="120" height="260" rx="6" fill="white" stroke="#2D5A3D" stroke-width="2"/>
+                            
+                            <!-- Header -->
+                            <rect x="0" y="0" width="120" height="35" rx="6" fill="#2D5A3D"/>
+                            <text x="60" y="22" text-anchor="middle" font-family="Syne" font-size="10" font-weight="600" fill="white">ENSEMBLE</text>
+                            
+                            <!-- Icon: multiple parallel lines (universes) -->
+                            <g transform="translate(35, 55)">
+                                <line x1="0" y1="0" x2="50" y2="0" stroke="#2D5A3D" stroke-width="1.5" opacity="0.3"/>
+                                <line x1="0" y1="8" x2="50" y2="8" stroke="#2D5A3D" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="0" y1="16" x2="50" y2="16" stroke="#2D5A3D" stroke-width="2" opacity="1"/>
+                                <line x1="0" y1="24" x2="50" y2="24" stroke="#2D5A3D" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="0" y1="32" x2="50" y2="32" stroke="#2D5A3D" stroke-width="1.5" opacity="0.3"/>
+                            </g>
+                            
+                            <text x="60" y="115" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">"Average across</text>
+                            <text x="60" y="127" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">all universes"</text>
+                            
+                            <line x1="15" y1="145" x2="105" y2="145" stroke="#ddd" stroke-width="1"/>
+                            
+                            <text x="60" y="165" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">Prices at:</text>
+                            <text x="60" y="182" text-anchor="middle" font-family="Syne" font-size="12" font-weight="600" fill="#2D5A3D">THE MEAN</text>
+                            
+                            <line x1="15" y1="200" x2="105" y2="200" stroke="#ddd" stroke-width="1"/>
+                            
+                            <!-- Value -->
+                            <circle cx="60" cy="232" r="22" fill="#2D5A3D" fill-opacity="0.15" stroke="#2D5A3D" stroke-width="2"/>
+                            <text x="60" y="237" text-anchor="middle" font-family="Courier Prime" font-size="13" font-weight="600" fill="#2D5A3D">$107</text>
+                        </g>
+                        
+                        <!-- Right side: Time-average/mortal view -->
+                        <g transform="translate(380, 60)">
+                            <rect x="0" y="0" width="120" height="260" rx="6" fill="white" stroke="#E07A5F" stroke-width="2"/>
+                            
+                            <!-- Header -->
+                            <rect x="0" y="0" width="120" height="35" rx="6" fill="#E07A5F"/>
+                            <text x="60" y="22" text-anchor="middle" font-family="Syne" font-size="10" font-weight="600" fill="white">TIME-PATH</text>
+                            
+                            <!-- Icon: single path with uncertainty cone -->
+                            <g transform="translate(25, 55)">
+                                <path d="M 0 16 Q 20 10, 35 16 Q 50 22, 70 16" stroke="#E07A5F" stroke-width="2" fill="none"/>
+                                <path d="M 0 16 Q 20 5, 35 8 Q 50 5, 70 0" stroke="#E07A5F" stroke-width="1" fill="none" opacity="0.3"/>
+                                <path d="M 0 16 Q 20 25, 35 28 Q 50 35, 70 38" stroke="#E07A5F" stroke-width="1" fill="none" opacity="0.3"/>
+                                <circle cx="0" cy="16" r="3" fill="#E07A5F"/>
+                            </g>
+                            
+                            <text x="60" y="115" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">"Survive the one</text>
+                            <text x="60" y="127" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">path I walk"</text>
+                            
+                            <line x1="15" y1="145" x2="105" y2="145" stroke="#ddd" stroke-width="1"/>
+                            
+                            <text x="60" y="165" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">Prices at:</text>
+                            <text x="60" y="182" text-anchor="middle" font-family="Syne" font-size="12" font-weight="600" fill="#E07A5F">CVaR</text>
+                            
+                            <line x1="15" y1="200" x2="105" y2="200" stroke="#ddd" stroke-width="1"/>
+                            
+                            <!-- Value -->
+                            <circle cx="60" cy="232" r="22" fill="#E07A5F" fill-opacity="0.15" stroke="#E07A5F" stroke-width="2"/>
+                            <text x="60" y="237" text-anchor="middle" font-family="Courier Prime" font-size="13" font-weight="600" fill="#E07A5F">$100</text>
+                        </g>
+                        
+                        <!-- The Delta in the middle bottom -->
+                        <g transform="translate(200, 280)">
+                            <rect x="0" y="0" width="150" height="70" rx="8" fill="#C9A227"/>
+                            
+                            <text x="75" y="22" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="white" opacity="0.9">The gap between them:</text>
+                            
+                            <text x="75" y="48" text-anchor="middle" font-family="Syne" font-size="18" font-weight="700" fill="white">╬ö = 7%</text>
+                            
+                            <text x="75" y="64" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="white" opacity="0.9">Γëê Equity Risk Premium</text>
+                        </g>
+                        
+                        <!-- Arrows from asset to both sides -->
+                        <line x1="200" y1="190" x2="170" y2="190" stroke="#666" stroke-width="1.5" marker-end="url(#arrowGray3)"/>
+                        <line x1="350" y1="190" x2="380" y2="190" stroke="#666" stroke-width="1.5" marker-end="url(#arrowGray3)"/>
+                        <defs>
+                            <marker id="arrowGray3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+                            </marker>
+                        </defs>
+                        
+                        <!-- Arrow from bottom boxes to delta -->
+                        <path d="M 110 320 Q 150 340, 200 315" stroke="#2D5A3D" stroke-width="1.5" fill="none" stroke-dasharray="4 2"/>
+                        <path d="M 440 320 Q 400 340, 350 315" stroke="#E07A5F" stroke-width="1.5" fill="none" stroke-dasharray="4 2"/>
+                    </svg>
+                </div>
+                <p class="figure-caption">The same asset, valued two ways. On the left: the ensemble view, which averages across all possible universes and prices at the mean. On the right: the time-path view, which recognizes that you walk one path and must survive it, pricing at CVaR. This is the non-ergodicity problem in visual form. Because wealth accumulation is non-ergodic (the time average differs from the ensemble average), rational agents price conservatively. Over time, realized returns converge toward the mean. The 7% gap between what investors price for and what they receive is the equity risk premium.</p>
+            </div>
+        </details>
+
+        <h2>The Shape of the Space</h2>
+
+        <p>Once you have a preference function, portfolio construction becomes a geometric problem. You're looking for the point where your preferences are tangent to the set of achievable portfolios.</p>
+
+        <p>Standard mean-variance optimization pictures this as finding the tangent between a straight indifference line (higher is better, leftward is better) and the efficient frontier (the curve of portfolios offering maximum return for each level of variance). The tangent point is the "optimal" portfolio.</p>
+
+        <p>But this picture is wrong in two ways. First, the indifference curves aren't straight lines if your preferences are CVaR-based rather than variance-based. They're curved surfaces that penalize left tails more than they reward right tails. Second, the efficient frontier isn't stable. It depends on the distribution of future returns, which you don't know.</p>
+
+        <p>The first correction is conceptually straightforward. Replace variance with CVaR in your optimization, and your indifference curves become asymmetric. Portfolios that look equivalent under mean-variance can look very different under mean-CVaR, because two portfolios with the same variance can have wildly different left tails.</p>
+
+        <p>The second correction is harder. The efficient frontier is drawn as if we know the distribution of future returns. We don't. We have beliefs about that distribution, and those beliefs are themselves uncertain. This is where the 52 scenarios become essential, but that's the subject of the next article.</p>
+
+        <p>For now, the key insight is that portfolio construction is finding a tangent point in a high-dimensional space. The space has one dimension for expected return and potentially many dimensions for risk (CVaR at different levels, for different time horizons, under different scenarios). Your preference function is a surface in this space, and the achievable portfolios form another surface. The optimal portfolio is where they touch.</p>
+
+        <!-- FIGURE 4: The Parameter Space -->
+        <details class="figure-container">
+            <summary>
+                <span class="figure-number">Figure 4</span>
+                <span class="figure-title">The Parameter Space</span>
+                <span class="figure-expand-icon">+</span>
+            </summary>
+            <div class="figure-content">
+                <div class="viz-container">
+                    <svg viewBox="0 0 620 460" style="width: 100%; max-width: 620px; display: block; margin: 0 auto;">
+                        <defs>
+                            <!-- Diagonal gradient from conservative (blue) to aggressive (red) -->
+                            <linearGradient id="diagonalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#1e5a8a" stop-opacity="0.7"/>
+                                <stop offset="50%" stop-color="#f4d03f" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#c0392b" stop-opacity="0.7"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Main plot area -->
+                        <g transform="translate(90, 30)">
+                            
+                            <!-- Main gradient rectangle -->
+                            <rect x="0" y="0" width="400" height="320" fill="url(#diagonalGrad)" rx="2"/>
+                            
+                            <!-- Grid lines -->
+                            <g stroke="white" stroke-width="0.5" opacity="0.4">
+                                <line x1="80" y1="0" x2="80" y2="320"/>
+                                <line x1="160" y1="0" x2="160" y2="320"/>
+                                <line x1="240" y1="0" x2="240" y2="320"/>
+                                <line x1="320" y1="0" x2="320" y2="320"/>
+                                <line x1="0" y1="80" x2="400" y2="80"/>
+                                <line x1="0" y1="160" x2="400" y2="160"/>
+                                <line x1="0" y1="240" x2="400" y2="240"/>
+                            </g>
+                            
+                            <!-- Diagonal zone labels -->
+                            <text x="70" y="55" text-anchor="middle" font-family="Syne" font-size="13" font-weight="700" fill="white">CONSERVATIVE</text>
+                            <text x="70" y="72" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="white" opacity="0.9">High ╬╗, Low x%</text>
+                            
+                            <text x="200" y="160" text-anchor="middle" font-family="Syne" font-size="13" font-weight="700" fill="white">MODERATE</text>
+                            
+                            <text x="330" y="275" text-anchor="middle" font-family="Syne" font-size="13" font-weight="700" fill="white">AGGRESSIVE</text>
+                            <text x="330" y="292" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="white" opacity="0.9">Low ╬╗, High x%</text>
+                            
+                            <!-- Axes -->
+                            <line x1="0" y1="320" x2="400" y2="320" stroke="#333" stroke-width="2"/>
+                            <line x1="0" y1="0" x2="0" y2="320" stroke="#333" stroke-width="2"/>
+                            
+                            <!-- X-axis labels (CVaR x%) -->
+                            <text x="0" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#333">5%</text>
+                            <text x="100" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#333">15%</text>
+                            <text x="200" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#333">25%</text>
+                            <text x="300" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#333">35%</text>
+                            <text x="400" y="340" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="#333">50%</text>
+                            
+                            <!-- X-axis title -->
+                            <text x="200" y="365" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="500" fill="#333">CVaR(x%) ΓÇö Which outcomes to measure</text>
+                            <text x="200" y="380" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="#666">ΓåÉ worst 5%                                              median ΓåÆ</text>
+                            
+                            <!-- Y-axis labels (Lambda) -->
+                            <text x="-12" y="320" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#333">0</text>
+                            <text x="-12" y="240" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#333">1</text>
+                            <text x="-12" y="160" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#333">2</text>
+                            <text x="-12" y="80" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#333">3</text>
+                            <text x="-12" y="5" text-anchor="end" font-family="Courier Prime" font-size="9" fill="#333">4</text>
+                            
+                            <!-- Y-axis title -->
+                            <text x="-50" y="160" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="500" fill="#333" transform="rotate(-90, -50, 160)">╬╗ ΓÇö How much to penalize</text>
+                            
+                            <!-- Investor markers -->
+                            
+                            <!-- Pension Fund - high ╬╗, low x -->
+                            <circle cx="40" cy="45" r="16" fill="white" stroke="#1e5a8a" stroke-width="2.5"/>
+                            <text x="40" y="50" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="600" fill="#1e5a8a">PF</text>
+                            
+                            <!-- Bank - high ╬╗, low-medium x -->
+                            <circle cx="95" cy="65" r="16" fill="white" stroke="#1e5a8a" stroke-width="2.5"/>
+                            <text x="95" y="70" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="600" fill="#1e5a8a">BK</text>
+                            
+                            <!-- Endowment - medium ╬╗, medium x -->
+                            <circle cx="170" cy="145" r="16" fill="white" stroke="#8B7500" stroke-width="2.5"/>
+                            <text x="170" y="150" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="600" fill="#8B7500">EN</text>
+                            
+                            <!-- Individual - medium ╬╗, higher x -->
+                            <circle cx="255" cy="185" r="16" fill="white" stroke="#8B7500" stroke-width="2.5"/>
+                            <text x="255" y="190" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="600" fill="#8B7500">IND</text>
+                            
+                            <!-- Kelly - ╬╗Γëê1, CVaR(50%) -->
+                            <circle cx="380" cy="240" r="18" fill="white" stroke="#c0392b" stroke-width="2.5"/>
+                            <text x="380" y="245" text-anchor="middle" font-family="Courier Prime" font-size="10" font-weight="600" fill="#c0392b">K</text>
+                        </g>
+                        
+                        <!-- Legend -->
+                        <g transform="translate(510, 50)">
+                            <text x="0" y="0" font-family="Syne" font-size="10" font-weight="600" fill="#333">Investors</text>
+                            
+                            <circle cx="10" cy="22" r="8" fill="white" stroke="#1e5a8a" stroke-width="2"/>
+                            <text x="24" y="26" font-family="Courier Prime" font-size="8" fill="#333">PF Pension</text>
+                            
+                            <circle cx="10" cy="46" r="8" fill="white" stroke="#1e5a8a" stroke-width="2"/>
+                            <text x="24" y="50" font-family="Courier Prime" font-size="8" fill="#333">BK Bank</text>
+                            
+                            <circle cx="10" cy="70" r="8" fill="white" stroke="#8B7500" stroke-width="2"/>
+                            <text x="24" y="74" font-family="Courier Prime" font-size="8" fill="#333">EN Endow.</text>
+                            
+                            <circle cx="10" cy="94" r="8" fill="white" stroke="#8B7500" stroke-width="2"/>
+                            <text x="24" y="98" font-family="Courier Prime" font-size="8" fill="#333">IND Indiv.</text>
+                            
+                            <circle cx="10" cy="118" r="8" fill="white" stroke="#c0392b" stroke-width="2"/>
+                            <text x="24" y="122" font-family="Courier Prime" font-size="8" fill="#333">K Kelly</text>
+                        </g>
+                        
+                        <!-- Color scale legend -->
+                        <g transform="translate(510, 190)">
+                            <text x="0" y="0" font-family="Syne" font-size="9" font-weight="600" fill="#333">Risk Preference</text>
+                            
+                            <rect x="0" y="15" width="65" height="16" fill="#1e5a8a" fill-opacity="0.7" rx="2"/>
+                            <text x="32" y="27" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="white">Conservative</text>
+                            
+                            <rect x="0" y="35" width="65" height="16" fill="#f4d03f" fill-opacity="0.7" rx="2"/>
+                            <text x="32" y="47" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="#333">Moderate</text>
+                            
+                            <rect x="0" y="55" width="65" height="16" fill="#c0392b" fill-opacity="0.7" rx="2"/>
+                            <text x="32" y="67" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="white">Aggressive</text>
+                        </g>
+                    </svg>
+                </div>
+                <p class="figure-caption">The two parameters define a space of possible preferences. CVaR(x%) determines which outcomes you measureΓÇölower percentiles focus on the worst tail. Lambda (╬╗) determines how heavily you penalize those outcomes. Both contribute to risk aversion: upper-left (high ╬╗ + low x%) is most conservative; lower-right (low ╬╗ + high x%) is most aggressive. Kelly optimization lives near ╬╗Γëê1 with CVaR(50%), maximizing geometric mean growth.</p>
+            </div>
+        </details>
+
+        <h2>Practical Implications</h2>
+
+        <p>This framework changes how you think about several common questions.</p>
+
+        <p><strong>How much equity exposure?</strong> The standard answer invokes age-based rules (100 minus your age in stocks) or risk tolerance questionnaires. The CVaR framework asks different questions: What's the worst outcome you must survive? What are your liabilities and when do they come due? Given those constraints, what's the maximum equity exposure that keeps your CVaR-x above your survival threshold? This often produces more conservative allocations than mean-variance optimization, especially for investors with specific near-term goals.</p>
+
+        <p><strong>Why do stocks outperform bonds?</strong> The framework says: because stocks are priced by investors using CVaR-style preferences on right-skewed distributions. The gap between CVaR-based pricing and mean-realized returns is the premium. Bonds have lower premiums because their distributions are less skewed and their left tails are better defined. The premium isn't compensation for volatility. It's more investing for the typical return and receiving the mean return.</p>
+
+        <p><strong>What about diversification?</strong> Diversification reduces variance because it irons idiosyncratic pricing factors (e.g., the endogenous, push, and reflexive pricing factors), which for some many stocks represents most the causal determinants of pricing changes. But the CVaR framework reveals that diversification is even more valuable than mean-variance analysis suggests, because it can reduce left-tail exposure faster than it reduces variance, and different stocks will correlate differently in typical "left tail" events.</p>
+
+        <h2>The Missing Input</h2>
+
+        <p>This framework is incomplete. The preference function tells you how to trade off return against tail risk. The geometry tells you how to find the optimal portfolio. But where does the set of achievable portfolios come from?</p>
+
+        <p>The missing input is a forward-looking distribution of possible outcomes. Not historical returns extrapolated forwardΓÇöthose are noisy and assume the past represents the future. Not a single point estimate of "expected return"ΓÇöthat hides uncertainty rather than modeling it. What's needed is a full distribution constructed from explicit beliefs about the forces that will shape returns: macro conditions, geopolitical shifts, technological change, regulatory evolution.</p>
+
+        <p>The next article builds this: a structured set of scenarios spanning the major exogenous forces, with explicit probability weights. The goal isn't predictionΓÇöit's preparation. Given uncertainty about which future arrives, what portfolio best serves your preferences across the range of possibilities?</p>
+
+        <h2>Summary</h2>
+
+        <p>The equity risk premium isn't compensation for "risk" in some abstract sense. It emerges from the gap between how investors price uncertain distributions (conservatively, using something like CVaR) and how realized returns unfold over time (converging toward the mean). This gap is structural and persistent because conservative pricing is rational for agents who live through time and must survive bad paths to capture average returns.</p>
+
+        <p>Portfolio construction is a geometric problem: finding the tangent between your preference surface (defined by CVaR level and tradeoff intensity) and the surface of achievable portfolios. The Kelly criterion is a special case that maximizes long-run growth, but most investors should be more conservative given finite horizons, specific liabilities, and constraints Kelly doesn't model.</p>
+
+        <p>The two key parameters are CVaR(x%), which determines which part of the distribution you price against, and ╬╗, which determines how much you trade off expected return for tail protection. Together they define your preference function. The optimal portfolio depends on these parameters, which means it depends on who you are: your horizon, your liabilities, your constraints, your capacity to survive drawdowns.</p>
+
+        <p>What's missing is the forward-looking distribution itself. Historical returns are a poor guide to future distributions because the world changes. The next article constructs that distribution explicitly, through a set of scenarios spanning the major exogenous forces that will shape returns over the coming decade.</p>
+
+    </article>
+    
+    <footer>
+        <div class="footer-text">next in series</div>
+        <div class="related-links">
+            <a href="ending-capital-asset-pricing-geocentric-era.html" class="related-link">ΓåÉ Ending Capital Asset Pricing's Geocentric Era</a>
+            <a href="thirteen-exogenous-realities.html" class="related-link">The World in 2032: Thirteen Exogenous Realities ΓåÆ</a>
+        </div>
+    </footer>
+
+</body>
+</html>

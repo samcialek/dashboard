@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cause of Our Politics — Figure Gallery</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6}
+header{text-align:center;padding:60px 20px 40px;border-bottom:1px solid #ffffff15}
+header h1{font-size:2.4rem;color:#fff;letter-spacing:1px}
+header p{color:#888;margin-top:8px;font-size:1.1rem}
+.figure-section{max-width:960px;margin:0 auto;padding:50px 20px}
+.figure-section+.figure-section{border-top:1px solid #ffffff10}
+.fig-num{color:#e94560;font-size:.85rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
+.fig-title{font-size:1.5rem;color:#fff;margin-bottom:6px}
+.fig-desc{color:#999;font-size:.95rem;margin-bottom:20px;max-width:700px}
+.fig-box{background:#16213e;border:1px solid #ffffff12;border-radius:12px;padding:30px;min-height:300px;position:relative;overflow:hidden}
+a.fig-link{display:inline-block;margin-top:12px;color:#e94560;text-decoration:none;border:1px solid #e94560;padding:8px 20px;border-radius:6px}
+a.fig-link:hover{background:#e94560;color:#fff}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;background:#0f3460;border-radius:3px;outline:none;margin:10px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:#e94560;border-radius:50%;cursor:pointer}
+canvas{display:block;margin:0 auto}
+.slider-label{display:flex;justify-content:space-between;color:#888;font-size:.8rem}
+.tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
+.tag-interactive{background:#e9456030;color:#e94560}
+.tag-static{background:#53d76a30;color:#53d76a}
+.tag-animated{background:#f5a62330;color:#f5a623}
+svg text{font-family:'Segoe UI',system-ui,sans-serif}
+</style>
+</head>
+<body>
+<header>
+<h1>The Cause of Our Politics</h1>
+<p>PRISM Article — Figure Gallery (10 Concepts)</p>
+</header>
+
+<!-- FIGURE 1: Flag Quiz -->
+<section class="figure-section" id="fig1">
+<div class="fig-num">Figure 1</div>
+<h2 class="fig-title">Flag Quiz <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">Three flag pairs map you to one of 8 political disposition labels. Each choice reveals a layer of your political identity.</p>
+<div class="fig-box" style="text-align:center;padding:50px 30px">
+<p style="font-size:1.1rem;color:#ccc;margin-bottom:20px">The Flag Quiz is a standalone interactive experience.</p>
+<a class="fig-link" href="flag-quiz.html" target="_blank">Open Flag Quiz →</a>
+</div>
+</section>
+
+<!-- FIGURE 2: Correlation Decay Timeline -->
+<section class="figure-section" id="fig2">
+<div class="fig-num">Figure 2</div>
+<h2 class="fig-title">Correlation Decay Timeline <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">How specific issue positions flip partisan valence over time. Drag the slider to watch the lines cross — what was "conservative" in 1995 becomes "liberal" by 2020.</p>
+<div class="fig-box">
+<canvas id="c2" width="900" height="340"></canvas>
+<div style="max-width:860px;margin:10px auto 0">
+<input type="range" id="sl2" min="1990" max="2025" value="2025" step="1">
+<div class="slider-label"><span>1990</span><span id="sl2val" style="color:#e94560;font-weight:bold">2025</span><span>2025</span></div>
+</div>
+</div>
+</section>
+
+<!-- FIGURE 3: Generative vs Classificatory -->
+<section class="figure-section" id="fig3">
+<div class="fig-num">Figure 3</div>
+<h2 class="fig-title">Generative vs. Classificatory Model <span class="tag tag-static">Static</span></h2>
+<p class="fig-desc">LEFT: A flat classifier takes issue positions as inputs and outputs a party label. RIGHT: A generative model shows deep traits producing dispositions, which produce issue positions, which produce behavior.</p>
+<div class="fig-box" style="padding:20px;overflow-x:auto">
+<svg id="svg3" width="900" height="380" viewBox="0 0 900 380"></svg>
+</div>
+</section>
+
+<!-- FIGURE 4: Signal Decomposition -->
+<section class="figure-section" id="fig4">
+<div class="fig-num">Figure 4</div>
+<h2 class="fig-title">Signal Decomposition <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">"How important is national security?" — one survey answer, multiple possible generators. Adjust the sliders to see how the same response can arise from very different internal states.</p>
+<div class="fig-box" id="fig4box">
+<div style="text-align:center;margin-bottom:20px;font-size:1.1rem;color:#fff">"How important is national security to you?"</div>
+<div style="text-align:center;margin-bottom:24px;font-size:1.8rem;color:#e94560;font-weight:bold">Very Important</div>
+<canvas id="c4" width="700" height="60"></canvas>
+<div id="sliders4" style="max-width:700px;margin:20px auto 0"></div>
+</div>
+</section>
+
+<!-- FIGURE 5: Two Steves -->
+<section class="figure-section" id="fig5">
+<div class="fig-num">Figure 5</div>
+<h2 class="fig-title">Two Steves Divergence <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">Ideological Steve and Identity Steve start identical in 2002. Key political events push them apart — one follows ideas, the other follows tribe.</p>
+<div class="fig-box">
+<canvas id="c5" width="900" height="360"></canvas>
+<div style="max-width:860px;margin:10px auto 0">
+<input type="range" id="sl5" min="2002" max="2024" value="2024" step="1">
+<div class="slider-label"><span>2002</span><span id="sl5val" style="color:#e94560;font-weight:bold">2024</span><span>2024</span></div>
+</div>
+</div>
+</section>
+
+<!-- FIGURE 6: XOR Truth Table -->
+<section class="figure-section" id="fig6">
+<div class="fig-num">Figure 6</div>
+<h2 class="fig-title">XOR Truth Table <span class="tag tag-static">Static</span></h2>
+<p class="fig-desc">When identity and ideology align, prediction is easy. When they conflict (XOR), you need a hidden layer to resolve the ambiguity.</p>
+<div class="fig-box" style="overflow-x:auto">
+<div id="xor-tables" style="display:flex;gap:60px;justify-content:center;align-items:flex-start;flex-wrap:wrap"></div>
+</div>
+</section>
+
+<!-- FIGURE 7: Overdetermination Web -->
+<section class="figure-section" id="fig7">
+<div class="fig-num">Figure 7</div>
+<h2 class="fig-title">Overdetermination Web <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">Five latent traits feed into one policy position. Adjust any trait to see how the outcome changes — most positions are overdetermined by multiple causes.</p>
+<div class="fig-box">
+<canvas id="c7" width="900" height="400"></canvas>
+<div id="sliders7" style="max-width:700px;margin:10px auto 0"></div>
+</div>
+</section>
+
+<!-- FIGURE 8: Node Map -->
+<section class="figure-section" id="fig8">
+<div class="fig-num">Figure 8</div>
+<h2 class="fig-title">Disposition Node Map <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">A force-directed graph of political disposition nodes grouped by type. Click a node to highlight its connections.</p>
+<div class="fig-box" style="padding:0">
+<canvas id="c8" width="900" height="500"></canvas>
+</div>
+</section>
+
+<!-- FIGURE 9: Issue Drift -->
+<section class="figure-section" id="fig9">
+<div class="fig-num">Figure 9</div>
+<h2 class="fig-title">Issue Drift Chart <span class="tag tag-interactive">Interactive</span></h2>
+<p class="fig-desc">Four issues, partisan valence crossing over 35 years. Hover to see values. The parties don't change — the issues change parties.</p>
+<div class="fig-box">
+<canvas id="c9" width="900" height="360"></canvas>
+<div style="max-width:860px;margin:10px auto 0">
+<input type="range" id="sl9" min="1990" max="2025" value="2025" step="1">
+<div class="slider-label"><span>1990</span><span id="sl9val" style="color:#e94560;font-weight:bold">2025</span><span>2025</span></div>
+</div>
+</div>
+</section>
+
+<!-- FIGURE 10: Taste Discovery -->
+<section class="figure-section" id="fig10">
+<div class="fig-num">Figure 10</div>
+<h2 class="fig-title">Taste Discovery <span class="tag tag-animated">Animated</span></h2>
+<p class="fig-desc">A dot walks through a political landscape, discovering positions as it goes. The path draws itself — you don't choose a side, you discover your shape.</p>
+<div class="fig-box" style="padding:0;height:500px;position:relative;overflow:hidden" id="fig10box">
+<canvas id="c10" width="900" height="500"></canvas>
+<button id="btn10" style="position:absolute;bottom:16px;right:16px;background:#e94560;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-size:.9rem">Replay</button>
+</div>
+</section>
+
+<footer style="text-align:center;padding:40px;color:#555;font-size:.85rem;border-top:1px solid #ffffff10">
+PRISM — The Cause of Our Politics — Figure Mockups
+</footer>
+
+<script>
+// ========== FIGURE 2: Correlation Decay ==========
+(function(){
+const canvas=document.getElementById('c2'),ctx=canvas.getContext('2d'),sl=document.getElementById('sl2');
+const issues=[
+  {name:'Free Trade',color:'#4ecdc4',data:[[1990,.8],[1995,.75],[2000,.6],[2005,.5],[2010,.3],[2015,-.1],[2020,-.4],[2025,-.5]]},
+  {name:'Tough on Crime',color:'#ff6b6b',data:[[1990,.9],[1995,.85],[2000,.7],[2005,.5],[2010,.3],[2015,.1],[2020,-.3],[2025,-.2]]},
+  {name:'Hawkish Foreign Policy',color:'#ffd93d',data:[[1990,.7],[1995,.65],[2000,.8],[2005,.9],[2010,.6],[2015,.3],[2020,-.1],[2025,-.3]]},
+  {name:'Immigration Restriction',color:'#6bcb77',data:[[1990,.3],[1995,.25],[2000,.2],[2005,.1],[2010,.2],[2015,.5],[2020,.85],[2025,.9]]}
+];
+function lerp(pts,year){
+  for(let i=0;i<pts.length-1;i++){if(year>=pts[i][0]&&year<=pts[i+1][0]){let t=(year-pts[i][0])/(pts[i+1][0]-pts[i][0]);return pts[i][1]+(pts[i+1][1]-pts[i][1])*t}}
+  return year<=pts[0][0]?pts[0][1]:pts[pts.length-1][1];
+}
+function draw(){
+  const maxYear=+sl.value;document.getElementById('sl2val').textContent=maxYear;
+  const W=canvas.width,H=canvas.height,pad={l:60,r:140,t:30,b:40};
+  ctx.clearRect(0,0,W,H);
+  // axes
+  ctx.strokeStyle='#ffffff20';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,H-pad.b);ctx.lineTo(W-pad.r,H-pad.b);ctx.stroke();
+  // zero line
+  const zeroY=pad.t+(H-pad.t-pad.b)/2;
+  ctx.strokeStyle='#ffffff15';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(pad.l,zeroY);ctx.lineTo(W-pad.r,zeroY);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#888';ctx.font='11px sans-serif';
+  ctx.textAlign='right';ctx.fillText('R-coded',pad.l-8,pad.t+14);ctx.fillText('D-coded',pad.l-8,H-pad.b-4);
+  ctx.textAlign='center';
+  for(let y=1990;y<=2025;y+=5){let x=pad.l+(y-1990)/(2025-1990)*(W-pad.l-pad.r);ctx.fillText(y,x,H-pad.b+16)}
+  // lines
+  issues.forEach((iss,idx)=>{
+    ctx.strokeStyle=iss.color;ctx.lineWidth=2.5;ctx.beginPath();
+    for(let y=1990;y<=maxYear;y++){
+      let x=pad.l+(y-1990)/(2025-1990)*(W-pad.l-pad.r);
+      let v=lerp(iss.data,y);
+      let py=zeroY-v*(H-pad.t-pad.b)/2;
+      y===1990?ctx.moveTo(x,py):ctx.lineTo(x,py);
+    }
+    ctx.stroke();
+    // legend
+    ctx.fillStyle=iss.color;ctx.textAlign='left';ctx.font='12px sans-serif';
+    ctx.fillText(iss.name,W-pad.r+10,pad.t+20+idx*22);
+  });
+}
+sl.addEventListener('input',draw);draw();
+})();
+
+// ========== FIGURE 3: Generative vs Classificatory SVG ==========
+(function(){
+const svg=document.getElementById('svg3');
+const ns='http://www.w3.org/2000/svg';
+function el(tag,attrs){let e=document.createElementNS(ns,tag);for(let k in attrs)e.setAttribute(k,attrs[k]);return e}
+function txt(x,y,t,size,color,anchor){let e=el('text',{x,y,'font-size':size,fill:color,'text-anchor':anchor||'middle','dominant-baseline':'middle'});e.textContent=t;return e}
+function rect(x,y,w,h,fill,rx){return el('rect',{x,y,width:w,height:h,fill,rx:rx||6,stroke:'#ffffff20','stroke-width':1})}
+function arrow(x1,y1,x2,y2,color){
+  let g=document.createDocumentFragment();
+  g.appendChild(el('line',{x1,y1,x2,y2,stroke:color||'#ffffff40','stroke-width':1.5,'marker-end':'url(#ah)'}));
+  return g;
+}
+// arrowhead marker
+let defs=el('defs',{});
+let marker=el('marker',{id:'ah',markerWidth:8,markerHeight:6,refX:8,refY:3,orient:'auto'});
+marker.appendChild(el('path',{d:'M0,0 L8,3 L0,6 Z',fill:'#ffffff60'}));
+defs.appendChild(marker);svg.appendChild(defs);
+
+// divider
+svg.appendChild(el('line',{x1:450,y1:20,x2:450,y2:360,stroke:'#ffffff15','stroke-width':1,'stroke-dasharray':'4,4'}));
+svg.appendChild(txt(225,20,'CLASSIFICATORY MODEL',13,'#e94560'));
+svg.appendChild(txt(675,20,'GENERATIVE MODEL',13,'#4ecdc4'));
+
+// LEFT: classifier
+const leftIssues=['Gun Control','Free Trade','Immigration','Abortion','Climate'];
+leftIssues.forEach((iss,i)=>{
+  let y=80+i*52;
+  svg.appendChild(rect(60,y-16,160,32,'#0f3460'));
+  svg.appendChild(txt(140,y,iss,12,'#ccc'));
+  svg.appendChild(arrow(220,y,320,190,'#ffffff30'));
+});
+svg.appendChild(rect(320,170,100,40,'#e9456040',8));
+svg.appendChild(txt(370,190,'Party Label',13,'#e94560'));
+
+// RIGHT: generative
+const layers=[
+  {label:'Deep Traits',items:['Openness','Threat Sensitivity','Need for Order'],y:60,color:'#4ecdc4'},
+  {label:'Dispositions',items:['Liberty vs Security','Hierarchy vs Equality','Tradition vs Change'],y:160,color:'#6bcb77'},
+  {label:'Issue Positions',items:['Gun Policy','Trade Policy','Immigration'],y:260,color:'#ffd93d'},
+  {label:'Behavior',items:['Vote','Donate','Protest'],y:340,color:'#ff6b6b'}
+];
+layers.forEach((layer,li)=>{
+  svg.appendChild(txt(490,layer.y-8,layer.label,10,layer.color+'99','left'));
+  layer.items.forEach((item,ii)=>{
+    let x=530+ii*120;
+    svg.appendChild(rect(x-50,layer.y,100,28,layer.color+'20'));
+    svg.appendChild(txt(x,layer.y+14,item,10,layer.color));
+    if(li<layers.length-1){
+      let next=layers[li+1];
+      next.items.forEach((_,ni)=>{
+        let nx=530+ni*120;
+        svg.appendChild(arrow(x,layer.y+28,nx,next.y,layer.color+'30'));
+      });
+    }
+  });
+});
+})();
+
+// ========== FIGURE 4: Signal Decomposition ==========
+(function(){
+const canvas=document.getElementById('c4'),ctx=canvas.getContext('2d');
+const box=document.getElementById('fig4box');
+const generators=[
+  {name:'Genuine Threat Perception',color:'#e94560',value:35},
+  {name:'Identity Signaling',color:'#4ecdc4',value:25},
+  {name:'Coalition Loyalty',color:'#ffd93d',value:25},
+  {name:'Elite Cue-Following',color:'#6bcb77',value:15}
+];
+const div=document.getElementById('sliders4');
+generators.forEach((g,i)=>{
+  let row=document.createElement('div');
+  row.style.cssText='display:flex;align-items:center;gap:12px;margin:8px 0';
+  row.innerHTML=`<span style="width:12px;height:12px;border-radius:50%;background:${g.color};flex-shrink:0"></span>
+    <span style="width:200px;font-size:.85rem;color:${g.color}">${g.name}</span>
+    <input type="range" min="0" max="100" value="${g.value}" style="flex:1" id="sd4_${i}">
+    <span style="width:30px;font-size:.85rem;color:#888" id="sd4v_${i}">${g.value}</span>`;
+  div.appendChild(row);
+  document.getElementById('sd4_'+i).addEventListener('input',e=>{g.value=+e.target.value;document.getElementById('sd4v_'+i).textContent=g.value;draw()});
+});
+function draw(){
+  const W=canvas.width,H=canvas.height;ctx.clearRect(0,0,W,H);
+  let total=generators.reduce((s,g)=>s+g.value,0)||1;
+  let x=0;
+  generators.forEach(g=>{
+    let w=g.value/total*W;
+    ctx.fillStyle=g.color;
+    ctx.beginPath();ctx.roundRect(x,10,w,40,[6]);ctx.fill();
+    x+=w;
+  });
+}
+draw();
+})();
+
+// ========== FIGURE 5: Two Steves ==========
+(function(){
+const canvas=document.getElementById('c5'),ctx=canvas.getContext('2d'),sl=document.getElementById('sl5');
+const events=[
+  {year:2003,label:'Iraq War'},
+  {year:2008,label:'Obama'},
+  {year:2010,label:'Tea Party'},
+  {year:2016,label:'Trump'},
+  {year:2021,label:'Jan 6'},
+  {year:2024,label:'2024'}
+];
+// ideological steve: follows principles, drifts more slowly
+const ideoData=[[2002,50],[2005,52],[2008,48],[2010,46],[2014,44],[2016,42],[2018,40],[2021,38],[2024,35]];
+// identity steve: follows tribe, whiplashes with events
+const identData=[[2002,50],[2005,58],[2008,62],[2010,70],[2014,68],[2016,80],[2018,82],[2021,88],[2024,90]];
+function lerp(pts,yr){for(let i=0;i<pts.length-1;i++){if(yr>=pts[i][0]&&yr<=pts[i+1][0]){let t=(yr-pts[i][0])/(pts[i+1][0]-pts[i][0]);return pts[i][1]+(pts[i+1][1]-pts[i][1])*t}}return yr<=pts[0][0]?pts[0][1]:pts[pts.length-1][1]}
+function draw(){
+  const maxY=+sl.value;document.getElementById('sl5val').textContent=maxY;
+  const W=canvas.width,H=canvas.height,p={l:80,r:20,t:40,b:40};
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#ffffff20';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(p.l,p.t);ctx.lineTo(p.l,H-p.b);ctx.lineTo(W-p.r,H-p.b);ctx.stroke();
+  // labels
+  ctx.fillStyle='#888';ctx.font='11px sans-serif';ctx.textAlign='right';
+  ctx.textAlign='right';
+  [0,25,50,75,100].forEach(v=>{let py=p.t+((100-v)/100)*(H-p.t-p.b);ctx.fillText(v+'%',p.l-28,py+4);ctx.strokeStyle='#ffffff10';ctx.beginPath();ctx.moveTo(p.l-4,py);ctx.lineTo(W-p.r,py);ctx.stroke()});
+  ctx.save();ctx.translate(14,p.t+(H-p.t-p.b)/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.font='11px sans-serif';ctx.fillText('Likelihood to vote Democratic (President)',0,0);ctx.restore();
+  ctx.textAlign='center';
+  for(let y=2002;y<=2024;y+=2){let x=p.l+(y-2002)/22*(W-p.l-p.r);ctx.fillText(y,x,H-p.b+16)}
+  // events
+  events.forEach(ev=>{
+    if(ev.year<=maxY){
+      let x=p.l+(ev.year-2002)/22*(W-p.l-p.r);
+      ctx.strokeStyle='#ffffff15';ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(x,p.t);ctx.lineTo(x,H-p.b);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='#ffffff40';ctx.font='10px sans-serif';ctx.save();ctx.translate(x,p.t-4);ctx.fillText(ev.label,0,0);ctx.restore();
+    }
+  });
+  function drawLine(data,color){
+    ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();
+    for(let y=2002;y<=maxY;y+=.5){
+      let x=p.l+(y-2002)/22*(W-p.l-p.r);
+      let v=lerp(data,y);
+      let py=p.t+((100-v)/100)*(H-p.t-p.b);
+      y===2002?ctx.moveTo(x,py):ctx.lineTo(x,py);
+    }
+    ctx.stroke();
+  }
+  drawLine(ideoData,'#4ecdc4');drawLine(identData,'#e94560');
+  // legend
+  ctx.font='12px sans-serif';
+  ctx.fillStyle='#4ecdc4';ctx.textAlign='left';ctx.fillText('● Ideological Steve',p.l+10,p.t+16);
+  ctx.fillStyle='#e94560';ctx.fillText('● Identity Steve',p.l+170,p.t+16);
+}
+sl.addEventListener('input',draw);draw();
+})();
+
+// ========== FIGURE 6: XOR Truth Table ==========
+(function(){
+const container=document.getElementById('xor-tables');
+function makeTable(title,cells,subtitle){
+  let wrap=document.createElement('div');wrap.style.textAlign='center';
+  let h=document.createElement('div');h.style.cssText='color:#fff;font-size:1rem;margin-bottom:12px';h.textContent=title;wrap.appendChild(h);
+  let tbl=document.createElement('table');tbl.style.cssText='border-collapse:collapse;margin:0 auto';
+  // header
+  let thead=document.createElement('tr');
+  ['','Ideology: R','Ideology: D'].forEach(t=>{let td=document.createElement('td');td.style.cssText='padding:10px 18px;color:#888;font-size:.8rem';td.textContent=t;thead.appendChild(td)});
+  tbl.appendChild(thead);
+  [['Identity: R',cells[0],cells[1]],['Identity: D',cells[2],cells[3]]].forEach(row=>{
+    let tr=document.createElement('tr');
+    row.forEach((c,i)=>{
+      let td=document.createElement('td');
+      if(i===0){td.style.cssText='padding:10px 18px;color:#888;font-size:.8rem';td.textContent=c}
+      else{td.style.cssText=`padding:20px 30px;font-size:1.2rem;font-weight:bold;border:1px solid #ffffff15;background:${c.bg};color:${c.fg};text-align:center`;td.textContent=c.text}
+      tr.appendChild(td);
+    });
+    tbl.appendChild(tr);
+  });
+  wrap.appendChild(tbl);
+  if(subtitle){let s=document.createElement('div');s.style.cssText='color:#666;font-size:.8rem;margin-top:8px';s.textContent=subtitle;wrap.appendChild(s)}
+  return wrap;
+}
+const g={text:'✓ Predict R',bg:'#53d76a20',fg:'#53d76a'};
+const gd={text:'✓ Predict D',bg:'#53d76a20',fg:'#53d76a'};
+const r={text:'? XOR',bg:'#e9456025',fg:'#e94560'};
+container.appendChild(makeTable('Without Hidden Layer',[g,r,r,gd],'Off-diagonal = unpredictable'));
+const h1={text:'R (disposition)',bg:'#4ecdc420',fg:'#4ecdc4'};
+const h2={text:'D (disposition)',bg:'#4ecdc420',fg:'#4ecdc4'};
+container.appendChild(makeTable('With Hidden Layer (Disposition)',[h1,h1,h2,h2],'Hidden layer resolves ambiguity'));
+})();
+
+// ========== FIGURE 7: Overdetermination Web ==========
+(function(){
+const canvas=document.getElementById('c7'),ctx=canvas.getContext('2d');
+const traits=[
+  {name:'Authoritarianism',color:'#e94560',value:60,angle:-Math.PI/2},
+  {name:'Threat Sensitivity',color:'#ff6b6b',value:45,angle:-Math.PI/2+2*Math.PI/5},
+  {name:'Moral Universalism',color:'#4ecdc4',value:30,angle:-Math.PI/2+4*Math.PI/5},
+  {name:'Social Conformity',color:'#ffd93d',value:70,angle:-Math.PI/2+6*Math.PI/5},
+  {name:'Disgust Sensitivity',color:'#6bcb77',value:50,angle:-Math.PI/2+8*Math.PI/5}
+];
+const div=document.getElementById('sliders7');
+traits.forEach((t,i)=>{
+  let row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:10px;margin:4px 0';
+  row.innerHTML=`<span style="width:10px;height:10px;border-radius:50%;background:${t.color};flex-shrink:0"></span>
+    <span style="width:160px;font-size:.8rem;color:${t.color}">${t.name}</span>
+    <input type="range" min="0" max="100" value="${t.value}" style="flex:1" id="ow7_${i}">`;
+  div.appendChild(row);
+  document.getElementById('ow7_'+i).addEventListener('input',e=>{t.value=+e.target.value;draw()});
+});
+function draw(){
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2-10,R=140;
+  ctx.clearRect(0,0,W,H);
+  let total=traits.reduce((s,t)=>s+t.value,0);
+  let intensity=Math.min(total/250,1);
+  // center
+  let cColor=`rgba(233,69,96,${.2+intensity*.6})`;
+  ctx.beginPath();ctx.arc(cx,cy,40+intensity*15,0,Math.PI*2);ctx.fillStyle=cColor;ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Support Speech',cx,cy-6);ctx.fillText('Restrictions',cx,cy+8);
+  // trait nodes
+  traits.forEach(t=>{
+    let x=cx+Math.cos(t.angle)*R,y=cy+Math.sin(t.angle)*R;
+    let w=t.value/100;
+    ctx.strokeStyle=t.color;ctx.lineWidth=1+w*4;ctx.globalAlpha=.3+w*.7;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);ctx.stroke();
+    ctx.globalAlpha=1;
+    ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.fillStyle=t.color+'30';ctx.fill();ctx.strokeStyle=t.color;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle=t.color;ctx.font='10px sans-serif';
+    let parts=t.name.split(' ');
+    parts.forEach((p,i)=>ctx.fillText(p,x,y-4+(i*12)-(parts.length-1)*6));
+  });
+}
+draw();
+})();
+
+// ========== FIGURE 8: Node Map ==========
+(function(){
+const canvas=document.getElementById('c8'),ctx=canvas.getContext('2d');
+const W=canvas.width,H=canvas.height;
+const groups={Ends:'#e94560',Means:'#4ecdc4',Reality:'#ffd93d',Self:'#6bcb77'};
+const nodesData=[
+  {id:0,label:'Liberty',group:'Ends'},{id:1,label:'Equality',group:'Ends'},{id:2,label:'Security',group:'Ends'},{id:3,label:'Prosperity',group:'Ends'},
+  {id:4,label:'Markets',group:'Means'},{id:5,label:'Regulation',group:'Means'},{id:6,label:'Tradition',group:'Means'},{id:7,label:'Innovation',group:'Means'},
+  {id:8,label:'Threat Level',group:'Reality'},{id:9,label:'Inequality',group:'Reality'},{id:10,label:'Climate Risk',group:'Reality'},{id:11,label:'Meritocracy',group:'Reality'},
+  {id:12,label:'Patriot',group:'Self'},{id:13,label:'Cosmopolitan',group:'Self'},{id:14,label:'Religious',group:'Self'},{id:15,label:'Secular',group:'Self'},
+  {id:16,label:'Hierarchy',group:'Ends'},{id:17,label:'Democracy',group:'Means'},{id:18,label:'Trust in Elites',group:'Reality'},{id:19,label:'Outsider',group:'Self'}
+];
+const edges=[[0,4],[0,1],[1,5],[1,9],[2,8],[2,6],[3,4],[3,7],[4,11],[5,9],[5,10],[6,14],[7,15],[8,12],[9,13],[10,7],[11,4],[12,6],[13,15],[14,16],[16,2],[17,1],[17,5],[18,16],[19,13],[0,3],[2,12],[8,2],[10,5],[14,6],[15,13]];
+// init positions
+const nodes=nodesData.map((n,i)=>{
+  let gIdx=Object.keys(groups).indexOf(n.group);
+  let cx=200+gIdx*170,cy=250;
+  return{...n,x:cx+(Math.random()-.5)*180,y:cy+(Math.random()-.5)*200,vx:0,vy:0};
+});
+let selected=null;
+// simple force simulation
+function tick(){
+  nodes.forEach(n=>{n.vx*=.9;n.vy*=.9});
+  // repulsion
+  for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+    let dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y,d=Math.sqrt(dx*dx+dy*dy)||1;
+    let f=800/(d*d);nodes[i].vx-=f*dx/d;nodes[i].vy-=f*dy/d;nodes[j].vx+=f*dx/d;nodes[j].vy+=f*dy/d;
+  }
+  // attraction (edges)
+  edges.forEach(([a,b])=>{
+    let dx=nodes[b].x-nodes[a].x,dy=nodes[b].y-nodes[a].y,d=Math.sqrt(dx*dx+dy*dy)||1;
+    let f=(d-100)*.01;nodes[a].vx+=f*dx/d;nodes[a].vy+=f*dy/d;nodes[b].vx-=f*dx/d;nodes[b].vy-=f*dy/d;
+  });
+  // center gravity
+  nodes.forEach(n=>{n.vx+=(W/2-n.x)*.002;n.vy+=(H/2-n.y)*.002;n.x+=n.vx;n.y+=n.vy;n.x=Math.max(40,Math.min(W-40,n.x));n.y=Math.max(40,Math.min(H-40,n.y))});
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  let connSet=new Set();
+  if(selected!==null)edges.forEach(([a,b])=>{if(a===selected||b===selected){connSet.add(a);connSet.add(b)}});
+  // edges
+  edges.forEach(([a,b])=>{
+    let hi=selected!==null&&(a===selected||b===selected);
+    ctx.strokeStyle=hi?'#ffffff60':'#ffffff12';ctx.lineWidth=hi?2:1;
+    ctx.beginPath();ctx.moveTo(nodes[a].x,nodes[a].y);ctx.lineTo(nodes[b].x,nodes[b].y);ctx.stroke();
+  });
+  // nodes
+  nodes.forEach(n=>{
+    let dim=selected!==null&&!connSet.has(n.id);
+    ctx.globalAlpha=dim?.2:1;
+    ctx.beginPath();ctx.arc(n.x,n.y,18,0,Math.PI*2);ctx.fillStyle=groups[n.group]+'30';ctx.fill();ctx.strokeStyle=groups[n.group];ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle=dim?'#666':groups[n.group];ctx.font='9px sans-serif';ctx.textAlign='center';ctx.fillText(n.label,n.x,n.y+3);
+    ctx.globalAlpha=1;
+  });
+  // legend
+  let ly=20;Object.entries(groups).forEach(([g,c])=>{
+    ctx.fillStyle=c;ctx.font='11px sans-serif';ctx.textAlign='left';ctx.fillText('● '+g,16,ly);ly+=18;
+  });
+}
+let frame=0;function animate(){tick();draw();frame++;if(frame<200)requestAnimationFrame(animate)}
+animate();
+canvas.addEventListener('click',e=>{
+  let rect=canvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  mx*=W/rect.width;my*=H/rect.height;
+  let hit=null;
+  nodes.forEach(n=>{if(Math.hypot(n.x-mx,n.y-my)<20)hit=n.id});
+  selected=hit===selected?null:hit;
+  draw();
+});
+})();
+
+// ========== FIGURE 9: Issue Drift ==========
+(function(){
+const canvas=document.getElementById('c9'),ctx=canvas.getContext('2d'),sl=document.getElementById('sl9');
+const issues=[
+  {name:'Free Trade',color:'#4ecdc4',data:[[1990,.7],[1998,.5],[2005,.3],[2012,0],[2018,-.4],[2025,-.5]]},
+  {name:'Immigration Restriction',color:'#e94560',data:[[1990,.1],[1998,.15],[2005,.1],[2012,.2],[2016,.6],[2020,.85],[2025,.9]]},
+  {name:'Hawkish Foreign Policy',color:'#ffd93d',data:[[1990,.6],[1998,.5],[2003,.8],[2008,.4],[2015,.1],[2020,-.2],[2025,-.3]]},
+  {name:'Tough on Crime',color:'#6bcb77',data:[[1990,.85],[1996,.8],[2002,.6],[2008,.3],[2014,0],[2020,-.4],[2025,-.3]]}
+];
+function lerp(pts,yr){for(let i=0;i<pts.length-1;i++){if(yr>=pts[i][0]&&yr<=pts[i+1][0]){let t=(yr-pts[i][0])/(pts[i+1][0]-pts[i][0]);return pts[i][1]+(pts[i+1][1]-pts[i][1])*t}}return yr<=pts[0][0]?pts[0][1]:pts[pts.length-1][1]}
+function draw(){
+  const maxY=+sl.value;document.getElementById('sl9val').textContent=maxY;
+  const W=canvas.width,H=canvas.height,p={l:60,r:140,t:30,b:40};
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#ffffff20';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.l,p.t);ctx.lineTo(p.l,H-p.b);ctx.lineTo(W-p.r,H-p.b);ctx.stroke();
+  const zY=p.t+(H-p.t-p.b)/2;
+  ctx.strokeStyle='#ffffff15';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(p.l,zY);ctx.lineTo(W-p.r,zY);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#888';ctx.font='11px sans-serif';ctx.textAlign='right';
+  ctx.fillText('R-owned',p.l-8,p.t+14);ctx.fillText('D-owned',p.l-8,H-p.b-4);
+  ctx.textAlign='center';for(let y=1990;y<=2025;y+=5){let x=p.l+(y-1990)/35*(W-p.l-p.r);ctx.fillText(y,x,H-p.b+16)}
+  issues.forEach((iss,idx)=>{
+    ctx.strokeStyle=iss.color;ctx.lineWidth=2.5;ctx.beginPath();
+    for(let y=1990;y<=maxY;y++){let x=p.l+(y-1990)/35*(W-p.l-p.r);let v=lerp(iss.data,y);let py=zY-v*(H-p.t-p.b)/2;y===1990?ctx.moveTo(x,py):ctx.lineTo(x,py)}
+    ctx.stroke();
+    ctx.fillStyle=iss.color;ctx.textAlign='left';ctx.font='12px sans-serif';ctx.fillText(iss.name,W-p.r+10,p.t+20+idx*22);
+  });
+}
+sl.addEventListener('input',draw);draw();
+})();
+
+// ========== FIGURE 10: Taste Discovery ==========
+(function(){
+const canvas=document.getElementById('c10'),ctx=canvas.getContext('2d');
+const W=canvas.width,H=canvas.height;
+const landmarks=[
+  {x:150,y:120,label:'Free Speech',r:30},{x:350,y:200,label:'Gun Rights',r:25},{x:250,y:350,label:'Universal Healthcare',r:28},
+  {x:550,y:100,label:'Immigration',r:26},{x:650,y:280,label:'Climate Action',r:30},{x:450,y:400,label:'Criminal Justice',r:27},
+  {x:780,y:150,label:'Trade Policy',r:24},{x:700,y:420,label:'Education',r:25},{x:180,y:430,label:'Taxation',r:26}
+];
+const path=[{x:80,y:250}];
+// generate a wandering path
+let cx=80,cy=250;
+for(let i=0;i<200;i++){
+  let tx=landmarks[Math.min(Math.floor(i/22),landmarks.length-1)].x;
+  let ty=landmarks[Math.min(Math.floor(i/22),landmarks.length-1)].y;
+  cx+=(tx-cx)*.04+(Math.random()-.5)*12;
+  cy+=(ty-cy)*.04+(Math.random()-.5)*12;
+  cx=Math.max(20,Math.min(W-20,cx));cy=Math.max(20,Math.min(H-20,cy));
+  path.push({x:cx,y:cy});
+}
+let frame=0,animating=true;
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // landmarks (reveal when path gets near)
+  landmarks.forEach(lm=>{
+    let visible=false;
+    for(let i=0;i<=Math.min(frame,path.length-1);i++){
+      if(Math.hypot(path[i].x-lm.x,path[i].y-lm.y)<60){visible=true;break}
+    }
+    if(visible){
+      ctx.beginPath();ctx.arc(lm.x,lm.y,lm.r,0,Math.PI*2);ctx.fillStyle='#e9456015';ctx.fill();ctx.strokeStyle='#e9456060';ctx.lineWidth=1;ctx.stroke();
+      ctx.fillStyle='#e94560';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText(lm.label,lm.x,lm.y+4);
+    }else{
+      ctx.beginPath();ctx.arc(lm.x,lm.y,3,0,Math.PI*2);ctx.fillStyle='#ffffff10';ctx.fill();
+    }
+  });
+  // path
+  let end=Math.min(frame,path.length-1);
+  ctx.strokeStyle='#4ecdc450';ctx.lineWidth=2;ctx.beginPath();
+  for(let i=0;i<=end;i++){i===0?ctx.moveTo(path[i].x,path[i].y):ctx.lineTo(path[i].x,path[i].y)}
+  ctx.stroke();
+  // dot
+  if(end>0){
+    ctx.beginPath();ctx.arc(path[end].x,path[end].y,6,0,Math.PI*2);ctx.fillStyle='#4ecdc4';ctx.fill();
+    ctx.beginPath();ctx.arc(path[end].x,path[end].y,10,0,Math.PI*2);ctx.strokeStyle='#4ecdc440';ctx.lineWidth=2;ctx.stroke();
+  }
+}
+function animate(){
+  if(!animating)return;
+  frame+=2;draw();
+  if(frame<path.length)requestAnimationFrame(animate);
+}
+animate();
+document.getElementById('btn10').addEventListener('click',()=>{frame=0;animating=true;animate()});
+})();
+</script>
+</body>
+</html>
