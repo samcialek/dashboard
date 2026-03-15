@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../imgs/favicon.png">
+    <title>How Light Refracts - matrices of confusion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300..700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #E8E4DC;
+            --bg-secondary: #D4CFC4;
+            --accent-coral: #E07A5F;
+            --accent-green: #2D5A3D;
+            --accent-pink: #C97B98;
+            --accent-gold: #C9A227;
+            --accent-blue: #4A90A4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --figure-bg: #F5F3EF;
+        }
+        
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 19px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-coral);
+        }
+        
+        .article-header {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 2rem;
+        }
+
+        .article-header-text {
+            flex: 1;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .article-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+        }
+
+        .article-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: lowercase;
+        }
+        
+        .series-nav {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+        
+        .series-nav a {
+            color: var(--accent-coral);
+            text-decoration: none;
+        }
+        
+        .series-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+        
+        .content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+        }
+        
+        .content strong {
+            font-weight: 600;
+        }
+        
+        .content em {
+            font-style: italic;
+        }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin: 3rem 0;
+        }
+        
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .footer-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .related-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .related-link {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-coral);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        .related-link:hover {
+            background: var(--accent-coral);
+            color: white;
+        }
+        
+        @media (max-width: 600px) {
+            .back-link {
+                position: static;
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .article-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-header-text {
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .content {
+                padding: 0 1.5rem 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../essays-preview.html" class="back-link">&#8592; essays</a>
+        <a href="../index.html"><img src="../imgs/matrices-logo.png" class="img-fluid" style="max-width: 400px;"></a>
+    </header>
+    
+    <div class="article-header">
+        <div class="article-header-text">
+            <h1 class="article-title">how light refracts</h1>
+            <div class="article-subtitle">the five layers of political disposition, and why the spectrum is a projection</div>
+            <div class="article-meta">march 2026 &middot; ~20 min read</div>
+            <div class="series-nav">companion to: <a href="#">The Cause of Our Politics</a></div>
+        </div>
+    </div>
+    
+    <article class="content">
+
+        <p>In the previous essay I described an attempt to build a generative political model &mdash; one that infers the upstream causes of political behavior rather than just sorting declared beliefs into familiar buckets. I talked about why most political compasses start too close to the outputs, why self-report is lossy, why identity and ideology create an XOR problem that linear models can&rsquo;t solve, and why the real target is something deeper than the issue positions themselves.</p>
+
+        <p>What I didn&rsquo;t do is lay out the actual structure of the model. This essay does that.</p>
+
+        <p>The central claim is one I&rsquo;ve been circling for months, and it&rsquo;s simple enough to state even if the implications take a while to unpack: &ldquo;liberal&rdquo; and &ldquo;conservative&rdquo; are not fundamental forces. They are principal components. Like PCA in statistics, they compress a high-dimensional disposition space into convenient axes that capture the most variance in a given era. They feel real because they explain a lot &mdash; PC1 of American politics really does separate people into recognizable clusters. But principal components are artifacts of the decomposition, not the underlying reality. They rotate when the data changes. What &ldquo;liberal&rdquo; captures in 1972 (Great Society, labor unions, anti-war) is not what it captures in 2024 (identity politics, credentialism, technocratic governance). Same label, different loading vector.</p>
+
+        <p>If you build a model on the components, it breaks every time the political landscape rearranges. If you build a model on the underlying dimensions, it survives the rearrangement. That&rsquo;s the difference between descriptive and generative. The previous essay motivated the project; this one describes the architecture.</p>
+
+        <p>The framework I&rsquo;ve been developing &mdash; which I&rsquo;ll call PRISM, mostly because the metaphor is too good to waste &mdash; models political behavior as the output of five layers, each transforming the one beneath it. The layers move from deep and stable (temperament) to shallow and volatile (observed behavior). Most models start at layer five and work backward. PRISM starts at layer one and works forward.</p>
+
+        <!-- FIGURE PLACEHOLDER: PRISM layer diagram — L1 → L2 (prism) → L3 → L4 (temporal overlay) → L5 -->
+
+        <hr>
+
+        <h2>L1 &mdash; temperament: the priors you were born with</h2>
+
+        <p>At the bottom of the stack are traits that precede ideology entirely. These are cognitive and dispositional tendencies &mdash; the hardware, not the software. They don&rsquo;t determine your politics, but they define the <em>range</em> of politics available to you. Think of them as Bayesian priors in the literal sense: before you encounter any evidence about the world (before you grow up anywhere, before you absorb any culture or experience any economy), these priors constrain which political dispositions you&rsquo;ll find intuitive and which ones will always feel slightly wrong.</p>
+
+        <p>I&rsquo;ve settled on six L1 dimensions, each chosen because it&rsquo;s upstream of political content and because it interacts with the others in ways that matter for prediction. Let me justify each one, because arbitrary dimension selection is how you end up with models that feel clever and explain nothing.</p>
+
+        <p><strong>Conflict orientation</strong> &mdash; how much you seek or avoid confrontation. This is downstream of Big Five agreeableness but more specific to the political domain. It determines whether politics feels like a battle to win or a problem to solve. High conflict orientation doesn&rsquo;t make you conservative or liberal; it makes you <em>combative</em> about whatever you believe, and it makes you gravitate toward political actors who frame things as fights. Low conflict orientation makes you gravitate toward compromise, process, and consensus &mdash; which, depending on the era, can code as either liberal or conservative.</p>
+
+        <p><strong>Rule orientation</strong> &mdash; comfort with explicit structure versus contextual judgment. This one is subtle and often confused with authoritarianism, which it isn&rsquo;t. A rule-oriented universalist produces very different politics than a rule-oriented tribalist. The first wants clear, consistently applied rules for everyone. The second wants clear rules that protect the in-group. Same L1 dimension, completely different L3 output once L2 gets involved. Rule orientation is about your tolerance for ambiguity in governance &mdash; do you want bright lines or case-by-case discretion? &mdash; and it loads onto political behavior in ways that defy simple left-right placement.</p>
+
+        <p><strong>Abstraction tolerance</strong> &mdash; willingness to reason about systems versus concrete cases. This predicts whether someone engages with policy as mechanism design (&ldquo;what incentive structure produces the best outcome?&rdquo;) or as moral narrative (&ldquo;this policy hurts real people&rdquo;). Neither is wrong. But they generate very different political reasoning, different rhetorical styles, different coalition affinities, and crucially different responses to the same evidence. Someone with high abstraction tolerance is more likely to change their position in response to data about aggregate outcomes. Someone with low abstraction tolerance is more likely to change their position in response to a compelling individual story. Both are updating on evidence; they&rsquo;re just updating on different <em>kinds</em> of evidence.</p>
+
+        <p><strong>Ambiguity tolerance</strong> &mdash; the capacity to hold uncertainty without resolving it prematurely. This one is enormously consequential and, I think, underweighted in most political psychology. Low ambiguity tolerance combined with high threat sensitivity produces a very specific political phenotype: someone who wants clear answers, clear enemies, strong leadership, and decisive action. That&rsquo;s not inherently right-wing &mdash; it can manifest as left-authoritarianism just as easily &mdash; but it reliably pushes people toward whatever political movement promises the most certainty. High ambiguity tolerance allows for more exploratory political behavior, more willingness to hold multiple considerations simultaneously, more patience with incremental change. It also, honestly, can produce political paralysis and an annoying tendency to see all sides of everything.</p>
+
+        <p><strong>Time horizon</strong> &mdash; how far forward you optimize. Short time horizons favor concrete, immediate policy: what does this do for me and my family right now? Long time horizons favor systemic, structural thinking: what kind of institutions do we need for the next generation? This interacts with abstraction tolerance in interesting ways. Long time horizon plus high abstraction tolerance produces the technocratic wonk. Long time horizon plus low abstraction tolerance produces the civilizational conservative who thinks in terms of heritage and legacy. Short time horizon plus high conflict orientation produces the populist of any stripe. These aren&rsquo;t archetypes yet &mdash; that comes at L3 &mdash; but you can already see how the dimensions interact.</p>
+
+        <p><strong>Universalism versus parochialism</strong> &mdash; the radius of your moral circle. I&rsquo;ve come to believe this is the single most consequential L1 dimension for predicting coalition membership, at least in the current era. Universalists extend moral consideration broadly &mdash; to strangers, to people in other countries, to future generations, sometimes to non-human entities. Parochials concentrate moral consideration on family, community, nation, or some other bounded group. Neither is objectively correct (which I realize is itself a somewhat universalist thing to say). But this dimension, more than any other, predicts which side of the major political cleavages someone lands on. Immigration, trade, foreign aid, climate policy, criminal justice &mdash; the universalism-parochialism axis runs through all of them, and it does so in ways that are more stable over time than the issue positions themselves.</p>
+
+        <p>The Bayesian framing here is not a metaphor. Given someone&rsquo;s expressed politics, the question PRISM asks is: what are the possible L1 configurations that could have produced them? It&rsquo;s the inverse problem. We observe the output and try to infer the generator. This is the same logic used in psychometrics (observe test responses, infer latent ability) and in Bayesian inference generally (observe data, update beliefs about the parameters that produced the data). The difference is that PRISM has five layers of transformation between the parameters and the data, which makes the inversion harder but also makes the model more expressive. A person&rsquo;s expressed politics don&rsquo;t map back to a single L1 profile. They map back to a <em>distribution</em> over L1 profiles, weighted by how plausible each configuration is given everything else we know.</p>
+
+        <hr>
+
+        <h2>L2 &mdash; formative context: the prism itself</h2>
+
+        <!-- FIGURE PLACEHOLDER: PCA rotation visualization — how the "liberal-conservative" axis rotates across decades while underlying dimensions stay fixed -->
+
+        <p>This is the layer that gives the framework its name. L1 is white light &mdash; undifferentiated temperament, carrying all possible political dispositions as potential. L2 is the prism: where you grew up, your class position, education, religion, region, ethnic status, economic volatility, media exposure, institutional trust, direct experience with disorder or exclusion. White light enters the prism and separates into a spectrum. Same light through a different prism produces a different spectrum.</p>
+
+        <p>The metaphor is precise in a way I find genuinely useful. Two people with identical L1 who grow up in vastly different circumstances will express different politics &mdash; but their <em>range</em> is the same. The prism doesn&rsquo;t create new colors. It separates the ones that were already there. A high-order, high-discipline personality formed inside a cosmopolitan meritocratic environment does not generate the same politics as the same personality formed inside a locally rooted, status-threatened one. But both outputs were <em>possible</em> from the same L1 &mdash; one was just selected over the other by the formative context.</p>
+
+        <p>This is where the endogenous meets the exogenous. L1 is endogenous to the individual &mdash; you were, to a considerable degree, born with it. L2 is exogenous &mdash; it happened to you. The transformation from L1 to L2 is not additive (temperament plus context does not equal disposition). It&rsquo;s interactive. L2 doesn&rsquo;t add to L1; it <em>selects from</em> the possibility space that L1 defines. This is an important distinction because it means two things. First, L2 effects are bounded by L1 &mdash; no formative context can produce a political disposition that L1 doesn&rsquo;t permit. Second, the same L2 applied to different L1s produces different results, which is why people who grew up in the same neighborhood, went to the same schools, and share the same demographic profile can still end up with quite different politics.</p>
+
+        <p>The nationalism test makes this concrete. Would a MAGA nationalist of the JD Vance variety be the same <em>kind</em> of nationalist if born into the majority religion and ethnicity of a different country? If yes, then L1 dominates &mdash; this person&rsquo;s temperament produces nationalism regardless of context. If no, then L2 dominates &mdash; the specific American formative context is doing the causal work. PRISM&rsquo;s answer is: some of each, and the ratio is measurable. Vance&rsquo;s L1 (which I&rsquo;d guess is high rule orientation, moderate-to-high parochialism, high conflict orientation, moderate abstraction tolerance) would probably produce some form of in-group preference in any context. But the specific <em>content</em> of that in-group preference &mdash; the particular mix of working-class populism, cultural traditionalism, and anti-elite resentment &mdash; is downstream of growing up where and how he did. The temperament travels. The politics don&rsquo;t.</p>
+
+        <p>One more thing about L2, and it connects to the previous essay&rsquo;s discussion of declared versus revealed preferences. Self-report introduces systematic bias at every layer, but it&rsquo;s especially pernicious at L2 because people&rsquo;s stories about their own formation tend to be retrospective rationalizations. &ldquo;I believe in small government because I grew up watching my father run a small business&rdquo; sounds like an L2 &rarr; L3 causal story, and maybe it is, but it&rsquo;s equally plausible that the person&rsquo;s L1 (high autonomy, low trust in institutional authority) would have produced small-government views in a variety of formative contexts, and the father&rsquo;s business is the narrative that makes the disposition feel chosen rather than innate.</p>
+
+        <p>This is why the quiz I&rsquo;m building tries to triangulate revealed preferences rather than asking for self-narration. The title I kept coming back to for this design principle was &ldquo;I Know This About Myself, I Assume as Much for Other People&rdquo; &mdash; the idea being that if you can identify a disposition in yourself, you should expect it to operate in others as well, even when their surface politics look nothing like yours. The goal isn&rsquo;t to catch people lying (most people aren&rsquo;t lying; they genuinely believe the story they tell). The goal is to get at the structure underneath the story.</p>
+
+        <hr>
+
+        <h2>L3 &mdash; political disposition: the spectrum after refraction</h2>
+
+        <!-- FIGURE PLACEHOLDER: The Onion Peel — L5→L1 concentric rings -->
+
+        <p>L3 is what comes out the other side of the prism. It&rsquo;s the first layer that looks recognizably political &mdash; attitudes, orientations, and priorities that sit upstream of party labels but downstream of raw temperament. If L1 is the light and L2 is the prism, L3 is the spectrum: the array of distinct positions a person occupies across a set of politically relevant dimensions.</p>
+
+        <p>I&rsquo;ve identified ten L3 dimensions, which is a lot, and I want to be upfront about why I think ten is the right number rather than two or four or twenty. The answer is empirical rather than theoretical. I kept adding dimensions until additional ones stopped improving the model&rsquo;s ability to distinguish archetypes that behave differently under counterfactual conditions. Two dimensions (the standard left-right plus libertarian-authoritarian) lose enormous amounts of information. Four dimensions (adding, say, cultural traditionalism and economic populism) are better but still collapse cross-pressures that turn out to matter. Ten dimensions capture the major axes of variation I&rsquo;ve been able to identify in the data. More than ten starts to introduce dimensions that are either redundant with existing ones or too granular to estimate reliably from a quiz.</p>
+
+        <p>The ten dimensions: attitudes toward markets, attitudes toward state coercion, comfort with hierarchy, orientation toward pluralism, strength of national identity, moral traditionalism, trust in elite stewardship, zero-sum thinking, disposition toward social change, and tolerance for institutional complexity. Each of these is continuous, not binary. Someone can score moderately high on national identity and moderately low on moral traditionalism &mdash; that&rsquo;s not a contradiction, it&rsquo;s a common pattern. Someone can be pro-market and pro-redistribution simultaneously if they think well-functioning markets generate the wealth that funds public goods. Someone can be pluralist on culture and technocratic on governance. Real politics contains these cross-currents all the time, and they are precisely what &ldquo;liberal&rdquo; and &ldquo;conservative&rdquo; erase.</p>
+
+        <p>This is why the model uses approximately 132 archetypes (the number has grown from the original 71 as I&rsquo;ve refined the clustering) rather than two. Two archetypes means you&rsquo;ve run PCA with k=2 and thrown away most of the information. The archetype count isn&rsquo;t arbitrary &mdash; it&rsquo;s the resolution at which prediction stops improving. Beyond about 130 clusters, you start splitting groups whose behavior under counterfactual conditions is essentially identical. Below about 100, you start merging groups whose behavior diverges in important ways. The sweet spot is somewhere in that range, and I suspect it will shift as the model encounters more data.</p>
+
+        <p>The cross-pressures are, honestly, the most interesting part. Consider someone who scores high on public order, low on economic hierarchy, high on pluralism, and moderate on moral traditionalism. In the current American coalitional arrangement, this person is genuinely homeless. They want safe streets and functioning institutions (which codes conservative) but reject concentrated economic power (which codes progressive) and welcome cultural diversity (which codes liberal) while maintaining some traditional moral commitments (which codes conservative again). No single party captures this configuration. The person&rsquo;s actual political behavior &mdash; who they vote for, whether they volunteer, what movements they join, whether they vote at all &mdash; depends on which of these dimensions is most salient in a given election cycle, which brings us to L4.</p>
+
+        <hr>
+
+        <h2>L4 &mdash; current context: the temporal overlay</h2>
+
+        <!-- FIGURE PLACEHOLDER: Endogenous-exogenous handoff diagram — where the RL connection lives -->
+
+        <p>L4 is the layer most political models either ignore entirely or treat as the whole story. It&rsquo;s the environment: economic shocks, war, migration patterns, elite failure, technological disruption, charismatic candidates, institutional decay, crime waves, perceived humiliation, party sorting. Everything that&rsquo;s happening <em>now</em> that determines which parts of your latent disposition get activated.</p>
+
+        <p>The connection to reinforcement learning is, I think, the cleanest way to understand this layer. Your L3 disposition is the policy function &mdash; the mapping from states of the world to political actions. L4 is the environment and reward signal. The same policy function produces different actions under different environmental conditions. This isn&rsquo;t a metaphor; it&rsquo;s structurally identical. An RL agent with a fixed policy will exploit different strategies depending on the state space it finds itself in. A voter with a fixed dispositional profile will express different political behavior depending on what&rsquo;s happening in the world.</p>
+
+        <p>The explore/exploit tradeoff maps onto this beautifully. Each person&rsquo;s political lifetime involves a tradeoff between seeking new information (exploring &mdash; reading outside your coalition, engaging with arguments you find uncomfortable, reconsidering positions) and doubling down on existing frameworks (exploiting &mdash; deepening commitment to your team, filtering information through your priors, treating political identity as settled). L1 sets the baseline explore/exploit ratio: high openness and high ambiguity tolerance mean more exploration; low ambiguity tolerance and high rule orientation mean more exploitation. But L4 shifts it. Under threat &mdash; economic precarity, social disorder, perceived civilizational decline &mdash; exploit dominates. People retreat to coalition defaults. Under stability &mdash; prosperity, low threat, high institutional trust &mdash; explore becomes possible. Cross-partisan curiosity emerges. Strange bedfellows coalitions form. People start saying things like &ldquo;I&rsquo;m socially liberal but fiscally conservative,&rdquo; which is really just someone whose L4 environment is calm enough to let them hold multiple L3 dimensions simultaneously rather than collapsing to a single tribal identity.</p>
+
+        <p>This is how realignment happens. Not by people becoming fundamentally different creatures overnight, but by different parts of their latent structure becoming activated under different conditions. The conservative libertarian moment of 2010 and the MAGA populist moment of 2016 didn&rsquo;t involve a mass conversion of American right-of-center voters from one ideology to another. What changed was L4: the financial crisis, the cultural backlash, the sense of elite betrayal. Those L4 shifts activated different L3 dimensions in people whose L1 and L2 hadn&rsquo;t changed at all. The parochialism that was always there became salient. The economic populism that had been dormant woke up. The institutional trust that had been fraying finally snapped. Same people, same deep structure, completely different political expression &mdash; because the environment changed which parts of the structure mattered.</p>
+
+        <p>There&rsquo;s a design consequence here that I think is worth mentioning because it connects to the simulation architecture I&rsquo;ve been thinking about (which I&rsquo;ll write about separately). If L3 is relatively stable and L4 is the thing that changes, then you can pre-compute the political behavior of each archetype under different L4 conditions. Instead of running the full generative model on each individual every time the context shifts, you maintain a lookup table: archetype &times; L4 condition &rarr; predicted political behavior. This is computationally much cheaper and makes population-scale simulation feasible. The endogenous part (L1-L3) is precomputed; only the exogenous part (L4) needs to be simulated dynamically. The handoff between endogenous and exogenous is the key architectural decision, and getting it right determines whether the model is a theoretical curiosity or a practical tool.</p>
+
+        <hr>
+
+        <h2>L5 &mdash; political behavior: the observable output</h2>
+
+        <!-- FIGURE PLACEHOLDER: The Time Warp — Steve's label changes by era, latent traits stay stable -->
+
+        <p>Only at the end do we get the things everyone actually measures: votes, issue positions, party affiliation, candidate support, movement participation, abstention, and all the other visible outputs of the political system. L5 is where most models start and stop. It&rsquo;s what surveys measure, what pundits discuss, what prediction markets price, and what elections reveal.</p>
+
+        <p>The problem with modeling only L5 is the same problem with modeling only the surface of anything: you get a decent snapshot and poor transfer. If you train a model on 2020 voting behavior, it will probably do well on 2020 voting behavior. It will probably do poorly on 2028 voting behavior, because the coalitional sorting will have shifted, the salient issues will be different, and some of the proxy variables that were informative in 2020 will have changed sign. If you model the generative layers (L1 through L4), you have a shot at understanding why someone votes as they do now, why they might have voted differently in another setting, and what kinds of changes are likely to move them in the future.</p>
+
+        <p>The overdetermination problem is especially acute at L5. The same observed behavior &mdash; voting for a particular candidate, say &mdash; can be generated by completely different L1-L4 configurations. Two voters with identical survey scores may have arrived there via entirely different causal paths, and their future behavior will diverge as soon as the context changes. One of them is a true believer whose L1-L3 alignment with the candidate is deep and stable. The other is a contextual voter whose L4 activation happens to point in the same direction right now but could easily shift.</p>
+
+        <p>I keep coming back to the phrase &ldquo;two voters, one survey score.&rdquo; It captures the core limitation of L5-only models: same output, different generators, different futures. A political model that can&rsquo;t distinguish these two voters is a model that will be surprised by the next realignment.</p>
+
+        <hr>
+
+        <h2>concept drift and the three-body problem</h2>
+
+        <p>There is one more structural feature of politics that a model needs to handle, and it&rsquo;s the one that makes even good frameworks go stale: concept drift.</p>
+
+        <p>Politics exhibits massive concept drift. The meaning of &ldquo;liberal,&rdquo; &ldquo;conservative,&rdquo; &ldquo;populist,&rdquo; &ldquo;establishment&rdquo; &mdash; these are not fixed categories. They are labels attached to coalitional configurations that shift over time. Three forces act on each other in a way that genuinely resembles the gravitational three-body problem: (1) elite positioning &mdash; what party leaders and opinion-makers advocate for and against; (2) mass sentiment &mdash; the aggregate distribution of dispositional profiles across the electorate, which shifts with demographics, economics, and L4 events; and (3) institutional and media framing &mdash; how the available political options are described, which options are presented as viable, and which dispositions are mapped to which labels.</p>
+
+        <p>Each of these three forces influences the other two, which makes equilibria temporary and prediction difficult. Elites respond to mass sentiment (or lose elections). Mass sentiment is shaped by how elites and media frame the options. Media framing responds to both elite positioning and audience demand. The system is chaotic in the technical sense &mdash; small perturbations can cascade. And this is why &ldquo;liberal&rdquo; rotates: it&rsquo;s not that people changed. It&rsquo;s that the coalitional sorting algorithm changed what the first principal component captures. The loading vector rotated, and the label went with it.</p>
+
+        <p>Simple models assume stationarity &mdash; they treat the current political alignment as fixed and infer within it. PRISM assumes non-stationarity and tries to model the drift mechanism itself. The underlying dimensions (L1 temperament, L3 dispositions) don&rsquo;t drift. They&rsquo;re the invariants. What drifts is the mapping from those dimensions to coalitions, labels, and observable behavior. If you model only the surface, you&rsquo;re modeling the thing that drifts. If you model the depth, you&rsquo;re modeling the thing that stays.</p>
+
+        <hr>
+
+        <h2>what this enables</h2>
+
+        <p>I want to keep this section brief because the applications deserve their own treatment, but a few things are worth flagging.</p>
+
+        <p><strong>Coalition simulation.</strong> The model doesn&rsquo;t predict who wins elections (there are a million better tools for that). What it can do is predict which dispositional profiles align with which other profiles under different L4 conditions. Which coalitions are stable? Which are held together only by the current threat environment and would fracture under different conditions? Where are the fault lines within existing coalitions? These questions are answerable if you have a generative model of disposition, and they are mostly unanswerable if you only have survey snapshots.</p>
+
+        <p><strong>The Politracker.</strong> Put your dispositional map against someone else&rsquo;s &mdash; your uncle who votes the other way, say &mdash; and find areas of actual overlap versus assumed opposition. Most political conversations operate on the assumption that disagreement is total. Usually it isn&rsquo;t. Two people who disagree vehemently on immigration might agree on institutional reform, economic mobility, and the importance of local community. A tool that surfaces those overlaps could, in theory, make political conversations less terrible. I am not optimistic about this but I think it&rsquo;s worth trying.</p>
+
+        <p><strong>Historical extension.</strong> Apply PRISM to the Founding Fathers. What were their L1s? How did colonial America, Enlightenment thought, plantation economics, and frontier identity (L2) refract those temperaments into the dispositions (L3) that produced the Constitution? This is speculative, obviously, but it&rsquo;s the kind of counterfactual reasoning that a generative model permits and a descriptive one doesn&rsquo;t.</p>
+
+        <p><strong>Expansion packs.</strong> The quiz as currently designed covers general political disposition. But the architecture is modular &mdash; you can add domain-specific question sets that go deeper on particular policy areas (monetary policy, criminal justice, bioethics) without rebuilding the core model. These function as expansion packs: same framework, finer resolution in specific areas, each one designed to surface the dispositional structure underlying domain-specific positions.</p>
+
+        <p>After creating this framework that could be applied broadly, I applied it broadly. The quiz, the simulation layer, and the interactive tools are all in development and will be the subject of future writing. For now, the point of this essay is simpler: the political spectrum is a projection. It flattens a high-dimensional reality into a line. The line is useful &mdash; PCA&rsquo;s first component usually is &mdash; but it&rsquo;s not the territory. PRISM is an attempt to map the territory itself, layer by layer, from the temperament you were born with to the vote you cast last Tuesday. Whether the map is good enough to be useful is a question I can&rsquo;t answer yet. But I think the attempt is worth making, if only because the alternative &mdash; continuing to model political behavior as if &ldquo;liberal&rdquo; and &ldquo;conservative&rdquo; were natural kinds rather than statistical artifacts &mdash; seems increasingly untenable in an era where the components are visibly rotating under our feet.</p>
+
+        <hr>
+
+        <p><em>March 2026. Companion to &ldquo;The Cause of Our Politics.&rdquo;</em></p>
+
+    </article>
+    
+    <footer>
+        <div class="footer-text">series</div>
+        <div class="related-links">
+            <a href="#" class="related-link">&#8592; The Cause of Our Politics</a>
+        </div>
+    </footer>
+
+</body>
+</html>
