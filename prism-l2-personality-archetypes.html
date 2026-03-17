@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM L2 — Personality Disposition Archetypes</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a12;color:#d0d0d8;font-family:'Segoe UI',system-ui,sans-serif;padding:20px 30px;line-height:1.5}
+h1{color:#e0e0ff;font-size:2rem;margin-bottom:4px}
+.subtitle{color:#888;font-size:.95rem;margin-bottom:24px}
+.controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.controls input{background:#14141f;border:1px solid #333;color:#ccc;padding:8px 14px;border-radius:6px;font-size:.9rem;width:260px}
+.controls select,.controls button{background:#14141f;border:1px solid #333;color:#ccc;padding:8px 12px;border-radius:6px;font-size:.85rem;cursor:pointer}
+.controls button.active{border-color:#7b7bff;color:#aaf}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:700;margin:1px;min-width:42px;text-align:center}
+.badge-H{background:#1a3a1a;color:#4caf50;border:1px solid #2e5e2e}
+.badge-M{background:#3a3a1a;color:#cfcf40;border:1px solid #5e5e2e}
+.badge-L{background:#3a1a1a;color:#e05050;border:1px solid #5e2e2e}
+.summary{background:#10101a;border:1px solid #222;border-radius:10px;padding:20px;margin-bottom:28px;overflow-x:auto}
+.summary h2{color:#b0b0d0;font-size:1.1rem;margin-bottom:12px}
+.matrix{width:100%;border-collapse:collapse;font-size:.8rem}
+.matrix th{background:#16162a;color:#99a;padding:6px 8px;text-align:center;border:1px solid #222;position:sticky;top:0}
+.matrix td{padding:5px 8px;border:1px solid #1a1a2a;text-align:center;white-space:nowrap}
+.matrix tr:hover{background:#16162a}
+.matrix td:first-child{text-align:left;color:#aab;font-weight:600;max-width:180px;white-space:normal}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
+.card{background:#11111b;border:1px solid #222;border-radius:10px;padding:18px;transition:border-color .2s}
+.card:hover{border-color:#444}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.card h3{color:#c8c8ff;font-size:1.05rem}
+.card-id{color:#555;font-size:.75rem}
+.traits{margin:8px 0}
+.desc{color:#aaa;font-size:.85rem;margin:8px 0}
+.tension{color:#c89040;font-size:.82rem;font-style:italic;margin:6px 0}
+.l3map{color:#7090c0;font-size:.82rem;margin-top:6px}
+.l3map strong{color:#8aa8d8}
+.hidden{display:none}
+.cluster-tag{font-size:.7rem;background:#1a1a30;color:#8888cc;padding:2px 8px;border-radius:10px;border:1px solid #2a2a44}
+.stat-bar{display:flex;gap:6px;margin:16px 0 8px;flex-wrap:wrap}
+.stat-item{background:#14141f;border:1px solid #222;border-radius:6px;padding:8px 14px;text-align:center}
+.stat-item .num{font-size:1.4rem;font-weight:700;color:#aaf}
+.stat-item .lab{font-size:.7rem;color:#777}
+</style>
+</head>
+<body>
+
+<h1>PRISM L2 — Personality Disposition Archetypes</h1>
+<p class="subtitle">32 crystallized personality profiles from 6 trait dimensions → political disposition prediction</p>
+
+<div class="stat-bar">
+<div class="stat-item"><div class="num">32</div><div class="lab">Archetypes</div></div>
+<div class="stat-item"><div class="num">6</div><div class="lab">Trait Axes</div></div>
+<div class="stat-item"><div class="num">8</div><div class="lab">Clusters</div></div>
+</div>
+
+<div class="controls">
+<input type="text" id="search" placeholder="Search archetypes..." oninput="filterCards()">
+<select id="traitFilter" onchange="filterCards()">
+<option value="">All Traits</option>
+<option value="T-H">T High</option><option value="T-L">T Low</option>
+<option value="EC-H">EC High</option><option value="EC-L">EC Low</option>
+<option value="COMP-H">COMP High</option><option value="COMP-L">COMP Low</option>
+<option value="D-H">D High</option><option value="D-L">D Low</option>
+<option value="G-H">G High</option><option value="G-L">G Low</option>
+<option value="RC-H">RC High</option><option value="RC-L">RC Low</option>
+</select>
+<select id="clusterFilter" onchange="filterCards()">
+<option value="">All Clusters</option>
+</select>
+<button onclick="sortCards('name')">Sort: Name</button>
+<button onclick="sortCards('cluster')">Sort: Cluster</button>
+</div>
+
+<div class="summary">
+<h2>Summary Matrix</h2>
+<table class="matrix" id="matrixTable">
+<thead><tr><th>Archetype</th><th>T</th><th>EC</th><th>COMP</th><th>D</th><th>G</th><th>RC</th><th>Cluster</th></tr></thead>
+<tbody id="matrixBody"></tbody>
+</table>
+</div>
+
+<div class="grid" id="cardGrid"></div>
+
+<script>
+const archetypes = [
+// CLUSTER: Authoritarian Core
+{name:"The Sentinel",id:1,cluster:"Authoritarian Core",T:"H",EC:"L",COMP:"L",D:"L",G:"H",RC:"L",
+desc:"Hypervigilant, loyal to the group, unquestioning of authority. Sees threats everywhere and responds with conformity and enforcement. The bedrock of authoritarian movements.",
+tension:"Deep need for safety satisfied only by submission to strong group hierarchy",
+l3:"Authoritarian Nationalist, Security-State Conservative"},
+
+{name:"The Crusader",id:2,cluster:"Authoritarian Core",T:"H",EC:"L",COMP:"M",D:"L",G:"H",RC:"L",
+desc:"Like the Sentinel but with selective compassion — fierce protectiveness toward in-group members, cold indifference to outsiders. Moral certainty fuels righteous aggression.",
+tension:"Compassion exists but is tribally bounded — warmth inside, wall outside",
+l3:"Religious Nationalist, Welfare Chauvinist"},
+
+{name:"The Enforcer",id:3,cluster:"Authoritarian Core",T:"H",EC:"L",COMP:"L",D:"L",G:"H",RC:"M",
+desc:"Pragmatic authoritarian who enforces order not from ideology but from genuine belief it works. Will update tactics but never questions the need for hierarchy and control.",
+tension:"Evidence-responsive about means, rigid about the necessity of authority",
+l3:"Law-and-Order Conservative, Techno-Authoritarian"},
+
+// CLUSTER: Traditionalist
+{name:"The Steward",id:4,cluster:"Traditionalist",T:"M",EC:"L",COMP:"M",D:"L",G:"H",RC:"L",
+desc:"Quiet, duty-bound, community-focused. Finds meaning in maintaining inherited structures. Not fearful — just deeply believes the old ways work and novelty is unnecessary risk.",
+tension:"Contentment vs. complacency — stability as virtue or stagnation",
+l3:"Communitarian Conservative, Burkean Traditionalist"},
+
+{name:"The Patriarch/Matriarch",id:5,cluster:"Traditionalist",T:"M",EC:"L",COMP:"H",D:"L",G:"H",RC:"L",
+desc:"Warm, caring, but within rigid traditional frameworks. Genuinely wants the best for everyone — as long as 'best' means the established path. Protective love that constrains.",
+tension:"Deep care expressed through controlling structures",
+l3:"Compassionate Conservative, Religious Communitarian"},
+
+{name:"The Parish",id:6,cluster:"Traditionalist",T:"L",EC:"L",COMP:"H",D:"L",G:"H",RC:"M",
+desc:"The good neighbor who doesn't think much about politics. Follows community norms, helps when asked, updates views slowly through lived experience rather than ideas.",
+tension:"Kindness without curiosity — helps the person in front of them, never asks systemic questions",
+l3:"Apolitical Communitarian, Soft Conservative"},
+
+// CLUSTER: Libertarian / Individualist
+{name:"The Sovereign",id:7,cluster:"Libertarian",T:"M",EC:"M",COMP:"L",D:"H",G:"L",RC:"M",
+desc:"The classic libertarian personality. Distrustful of all authority, self-reliant, emotionally detached from collective causes. Sees freedom as the only non-negotiable value.",
+tension:"Radical individualism vs. the need for some social infrastructure",
+l3:"Right-Libertarian, Agorist, Minarchist"},
+
+{name:"The Ronin",id:8,cluster:"Libertarian",T:"L",EC:"M",COMP:"L",D:"H",G:"L",RC:"M",
+desc:"Like the Sovereign but without the threat sensitivity — genuinely unbothered rather than defensive. Walks away from systems rather than fighting them. The quiet dropout.",
+tension:"Freedom through disengagement — liberation or abdication?",
+l3:"Lifestyle Libertarian, Apolitical Individualist"},
+
+{name:"The Contrarian",id:9,cluster:"Libertarian",T:"M",EC:"H",COMP:"L",D:"H",G:"L",RC:"M",
+desc:"Intellectually combative, questions everything, loyal to no group. Enjoys being right more than being liked. The person who reads the study and tells you you're wrong.",
+tension:"Epistemic honesty weaponized as social aggression",
+l3:"Rationalist Libertarian, Techno-Libertarian, Heterodox Intellectual"},
+
+{name:"The Frontiersman",id:10,cluster:"Libertarian",T:"H",EC:"L",COMP:"L",D:"H",G:"L",RC:"L",
+desc:"Suspicious, self-reliant, hostile to institutions. Sees government as the primary threat. Stockpiles — resources, skills, grudges. The survivalist archetype.",
+tension:"Independence driven by fear rather than philosophy",
+l3:"Militia Libertarian, Sovereign Citizen, Right-Populist"},
+
+// CLUSTER: Progressive Activist
+{name:"The Advocate",id:11,cluster:"Progressive Activist",T:"M",EC:"H",COMP:"H",D:"M",G:"M",RC:"H",
+desc:"The engaged progressive who combines genuine empathy with intellectual rigor. Updates views based on evidence, cares about outcomes, and pushes for change through systems.",
+tension:"Pragmatism vs. moral urgency — when to compromise and when to push",
+l3:"Evidence-Based Progressive, Social Democrat"},
+
+{name:"The Firebrand",id:12,cluster:"Progressive Activist",T:"H",EC:"M",COMP:"H",D:"H",G:"M",RC:"M",
+desc:"Morally outraged and ready to fight. Sees injustice everywhere and demands immediate action. Compassion is the fuel, defiance is the engine, threat sensitivity is the alarm.",
+tension:"Righteous anger that can tip into purity spirals and ally-eating",
+l3:"Radical Progressive, Social Justice Activist, Democratic Socialist"},
+
+{name:"The Liberator",id:13,cluster:"Progressive Activist",T:"M",EC:"M",COMP:"H",D:"H",G:"L",RC:"M",
+desc:"Anti-authoritarian with deep empathy. Fights for the marginalized but distrusts movements and institutions, including progressive ones. The permanent outsider with a conscience.",
+tension:"Wants collective liberation but can't commit to collective action",
+l3:"Left-Libertarian, Anarcho-Humanist"},
+
+{name:"The Empath Militant",id:14,cluster:"Progressive Activist",T:"H",EC:"L",COMP:"H",D:"H",G:"M",RC:"L",
+desc:"Feels the world's pain intensely and responds with aggressive certainty. Low curiosity means solutions are fixed; high compassion means the stakes feel existential. Passion without flexibility.",
+tension:"Moral conviction untethered from epistemic humility",
+l3:"Dogmatic Left, Tankie-Adjacent, Authoritarian Progressive"},
+
+// CLUSTER: Intellectual / Analytical
+{name:"The Cartographer",id:15,cluster:"Intellectual",T:"L",EC:"H",COMP:"M",D:"M",G:"L",RC:"H",
+desc:"The systemizer. Wants to map reality accurately, cares about truth more than tribes. Moderate compassion keeps them human; low group loyalty keeps them independent.",
+tension:"Understanding the world perfectly vs. doing anything about it",
+l3:"Technocrat, Evidence-Based Centrist, Rationalist"},
+
+{name:"The Philosopher",id:16,cluster:"Intellectual",T:"L",EC:"H",COMP:"M",D:"M",G:"L",RC:"M",
+desc:"Endlessly curious but not rigidly empirical. Entertains ideas for their beauty and internal logic. Can argue any position. Lives in the realm of concepts.",
+tension:"Intellectual flexibility that can become paralysis or sophistry",
+l3:"Classical Liberal, Post-Ideological, Heterodox"},
+
+{name:"The Architect",id:17,cluster:"Intellectual",T:"L",EC:"H",COMP:"L",D:"L",G:"M",RC:"H",
+desc:"Systems-builder who follows evidence wherever it leads, even into uncomfortable territory. Low compassion means efficiency over equity. Comfortable with hard tradeoffs.",
+tension:"Optimization without empathy — brilliant designs that forget about people",
+l3:"Technocratic Centrist, Neoliberal, Effective Altruist (utilitarian wing)"},
+
+{name:"The Oracle",id:18,cluster:"Intellectual",T:"M",EC:"H",COMP:"L",D:"M",G:"L",RC:"L",
+desc:"Intellectually voracious but belief-preserving. Builds elaborate frameworks and defends them with sophistication. The brilliant person who's always right — in their own model.",
+tension:"Intelligence in service of motivated reasoning",
+l3:"Ideologue (any direction), Dogmatic Intellectual, Marxist Theoretician or Austrian Economist"},
+
+// CLUSTER: Populist / Tribal
+{name:"The True Believer",id:19,cluster:"Populist",T:"H",EC:"L",COMP:"M",D:"M",G:"H",RC:"L",
+desc:"Anxious and group-loyal with moderate defiance — defiant toward outgroups and elites, compliant within the tribe. The perfect recruit for populist movements of any stripe.",
+tension:"Defiance that only flows upward/outward, never inward toward own group",
+l3:"Right-Populist, Left-Populist, MAGA, Chavismo"},
+
+{name:"The Partisan",id:20,cluster:"Populist",T:"M",EC:"M",COMP:"M",D:"M",G:"H",RC:"L",
+desc:"The moderate-on-everything who becomes extreme through group loyalty. Individually reasonable, collectively radicalized. Adopts whatever position their group holds, with conviction.",
+tension:"Moderation in personality, extremism through social proof",
+l3:"Party-Line Voter, Team-Sport Partisan (either side)"},
+
+{name:"The Demagogue's Dream",id:21,cluster:"Populist",T:"H",EC:"L",COMP:"L",D:"M",G:"H",RC:"L",
+desc:"Fearful, incurious, group-loyal, and belief-rigid. The maximally manipulable personality. Not evil — just cognitively and emotionally primed for exploitation by charismatic leaders.",
+tension:"Genuine suffering (anxiety) channeled into destructive collective action",
+l3:"Authoritarian Populist base, Cult follower, Extremist recruit"},
+
+// CLUSTER: Disengaged / Apolitical
+{name:"The Drifter",id:22,cluster:"Disengaged",T:"L",EC:"L",COMP:"M",D:"L",G:"L",RC:"M",
+desc:"Not anxious, not curious, not defiant, not tribal. Just... living. Present-focused, mildly kind, goes with the flow. The vast apolitical middle that drives activists crazy.",
+tension:"Contentment or learned helplessness? Hard to tell from outside",
+l3:"Non-voter, Apolitical, Whatever-ist"},
+
+{name:"The Hedonist",id:23,cluster:"Disengaged",T:"L",EC:"L",COMP:"L",D:"M",G:"L",RC:"L",
+desc:"Low investment in everything except personal freedom and pleasure. Mild defiance keeps them from being pushed around. Zero interest in collective projects or abstract truth.",
+tension:"Functional selfishness — not cruel, just entirely self-referential",
+l3:"Apolitical Libertarian, Non-voter"},
+
+{name:"The Sleepwalker",id:24,cluster:"Disengaged",T:"L",EC:"L",COMP:"L",D:"L",G:"M",RC:"L",
+desc:"Goes along with whatever group they're in, not from loyalty but from inertia. The default human setting. Activated only when directly threatened.",
+tension:"Political existence only through ambient social osmosis",
+l3:"Default voter (follows local majority), Swing voter by accident"},
+
+// CLUSTER: Reformist / Bridge-Builder
+{name:"The Diplomat",id:25,cluster:"Reformist",T:"L",EC:"M",COMP:"H",D:"L",G:"M",RC:"H",
+desc:"Evidence-responsive, caring, non-threatening, non-defiant. The natural mediator. Sees all sides, wants consensus, updates views readily. Can be too accommodating.",
+tension:"Empathy + compliance = conflict avoidance that enables bad actors",
+l3:"Centrist, Third Way, Deliberative Democrat"},
+
+{name:"The Reformer",id:26,cluster:"Reformist",T:"M",EC:"H",COMP:"H",D:"M",G:"M",RC:"H",
+desc:"The idealist who does their homework. Combines moral passion with evidence-gathering and strategic thinking. Pushes for change but through legitimate channels. The effective activist.",
+tension:"Working within systems that may be fundamentally broken",
+l3:"Social Democrat, Progressive Institutionalist, Effective Altruist"},
+
+{name:"The Chaplain",id:27,cluster:"Reformist",T:"M",EC:"M",COMP:"H",D:"L",G:"H",RC:"M",
+desc:"Deeply caring and community-embedded. Works to improve things from within existing structures — church, union, neighborhood. Loyalty and compassion in equal measure.",
+tension:"Reform from within vs. complicity with institutional failures",
+l3:"Christian Democrat, Labor Moderate, Community Organizer"},
+
+// CLUSTER: Radical / Anti-System
+{name:"The Iconoclast",id:28,cluster:"Radical",T:"L",EC:"H",COMP:"L",D:"H",G:"L",RC:"H",
+desc:"Intellectually fearless, emotionally detached, ready to burn it all down — but only because the evidence says the current system is broken. Cold revolutionary logic.",
+tension:"Correct diagnosis, potentially catastrophic prescriptions",
+l3:"Accelerationist, Radical Reformist, Techno-Anarchist"},
+
+{name:"The Prophet",id:29,cluster:"Radical",T:"H",EC:"H",COMP:"H",D:"H",G:"L",RC:"L",
+desc:"Sees the world burning (high T), understands why (high EC), feels the pain (high COMP), rejects all authority (high D), but is belief-rigid (low RC). The passionate visionary trapped in their own framework.",
+tension:"Brilliance and compassion locked inside an unfalsifiable worldview",
+l3:"Utopian Socialist, Religious Radical, Deep Ecologist"},
+
+{name:"The Insurgent",id:30,cluster:"Radical",T:"H",EC:"M",COMP:"M",D:"H",G:"M",RC:"L",
+desc:"Threat-sensitive and defiant with moderate group loyalty — but loyalty to a counter-group, a revolutionary movement. Channeled rebellion with tribal structure.",
+tension:"Anti-authority personality that builds new authorities",
+l3:"Revolutionary (left or right), Vanguardist, Insurrectionist"},
+
+{name:"The Gadfly",id:31,cluster:"Radical",T:"L",EC:"H",COMP:"M",D:"H",G:"L",RC:"H",
+desc:"The Socratic irritant. Questions everything, loyal to no faction, updates based on evidence, and takes genuine pleasure in puncturing certainty. Constructive destruction.",
+tension:"Permanent opposition — tears down but rarely builds",
+l3:"Post-Ideological Critic, Public Intellectual, Heterodox Contrarian"},
+
+{name:"The Monk",id:32,cluster:"Radical",T:"L",EC:"H",COMP:"H",D:"M",G:"L",RC:"H",
+desc:"Withdrawn from group politics but deeply curious and caring. Pursues truth and compassion outside institutional frameworks. The intellectual hermit with a moral compass.",
+tension:"Moral clarity achieved through disengagement — wisdom without power",
+l3:"Philosophical Anarchist, Cosmopolitan Humanist, Post-Political"}
+];
+
+// Populate
+const clusters = [...new Set(archetypes.map(a=>a.cluster))];
+const cf = document.getElementById('clusterFilter');
+clusters.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cf.appendChild(o)});
+
+function badge(trait,val){return `<span class="badge badge-${val}">${trait}:${val}</span>`}
+function badgeCell(val){return `<span class="badge badge-${val}">${val}</span>`}
+
+function renderMatrix(){
+const tb=document.getElementById('matrixBody');
+tb.innerHTML=archetypes.map(a=>`<tr data-id="${a.id}"><td>${a.name}</td><td>${badgeCell(a.T)}</td><td>${badgeCell(a.EC)}</td><td>${badgeCell(a.COMP)}</td><td>${badgeCell(a.D)}</td><td>${badgeCell(a.G)}</td><td>${badgeCell(a.RC)}</td><td><span class="cluster-tag">${a.cluster}</span></td></tr>`).join('');
+}
+
+function renderCards(list){
+const g=document.getElementById('cardGrid');
+g.innerHTML=list.map(a=>`<div class="card" data-id="${a.id}" data-cluster="${a.cluster}" data-traits="T-${a.T} EC-${a.EC} COMP-${a.COMP} D-${a.D} G-${a.G} RC-${a.RC}">
+<div class="card-header"><h3>${a.name}</h3><span class="cluster-tag">${a.cluster}</span></div>
+<div class="traits">${badge('T',a.T)}${badge('EC',a.EC)}${badge('COMP',a.COMP)}${badge('D',a.D)}${badge('G',a.G)}${badge('RC',a.RC)}</div>
+<div class="desc">${a.desc}</div>
+<div class="tension">⚡ ${a.tension}</div>
+<div class="l3map"><strong>→ L3:</strong> ${a.l3}</div>
+</div>`).join('');
+}
+
+function filterCards(){
+const q=document.getElementById('search').value.toLowerCase();
+const tf=document.getElementById('traitFilter').value;
+const cl=document.getElementById('clusterFilter').value;
+const filtered=archetypes.filter(a=>{
+if(q && !(a.name+a.desc+a.tension+a.l3+a.cluster).toLowerCase().includes(q)) return false;
+if(tf){const[t,v]=tf.split('-');if(a[t]!==v) return false}
+if(cl && a.cluster!==cl) return false;
+return true;
+});
+renderCards(filtered);
+}
+
+let sortDir=1;
+function sortCards(key){
+sortDir*=-1;
+archetypes.sort((a,b)=>{
+const va=key==='name'?a.name:a.cluster;
+const vb=key==='name'?b.name:b.cluster;
+return sortDir*va.localeCompare(vb);
+});
+renderMatrix();filterCards();
+}
+
+renderMatrix();renderCards(archetypes);
+</script>
+</body>
+</html>
