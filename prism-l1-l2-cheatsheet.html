@@ -3,607 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRISM — L1 → L2 Many-to-Many Wiring</title>
+<title>PRISM — L1 → L2 Many-to-Many Mapping</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #0a0a12;
-    color: #e0e0e0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    padding: 40px 20px;
-    min-height: 100vh;
-  }
-  h1 {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    margin-bottom: 8px;
-    color: #fff;
-  }
-  .l1c { color: #3498db; }
-  .l2c { color: #2ecc71; }
-  .fc { color: #e67e22; }
-  .arrow { color: #555; margin: 0 6px; }
-  .subtitle {
-    text-align: center;
-    color: #777;
-    font-size: 0.95rem;
-    margin-bottom: 50px;
-    font-style: italic;
-  }
+  body { background: #0a0a12; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; padding: 30px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 1.8em; font-weight: 300; letter-spacing: 0.1em; color: #fff; margin-bottom: 5px; }
+  .subtitle { text-align: center; color: #888; font-size: 12px; margin-bottom: 30px; }
 
-  /* ─── Wiring Diagram ─── */
-  .wiring-section {
-    max-width: 1100px;
-    margin: 0 auto 60px;
-  }
-  .wiring-section h2 {
-    text-align: center;
-    font-weight: 400;
-    font-size: 1.3rem;
-    letter-spacing: 0.1em;
-    color: #aaa;
-    margin-bottom: 24px;
-  }
-  .wiring-svg-wrap {
-    display: flex;
-    justify-content: center;
-  }
-  .wiring-svg-wrap svg text { font-family: 'Segoe UI', system-ui, sans-serif; }
+  /* Matrix */
+  .matrix-section { margin-bottom: 40px; }
+  .matrix-section h2 { font-size: 14px; color: #74b9ff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+  table.matrix { border-collapse: collapse; width: 100%; font-size: 12px; }
+  table.matrix th { padding: 10px 8px; text-align: center; font-weight: 600; }
+  table.matrix th.l1-header { background: rgba(52,152,219,0.15); color: #3498db; border-bottom: 2px solid #3498db; }
+  table.matrix th.l2-header { background: rgba(46,204,113,0.15); color: #2ecc71; text-align: left; padding-left: 12px; }
+  table.matrix th.corner { background: #12121e; }
+  table.matrix td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #1a1a2e; }
+  table.matrix td.l2-label { text-align: left; padding-left: 12px; font-weight: 600; color: #2ecc71; }
+  .primary { background: #2ecc71; color: #000; font-weight: bold; border-radius: 4px; padding: 2px 6px; }
+  .secondary { background: rgba(241,196,15,0.3); color: #f1c40f; border-radius: 4px; padding: 2px 6px; }
+  .inhibit { background: rgba(231,76,60,0.3); color: #e74c3c; border-radius: 4px; padding: 2px 6px; }
+  .none { color: #333; }
 
-  /* ─── Matrix Table ─── */
-  .matrix-section {
-    max-width: 800px;
-    margin: 0 auto 60px;
-  }
-  .matrix-section h2 {
-    text-align: center;
-    font-weight: 400;
-    font-size: 1.3rem;
-    letter-spacing: 0.1em;
-    color: #aaa;
-    margin-bottom: 16px;
-  }
-  .matrix-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-  }
-  .matrix-table th, .matrix-table td {
-    padding: 10px 12px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .matrix-table th {
-    font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-  .matrix-table thead th {
-    color: #2ecc71;
-    background: rgba(46,204,113,0.06);
-  }
-  .matrix-table thead th:first-child {
-    color: #888;
-    background: transparent;
-  }
-  .matrix-table tbody th {
-    color: #3498db;
-    background: rgba(52,152,219,0.06);
-    text-align: left;
-  }
-  .matrix-table td {
-    color: #666;
-  }
-  .matrix-table td.primary {
-    color: #fff;
-    background: rgba(255,255,255,0.06);
-    font-weight: 700;
-    font-size: 1rem;
-  }
-  .matrix-table td.secondary {
-    color: #888;
-    background: rgba(255,255,255,0.02);
-  }
-  .matrix-table td.inhibit {
-    color: #e74c3c;
-    background: rgba(231,76,60,0.06);
-    font-weight: 600;
-  }
+  /* Legend */
+  .legend { display: flex; gap: 20px; justify-content: center; margin: 20px 0 30px; font-size: 11px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
 
-  /* ─── L2 Detail Cards ─── */
-  .l2-details {
-    max-width: 1100px;
-    margin: 0 auto 60px;
-  }
-  .l2-details h2 {
-    text-align: center;
-    font-weight: 400;
-    font-size: 1.3rem;
-    letter-spacing: 0.1em;
-    color: #aaa;
-    margin-bottom: 24px;
-  }
-  .l2-card {
-    background: rgba(46,204,113,0.04);
-    border: 1px solid rgba(46,204,113,0.2);
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin-bottom: 20px;
-  }
-  .l2-card .l2-header {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 6px;
-  }
-  .l2-card .l2-code {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #2ecc71;
-  }
-  .l2-card .l2-name {
-    font-size: 1rem;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .l2-card .formula {
-    font-family: 'Consolas', 'Fira Code', monospace;
-    font-size: 0.95rem;
-    color: #ccc;
-    background: rgba(0,0,0,0.3);
-    padding: 8px 14px;
-    border-radius: 6px;
-    margin: 10px 0 14px;
-    display: inline-block;
-  }
-  .l2-card .formula .up { color: #2ecc71; font-weight: 700; }
-  .l2-card .formula .down { color: #e74c3c; font-weight: 700; }
-  .l2-card .formula .f-tag { color: #e67e22; font-weight: 700; }
-  .l2-card .explanation {
-    font-size: 0.88rem;
-    color: #aaa;
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
-  .l2-card .examples {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .l2-card .example-box {
-    background: rgba(0,0,0,0.25);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 0.82rem;
-    line-height: 1.5;
-  }
-  .l2-card .example-box .ex-label {
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .l2-card .example-box .ex-desc {
-    color: #888;
-  }
+  /* Cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+  .card { background: #12121e; border-radius: 8px; padding: 16px; border-left: 4px solid #2ecc71; }
+  .card h3 { font-size: 14px; color: #2ecc71; margin-bottom: 4px; }
+  .card .formula { font-family: Consolas, monospace; font-size: 12px; color: #4ec9b0; margin-bottom: 10px; }
+  .card .desc { font-size: 11px; color: #aaa; line-height: 1.5; margin-bottom: 8px; }
+  .card .example { font-size: 10px; color: #888; line-height: 1.4; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+  .card .example strong { color: #74b9ff; }
 
-  /* ─── Formative Context ─── */
-  .prism-section {
-    max-width: 1100px;
-    margin: 0 auto 50px;
-    text-align: center;
-  }
-  .prism-triangle {
-    width: 0; height: 0;
-    border-left: 60px solid transparent;
-    border-right: 60px solid transparent;
-    border-bottom: 100px solid rgba(230,126,34,0.15);
-    margin: 0 auto 16px;
-    filter: drop-shadow(0 0 20px rgba(230,126,34,0.2));
-  }
-  .prism-label {
-    color: #e67e22;
-    font-weight: 700;
-    font-size: 1.4rem;
-    letter-spacing: 0.15em;
-    margin-bottom: 12px;
-  }
-  .f-nodes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .f-node {
-    background: rgba(230,126,34,0.1);
-    border: 1px solid rgba(230,126,34,0.3);
-    border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 0.8rem;
-    color: #e67e22;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-  }
+  /* L1 reference */
+  .l1-ref { margin-bottom: 30px; }
+  .l1-ref h2 { font-size: 14px; color: #3498db; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+  .l1-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .l1-item { background: #12121e; border-radius: 6px; padding: 12px; border-left: 4px solid #3498db; }
+  .l1-item .code { font-weight: bold; color: #3498db; font-size: 13px; }
+  .l1-item .name { color: #ddd; font-size: 12px; }
+  .l1-item .bio { color: #888; font-size: 10px; margin-top: 4px; }
 
-  /* ─── Insight ─── */
-  .insight {
-    max-width: 900px;
-    margin: 50px auto 0;
-    text-align: center;
-    padding: 24px 30px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .insight p {
-    font-size: 1.05rem;
-    color: #ccc;
-    line-height: 1.6;
-  }
-  .insight .key { color: #fff; font-weight: 600; }
+  /* Insight */
+  .insight { background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(39,174,96,0.05)); border: 1px solid #27ae60; border-radius: 8px; padding: 20px; text-align: center; margin-top: 30px; }
+  .insight .quote { font-size: 14px; color: #2ecc71; font-style: italic; }
+  .insight .note { font-size: 11px; color: #888; margin-top: 10px; }
 
-  .footer {
-    text-align: center;
-    margin-top: 40px;
-    color: #444;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-  }
-
-  @media (max-width: 700px) {
-    .l2-card .examples { grid-template-columns: 1fr; }
-  }
+  /* Prism note */
+  .prism-note { background: rgba(230,126,34,0.1); border: 1px solid #e67e22; border-radius: 8px; padding: 15px; margin: 20px 0; text-align: center; }
+  .prism-note .label { color: #e67e22; font-weight: bold; font-size: 13px; }
+  .prism-note .text { color: #aaa; font-size: 11px; margin-top: 6px; }
 </style>
 </head>
 <body>
+<div class="container">
+  <h1>PRISM L1 → L2 Mapping</h1>
+  <p class="subtitle">Many-to-Many: Each L2 trait is a product of multiple L1 innate temperaments, refracted through [F] formative context</p>
 
-<h1><span class="l1c">L1 Innate</span><span class="arrow">→</span><span class="fc">[F]</span><span class="arrow">→</span><span class="l2c">L2 Crystallized</span></h1>
-<div class="subtitle">Many-to-many: each L2 node is a function of multiple L1 nodes interacting, moderated by formative context</div>
-
-<!-- ═══════════════ SVG WIRING DIAGRAM ═══════════════ -->
-<div class="wiring-section">
-  <h2>WIRING DIAGRAM</h2>
-  <div class="wiring-svg-wrap">
-    <svg viewBox="0 0 900 520" width="900" height="520" xmlns="http://www.w3.org/2000/svg">
-      <!-- L1 nodes (left) -->
-      <g id="l1-nodes">
-        <rect x="20" y="30" width="120" height="52" rx="8" fill="rgba(52,152,219,0.12)" stroke="#3498db" stroke-width="1.5"/>
-        <text x="80" y="55" text-anchor="middle" fill="#3498db" font-size="16" font-weight="700">TR</text>
-        <text x="80" y="72" text-anchor="middle" fill="#888" font-size="10">Threat Reactivity</text>
-
-        <rect x="20" y="112" width="120" height="52" rx="8" fill="rgba(52,152,219,0.12)" stroke="#3498db" stroke-width="1.5"/>
-        <text x="80" y="137" text-anchor="middle" fill="#3498db" font-size="16" font-weight="700">ND</text>
-        <text x="80" y="154" text-anchor="middle" fill="#888" font-size="10">Novelty Drive</text>
-
-        <rect x="20" y="194" width="120" height="52" rx="8" fill="rgba(52,152,219,0.12)" stroke="#3498db" stroke-width="1.5"/>
-        <text x="80" y="219" text-anchor="middle" fill="#3498db" font-size="16" font-weight="700">EMP</text>
-        <text x="80" y="236" text-anchor="middle" fill="#888" font-size="10">Empathic Capacity</text>
-
-        <rect x="20" y="276" width="120" height="52" rx="8" fill="rgba(52,152,219,0.12)" stroke="#3498db" stroke-width="1.5"/>
-        <text x="80" y="301" text-anchor="middle" fill="#3498db" font-size="16" font-weight="700">RX</text>
-        <text x="80" y="318" text-anchor="middle" fill="#888" font-size="10">Reactance</text>
-
-        <rect x="20" y="358" width="120" height="52" rx="8" fill="rgba(52,152,219,0.12)" stroke="#3498db" stroke-width="1.5"/>
-        <text x="80" y="383" text-anchor="middle" fill="#3498db" font-size="16" font-weight="700">AF</text>
-        <text x="80" y="400" text-anchor="middle" fill="#888" font-size="10">Affiliative Drive</text>
-
-        <rect x="20" y="440" width="120" height="52" rx="8" fill="rgba(52,152,219,0.12)" stroke="#3498db" stroke-width="1.5"/>
-        <text x="80" y="465" text-anchor="middle" fill="#3498db" font-size="16" font-weight="700">CF</text>
-        <text x="80" y="482" text-anchor="middle" fill="#888" font-size="10">Cognitive Flexibility</text>
-      </g>
-
-      <!-- L2 nodes (right) -->
-      <g id="l2-nodes">
-        <rect x="760" y="30" width="120" height="52" rx="8" fill="rgba(46,204,113,0.12)" stroke="#2ecc71" stroke-width="1.5"/>
-        <text x="820" y="55" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="700">T</text>
-        <text x="820" y="72" text-anchor="middle" fill="#888" font-size="10">Threat Sensitivity</text>
-
-        <rect x="760" y="112" width="120" height="52" rx="8" fill="rgba(46,204,113,0.12)" stroke="#2ecc71" stroke-width="1.5"/>
-        <text x="820" y="137" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="700">EC</text>
-        <text x="820" y="154" text-anchor="middle" fill="#888" font-size="10">Epistemic Curiosity</text>
-
-        <rect x="760" y="194" width="120" height="52" rx="8" fill="rgba(46,204,113,0.12)" stroke="#2ecc71" stroke-width="1.5"/>
-        <text x="820" y="219" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="700">COMP</text>
-        <text x="820" y="236" text-anchor="middle" fill="#888" font-size="10">Compassion</text>
-
-        <rect x="760" y="276" width="120" height="52" rx="8" fill="rgba(46,204,113,0.12)" stroke="#2ecc71" stroke-width="1.5"/>
-        <text x="820" y="301" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="700">D</text>
-        <text x="820" y="318" text-anchor="middle" fill="#888" font-size="10">Defiance</text>
-
-        <rect x="760" y="358" width="120" height="52" rx="8" fill="rgba(46,204,113,0.12)" stroke="#2ecc71" stroke-width="1.5"/>
-        <text x="820" y="383" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="700">G</text>
-        <text x="820" y="400" text-anchor="middle" fill="#888" font-size="10">Group Identification</text>
-
-        <rect x="760" y="440" width="120" height="52" rx="8" fill="rgba(46,204,113,0.12)" stroke="#2ecc71" stroke-width="1.5"/>
-        <text x="820" y="465" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="700">RC</text>
-        <text x="820" y="482" text-anchor="middle" fill="#888" font-size="10">Reality Calibration</text>
-      </g>
-
-      <!-- [F] Prism (center) -->
-      <polygon points="450,200 420,260 480,260" fill="rgba(230,126,34,0.2)" stroke="#e67e22" stroke-width="1.5"/>
-      <text x="450" y="290" text-anchor="middle" fill="#e67e22" font-size="13" font-weight="700">[F]</text>
-
-      <!-- L1 Y centers: TR=56, ND=138, EMP=220, RX=302, AF=384, CF=466 -->
-      <!-- L2 Y centers: T=56, EC=138, COMP=220, D=302, G=384, RC=466 -->
-
-      <!-- CONNECTIONS: Primary = thick+bright, Secondary = thin+dim, Inhibit = dashed red -->
-
-      <!-- T = f(TR↑, AF, ND) -->
-      <line x1="140" y1="56" x2="760" y2="56" stroke="#3498db" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="384" x2="760" y2="56" stroke="#3498db" stroke-width="1.5" opacity="0.35"/>
-      <line x1="140" y1="138" x2="760" y2="56" stroke="#3498db" stroke-width="1.5" opacity="0.35"/>
-
-      <!-- EC = f(ND↑, CF↑, TR↓) -->
-      <line x1="140" y1="138" x2="760" y2="138" stroke="#9b59b6" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="466" x2="760" y2="138" stroke="#9b59b6" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="56" x2="760" y2="138" stroke="#e74c3c" stroke-width="2" opacity="0.6" stroke-dasharray="6 4"/>
-
-      <!-- COMP = f(EMP↑, AF, CF) -->
-      <line x1="140" y1="220" x2="760" y2="220" stroke="#e67e22" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="384" x2="760" y2="220" stroke="#e67e22" stroke-width="1.5" opacity="0.35"/>
-      <line x1="140" y1="466" x2="760" y2="220" stroke="#e67e22" stroke-width="1.5" opacity="0.35"/>
-
-      <!-- D = f(RX↑, TR↓, AF↓) -->
-      <line x1="140" y1="302" x2="760" y2="302" stroke="#1abc9c" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="56" x2="760" y2="302" stroke="#e74c3c" stroke-width="2" opacity="0.6" stroke-dasharray="6 4"/>
-      <line x1="140" y1="384" x2="760" y2="302" stroke="#e74c3c" stroke-width="2" opacity="0.6" stroke-dasharray="6 4"/>
-
-      <!-- G = f(AF↑, TR, EMP) -->
-      <line x1="140" y1="384" x2="760" y2="384" stroke="#f1c40f" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="56" x2="760" y2="384" stroke="#f1c40f" stroke-width="1.5" opacity="0.35"/>
-      <line x1="140" y1="220" x2="760" y2="384" stroke="#f1c40f" stroke-width="1.5" opacity="0.35"/>
-
-      <!-- RC = f(CF↑, TR↓, ND) -->
-      <line x1="140" y1="466" x2="760" y2="466" stroke="#2ecc71" stroke-width="3.5" opacity="0.9"/>
-      <line x1="140" y1="56" x2="760" y2="466" stroke="#e74c3c" stroke-width="2" opacity="0.6" stroke-dasharray="6 4"/>
-      <line x1="140" y1="138" x2="760" y2="466" stroke="#2ecc71" stroke-width="1.5" opacity="0.35"/>
-
-      <!-- Legend -->
-      <line x1="30" y1="510" x2="70" y2="510" stroke="#fff" stroke-width="3.5" opacity="0.9"/>
-      <text x="78" y="514" fill="#aaa" font-size="11">Primary input (↑)</text>
-      <line x1="220" y1="510" x2="260" y2="510" stroke="#fff" stroke-width="1.5" opacity="0.35"/>
-      <text x="268" y="514" fill="#aaa" font-size="11">Secondary input</text>
-      <line x1="430" y1="510" x2="470" y2="510" stroke="#e74c3c" stroke-width="2" opacity="0.6" stroke-dasharray="6 4"/>
-      <text x="478" y="514" fill="#aaa" font-size="11">Inhibitory (↓ suppresses)</text>
-    </svg>
+  <!-- L1 Reference -->
+  <div class="l1-ref">
+    <h2>L1 — Innate Temperament (at birth)</h2>
+    <div class="l1-grid">
+      <div class="l1-item"><span class="code">TR</span> <span class="name">Threat Reactivity</span><div class="bio">Amygdala firing speed. Startle reflex, baseline anxiety. Pure hardware.</div></div>
+      <div class="l1-item"><span class="code">ND</span> <span class="name">Novelty Drive</span><div class="bio">Dopamine-seeking. Craves new stimuli. The toddler who wanders vs. clings.</div></div>
+      <div class="l1-item"><span class="code">EMP</span> <span class="name">Empathic Capacity</span><div class="bio">Mirror neuron / oxytocin sensitivity. How strongly you feel others' emotions.</div></div>
+      <div class="l1-item"><span class="code">RX</span> <span class="name">Temperamental Reactance</span><div class="bio">Oppositional energy. The 2-year-old who says "no" to everything.</div></div>
+      <div class="l1-item"><span class="code">AF</span> <span class="name">Affiliative Drive</span><div class="bio">Need to belong. Separation anxiety, attachment style. Social bonding hardware.</div></div>
+      <div class="l1-item"><span class="code">CF</span> <span class="name">Cognitive Flexibility</span><div class="bio">Ease of updating mental models. Working memory, abstract reasoning.</div></div>
+    </div>
   </div>
+
+  <!-- Prism Note -->
+  <div class="prism-note">
+    <div class="label">🔶 [F] Formative Context — The Prism</div>
+    <div class="text">PARENT · REL_FORM · ECON_HARD · DISCRIM · COMM_NORM · MEDIA_ENV<br>These moderate HOW L1 traits crystallize into L2. Same L1 + different [F] = different L2.</div>
+  </div>
+
+  <!-- MATRIX -->
+  <div class="matrix-section">
+    <h2>Wiring Matrix — Which L1s feed which L2s?</h2>
+    <table class="matrix">
+      <tr>
+        <th class="corner"></th>
+        <th class="l1-header">TR</th>
+        <th class="l1-header">ND</th>
+        <th class="l1-header">EMP</th>
+        <th class="l1-header">RX</th>
+        <th class="l1-header">AF</th>
+        <th class="l1-header">CF</th>
+      </tr>
+      <tr>
+        <td class="l2-label">T — Threat Sensitivity</td>
+        <td><span class="primary">PRIMARY</span></td>
+        <td><span class="secondary">mod</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="secondary">mod</span></td>
+        <td><span class="none">—</span></td>
+      </tr>
+      <tr>
+        <td class="l2-label">EC — Epistemic Curiosity</td>
+        <td><span class="inhibit">inhib ↓</span></td>
+        <td><span class="primary">PRIMARY</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="primary">PRIMARY</span></td>
+      </tr>
+      <tr>
+        <td class="l2-label">COMP — Compassion</td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="primary">PRIMARY</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="secondary">mod</span></td>
+        <td><span class="secondary">mod</span></td>
+      </tr>
+      <tr>
+        <td class="l2-label">D — Defiance</td>
+        <td><span class="inhibit">inhib ↓</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="primary">PRIMARY</span></td>
+        <td><span class="inhibit">inhib ↓</span></td>
+        <td><span class="none">—</span></td>
+      </tr>
+      <tr>
+        <td class="l2-label">G — Group Identification</td>
+        <td><span class="secondary">mod</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="secondary">mod</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="primary">PRIMARY</span></td>
+        <td><span class="none">—</span></td>
+      </tr>
+      <tr>
+        <td class="l2-label">RC — Reality Calibration</td>
+        <td><span class="inhibit">inhib ↓</span></td>
+        <td><span class="secondary">mod</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="none">—</span></td>
+        <td><span class="primary">PRIMARY</span></td>
+      </tr>
+    </table>
+
+    <div class="legend">
+      <div class="legend-item"><span class="primary">PRIMARY</span> Main driver</div>
+      <div class="legend-item"><span class="secondary">mod</span> Secondary modulator</div>
+      <div class="legend-item"><span class="inhibit">inhib ↓</span> Suppresses / inhibits</div>
+      <div class="legend-item"><span class="none">—</span> No direct input</div>
+    </div>
+  </div>
+
+  <!-- Detail Cards -->
+  <h2 style="font-size: 14px; color: #2ecc71; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">L2 — Crystallized Personality (~age 18) — Detail</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>T — Threat Sensitivity</h3>
+      <div class="formula">T = f(TR↑, ND, AF) × [F]</div>
+      <div class="desc">Primary: TR (amygdala reactivity). High AF amplifies threat into tribal defensiveness. High ND can dampen it by making novelty exciting rather than scary.</div>
+      <div class="example">
+        <strong>High TR + safe suburb [F]:</strong> Mild conservatism, prudent risk management<br>
+        <strong>High TR + war-zone childhood [F]:</strong> Hypervigilance, fortress mentality
+      </div>
+    </div>
+    <div class="card">
+      <h3>EC — Epistemic Curiosity</h3>
+      <div class="formula">EC = f(ND↑, CF↑, TR↓) × [F]</div>
+      <div class="desc">Requires novelty drive AND cognitive flexibility. High TR suppresses it — new information feels threatening, so you avoid it. Two primary drivers.</div>
+      <div class="example">
+        <strong>High ND + High CF + Low TR:</strong> Voracious reader, intellectual explorer<br>
+        <strong>High ND + Low CF + High TR:</strong> Thrill-seeker, not an intellectual — seeks sensation, not ideas
+      </div>
+    </div>
+    <div class="card">
+      <h3>COMP — Compassion</h3>
+      <div class="formula">COMP = f(EMP↑, AF, CF) × [F]</div>
+      <div class="desc">Primary: empathic capacity. AF determines warmth/bonding energy. CF determines breadth — can you extend empathy beyond your immediate circle?</div>
+      <div class="example">
+        <strong>High EMP + High CF + diverse community [F]:</strong> Universal compassion, broad moral circle<br>
+        <strong>High EMP + Low CF + insular community [F]:</strong> Deep compassion, but only for "your people"
+      </div>
+    </div>
+    <div class="card">
+      <h3>D — Defiance</h3>
+      <div class="formula">D = f(RX↑, TR↓, AF↓) × [F]</div>
+      <div class="desc">Primary: temperamental reactance. But high TR suppresses it (fear beats rebellion) and high AF suppresses it (belonging beats independence). Defiance requires courage AND independence.</div>
+      <div class="example">
+        <strong>High RX + Low TR + Low AF:</strong> True rebel, anti-authoritarian, punk energy<br>
+        <strong>High RX + High TR + High AF:</strong> Frustrated conformist — wants to rebel but too scared and too attached
+      </div>
+    </div>
+    <div class="card">
+      <h3>G — Group Identification</h3>
+      <div class="formula">G = f(AF↑, TR, EMP) × [F]</div>
+      <div class="desc">Primary: affiliative drive. TR makes it tribal/defensive (us vs. them). EMP can broaden it (feeling for outgroup members). [F] determines WHICH group.</div>
+      <div class="example">
+        <strong>High AF + High TR + low EMP:</strong> Fierce tribal loyalty, "my people right or wrong"<br>
+        <strong>High AF + Low TR + High EMP:</strong> Cosmopolitan belonger — identifies broadly with humanity
+      </div>
+    </div>
+    <div class="card">
+      <h3>RC — Reality Calibration</h3>
+      <div class="formula">RC = f(CF↑, TR↓, ND) × [F]</div>
+      <div class="desc">Primary: cognitive flexibility. High TR makes disconfirming evidence feel threatening — you resist updating. ND drives information-seeking that enables calibration.</div>
+      <div class="example">
+        <strong>High CF + Low TR + good education [F]:</strong> Strong calibration, updates beliefs on evidence<br>
+        <strong>High CF + High TR + propaganda environment [F]:</strong> Smart but defensive — uses intelligence to rationalize, not calibrate
+      </div>
+    </div>
+  </div>
+
+  <!-- Key patterns -->
+  <div style="background: #12121e; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+    <h3 style="color: #f1c40f; font-size: 13px; margin-bottom: 12px;">Key Patterns in the Wiring</h3>
+    <ul style="font-size: 11px; color: #aaa; line-height: 1.8; padding-left: 20px;">
+      <li><strong style="color:#e74c3c;">TR (Threat Reactivity)</strong> is the most connected L1 node — it's a primary driver of T, an inhibitor of EC, D, and RC. High TR is the single biggest constraint on the personality system.</li>
+      <li><strong style="color:#3498db;">CF (Cognitive Flexibility)</strong> is the second most connected — primary for EC and RC, modulator for COMP. It's the "processing power" that enables higher-order traits.</li>
+      <li><strong style="color:#f1c40f;">AF (Affiliative Drive)</strong> appears in 3 L2s but plays different roles each time — amplifies T (tribal threat), suppresses D (belonging over rebellion), and drives G (bonding target).</li>
+      <li><strong style="color:#2ecc71;">No L2 has fewer than 2 L1 inputs.</strong> There are no one-to-one mappings. Every crystallized trait is a product of interacting temperaments.</li>
+    </ul>
+  </div>
+
+  <!-- Insight -->
+  <div class="insight">
+    <div class="quote">"L1 is the same across identical twins raised apart. L2 is where they diverge."</div>
+    <div class="note">The many-to-many mapping means the SAME high-TR infant can become a cautious conservative OR a hypervigilant radical, depending on which other L1 traits are active and what [F] formative context they encountered.</div>
+  </div>
+
+  <div style="margin-top: 25px; text-align: center; color: #555; font-size: 10px;">PRISM L1→L2 Many-to-Many Architecture | March 2026</div>
 </div>
-
-<!-- ═══════════════ MATRIX TABLE ═══════════════ -->
-<div class="matrix-section">
-  <h2>INPUT MATRIX</h2>
-  <table class="matrix-table">
-    <thead>
-      <tr>
-        <th></th><th>T</th><th>EC</th><th>COMP</th><th>D</th><th>G</th><th>RC</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th>TR</th>
-        <td class="primary">↑ ●</td>
-        <td class="inhibit">↓</td>
-        <td>—</td>
-        <td class="inhibit">↓</td>
-        <td class="secondary">○</td>
-        <td class="inhibit">↓</td>
-      </tr>
-      <tr>
-        <th>ND</th>
-        <td class="secondary">○</td>
-        <td class="primary">↑ ●</td>
-        <td>—</td>
-        <td>—</td>
-        <td>—</td>
-        <td class="secondary">○</td>
-      </tr>
-      <tr>
-        <th>EMP</th>
-        <td>—</td>
-        <td>—</td>
-        <td class="primary">↑ ●</td>
-        <td>—</td>
-        <td class="secondary">○</td>
-        <td>—</td>
-      </tr>
-      <tr>
-        <th>RX</th>
-        <td>—</td>
-        <td>—</td>
-        <td>—</td>
-        <td class="primary">↑ ●</td>
-        <td>—</td>
-        <td>—</td>
-      </tr>
-      <tr>
-        <th>AF</th>
-        <td class="secondary">○</td>
-        <td>—</td>
-        <td class="secondary">○</td>
-        <td class="inhibit">↓</td>
-        <td class="primary">↑ ●</td>
-        <td>—</td>
-      </tr>
-      <tr>
-        <th>CF</th>
-        <td>—</td>
-        <td class="primary">↑ ●</td>
-        <td class="secondary">○</td>
-        <td>—</td>
-        <td>—</td>
-        <td class="primary">↑ ●</td>
-      </tr>
-    </tbody>
-  </table>
-  <p style="text-align:center; color:#666; font-size:0.78rem; margin-top:10px;">● = primary driver &nbsp; ○ = secondary modulator &nbsp; ↓ = inhibitory &nbsp; — = no direct input</p>
-</div>
-
-<!-- ═══════════════ L2 DETAIL CARDS ═══════════════ -->
-<div class="l2-details">
-  <h2>L2 NODE DETAILS</h2>
-
-  <!-- T -->
-  <div class="l2-card">
-    <div class="l2-header">
-      <span class="l2-code">T</span>
-      <span class="l2-name">Threat Sensitivity</span>
-    </div>
-    <div class="formula">T = f(<span class="up">TR↑</span>, AF, ND) × <span class="f-tag">[F]</span></div>
-    <div class="explanation">
-      <strong>Primary: TR.</strong> High AF amplifies tribal/in-group threat detection. High ND can dampen threat sensitivity by making novelty rewarding rather than scary.
-    </div>
-    <div class="examples">
-      <div class="example-box">
-        <div class="ex-label">High TR + High AF + Low ND</div>
-        <div class="ex-desc">Hypervigilant tribalist. Sees outsiders as existential threats. Watches for danger in every interaction. Fox News grandpa.</div>
-      </div>
-      <div class="example-box">
-        <div class="ex-label">High TR + Low AF + High ND</div>
-        <div class="ex-desc">Anxious explorer. Fearful but curious — pushes through anxiety for new experiences. Nervous traveler who goes anyway.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EC -->
-  <div class="l2-card">
-    <div class="l2-header">
-      <span class="l2-code">EC</span>
-      <span class="l2-name">Epistemic Curiosity</span>
-    </div>
-    <div class="formula">EC = f(<span class="up">ND↑</span>, <span class="up">CF↑</span>, <span class="down">TR↓</span>) × <span class="f-tag">[F]</span></div>
-    <div class="explanation">
-      <strong>Primary: ND + CF.</strong> High TR makes new information feel threatening, suppressing curiosity. Need both the drive to seek (ND) and the capacity to process (CF).
-    </div>
-    <div class="examples">
-      <div class="example-box">
-        <div class="ex-label">High ND + High CF + Low TR</div>
-        <div class="ex-desc">Voracious polymath. Reads everything, changes mind easily, loves being wrong. The scientist archetype.</div>
-      </div>
-      <div class="example-box">
-        <div class="ex-label">High ND + Low CF + High TR</div>
-        <div class="ex-desc">Conspiracy theorist. Seeks novelty (ND) but can't update models (low CF) and finds disconfirmation threatening (TR). Collects "evidence" that confirms fears.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- COMP -->
-  <div class="l2-card">
-    <div class="l2-header">
-      <span class="l2-code">COMP</span>
-      <span class="l2-name">Compassion</span>
-    </div>
-    <div class="formula">COMP = f(<span class="up">EMP↑</span>, AF, CF) × <span class="f-tag">[F]</span></div>
-    <div class="explanation">
-      <strong>Primary: EMP.</strong> AF determines warmth and attachment quality. CF determines breadth — can you extend empathy beyond the familiar? Without CF, compassion stays tribal.
-    </div>
-    <div class="examples">
-      <div class="example-box">
-        <div class="ex-label">High EMP + High AF + Low CF</div>
-        <div class="ex-desc">Fierce mama bear. Deep empathy for her people, cold to outsiders. Volunteers at church but votes against refugee funding.</div>
-      </div>
-      <div class="example-box">
-        <div class="ex-label">High EMP + Low AF + High CF</div>
-        <div class="ex-desc">Abstract humanitarian. Cares about global suffering but feels distant from neighbors. Donates to effective altruism, awkward at barbecues.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- D -->
-  <div class="l2-card">
-    <div class="l2-header">
-      <span class="l2-code">D</span>
-      <span class="l2-name">Defiance</span>
-    </div>
-    <div class="formula">D = f(<span class="up">RX↑</span>, <span class="down">TR↓</span>, <span class="down">AF↓</span>) × <span class="f-tag">[F]</span></div>
-    <div class="explanation">
-      <strong>Primary: RX.</strong> But high TR suppresses it (fear of punishment > rebellion) and high AF suppresses it (need to belong > need for independence). Defiance requires both the impulse AND freedom from fear and conformity pressure.
-    </div>
-    <div class="examples">
-      <div class="example-box">
-        <div class="ex-label">High RX + Low TR + Low AF</div>
-        <div class="ex-desc">True rebel. Doesn't fear consequences, doesn't need approval. Whistleblower, dropout founder, punk rocker.</div>
-      </div>
-      <div class="example-box">
-        <div class="ex-label">High RX + High TR + High AF</div>
-        <div class="ex-desc">Suppressed rebel. Seethes internally but conforms outwardly. Passive-aggressive middle manager. The oppositional energy leaks sideways.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- G -->
-  <div class="l2-card">
-    <div class="l2-header">
-      <span class="l2-code">G</span>
-      <span class="l2-name">Group Identification</span>
-    </div>
-    <div class="formula">G = f(<span class="up">AF↑</span>, TR, EMP) × <span class="f-tag">[F]</span></div>
-    <div class="explanation">
-      <strong>Primary: AF.</strong> TR makes group identity tribal and defensive ("us vs. them"). EMP can broaden it — empathizing with out-group members loosens boundaries.
-    </div>
-    <div class="examples">
-      <div class="example-box">
-        <div class="ex-label">High AF + High TR + Low EMP</div>
-        <div class="ex-desc">Tribal loyalist. Rides or dies for the in-group, hostile to outsiders. Sports ultras, ethno-nationalists, gang loyalty.</div>
-      </div>
-      <div class="example-box">
-        <div class="ex-label">High AF + Low TR + High EMP</div>
-        <div class="ex-desc">Community builder. Deep belonging need but open borders on who counts. Builds diverse coalitions. "The more the merrier."</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RC -->
-  <div class="l2-card">
-    <div class="l2-header">
-      <span class="l2-code">RC</span>
-      <span class="l2-name">Reality Calibration</span>
-    </div>
-    <div class="formula">RC = f(<span class="up">CF↑</span>, <span class="down">TR↓</span>, ND) × <span class="f-tag">[F]</span></div>
-    <div class="explanation">
-      <strong>Primary: CF.</strong> High TR makes disconfirming evidence feel threatening — you defend beliefs instead of updating them. ND drives information-seeking that feeds the calibration process.
-    </div>
-    <div class="examples">
-      <div class="example-box">
-        <div class="ex-label">High CF + Low TR + High ND</div>
-        <div class="ex-desc">Well-calibrated rationalist. Actively seeks disconfirming evidence, updates quickly, comfortable saying "I was wrong."</div>
-      </div>
-      <div class="example-box">
-        <div class="ex-label">High CF + High TR + Low ND</div>
-        <div class="ex-desc">Sophisticated rationalizer. Has the horsepower to update but TR makes it painful, and low ND means they don't seek new info. Smart but calcified.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ FORMATIVE CONTEXT ═══════════════ -->
-<div class="prism-section">
-  <div class="prism-triangle"></div>
-  <div class="prism-label">[F] FORMATIVE CONTEXT</div>
-  <p style="color:#888; font-size:0.85rem; margin-bottom:16px;">The experiences that modulate how L1 inputs crystallize into L2 outputs</p>
-  <div class="f-nodes">
-    <div class="f-node">PARENT — Parenting style & attachment</div>
-    <div class="f-node">REL_FORM — Formative relationships</div>
-    <div class="f-node">ECON_HARD — Economic hardship</div>
-    <div class="f-node">DISCRIM — Discrimination experienced</div>
-    <div class="f-node">COMM_NORM — Community norms</div>
-    <div class="f-node">MEDIA_ENV — Media environment</div>
-  </div>
-</div>
-
-<!-- Key Insight -->
-<div class="insight">
-  <p><span class="key">Key insight:</span> There is no 1:1 mapping. Every L2 node is a <em>blend</em> of multiple L1 inputs — and the same L1 node (e.g., TR) can be a primary driver for one L2 and an inhibitor for another.</p>
-  <p style="margin-top:12px; font-size:0.9rem; color:#888;">High TR simultaneously <strong class="l2c">amplifies T</strong>, <strong style="color:#e74c3c;">suppresses EC</strong>, <strong style="color:#e74c3c;">suppresses D</strong>, and <strong style="color:#e74c3c;">suppresses RC</strong>. One dial, four downstream effects.</p>
-</div>
-
-<div class="footer">PRISM FRAMEWORK — L1 → L2 MANY-TO-MANY WIRING — v2</div>
-
 </body>
 </html>
