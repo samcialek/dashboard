@@ -333,8 +333,8 @@
                     <div class="sidebar-stat-label">Mean age (SD 12)</div>
                 </div>
                 <div class="sidebar-stat">
-                    <div class="sidebar-stat-value">28.3</div>
-                    <div class="sidebar-stat-label">Mean BMI (SD 5.1)</div>
+                    <div class="sidebar-stat-value">23.1</div>
+                    <div class="sidebar-stat-label">Mean BMI (SD 4.8)</div>
                 </div>
             </div>
             <div>
@@ -440,19 +440,19 @@
         <div class="check-grid four-col">
             <div class="check-item">
                 <h4>HbA1c</h4>
-                <p>58% of pre-diabetic participants moved below 5.7% threshold</p>
+                <p><strong style="color: var(--ink-40); font-size: 10px;">Glycated hemoglobin — measures average blood sugar over 2-3 months. Gold standard for diabetes risk.</strong><br>58% of pre-diabetic participants moved below 5.7% threshold</p>
             </div>
             <div class="check-item">
                 <h4>hsCRP</h4>
-                <p>44% reduction in participants with elevated baseline (&gt;3.0 mg/L)</p>
+                <p><strong style="color: var(--ink-40); font-size: 10px;">High-sensitivity C-reactive protein — measures systemic inflammation. Predicts cardiovascular events.</strong><br>44% reduction in participants with elevated baseline (&gt;3.0 mg/L)</p>
             </div>
             <div class="check-item">
                 <h4>ApoB</h4>
-                <p>Largest effect in top tertile of baseline ApoB (d = 0.91)</p>
+                <p><strong style="color: var(--ink-40); font-size: 10px;">Apolipoprotein B — one particle per atherogenic lipoprotein. Better CVD predictor than LDL alone.</strong><br>Largest effect in top tertile of baseline ApoB (d = 0.91)</p>
             </div>
             <div class="check-item">
                 <h4>Triglycerides</h4>
-                <p>31% of participants normalized from borderline-high (&gt;150 mg/dL)</p>
+                <p><strong style="color: var(--ink-40); font-size: 10px;">Blood fats — elevated levels signal metabolic dysfunction and insulin resistance.</strong><br>31% of participants normalized from borderline-high (&gt;150 mg/dL)</p>
             </div>
         </div>
     </div>
@@ -481,15 +481,15 @@
         <div class="check-grid four-col">
             <div class="check-item">
                 <h4>Deep Sleep Duration</h4>
-                <p>+18 min/night median improvement by Day 60, sustained through Day 300</p>
+                <p>+10 min/night median improvement by Day 60, sustained through Day 300</p>
             </div>
             <div class="check-item">
                 <h4>Sleep Latency</h4>
-                <p>−8 min to fall asleep. 62% of participants dropped below 15-min threshold</p>
+                <p>−4 min to fall asleep. 62% of participants dropped below 15-min threshold</p>
             </div>
             <div class="check-item">
                 <h4>Exercise Propensity</h4>
-                <p>+1.4 sessions/week. Participants moved from 2.1 to 3.5 exercise bouts/week</p>
+                <p>+1.2 sessions/week. Participants moved from 2.1 to 3.3 exercise bouts/week</p>
             </div>
             <div class="check-item">
                 <h4>Movement Consistency</h4>
@@ -500,7 +500,7 @@
         <div class="metrics-row" style="margin-top: 28px;">
             <div class="metric">
                 <div class="metric-label">Deep Sleep</div>
-                <div class="metric-value">+18<span style="font-size: 20px; color: var(--ink-40);"> min</span></div>
+                <div class="metric-value">+10<span style="font-size: 20px; color: var(--ink-40);"> min</span></div>
                 <div class="metric-desc">
                     <strong>Median nightly gain (p &lt; 0.001)</strong>
                     Measured via wearable sleep staging. Largest gains in participants with baseline &lt;45 min deep sleep.
@@ -508,7 +508,7 @@
             </div>
             <div class="metric">
                 <div class="metric-label">Sleep Latency</div>
-                <div class="metric-value">−8<span style="font-size: 20px; color: var(--ink-40);"> min</span></div>
+                <div class="metric-value">−4<span style="font-size: 20px; color: var(--ink-40);"> min</span></div>
                 <div class="metric-desc">
                     <strong>Median reduction (p &lt; 0.001)</strong>
                     Time to fall asleep. Personalized wind-down recommendations drove the largest share of improvement.
@@ -516,7 +516,7 @@
             </div>
             <div class="metric">
                 <div class="metric-label">Exercise Frequency</div>
-                <div class="metric-value">+1.4<span style="font-size: 20px; color: var(--ink-40);">/wk</span></div>
+                <div class="metric-value">+1.2<span style="font-size: 20px; color: var(--ink-40);">/wk</span></div>
                 <div class="metric-desc">
                     <strong>Additional sessions per week (p &lt; 0.001)</strong>
                     Serif's timing suggestions (optimal exercise windows) cited by 54% of improvers.
@@ -658,7 +658,7 @@
     
     <div class="page-content" style="padding-top: 32px;">
         <div class="section-label">Predictive Analytics</div>
-        <h2 class="editorial">Serif's Causal Algorithm Predicts Blood Panel Improvement at Day 300</h2>
+        <h2 class="editorial">Serif's Causal AI Predicts Blood Panel Improvement at Day 300</h2>
         
         <div class="chart-container">
             <div class="chart-title">ROC Curve: Predicting Clinically Meaningful Improvement</div>
@@ -683,8 +683,8 @@
                 <!-- Random diagonal (AUROC = 0.5) -->
                 <line x1="50" y1="270" x2="350" y2="20" stroke="#B8B8B8" stroke-width="1" stroke-dasharray="4,4"/>
                 
-                <!-- Demographics only ROC (AUROC = 0.56) — barely above diagonal -->
-                <path d="M 50 270 Q 120 220, 200 155 Q 260 110, 350 20" fill="none" stroke="#e8a0be" stroke-width="2.5"/>
+                <!-- Demographics only ROC (AUROC = 0.56) — slightly concave, just above diagonal -->
+                <path d="M 50 270 Q 150 240, 200 200 Q 250 160, 300 110 Q 330 70, 350 20" fill="none" stroke="#e8a0be" stroke-width="2.5"/>
                 
                 <!-- Serif model ROC (AUROC = 0.78) -->
                 <path d="M 50 270 Q 60 180, 80 120 Q 110 70, 160 45 Q 220 25, 350 20" fill="none" stroke="#89ccf0" stroke-width="3"/>
