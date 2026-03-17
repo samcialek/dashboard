@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal Robustness Frameworks</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a12; color: #c8c8d4; font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.7; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+  h1 { color: #e0e0ff; font-size: 2rem; margin-bottom: 0.3rem; }
+  .subtitle { color: #7a7a9a; margin-bottom: 2.5rem; font-size: 0.95rem; }
+  h2 { color: #a0a0ff; font-size: 1.4rem; margin: 2.5rem 0 0.8rem; border-bottom: 1px solid #1a1a2e; padding-bottom: 0.4rem; }
+  h3 { color: #d0d0ff; font-size: 1.1rem; margin: 1.2rem 0 0.4rem; }
+  .framework { background: #0e0e1a; border: 1px solid #1a1a2e; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .framework h2 { margin-top: 0; border: none; padding: 0; }
+  .num { color: #5a5aff; font-weight: bold; margin-right: 0.4rem; }
+  .tag { display: inline-block; background: #1a1a2e; color: #8888cc; border-radius: 4px; padding: 2px 8px; font-size: 0.8rem; margin-right: 4px; }
+  .tag.green { background: #0a2a1a; color: #4ade80; }
+  .tag.red { background: #2a0a0a; color: #f87171; }
+  .tag.yellow { background: #2a2a0a; color: #facc15; }
+  dl { margin: 0.5rem 0; }
+  dt { color: #9090cc; font-weight: 600; margin-top: 0.6rem; }
+  dd { margin-left: 1rem; }
+  .example { background: #12121e; border-left: 3px solid #5a5aff; padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 4px 4px 0; font-size: 0.92rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { border: 1px solid #1a1a2e; padding: 0.5rem 0.7rem; text-align: center; }
+  th { background: #12121e; color: #a0a0ff; }
+  td:first-child { text-align: left; color: #d0d0ff; font-weight: 500; }
+  .yes { color: #4ade80; }
+  .partial { color: #facc15; }
+  .no { color: #444; }
+  .scenario { background: #0f0f1e; border: 1px solid #2a2a4e; border-radius: 8px; padding: 1.2rem; margin: 1.5rem 0; }
+  .scenario h3 { color: #a0a0ff; margin-top: 0; }
+  a { color: #7a7aff; }
+</style>
+</head>
+<body>
+
+<h1>Causal Robustness Frameworks</h1>
+<p class="subtitle">A cheat sheet for stress-testing causal claims. Unified example: Does exposure to a political ad change voting intention in a synthetic population?</p>
+
+<div class="scenario">
+<h3>Running Example</h3>
+<p>You run a synthetic population through Aaru. Some agents are exposed to a political ad; others are not. You observe a shift in voting intention among the exposed group. The estimated Average Treatment Effect (ATE) is +8 percentage points. But is this causal? Every framework below attacks this claim from a different angle.</p>
+</div>
+
+<div class="framework">
+<h2><span class="num">1</span> E-values</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>How strong an unmeasured confounder would need to be to fully explain away your observed effect. Produces a single number: the minimum strength of confounding (on the risk-ratio scale) required to reduce the effect to null.</dd>
+<dt>When to use</dt>
+<dd>After any observational estimate. Quick, assumption-light sensitivity check. Works with risk ratios, odds ratios, hazard ratios, or standardized mean differences.</dd>
+<dt>What it can't tell you</dt>
+<dd>Whether such a confounder actually exists. A large E-value means the effect is hard to explain away, not that it is definitely causal.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Your ATE of +8pp corresponds to a risk ratio of ~1.5. The E-value is 2.4, meaning an unmeasured confounder would need to be associated with both ad exposure and voting intention by a factor of at least 2.4 each. If the strongest known confounder (e.g., party affiliation) only has a factor of 1.8, your estimate looks robust.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">2</span> Rosenbaum Sensitivity Bounds</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>In a matched observational study, how much hidden bias (expressed as odds ratio &Gamma;) would be needed to alter the study's significance. You increase &Gamma; from 1 upward until the p-value crosses your threshold.</dd>
+<dt>When to use</dt>
+<dd>After propensity-score matching or stratification. Standard tool for matched designs.</dd>
+<dt>What it can't tell you</dt>
+<dd>The actual level of hidden bias present. Only tells you the tipping point.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> You match exposed and unexposed agents on demographics, media diet, and prior political leaning. At &Gamma;=1.8, the p-value crosses 0.05. This means a hidden factor making agents 1.8x more likely to be exposed (and independently shifting vote intention) would nullify the result. You judge whether that is plausible in your synthetic world.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">3</span> Negative Controls</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Whether your study design is picking up spurious associations. A <strong>negative control exposure</strong> should have no effect on the outcome; a <strong>negative control outcome</strong> should be unaffected by the treatment. If either shows an effect, something is wrong.</dd>
+<dt>When to use</dt>
+<dd>When you suspect residual confounding or measurement artifacts and want a quick diagnostic.</dd>
+<dt>What it can't tell you</dt>
+<dd>Which specific confounder is causing the problem, or how to fix it. It is a diagnostic, not a correction.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Negative control exposure: Show agents a neutral weather report instead of the political ad. If voting intention still shifts +5pp, your pipeline has a confounding leak. Negative control outcome: Check whether ad exposure changes an unrelated behavior like breakfast preference. If it does, your model is entangling unrelated behaviors.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">4</span> Instrumental Variables (IV)</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Estimates causal effects even with unmeasured confounders by exploiting an instrument: a variable that affects the outcome only through the treatment. Uses two-stage least squares or related estimators.</dd>
+<dt>When to use</dt>
+<dd>When randomization is imperfect or impossible, and you have a valid instrument (relevant, exogenous, satisfies exclusion restriction).</dd>
+<dt>What it can't tell you</dt>
+<dd>Whether your instrument is truly valid. The exclusion restriction is untestable. Weak instruments amplify bias.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Instrument: random variation in ad server load causes some agents to receive the ad and others not, independent of their traits. Use ad-server assignment as instrument for actual ad viewing. The IV estimate gives you the Local Average Treatment Effect for compliers, those whose viewing was determined by the server load.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">5</span> Regression Discontinuity (RD)</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Causal effects at a threshold. If treatment assignment jumps at a cutoff of a running variable, comparing units just above and below the cutoff approximates a local randomized experiment.</dd>
+<dt>When to use</dt>
+<dd>When treatment is assigned based on a score crossing a threshold. Sharp RD when assignment is deterministic; fuzzy RD when it merely changes probability.</dd>
+<dt>What it can't tell you</dt>
+<dd>Effects far from the cutoff. The estimate is hyper-local. Also assumes no manipulation of the running variable near the cutoff.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Suppose agents with a media-engagement score above 70 are targeted for the ad. Compare agents scoring 69 vs 71. They are nearly identical, so any jump in voting intention at the threshold is attributable to the ad. But this only tells you the effect for agents near 70, not the full population.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">6</span> Difference-in-Differences (DiD)</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Causal effects by comparing the change over time in a treated group versus a control group. Removes time-invariant confounders and common time trends.</dd>
+<dt>When to use</dt>
+<dd>When you have panel or repeated cross-section data and the parallel trends assumption is credible: absent treatment, both groups would have followed the same trajectory.</dd>
+<dt>What it can't tell you</dt>
+<dd>Whether parallel trends actually hold. If a concurrent shock hit only the treated group, DiD is biased. Time-varying confounders are not removed.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Measure voting intention in two synthetic cities before and after the ad airs in City A only. City A shifts +8pp while City B shifts +2pp. DiD estimate: +6pp. But if City A also experienced a political scandal during the same period, the estimate is contaminated.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">7</span> Placebo Tests</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Whether your estimated effect appears where it should not. Run the same analysis on a period, group, or outcome where the treatment could not have had an effect. A non-null placebo result signals model misspecification or confounding.</dd>
+<dt>When to use</dt>
+<dd>As a companion to DiD, RD, or any quasi-experimental method. Standard robustness check.</dd>
+<dt>What it can't tell you</dt>
+<dd>That your real estimate is correct. Passing placebo tests is necessary but not sufficient.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Run your DiD analysis but pretend the ad launched one month earlier (before it actually did). If you still see a +6pp effect in this fake pre-period, your parallel-trends assumption is violated and the real estimate is suspect.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">8</span> Manski Bounds</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>The range of possible causal effects under minimal assumptions. Instead of assuming confounders are fully controlled, Manski bounds give worst-case and best-case treatment effects compatible with the observed data. Produces an interval, not a point estimate.</dd>
+<dt>When to use</dt>
+<dd>When you want to be honest about identification limits. Especially useful with missing data, sample selection, or when parametric assumptions are questionable.</dd>
+<dt>What it can't tell you</dt>
+<dd>A precise effect size. Bounds can be very wide, sometimes uninformatively so. Adding assumptions (monotonicity, monotone treatment response) tightens them.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Suppose 20% of agents have missing voting intention data. Without assumptions about the missing data, the ATE could range from -12pp to +28pp. Adding the assumption that ad exposure never decreases voting intention (monotone response) tightens the bound to [+2pp, +14pp]. Still wide, but honestly so.</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">9</span> Falsification Tests</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Predictions your causal model makes that, if wrong, would undermine the claim. Distinct from placebo tests: falsification tests derive specific auxiliary predictions from the causal DAG and check whether they hold.</dd>
+<dt>When to use</dt>
+<dd>When you have a specific causal model with testable implications beyond the main effect. The more predictions that survive falsification, the stronger the model.</dd>
+<dt>What it can't tell you</dt>
+<dd>That the model is true. Only that it has not yet been refuted on the dimensions you tested.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Your DAG says the ad works through emotional arousal, not information. Falsification prediction: agents who see the ad but have emotional responses disabled should show no effect. If they still shift, your mechanism is wrong (though the overall effect might still be real via a different path).</div>
+</div>
+
+<div class="framework">
+<h2><span class="num">10</span> DAG-based Sensitivity Analysis</h2>
+<dl>
+<dt>What it tests</dt>
+<dd>Using a directed acyclic graph to systematically identify which unobserved variables could bias your estimate, and by how much. Tools like the "bias factor" or "omitted variable bias" formula let you quantify the impact of specific missing nodes in the DAG.</dd>
+<dt>When to use</dt>
+<dd>When you have domain knowledge to draw a plausible DAG and want to reason transparently about what could go wrong. Works well with Cinelli & Hazlett's "omitted variable bias" framework.</dd>
+<dt>What it can't tell you</dt>
+<dd>Whether your DAG is correct. The analysis is only as good as the graph you draw. Missing edges or wrong directions undermine everything.</dd>
+</dl>
+<div class="example"><strong>Ad example:</strong> Your DAG includes media diet, age, party affiliation, and ad exposure. But you suspect "social media echo chamber intensity" is an unobserved confounder. Using Cinelli-Hazlett, you find this variable would need R-squared of 0.15 with both exposure and outcome to explain away the effect. If you believe that is implausibly high, your estimate survives.</div>
+</div>
+
+<h2>Comparison Matrix</h2>
+<p style="margin-bottom: 1rem; color: #7a7a9a;">Which frameworks address which threats to causal inference.</p>
+
+<table>
+<tr>
+  <th>Framework</th>
+  <th>Unmeasured Confounding</th>
+  <th>Selection Bias</th>
+  <th>Reverse Causation</th>
+  <th>Model Misspecification</th>
+</tr>
+<tr>
+  <td>E-values</td>
+  <td class="yes">&#10003; quantifies</td>
+  <td class="no">&mdash;</td>
+  <td class="no">&mdash;</td>
+  <td class="no">&mdash;</td>
+</tr>
+<tr>
+  <td>Rosenbaum Bounds</td>
+  <td class="yes">&#10003; quantifies</td>
+  <td class="no">&mdash;</td>
+  <td class="no">&mdash;</td>
+  <td class="no">&mdash;</td>
+</tr>
+<tr>
+  <td>Negative Controls</td>
+  <td class="yes">&#10003; detects</td>
+  <td class="partial">~ detects</td>
+  <td class="partial">~ detects</td>
+  <td class="yes">&#10003; detects</td>
+</tr>
+<tr>
+  <td>Instrumental Variables</td>
+  <td class="yes">&#10003; corrects</td>
+  <td class="yes">&#10003; corrects</td>
+  <td class="yes">&#10003; corrects</td>
+  <td class="no">&mdash;</td>
+</tr>
+<tr>
+  <td>Regression Discontinuity</td>
+  <td class="yes">&#10003; avoids (local)</td>
+  <td class="yes">&#10003; avoids (local)</td>
+  <td class="yes">&#10003; avoids (local)</td>
+  <td class="partial">~ sensitive to bandwidth</td>
+</tr>
+<tr>
+  <td>Difference-in-Differences</td>
+  <td class="partial">~ time-invariant only</td>
+  <td class="partial">~ if parallel trends hold</td>
+  <td class="yes">&#10003; temporal ordering</td>
+  <td class="no">&mdash;</td>
+</tr>
+<tr>
+  <td>Placebo Tests</td>
+  <td class="yes">&#10003; detects</td>
+  <td class="yes">&#10003; detects</td>
+  <td class="partial">~ detects</td>
+  <td class="yes">&#10003; detects</td>
+</tr>
+<tr>
+  <td>Manski Bounds</td>
+  <td class="yes">&#10003; bounds</td>
+  <td class="yes">&#10003; bounds</td>
+  <td class="no">&mdash;</td>
+  <td class="yes">&#10003; assumption-free</td>
+</tr>
+<tr>
+  <td>Falsification Tests</td>
+  <td class="yes">&#10003; detects</td>
+  <td class="yes">&#10003; detects</td>
+  <td class="yes">&#10003; detects</td>
+  <td class="yes">&#10003; detects</td>
+</tr>
+<tr>
+  <td>DAG Sensitivity</td>
+  <td class="yes">&#10003; quantifies</td>
+  <td class="partial">~ if modeled</td>
+  <td class="partial">~ if modeled</td>
+  <td class="no">&mdash;</td>
+</tr>
+</table>
+
+<p style="margin-top: 1rem; font-size: 0.85rem; color: #5a5a7a;">
+<span class="yes">&#10003;</span> = directly addresses &nbsp;|&nbsp; <span class="partial">~</span> = partially or conditionally &nbsp;|&nbsp; <span class="no">&mdash;</span> = does not address
+</p>
+
+<p style="margin-top: 2.5rem; color: #4a4a6a; font-size: 0.8rem;">Matrices / Aaru Project / March 2026</p>
+
+</body>
+</html>
