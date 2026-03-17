@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matt Hauer — Drinks Cheat Sheet</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a12; color: #e0e0e0; padding: 24px; max-width: 720px; margin: 0 auto; line-height: 1.6; }
+    h1 { font-size: 22px; color: #89ccf0; margin-bottom: 4px; }
+    .subtitle { font-size: 13px; color: #888; margin-bottom: 28px; }
+    h2 { font-size: 16px; color: #a78bfa; margin: 28px 0 12px; border-bottom: 1px solid rgba(167,139,250,0.3); padding-bottom: 6px; }
+    .strategy { background: rgba(137,204,240,0.08); border-left: 3px solid #89ccf0; padding: 12px 16px; margin-bottom: 20px; border-radius: 0 6px 6px 0; font-size: 13px; color: #aaa; }
+    .q-card { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+    .q-card .question { font-weight: 600; color: #f0f0f0; font-size: 14px; margin-bottom: 6px; }
+    .q-card .why { font-size: 12px; color: #888; }
+    .q-card .why em { color: #a78bfa; font-style: normal; }
+    .followup { font-size: 12px; color: #666; margin-top: 6px; padding-left: 12px; border-left: 2px solid rgba(137,204,250,0.2); }
+    .context-box { background: rgba(232,160,190,0.08); border: 1px solid rgba(232,160,190,0.2); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+    .context-box h3 { font-size: 13px; color: #e8a0be; margin-bottom: 6px; }
+    .context-box p { font-size: 12px; color: #999; }
+    .dont { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15); border-radius: 8px; padding: 14px 16px; }
+    .dont li { font-size: 12px; color: #999; margin-bottom: 4px; list-style: none; }
+    .dont li::before { content: "⛔ "; }
+    .rapport li { font-size: 12px; color: #999; margin-bottom: 4px; margin-left: 16px; }
+    .tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-right: 4px; }
+    .tag-core { background: rgba(137,204,240,0.15); color: #89ccf0; }
+    .tag-arch { background: rgba(167,139,250,0.15); color: #a78bfa; }
+    .tag-trial { background: rgba(16,185,129,0.15); color: #10b981; }
+    .tag-tech { background: rgba(232,160,190,0.15); color: #e8a0be; }
+</style>
+</head>
+<body>
+
+<h1>Matt Hauer — Drinks Cheat Sheet</h1>
+<div class="subtitle">Tue Mar 17 · Wanda's Tavern · Head of Agent Development, Aaru</div>
+
+<div class="strategy">
+    <strong>Strategy:</strong> Ask about HIS problems. Let him talk 60%. Buy him a drink.<br>
+    He's an FSU demographer + Cozzarelli Prize winner building synthetic agents at scale. Every question is designed to learn what YOU need while being genuinely interesting to HIM.
+</div>
+
+<h2><span class="tag tag-core">CORE</span> Agent Consistency & Believability</h2>
+
+<div class="q-card">
+    <div class="question">"How do you know when an agent is lying to you?"</div>
+    <div class="why">He's battling logical consistency (the "embers"). <em>Listen for: what breaks, failure modes, prompt vs. architecture.</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"When you generate a second-gen trait profile, what's the validation step? How do you catch a gun-owning vegan environmentalist in rural Alabama?"</div>
+    <div class="why">Gets at <em>second-gen tenement traits AND the validation pipeline</em>. He'll appreciate you understand the combinatorial explosion problem.</div>
+</div>
+
+<div class="q-card">
+    <div class="question">"Is consistency a property of the agent, or a property of the prompt?"</div>
+    <div class="why">Deep question about <em>stochasticity vs. determinism</em> in agent-based LLM systems. Directly relevant to his day-to-day.</div>
+</div>
+
+<h2><span class="tag tag-arch">ARCHITECTURE</span> Population Architecture</h2>
+
+<div class="q-card">
+    <div class="question">"How much is top-down demographic allocation vs. bottom-up emergent clustering?"</div>
+    <div class="why">As a demographer, he thinks in population distributions. <em>Bridges his academic expertise with Aaru's approach.</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"Do you start with census microdata and 'uplift' into agents, or fully synthetic from scratch?"</div>
+    <div class="why">Reveals the data pipeline. <em>Relevant to PRISM (you used real survey data as priors).</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"What happens when a target population doesn't match any well-studied demographic?"</div>
+    <div class="why">Edge cases reveal architecture. <em>"Give me 10,000 Gen Z crypto investors in the Midwest" — where do the priors come from?</em></div>
+</div>
+
+<h2><span class="tag tag-arch">ARCHITECTURE</span> The Mean/Median/Mode Question</h2>
+
+<div class="q-card">
+    <div class="question">"When you run a simulation — what are you optimizing for? The mean outcome, the median, or the mode?"</div>
+    <div class="why">Different loss functions = different risk postures. <em>Insurance thinks CVaR, polling thinks mode, marketing thinks mean.</em></div>
+    <div class="followup">
+        "Does it change by product? Polls = modal, Lumen = expected value?"<br>
+        "Do clients know the difference?"<br>
+        "Do you show the full distribution or just the point estimate?"
+    </div>
+</div>
+
+<h2><span class="tag tag-trial">TRIAL</span> Work Trial Intel</h2>
+
+<div class="q-card">
+    <div class="question">"What does a typical first week look like for a new engineer?"</div>
+    <div class="why"><em>Listen for: IDE, git workflow, Python env, how long until first PR.</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"What would make someone crush a work trial vs. just pass?"</div>
+    <div class="why">Direct. He'll respect the directness. <em>Listen for the delta between "competent" and "must-hire."</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"Where is work piling up that nobody has bandwidth for?"</div>
+    <div class="why"><em>Find the gap you can fill. Most valuable question on the list.</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"Can I read the manuscript before I start?"</div>
+    <div class="why">He offered during the office visit. <em>Following through = showing you're serious.</em></div>
+</div>
+
+<h2><span class="tag tag-tech">TECHNICAL</span> Deep Cuts (If He's in the Mood)</h2>
+
+<div class="q-card">
+    <div class="question">"How does the classical ML layer interact with the LLM layer? John described 3 stages — where does the handoff break?"</div>
+    <div class="why">Shows you've been paying attention to the architecture.</div>
+</div>
+
+<div class="q-card">
+    <div class="question">"Is anyone working on longitudinal sims — rolling the same population forward in time?"</div>
+    <div class="why">Big unsolved problem. <em>If they're not doing it yet, it's a gap you could fill.</em></div>
+</div>
+
+<div class="q-card">
+    <div class="question">"After the 2024 election (Harris 53-47 vs. reality) — what did the post-mortem look like?"</div>
+    <div class="why">Ask with genuine curiosity. Every modeler has a miss they learned from. <em>Let him tell the story.</em></div>
+</div>
+
+<h2>🔑 Key Context</h2>
+
+<div class="context-box">
+    <h3>The Ro Khanna Bet</h3>
+    <p>You have a Polymarket position on Ro Khanna at ~0.9%. Exit when announcement spikes to ~6%. Shows skin-in-the-game political forecasting thinking — connects directly to Aaru's Polls product.</p>
+</div>
+
+<div class="context-box">
+    <h3>John Wrote Your Role</h3>
+    <p>The Researcher job description was written by John Kessler specifically. Ask Matt: "What gap is this person supposed to fill?" Shows you're thinking about fit, not just getting hired.</p>
+</div>
+
+<h2>🍺 Rapport</h2>
+<ul class="rapport">
+    <li>FSU → startup — what surprised him most?</li>
+    <li>Still publishing? Any active research?</li>
+    <li>Running? (John runs, you run)</li>
+    <li>The neighborhood — does he live nearby?</li>
+</ul>
+
+<h2 style="color: #ef4444; border-color: rgba(239,68,68,0.3);">Don't</h2>
+<div class="dont">
+    <ul>
+        <li>Don't oversell PRISM — if asked: "I built a political disposition model with 111 archetypes. Happy to show you."</li>
+        <li>Don't ask about comp/equity at drinks</li>
+        <li>Don't critique the 2024 miss — ask what they learned</li>
+        <li>Don't monopolize — he's a professor, he likes explaining. Let him riff.</li>
+    </ul>
+</div>
+
+</body>
+</html>
