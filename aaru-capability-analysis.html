@@ -121,8 +121,8 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="container">
 
 <div class="intro">
-<p>Synthetic population simulation sits at a fascinating inflection point. The core capability — generating coherent synthetic individuals across hundreds of variables with differential privacy guarantees — is genuinely impressive and, as far as I can tell, unmatched in the commercial space. But the gap between correlational simulation and causal simulation remains wide, and closing it unlocks an entirely different class of product.</p>
-<p>This document maps six capability dimensions: what I believe the current state looks like, where the frontier sits, what specific improvements I'd build next, and what measurable impact each would produce. Everything here reflects my own analysis from studying the space deeply — the intersection of probabilistic programming, causal inference, and agent-based modeling.</p>
+<p>Synthetic population simulation sits at a fascinating inflection point. The core capability - generating coherent synthetic individuals across hundreds of variables with differential privacy guarantees - is genuinely impressive and, as far as I can tell, unmatched in the commercial space. But the gap between correlational simulation and causal simulation remains wide, and closing it unlocks an entirely different class of product.</p>
+<p>This document maps six capability dimensions: what I believe the current state looks like, where the frontier sits, what specific improvements I'd build next, and what measurable impact each would produce. Everything here reflects my own analysis from studying the space deeply - the intersection of probabilistic programming, causal inference, and agent-based modeling.</p>
 </div>
 
 <!-- ═══════════════════════════════════════════ -->
@@ -141,7 +141,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <svg width="700" height="140" viewBox="0 0 700 140">
 <!-- Joint probability space -->
 <rect x="20" y="20" width="200" height="100" rx="8" fill="none" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
-<text x="120" y="16" fill="var(--blue)" font-size="11" text-anchor="middle" font-family="Courier Prime">Joint P(X,Y) — Current</text>
+<text x="120" y="16" fill="var(--blue)" font-size="11" text-anchor="middle" font-family="Courier Prime">Joint P(X,Y) - Current</text>
 <!-- Grid inside -->
 <line x1="70" y1="20" x2="70" y2="120" stroke="var(--blue)" stroke-width="0.5" opacity="0.15"/>
 <line x1="120" y1="20" x2="120" y2="120" stroke="var(--blue)" stroke-width="0.5" opacity="0.15"/>
@@ -164,7 +164,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 
 <!-- Hierarchical Bayesian -->
 <rect x="310" y="20" width="200" height="100" rx="8" fill="none" stroke="var(--green)" stroke-width="1.5" opacity="0.4"/>
-<text x="410" y="16" fill="var(--green)" font-size="11" text-anchor="middle" font-family="Courier Prime">Hierarchical Bayesian — Next</text>
+<text x="410" y="16" fill="var(--green)" font-size="11" text-anchor="middle" font-family="Courier Prime">Hierarchical Bayesian - Next</text>
 <!-- Tree structure -->
 <circle cx="410" cy="40" r="8" fill="none" stroke="var(--green)" stroke-width="1" opacity="0.5"/>
 <text x="410" y="43" fill="var(--green)" font-size="7" text-anchor="middle" font-family="Courier Prime">θ</text>
@@ -201,7 +201,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card card-state">
 <div class="card-label">Current State</div>
 <h4>Joint Probability over Discrete State Space</h4>
-<p>I believe the current approach treats each agent as a point in a joint probability space P(X,Y), with Bayes' rule enforced bidirectionally. The state space is massive — on the order of 8<sup>50</sup> configurations for ~50 variables discretized into 8 levels. This is closer to statistical mechanics (partition functions over discrete states) than traditional agent-based modeling.</p>
+<p>I believe the current approach treats each agent as a point in a joint probability space P(X,Y), with Bayes' rule enforced bidirectionally. The state space is massive - on the order of 8<sup>50</sup> configurations for ~50 variables discretized into 8 levels. This is closer to statistical mechanics (partition functions over discrete states) than traditional agent-based modeling.</p>
 <p>There's likely a multi-stage pipeline: classical ML for structured predictions, the joint probability model for coherent population-level inference, and LLM-as-agent with persona cards for qualitative queries. Each stage trades off speed, interpretability, and expressiveness.</p>
 <details><summary>Why this matters →</summary><div class="expand-content">This approach is genuinely novel. It avoids the archetypal clustering trap that plagues most synthetic population tools. But the discretization and heuristic traversal of such a massive space introduce artifacts and computational challenges that become harder to manage as the variable count grows.</div></details>
 </div>
@@ -223,7 +223,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <li>Prior sensitivity analysis and prior predictive checks</li>
 <li>Composable generative models that interface with the existing P(X,Y) framework</li>
 </ul>
-<details><summary>Implementation approach →</summary><div class="expand-content">This doesn't replace the existing system — it layers on top. The joint P(X,Y) framework stays as the core representation. The probabilistic programming layer provides rigorous inference over the populated regions of that space, replacing heuristic traversal with formal posterior computation. NumPyro on JAX gives GPU acceleration for free.</div></details>
+<details><summary>Implementation approach →</summary><div class="expand-content">This doesn't replace the existing system - it layers on top. The joint P(X,Y) framework stays as the core representation. The probabilistic programming layer provides rigorous inference over the populated regions of that space, replacing heuristic traversal with formal posterior computation. NumPyro on JAX gives GPU acceleration for free.</div></details>
 </div>
 
 <div class="card card-impact">
@@ -273,7 +273,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <text x="430" y="52" fill="var(--text2)" font-size="10" font-family="EB Garamond">With 700 variables, most intersections have</text>
 <text x="430" y="66" fill="var(--text2)" font-size="10" font-family="EB Garamond">near-zero observations. Need principled</text>
 <text x="430" y="80" fill="var(--text2)" font-size="10" font-family="EB Garamond">regularization that doesn't collapse to</text>
-<text x="430" y="94" fill="var(--text2)" font-size="10" font-family="EB Garamond">archetypes — honesty about what's known.</text>
+<text x="430" y="94" fill="var(--text2)" font-size="10" font-family="EB Garamond">archetypes - honesty about what's known.</text>
 </svg>
 <div class="ill-caption">Scale comparison: typical synthetic population tools vs. full-dimensional approach</div>
 </div>
@@ -283,7 +283,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card-label">Current State</div>
 <h4>700-Variable Differentially Private Synthesis</h4>
 <p>I believe the population generation system produces differentially private synthetic populations across ~700 variables in seconds. For context, most commercial competitors operate on 6-10 variables. The U.S. Census Bureau spent $100M+ on TopDown to achieve something in a similar space.</p>
-<p>Core philosophy: no archetypes, no hard clustering. Every individual is modeled with full intersecting identities. This is the right instinct — the real world is heterogeneity, and reducing people to types loses the nuance that makes simulation valuable.</p>
+<p>Core philosophy: no archetypes, no hard clustering. Every individual is modeled with full intersecting identities. This is the right instinct - the real world is heterogeneity, and reducing people to types loses the nuance that makes simulation valuable.</p>
 </div>
 
 <div class="card card-gap">
@@ -296,7 +296,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card card-step">
 <div class="card-label">Next Best Step</div>
 <h4>Partial Pooling for Sparse Populations</h4>
-<p>Hierarchical partial pooling bridges the anti-archetype philosophy with practical sparse population handling. Agents belong to <em>soft clusters</em> — not hard categories — with individual parameters drawn from subgroup distributions.</p>
+<p>Hierarchical partial pooling bridges the anti-archetype philosophy with practical sparse population handling. Agents belong to <em>soft clusters</em> - not hard categories - with individual parameters drawn from subgroup distributions.</p>
 <ul>
 <li>Sparse subgroups regularize toward group mean (honest about limited data)</li>
 <li>Rich subgroups converge toward individual estimates</li>
@@ -313,7 +313,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="metric">implausibility rate ↓ 50%+</div>
 <div class="metric">new product: confidence-rated segments</div>
 </div>
-<p style="margin-top:12px">Honest uncertainty on sparse populations unlocks a new product capability: segments with confidence ratings. Clients know which predictions are solid and which need more data. This increases trust and retention — the "we don't know" answer is more valuable than a confident wrong one.</p>
+<p style="margin-top:12px">Honest uncertainty on sparse populations unlocks a new product capability: segments with confidence ratings. Clients know which predictions are solid and which need more data. This increases trust and retention - the "we don't know" answer is more valuable than a confident wrong one.</p>
 </div>
 </div>
 </div>
@@ -380,9 +380,9 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card card-state">
 <div class="card-label">Current State</div>
 <h4>Associational Prediction (Level 1)</h4>
-<p>I believe behavior prediction currently works by conditioning the joint P(X,Y): given traits X, derive likely behavior Y, with the inverse also maintained for coherence. This is powerful for associational queries — "given these demographics and personality traits, what's the likely voting behavior?" — but it operates entirely at Pearl's Level 1.</p>
+<p>I believe behavior prediction currently works by conditioning the joint P(X,Y): given traits X, derive likely behavior Y, with the inverse also maintained for coherence. This is powerful for associational queries - "given these demographics and personality traits, what's the likely voting behavior?" - but it operates entirely at Pearl's Level 1.</p>
 <p>There's likely an unresolved tension between black-box neural nets (better raw accuracy) and interpretable trait variables (explanatory and prescriptive power). This is a real architectural question, not just a preference.</p>
-<p>I also suspect cyclic dependencies between traits create computational challenges — "everything feeding into everything else" — that prevent clean topological sorting of the variable graph.</p>
+<p>I also suspect cyclic dependencies between traits create computational challenges - "everything feeding into everything else" - that prevent clean topological sorting of the variable graph.</p>
 </div>
 
 <div class="card card-gap">
@@ -392,7 +392,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <ul>
 <li><strong>Counterfactual simulation:</strong> "What would this person have done if they'd seen ad B instead of ad A?" Requires structural causal models with do-calculus.</li>
 <li><strong>Abductive inference:</strong> Reasoning backward from an outcome to the conditions that would have produced it. "Given this election result, what population conditions explain it?"</li>
-<li><strong>Cycle resolution:</strong> Apparent cycles in trait dependencies need to be broken by time-indexing — a variable can cause itself at a later time step, but within a slice the graph must be directed.</li>
+<li><strong>Cycle resolution:</strong> Apparent cycles in trait dependencies need to be broken by time-indexing - a variable can cause itself at a later time step, but within a slice the graph must be directed.</li>
 </ul>
 </div>
 
@@ -406,7 +406,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <li><strong>Abductive-action-prediction</strong> for reverse inference</li>
 <li><strong>Time-indexed unrolling</strong> to resolve cycles into directed acyclic structure</li>
 </ul>
-<details><summary>Why this is the highest-leverage improvement →</summary><div class="expand-content">Counterfactual reasoning is the single capability that transforms simulation from a descriptive tool into a prescriptive one. "Here's what happened" becomes "here's what would have happened under different conditions" becomes "here's what you should do." Every major client use case — marketing, political strategy, policy analysis — benefits more from counterfactual answers than associational ones.</div></details>
+<details><summary>Why this is the highest-leverage improvement →</summary><div class="expand-content">Counterfactual reasoning is the single capability that transforms simulation from a descriptive tool into a prescriptive one. "Here's what happened" becomes "here's what would have happened under different conditions" becomes "here's what you should do." Every major client use case - marketing, political strategy, policy analysis - benefits more from counterfactual answers than associational ones.</div></details>
 </div>
 
 <div class="card card-impact">
@@ -418,7 +418,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="metric">revenue per client ↑ (prescriptive tier)</div>
 <div class="metric">cycle-related compute bugs → 0</div>
 </div>
-<p style="margin-top:12px">Counterfactual capability enables an entirely new product tier: prescriptive simulation. Instead of "here's what will happen," clients get "here's what you should do." This justifies premium pricing and dramatically increases stickiness — once you're making decisions based on counterfactual analysis, switching costs are enormous.</p>
+<p style="margin-top:12px">Counterfactual capability enables an entirely new product tier: prescriptive simulation. Instead of "here's what will happen," clients get "here's what you should do." This justifies premium pricing and dramatically increases stickiness - once you're making decisions based on counterfactual analysis, switching costs are enormous.</p>
 </div>
 </div>
 </div>
@@ -437,63 +437,80 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 
 <div class="illustration">
 <svg width="700" height="130" viewBox="0 0 700 130">
-<!-- Refraction layers -->
-<text x="200" y="16" fill="var(--text)" font-size="11" text-anchor="middle" font-family="Space Grotesk" font-weight="600">Environment as Refraction Layers</text>
+<!-- Contextual MDP diagram -->
+<text x="170" y="16" fill="var(--text)" font-size="11" text-anchor="middle" font-family="Space Grotesk" font-weight="600">Contextual MDP</text>
 
-<rect x="30" y="28" width="340" height="22" rx="4" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.3"/>
-<text x="200" y="43" fill="var(--blue)" font-size="9" text-anchor="middle" font-family="Courier Prime">[F] Formative — upbringing, culture, generational context</text>
+<!-- Agent node -->
+<circle cx="80" cy="65" r="22" fill="none" stroke="var(--coral)" stroke-width="1.5" opacity="0.6"/>
+<text x="80" y="69" fill="var(--coral)" font-size="9" text-anchor="middle" font-family="Courier Prime">Agent</text>
 
-<rect x="30" y="56" width="340" height="22" rx="4" fill="none" stroke="var(--green)" stroke-width="1" opacity="0.3"/>
-<text x="200" y="71" fill="var(--green)" font-size="9" text-anchor="middle" font-family="Courier Prime">[M] Milieu — current economic, social, media environment</text>
+<!-- Context node -->
+<rect x="140" y="30" width="60" height="24" rx="4" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.5"/>
+<text x="170" y="46" fill="var(--blue)" font-size="8" text-anchor="middle" font-family="Courier Prime">Context</text>
 
-<rect x="30" y="84" width="340" height="22" rx="4" fill="none" stroke="var(--coral)" stroke-width="1" opacity="0.3"/>
-<text x="200" y="99" fill="var(--coral)" font-size="9" text-anchor="middle" font-family="Courier Prime">[CA] Choice Architecture — what options are presented</text>
+<!-- Environment node -->
+<rect x="140" y="76" width="60" height="24" rx="4" fill="none" stroke="var(--green)" stroke-width="1" opacity="0.5"/>
+<text x="170" y="92" fill="var(--green)" font-size="8" text-anchor="middle" font-family="Courier Prime">Environ.</text>
 
-<!-- Light refraction path -->
-<path d="M60,24 L100,38 L160,62 L250,90 L300,115" stroke="var(--gold)" stroke-width="1.8" opacity="0.4" fill="none"/>
-<circle cx="300" cy="115" r="4" fill="var(--gold)" opacity="0.4"/>
-<text x="310" y="120" fill="var(--gold)" font-size="8" font-family="Courier Prime" opacity="0.6">behavior</text>
+<!-- Action/reward -->
+<circle cx="260" cy="65" r="22" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity="0.6"/>
+<text x="260" y="62" fill="var(--gold)" font-size="8" text-anchor="middle" font-family="Courier Prime">Action</text>
+<text x="260" y="72" fill="var(--gold)" font-size="7" text-anchor="middle" font-family="Courier Prime">+ Reward</text>
 
-<!-- Sensitivity analysis -->
-<rect x="420" y="25" width="250" height="90" rx="8" fill="var(--bg3)" stroke="var(--gold)" stroke-width="1" opacity="0.4"/>
-<text x="545" y="42" fill="var(--gold)" font-size="10" text-anchor="middle" font-family="Courier Prime" font-weight="700">Sobol Sensitivity Analysis</text>
-<!-- Bar chart -->
-<rect x="440" y="55" width="120" height="8" rx="2" fill="var(--coral)" opacity="0.4"/>
-<text x="570" y="62" fill="var(--text2)" font-size="8" font-family="Courier Prime">economic context 42%</text>
-<rect x="440" y="68" width="80" height="8" rx="2" fill="var(--green)" opacity="0.4"/>
-<text x="530" y="75" fill="var(--text2)" font-size="8" font-family="Courier Prime">media exposure 28%</text>
-<rect x="440" y="81" width="40" height="8" rx="2" fill="var(--blue)" opacity="0.4"/>
-<text x="490" y="88" fill="var(--text2)" font-size="8" font-family="Courier Prime">framing 14%</text>
-<rect x="440" y="94" width="30" height="8" rx="2" fill="var(--gold)" opacity="0.3"/>
-<text x="480" y="101" fill="var(--text2)" font-size="8" font-family="Courier Prime">other 16%</text>
+<!-- Arrows -->
+<path d="M102,58 L138,46" stroke="var(--text2)" stroke-width="1" marker-end="url(#arr)" opacity="0.4"/>
+<path d="M102,72 L138,84" stroke="var(--text2)" stroke-width="1" marker-end="url(#arr)" opacity="0.4"/>
+<path d="M200,42 L238,58" stroke="var(--text2)" stroke-width="1" marker-end="url(#arr)" opacity="0.4"/>
+<path d="M200,88 L238,72" stroke="var(--text2)" stroke-width="1" marker-end="url(#arr)" opacity="0.4"/>
+<defs><marker id="arr" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="var(--text2)" opacity="0.5"/></marker></defs>
+
+<!-- MARL diagram -->
+<text x="520" y="16" fill="var(--text)" font-size="11" text-anchor="middle" font-family="Space Grotesk" font-weight="600">Multi-Agent RL (MARL)</text>
+
+<!-- Multiple agents -->
+<circle cx="430" cy="50" r="14" fill="none" stroke="var(--coral)" stroke-width="1" opacity="0.5"/>
+<text x="430" y="54" fill="var(--coral)" font-size="7" text-anchor="middle" font-family="Courier Prime">A1</text>
+<circle cx="430" cy="90" r="14" fill="none" stroke="var(--coral)" stroke-width="1" opacity="0.5"/>
+<text x="430" y="94" fill="var(--coral)" font-size="7" text-anchor="middle" font-family="Courier Prime">A2</text>
+
+<!-- Shared environment -->
+<rect x="480" y="40" width="80" height="60" rx="8" fill="none" stroke="var(--green)" stroke-width="1.5" opacity="0.4"/>
+<text x="520" y="65" fill="var(--green)" font-size="8" text-anchor="middle" font-family="Courier Prime">Shared</text>
+<text x="520" y="76" fill="var(--green)" font-size="8" text-anchor="middle" font-family="Courier Prime">Environment</text>
+
+<!-- Feedback arrows -->
+<path d="M444,50 L480,55" stroke="var(--gold)" stroke-width="1" opacity="0.4"/>
+<path d="M444,90 L480,85" stroke="var(--gold)" stroke-width="1" opacity="0.4"/>
+<path d="M560,60 L600,50 L600,90 L560,80" stroke="var(--blue)" stroke-width="1" stroke-dasharray="3,2" opacity="0.3" fill="none"/>
+<text x="620" y="74" fill="var(--blue)" font-size="7" font-family="Courier Prime" opacity="0.5">feedback</text>
 </svg>
-<div class="ill-caption">Environment modeled as refraction layers with principled sensitivity decomposition</div>
+<div class="ill-caption">Two paradigms: Contextual MDPs (agent adapts to context) and MARL (agents co-evolve with environment)</div>
 </div>
 
 <div class="cards">
 <div class="card card-state">
 <div class="card-label">Current State</div>
 <h4>Static Client-Defined Scenarios</h4>
-<p>I believe the current product flow works roughly like this: client defines a scenario (election, ad campaign, pricing change), agents respond to it, results are delivered. The environment is essentially a fixed parameter set — no feedback loops, no agent-agent interaction, no temporal unfolding.</p>
+<p>I believe the current product flow works roughly like this: client defines a scenario (election, ad campaign, pricing change), agents respond to it, results are delivered. The environment is essentially a fixed parameter set - no feedback loops, no agent-agent interaction, no temporal unfolding.</p>
 <p>This makes sense for the current client base, which mostly wants snapshot answers. But I suspect there's a significant sensitivity problem: small changes to scenario context produce disproportionately large changes in output. Without principled sensitivity analysis, it's hard to know which context parameters actually matter.</p>
 </div>
 
 <div class="card card-gap">
 <div class="card-label">The Gap</div>
-<h4>The Butterfly Effect in Scenario Space</h4>
-<p>The state-of-the-art in ABM models environments as endogenous stochastic processes with feedback loops, network contagion, and game-theoretic interactions. But the more immediate gap is simpler: <strong>principled scenario reduction</strong>.</p>
-<p>If changing one minor detail produces a very different result, the client needs to know that — and needs to know <em>which</em> details matter most. Random scenario permutation wastes compute and confuses interpretation.</p>
+<h4>Two Missing Paradigms</h4>
+<p><strong>Contextual MDPs:</strong> Agents should learn policies conditioned on environmental state they don't control - economic conditions, media landscape, regulatory climate. Currently the environment is a flat input, not a structured context that modulates behavior differently across agent types.</p>
+<p><strong>Multi-Agent RL:</strong> In reality, agents interact with each other and the environment evolves based on their collective actions. A marketing campaign changes the competitive landscape. A policy intervention shifts population behavior which shifts the context for the next round. None of this emergent dynamics is captured in static scenario snapshots.</p>
 </div>
 
 <div class="card card-step">
 <div class="card-label">Next Best Step</div>
-<h4>Refraction Layers + Sobol Sensitivity</h4>
-<p>Model environment explicitly as layered refraction: Formative (upbringing), Milieu (current context), Choice Architecture (available options). Then apply Sobol sensitivity analysis or PCA on the scenario parameter space to identify the 3-5 axes that explain most output variance.</p>
+<h4>Contextual Bandits + Sobol Sensitivity</h4>
+<p>Start with contextual bandits for single-step decisions: which ad to show, which message to send, given structured environmental context. This is immediately deployable on top of the existing joint distribution. Then layer in Sobol sensitivity analysis to identify the 3-5 context axes that explain most output variance.</p>
 <ul>
-<li>Separates endogenous (agent) from exogenous (world) in a principled way</li>
+<li>Contextual MDPs formalize the agent-environment boundary without full RL complexity</li>
 <li>Clients get: "these are the 3 parameters that matter most for your question"</li>
 <li>Nash equilibrium framing enables adversarial simulation (competitor modeling)</li>
-<li>Reduces wasted compute on low-variance scenario dimensions</li>
+<li>MARL as the longer-term roadmap: emergent population dynamics, social contagion, market co-evolution</li>
 </ul>
 </div>
 
@@ -504,9 +521,9 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="metric">scenario compute ↓ 60-80%</div>
 <div class="metric">output stability ↑ (variance explained)</div>
 <div class="metric">new product: competitor modeling</div>
-<div class="metric">time-to-insight ↓ 40%</div>
+<div class="metric">new product: dynamic campaign optimization</div>
 </div>
-<p style="margin-top:12px">Sobol decomposition directly reduces compute by focusing simulation on high-variance dimensions. Adversarial/competitor modeling unlocks a new revenue stream: "what happens if your competitor does X?" — currently conceptualized but not productized. Sensitivity reporting increases client trust in results.</p>
+<p style="margin-top:12px">Sobol decomposition reduces compute by focusing on high-variance dimensions. Contextual bandits unlock real-time campaign optimization - a direct revenue product. Adversarial/competitor modeling opens a new market: "what happens if your competitor does X?" MARL enables social contagion and network effects modeling.</p>
 </div>
 </div>
 </div>
@@ -567,8 +584,8 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card card-state">
 <div class="card-label">Current State</div>
 <h4>Aggregate Benchmarking + Manual Consistency</h4>
-<p>I believe calibration currently relies on anchoring the joint distribution against observed data and benchmarking against aggregate outcomes like election results. There's likely also backtesting innovation happening — possibly ablation-style approaches that remove information and check prediction stability.</p>
-<p>The harder problem: when all traits are latent (inferred, not directly observed), direct validation is impossible. Client feedback is about downstream outcomes (did the marketing work?), not about whether the underlying trait model is right. And I suspect there's significant manual effort going into fixing agent inconsistencies — a process that scales poorly as the population grows.</p>
+<p>I believe calibration currently relies on anchoring the joint distribution against observed data and benchmarking against aggregate outcomes like election results. There's likely also backtesting innovation happening - possibly ablation-style approaches that remove information and check prediction stability.</p>
+<p>The harder problem: when all traits are latent (inferred, not directly observed), direct validation is impossible. Client feedback is about downstream outcomes (did the marketing work?), not about whether the underlying trait model is right. And I suspect there's significant manual effort going into fixing agent inconsistencies - a process that scales poorly as the population grows.</p>
 </div>
 
 <div class="card card-gap">
@@ -588,7 +605,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <li><strong>Model comparison:</strong> swap likelihoods, compare WAIC scores, identify which variants work for which domains</li>
 <li><strong>Prior sensitivity:</strong> how much do outputs depend on modeling assumptions?</li>
 </ul>
-<details><summary>The ember-fixing automation →</summary><div class="expand-content">If there's a process where researchers manually review agent consistency after generation — finding and fixing implausible trait combinations — that's the highest-ROI automation target. Posterior predictive checks can flag incoherent agents automatically, turning weeks of manual work into minutes of compute. The check becomes: "for this agent's trait profile, are the predicted behaviors consistent with observed population-level data within the posterior uncertainty?"</div></details>
+<details><summary>The ember-fixing automation →</summary><div class="expand-content">If there's a process where researchers manually review agent consistency after generation - finding and fixing implausible trait combinations - that's the highest-ROI automation target. Posterior predictive checks can flag incoherent agents automatically, turning weeks of manual work into minutes of compute. The check becomes: "for this agent's trait profile, are the predicted behaviors consistent with observed population-level data within the posterior uncertainty?"</div></details>
 </div>
 
 <div class="card card-impact">
@@ -600,7 +617,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="metric">model selection speed ↑ 5-10×</div>
 <div class="metric">publishable: causal robustness framework</div>
 </div>
-<p style="margin-top:12px">Automating coherence checking frees researcher time for R&D. Formal model comparison accelerates the iteration cycle from weeks to hours. The methodology itself is publishable — a causal robustness framework for synthetic population validation — which builds academic credibility and attracts research talent.</p>
+<p style="margin-top:12px">Automating coherence checking frees researcher time for R&D. Formal model comparison accelerates the iteration cycle from weeks to hours. The methodology itself is publishable - a causal robustness framework for synthetic population validation - which builds academic credibility and attracts research talent.</p>
 </div>
 </div>
 </div>
@@ -670,7 +687,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card card-state">
 <div class="card-label">Current State</div>
 <h4>Snapshot Simulation with Markov Assumption</h4>
-<p>I believe most client deliverables are cross-sectional snapshots: generate a population at a point in time, simulate one scenario, return results. When temporal reasoning is needed, the Markov assumption likely applies — current state contains all relevant history.</p>
+<p>I believe most client deliverables are cross-sectional snapshots: generate a population at a point in time, simulate one scenario, return results. When temporal reasoning is needed, the Markov assumption likely applies - current state contains all relevant history.</p>
 <p>This works for many use cases, but it breaks down for phenomena where long-range dependencies matter: radicalization trajectories, brand loyalty decay, voter realignment over election cycles. Decisions from years ago can matter suddenly.</p>
 <p>I also suspect there's no decision-theoretic layer: simulations produce predictions, but not optimal actions. Clients get "here's what will happen" but not "here's what you should do given your risk tolerance."</p>
 </div>
@@ -679,20 +696,20 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="card-label">The Gap</div>
 <h4>Temporal Memory + Decision Theory</h4>
 <p>State-of-the-art uses <strong>dynamic Bayesian networks</strong> with sequential Monte Carlo for temporal inference, and <strong>Bayesian decision theory</strong> (influence diagrams, expected utility maximization, robust optimization) for converting predictions into action recommendations.</p>
-<p>The deepest gap: simulations currently answer "what will happen?" but not "what should you do?" Converting a probability distribution into an optimal decision requires specifying a loss function and a risk posture — and different stakeholders have different risk tolerances.</p>
+<p>The deepest gap: simulations currently answer "what will happen?" but not "what should you do?" Converting a probability distribution into an optimal decision requires specifying a loss function and a risk posture - and different stakeholders have different risk tolerances.</p>
 </div>
 
 <div class="card card-step">
 <div class="card-label">Next Best Step</div>
 <h4>Phase Transitions + CVaR Decision Output</h4>
-<p><strong>Phase transitions:</strong> Model most of life as a feed-forward DAG (steady state). But certain events — recession, war, migration, cultural shifts — re-open formative layers, re-refracting personality through new circumstances. Posteriors carry full history without storing explicit trajectories.</p>
+<p><strong>Phase transitions:</strong> Model most of life as steady state where traits are stable. But certain events — recession, war, migration, cultural shifts — trigger regime changes that fundamentally reshape personality and disposition. A dynamic Bayesian network captures this: posteriors carry full history without storing explicit trajectories.</p>
 <p><strong>CVaR (Conditional Value at Risk):</strong> Instead of optimizing for the expected outcome, optimize for the expected outcome in the worst tail. The client chooses their risk posture, and the simulation output adapts accordingly.</p>
 <ul>
 <li>"What's the best strategy if we optimize for the worst 10% of scenarios?"</li>
 <li>Different stakeholders see different outputs from the same simulation</li>
 <li>Transforms "here's what will happen" → "here's what you should do"</li>
 </ul>
-<details><summary>The Geometry of Preference →</summary><div class="expand-content">A powerful framing: many disagreements — political, strategic, organizational — aren't actually disagreements about facts. They're disagreements about which part of the distribution to optimize for. A conservative strategy optimizes for the left tail (worst case). An aggressive one optimizes for the right tail (best case). Making this explicit, with the same underlying simulation, lets different stakeholders have a productive conversation using the same data. "We agree on the prediction. We disagree on how much risk to accept."</div></details>
+<details><summary>The Geometry of Preference →</summary><div class="expand-content">A powerful framing: many disagreements - political, strategic, organizational - aren't actually disagreements about facts. They're disagreements about which part of the distribution to optimize for. A conservative strategy optimizes for the left tail (worst case). An aggressive one optimizes for the right tail (best case). Making this explicit, with the same underlying simulation, lets different stakeholders have a productive conversation using the same data. "We agree on the prediction. We disagree on how much risk to accept."</div></details>
 </div>
 
 <div class="card card-impact">
@@ -704,7 +721,7 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="metric">temporal prediction accuracy ↑ 20-35%</div>
 <div class="metric">client engagement ↑ interactive risk UI</div>
 </div>
-<p style="margin-top:12px">CVaR is the cleanest new product capability. It transforms the output from "information" to "recommendation" — a fundamentally different value proposition. Clients paying for recommendations pay more and stay longer than clients paying for information. The risk-posture UI is also a compelling interactive demo that sells itself.</p>
+<p style="margin-top:12px">CVaR is the cleanest new product capability. It transforms the output from "information" to "recommendation" - a fundamentally different value proposition. Clients paying for recommendations pay more and stay longer than clients paying for information. The risk-posture UI is also a compelling interactive demo that sells itself.</p>
 </div>
 </div>
 </div>
@@ -720,16 +737,16 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 <div class="syn-col">
 <h3>Gaps Addressed</h3>
 <ul>
-<li><strong>Counterfactual simulation</strong> — causal DAGs + do-calculus</li>
-<li><strong>Abductive inference</strong> — reverse reasoning via SCMs</li>
-<li><strong>Risk-aware decision output</strong> — CVaR optimization</li>
-<li><strong>Rigorous posterior inference</strong> — NumPyro + NUTS</li>
-<li><strong>Temporal memory beyond Markov</strong> — online Bayesian learning</li>
-<li><strong>Automated coherence checking</strong> — posterior predictive checks at scale</li>
-<li><strong>Cyclic dependency resolution</strong> — time-indexed directed graphs</li>
-<li><strong>Scenario sensitivity</strong> — Sobol decomposition</li>
-<li><strong>Sparse population handling</strong> — hierarchical partial pooling</li>
-<li><strong>Latent trait validation</strong> — observable consequence chain</li>
+<li><strong>Counterfactual simulation</strong> - causal DAGs + do-calculus</li>
+<li><strong>Abductive inference</strong> - reverse reasoning via SCMs</li>
+<li><strong>Risk-aware decision output</strong> - CVaR optimization</li>
+<li><strong>Rigorous posterior inference</strong> - NumPyro + NUTS</li>
+<li><strong>Temporal memory beyond Markov</strong> - online Bayesian learning</li>
+<li><strong>Automated coherence checking</strong> - posterior predictive checks at scale</li>
+<li><strong>Cyclic dependency resolution</strong> - time-indexed directed graphs</li>
+<li><strong>Scenario sensitivity</strong> - Sobol decomposition</li>
+<li><strong>Sparse population handling</strong> - hierarchical partial pooling</li>
+<li><strong>Latent trait validation</strong> - observable consequence chain</li>
 </ul>
 </div>
 <div class="syn-col">
