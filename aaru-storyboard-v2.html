@@ -121,7 +121,7 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <h4>Joint Probability over Discrete State Space</h4>
 <p>Each agent is a point in a joint probability space P(X,Y) over <strong style="color:#facc15">8^50</strong> (~10<sup>45</sup>) configurations. Roughly 50 variables, each discretized into 8 levels. Bayes' rule enforced bidirectionally: P(Y|X) and P(X|Y) must both be consistent. Previously 8^300, collapsed down as a bias-variance decision.</p>
 <p>The system is called <strong style="color:#10b981">Audience Gen</strong>. It defines <strong style="color:#facc15">~103 personality and demographic traits</strong> per agent, all latent. Currently shipping "second generation tenement traits" (v2 trait schema). Matt Hauer is building a <strong style="color:#10b981">logical consistency replacement module</strong> to catch incoherent trait combinations ("embers" that keep sparking up after the main fire is out).</p>
-<p>Three agent modalities running in parallel: (1) the joint probability model, (2) LLM-as-agent with persona cards for open-ended queries, (3) classical ML agents (logistic regression, random forest) for structured predictions. An <strong style="color:#10b981">Agent SDK</strong> is under development for external developers.</p>
+<p>Three-stage pipeline per <strong style="color:#10b981">John Kessler</strong>: (1) classical ML agents (logistic regression, random forest) for structured predictions with known feature sets, (2) the joint probability model P(X,Y) for coherent population-level inference, (3) LLM-as-agent with persona cards for open-ended qualitative queries. Each stage trades off speed, interpretability, and expressiveness. An <strong style="color:#10b981">Agent SDK</strong> is under development for external developers.</p>
 <p>This approach is closer to <strong>statistical mechanics</strong> (partition functions over discrete states) than traditional ABM. The "agents" aren't rule-based entities in a simulation; they're samples from a massive discrete probability space, and "simulation" means sampling trajectories consistent with the joint distribution.</p>
 <div class="detail">⚡ Hauer [29:26]: "The size of our state space is 8^50… more than all the data on the internet."<br>⚡ Hauer [32:30]: "We operate in the joint probability P(X,Y)… both forward and reverse must hold."<br>⚡ Yoonduk: ~103 traits, all latent — "nothing you can directly observe." Inferred from behavior.<br>⚡ Standup: Matt finishing logical consistency module. PRs stacked, results "look really good."<br>⚡ Standup: Agent SDK in review. Adaptive compute allocation experiments for Diffuser.</div>
 </div>
@@ -709,7 +709,7 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <li><strong>700-variable</strong> differentially private synthetic data in seconds</li>
 <li><strong>~103 latent personality traits</strong> per agent, all inferred from behavior</li>
 <li><strong>Audience Gen</strong> system with logical consistency module (in progress)</li>
-<li>Three-model ensemble: joint probability + LLM persona cards + classical ML</li>
+<li>Three-stage pipeline (Kessler): classical ML → joint P(X,Y) → LLM persona cards</li>
 <li>Continuous real-world calibration across the state space</li>
 <li>Agent SDK under development for external developers</li>
 <li>ClickHouse analytics + dynamic React/TSX chart generation</li>
