@@ -281,8 +281,8 @@
     </g>
 
     <!-- Dual-value annotation -->
-    <text x="850" y="358" font-size="7" fill="#10b981" opacity="0.5" text-anchor="middle">position</text>
-    <text x="850" y="368" font-size="7" fill="#10b981" opacity="0.3" text-anchor="middle">+ salience</text>
+    <text x="860" y="385" font-size="7" fill="#10b981" opacity="0.5" text-anchor="end">pos (0-100)</text>
+    <text x="860" y="395" font-size="7" fill="#10b981" opacity="0.3" text-anchor="end">+ salience (0-1)</text>
 
     <!-- ═══════════════ [C]: CURRENT CONTEXT ═══════════════ -->
     <rect x="148" y="478" rx="4" width="72" height="22" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,3"/>
@@ -365,17 +365,19 @@
     <line x1="775" y1="223" x2="700" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
 
     <!-- [E] → L3 (fan out) -->
-    <line x1="190" y1="296" x2="145" y2="344" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="290" y1="296" x2="225" y2="344" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="390" y1="296" x2="385" y2="344" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="490" y1="296" x2="465" y2="344" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="590" y1="296" x2="545" y2="344" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="700" y1="296" x2="705" y2="344" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
+    <line x1="190" y1="296" x2="175" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
+    <line x1="290" y1="296" x2="295" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
+    <line x1="390" y1="296" x2="415" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
+    <line x1="490" y1="296" x2="535" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
+    <line x1="590" y1="296" x2="655" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
+    <line x1="700" y1="296" x2="775" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
 
     <!-- L3 → [C] (salience activation) -->
-    <line x1="400" y1="436" x2="360" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
-    <line x1="500" y1="436" x2="448" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
-    <line x1="600" y1="436" x2="536" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
+    <line x1="295" y1="412" x2="272" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
+    <line x1="415" y1="412" x2="360" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
+    <line x1="535" y1="412" x2="448" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
+    <line x1="655" y1="412" x2="536" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
+    <line x1="775" y1="412" x2="624" y2="478" stroke="#ef4444" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-red)"/>
 
     <!-- [C] → [P] -->
     <line x1="272" y1="500" x2="218" y2="548" stroke="#ec4899" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-pink)"/>
@@ -428,7 +430,7 @@
     </div>
     <div class="anno l3">
         <h3>L3 — Political Disposition</h3>
-        <p>17 PRISM nodes, each with position (−100 to +100) and salience (0 to 1). The inflection point: last layer before everything becomes macro and deterministic. "Closer to the bone."</p>
+        <p>6 PRISM dimensions, each with position (0-100) and salience (0-1): MAT (Materialism), CSO (Current Social Order), CNA (Constitutional/National Authority), MOR (Moral Order), EPS (Epistemicism), PRO (Proceduralism). The inflection point: last layer before everything becomes macro.</p>
     </div>
     <div class="anno c">
         <h3>[C] — Current Context</h3>
