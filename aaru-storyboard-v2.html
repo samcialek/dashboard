@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaru — Illustrated Capability Storyboard v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
+.hero{padding:60px 32px 40px;text-align:center;background:linear-gradient(180deg,#0f0f1a 0%,#0a0a12 100%);border-bottom:1px solid rgba(255,255,255,0.04)}
+.hero h1{font-size:36px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px}
+.hero .sub{font-size:13px;color:#555;max-width:600px;margin:0 auto}
+.hero .sub strong{color:#89ccf0}
+.container{max-width:1200px;margin:0 auto;padding:32px 24px}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-bottom:40px;padding:16px 24px;background:rgba(255,255,255,0.015);border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:#666}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-exists{background:#10b981}
+.dot-optimal{background:#89ccf0}
+.dot-edge{background:#e8a0be}
+
+/* Segment */
+.segment{margin-bottom:48px;position:relative}
+.segment-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.segment-num{font-size:48px;font-weight:900;color:rgba(137,204,240,0.12);line-height:1;font-family:'JetBrains Mono',monospace}
+.segment-title{font-size:18px;font-weight:700;color:#fff}
+.segment-q{font-size:11px;color:#555;font-style:italic;margin-top:2px}
+
+.columns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:900px){.columns{grid-template-columns:1fr}}
+
+.col{border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.col-exists{background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.12)}
+.col-optimal{background:rgba(137,204,240,0.04);border:1px solid rgba(137,204,240,0.12)}
+.col-edge{background:rgba(232,160,190,0.04);border:1px dashed rgba(232,160,190,0.25)}
+
+.col-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.col-exists .col-label{color:#10b981}
+.col-optimal .col-label{color:#89ccf0}
+.col-edge .col-label{color:#e8a0be}
+
+.col svg{display:block;margin:0 auto 14px;opacity:0.85}
+.col h4{font-size:12px;font-weight:600;color:#ddd;margin-bottom:6px}
+.col p{font-size:10px;color:#888;line-height:1.6;margin-bottom:6px}
+.col .detail{font-size:9px;color:#facc15;font-family:'JetBrains Mono',monospace;margin-top:8px;line-height:1.5}
+.col .value{font-size:9px;color:#a78bfa;margin-top:6px}
+.col ul{font-size:10px;color:#888;padding-left:14px;line-height:1.7}
+.col ul li{margin-bottom:2px}
+
+/* Summary */
+.summary{background:rgba(232,160,190,0.04);border:1px solid rgba(232,160,190,0.15);border-radius:14px;padding:28px;margin-top:16px}
+.summary h3{font-size:15px;color:#e8a0be;margin-bottom:16px;font-weight:700}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+@media(max-width:900px){.summary-grid{grid-template-columns:1fr}}
+.summary-grid h4{font-size:11px;font-weight:700;color:#ccc;margin-bottom:8px}
+.summary-grid ul{font-size:10px;color:#999;padding-left:14px;line-height:1.8}
+.summary-grid li strong{color:#facc15}
+
+.footer{text-align:center;margin-top:48px;padding:24px;font-size:10px;color:#333;border-top:1px solid rgba(255,255,255,0.03)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>Aaru — Capability Storyboard</h1>
+<div class="sub">Synthetic population simulation · Confirmed via <strong>Hauer conversation</strong> (Mar 17, 2026) · 6 dimensions × 3 lenses</div>
+</div>
+
+<div class="container">
+
+<div class="legend">
+<div class="legend-item"><div class="legend-dot dot-exists"></div>What Exists — confirmed current capabilities</div>
+<div class="legend-item"><div class="legend-dot dot-optimal"></div>Optimal — what the field says is best practice</div>
+<div class="legend-item"><div class="legend-dot dot-edge"></div>Sam's Edge — what Sam uniquely brings</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEGMENT 1: Agent Construction -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="segment">
+<div class="segment-header">
+<div class="segment-num">01</div>
+<div><div class="segment-title">Agent Construction</div><div class="segment-q">"How do you build a single synthetic person?"</div></div>
+</div>
+<div class="columns">
+
+<div class="col col-exists">
+<div class="col-label">What Exists</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<rect x="20" y="10" width="120" height="100" rx="6" fill="none" stroke="#10b981" stroke-width="1" opacity="0.3"/>
+<!-- Joint probability grid -->
+<line x1="20" y1="35" x2="140" y2="35" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<line x1="20" y1="60" x2="140" y2="60" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<line x1="20" y1="85" x2="140" y2="85" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<line x1="50" y1="10" x2="50" y2="110" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<line x1="80" y1="10" x2="80" y2="110" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<line x1="110" y1="10" x2="110" y2="110" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<!-- Highlighted cells (populated regions) -->
+<rect x="52" y="37" width="26" height="21" rx="2" fill="#10b981" opacity="0.15"/>
+<rect x="82" y="62" width="26" height="21" rx="2" fill="#10b981" opacity="0.25"/>
+<rect x="22" y="87" width="26" height="21" rx="2" fill="#10b981" opacity="0.1"/>
+<rect x="112" y="12" width="26" height="21" rx="2" fill="#10b981" opacity="0.2"/>
+<!-- Agent dot -->
+<circle cx="95" cy="73" r="4" fill="#10b981" opacity="0.8"/>
+<circle cx="95" cy="73" r="8" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.4"/>
+<!-- Labels -->
+<text x="80" y="8" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">P(X,Y)</text>
+<!-- Bidirectional arrows -->
+<line x1="30" y1="118" x2="70" y2="118" stroke="#facc15" stroke-width="0.8" marker-end="url(#arrowY)"/>
+<line x1="70" y1="114" x2="30" y2="114" stroke="#facc15" stroke-width="0.8" marker-end="url(#arrowY)"/>
+<text x="50" y="112" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono">Bayes ↔</text>
+<defs><marker id="arrowY" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#facc15"/></marker></defs>
+</svg>
+<h4>Joint Probability Agent</h4>
+<p>Each agent = point in joint probability space P(X,Y) over <strong style="color:#facc15">8^50</strong> (~10<sup>45</sup>) configurations. 50 variables, 8 discretization levels. Bayes' rule enforced bidirectionally — P(Y|X) and P(X|Y) must both hold.</p>
+<p>Also: LLM-as-agent (prompt with persona card) + classical ML agents (logistic regression, random forest).</p>
+<div class="detail">⚡ Hauer: "The size of our state space is 8^50… more than all the data on the internet."<br>⚡ Previously 8^300, collapsed for bias-variance tradeoff.</div>
+</div>
+
+<div class="col col-optimal">
+<div class="col-label">Optimal</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Hierarchical tree -->
+<circle cx="80" cy="20" r="10" fill="none" stroke="#89ccf0" stroke-width="1" opacity="0.5"/>
+<text x="80" y="23" fill="#89ccf0" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.7">θ</text>
+<!-- Branches -->
+<line x1="72" y1="28" x2="40" y2="50" stroke="#89ccf0" stroke-width="0.7" opacity="0.3"/>
+<line x1="80" y1="30" x2="80" y2="50" stroke="#89ccf0" stroke-width="0.7" opacity="0.3"/>
+<line x1="88" y1="28" x2="120" y2="50" stroke="#89ccf0" stroke-width="0.7" opacity="0.3"/>
+<!-- Subgroup priors -->
+<circle cx="40" cy="55" r="7" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.4"/>
+<circle cx="80" cy="55" r="7" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.4"/>
+<circle cx="120" cy="55" r="7" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.4"/>
+<text x="40" y="58" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">θ₁</text>
+<text x="80" y="58" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">θ₂</text>
+<text x="120" y="58" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">θ₃</text>
+<!-- Individual agents -->
+<circle cx="30" cy="80" r="3" fill="#89ccf0" opacity="0.3"/><circle cx="42" cy="82" r="3" fill="#89ccf0" opacity="0.4"/><circle cx="50" cy="78" r="3" fill="#89ccf0" opacity="0.2"/>
+<circle cx="70" cy="80" r="3" fill="#89ccf0" opacity="0.5"/><circle cx="82" cy="78" r="3" fill="#89ccf0" opacity="0.3"/><circle cx="90" cy="82" r="3" fill="#89ccf0" opacity="0.4"/>
+<circle cx="110" cy="80" r="3" fill="#89ccf0" opacity="0.3"/><circle cx="122" cy="78" r="3" fill="#89ccf0" opacity="0.5"/><circle cx="130" cy="82" r="3" fill="#89ccf0" opacity="0.2"/>
+<!-- Lines to agents -->
+<line x1="40" y1="62" x2="30" y2="77" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="40" y1="62" x2="42" y2="79" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="40" y1="62" x2="50" y2="75" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="80" y1="62" x2="70" y2="77" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="80" y1="62" x2="82" y2="75" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="80" y1="62" x2="90" y2="79" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="120" y1="62" x2="110" y2="77" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="120" y1="62" x2="122" y2="75" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<line x1="120" y1="62" x2="130" y2="79" stroke="#89ccf0" stroke-width="0.4" opacity="0.2"/>
+<!-- Posterior distributions -->
+<path d="M25,100 Q30,88 35,100 Q40,88 45,100 Q50,92 55,100" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.3"/>
+<text x="80" y="100" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">partial pooling</text>
+</svg>
+<h4>Hierarchical Bayesian Agent</h4>
+<p>Each agent = individual posterior drawn from population prior via partial pooling. Parameters are <em>distributions</em>, not point estimates. Borrows strength across agents, principled uncertainty.</p>
+<ul>
+<li>Population hyperprior → subgroup prior → individual posterior</li>
+<li>MCMC/VI inference (NUTS, SVI)</li>
+<li>Uncertainty propagates end-to-end</li>
+</ul>
+</div>
+
+<div class="col col-edge">
+<div class="col-label">Sam's Edge</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- NumPyro code block aesthetic -->
+<rect x="15" y="8" width="130" height="104" rx="6" fill="rgba(232,160,190,0.05)" stroke="#e8a0be" stroke-width="0.5" opacity="0.3"/>
+<!-- Code lines -->
+<text x="22" y="24" fill="#e8a0be" font-size="6.5" font-family="JetBrains Mono" opacity="0.7">def model(data):</text>
+<text x="28" y="36" fill="#a78bfa" font-size="6.5" font-family="JetBrains Mono" opacity="0.6">  μ ~ Normal(0, 1)</text>
+<text x="28" y="48" fill="#a78bfa" font-size="6.5" font-family="JetBrains Mono" opacity="0.6">  σ ~ HalfNormal(1)</text>
+<text x="28" y="60" fill="#89ccf0" font-size="6.5" font-family="JetBrains Mono" opacity="0.6">  θᵢ ~ Normal(μ, σ)</text>
+<text x="28" y="72" fill="#10b981" font-size="6.5" font-family="JetBrains Mono" opacity="0.6">  y ~ Likelihood(θᵢ)</text>
+<!-- Posterior density curve -->
+<path d="M30,105 Q50,85 70,95 Q80,100 90,80 Q100,90 110,85 Q120,95 135,105" fill="none" stroke="#e8a0be" stroke-width="1.2" opacity="0.5"/>
+<circle cx="90" cy="80" r="2" fill="#e8a0be" opacity="0.8"/>
+<text x="100" y="78" fill="#e8a0be" font-size="5" font-family="JetBrains Mono" opacity="0.6">MAP</text>
+</svg>
+<h4>Probabilistic Programming (NumPyro + NUTS)</h4>
+<p>18 months production experience building hierarchical Bayesian models in NumPyro. Individual posteriors from cohort priors — the <strong style="color:#e8a0be">Serif engine</strong>.</p>
+<ul>
+<li>Replaces ad-hoc uncertainty with rigorous posterior inference</li>
+<li>Model comparison via WAIC/LOO</li>
+<li>Prior sensitivity analysis</li>
+<li>Composable generative models</li>
+</ul>
+<div class="value">→ Direct plug-in to Aaru's joint P(X,Y) framework. Adds formal inference where they currently use heuristic traversal.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEGMENT 2: Population Architecture -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="segment">
+<div class="segment-header">
+<div class="segment-num">02</div>
+<div><div class="segment-title">Population Architecture</div><div class="segment-q">"How do you build a million agents that look like a real population?"</div></div>
+</div>
+<div class="columns">
+
+<div class="col col-exists">
+<div class="col-label">What Exists</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Dense dot cloud representing 700 variables -->
+<text x="80" y="12" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">700 VARIABLES</text>
+<!-- Dots scattered representing synthetic population -->
+<g opacity="0.6">
+<circle cx="25" cy="30" r="1.5" fill="#10b981"/><circle cx="40" cy="35" r="1.5" fill="#10b981"/><circle cx="55" cy="28" r="1.5" fill="#10b981"/>
+<circle cx="70" cy="40" r="1.5" fill="#10b981"/><circle cx="85" cy="32" r="1.5" fill="#10b981"/><circle cx="100" cy="38" r="1.5" fill="#10b981"/>
+<circle cx="115" cy="30" r="1.5" fill="#10b981"/><circle cx="130" cy="36" r="1.5" fill="#10b981"/><circle cx="35" cy="48" r="1.5" fill="#10b981"/>
+<circle cx="50" cy="52" r="1.5" fill="#10b981"/><circle cx="65" cy="46" r="1.5" fill="#10b981"/><circle cx="80" cy="55" r="1.5" fill="#10b981"/>
+<circle cx="95" cy="50" r="1.5" fill="#10b981"/><circle cx="110" cy="48" r="1.5" fill="#10b981"/><circle cx="125" cy="54" r="1.5" fill="#10b981"/>
+<circle cx="30" cy="65" r="1.5" fill="#10b981"/><circle cx="45" cy="70" r="1.5" fill="#10b981"/><circle cx="60" cy="62" r="1.5" fill="#10b981"/>
+<circle cx="75" cy="68" r="1.5" fill="#10b981"/><circle cx="90" cy="72" r="1.5" fill="#10b981"/><circle cx="105" cy="65" r="1.5" fill="#10b981"/>
+<circle cx="120" cy="70" r="1.5" fill="#10b981"/><circle cx="135" cy="62" r="1.5" fill="#10b981"/><circle cx="28" cy="82" r="1.5" fill="#10b981"/>
+<circle cx="43" cy="85" r="1.5" fill="#10b981"/><circle cx="58" cy="80" r="1.5" fill="#10b981"/><circle cx="73" cy="88" r="1.5" fill="#10b981"/>
+<circle cx="88" cy="82" r="1.5" fill="#10b981"/><circle cx="103" cy="86" r="1.5" fill="#10b981"/><circle cx="118" cy="80" r="1.5" fill="#10b981"/>
+<circle cx="133" cy="84" r="1.5" fill="#10b981"/>
+</g>
+<!-- Privacy shield -->
+<rect x="55" y="92" width="50" height="18" rx="9" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
+<text x="80" y="104" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">ε-DP</text>
+<!-- Comparison callout -->
+<text x="80" y="118" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">NVIDIA: 6 vars | Census: $100M</text>
+</svg>
+<h4>700-Variable Synthetic Population</h4>
+<p>Differentially private synthetic data across <strong style="color:#facc15">700 variables</strong> generated in seconds. Vastly exceeds NVIDIA's 6-variable personas. Census Bureau spent $100M on inferior capability.</p>
+<p>Top-down demographic allocation from census marginals. Traits assigned from conditional distributions.</p>
+<div class="detail">⚡ Hauer: "We can make something in 700 variables." NVIDIA comparison: 6 vs 700.</div>
+</div>
+
+<div class="col col-optimal">
+<div class="col-label">Optimal</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Generative model architecture -->
+<rect x="30" y="10" width="100" height="20" rx="4" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.4"/>
+<text x="80" y="23" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">Latent Space z</text>
+<!-- Decoder arrows -->
+<line x1="50" y1="30" x2="35" y2="48" stroke="#89ccf0" stroke-width="0.6" opacity="0.3"/>
+<line x1="80" y1="30" x2="80" y2="48" stroke="#89ccf0" stroke-width="0.6" opacity="0.3"/>
+<line x1="110" y1="30" x2="125" y2="48" stroke="#89ccf0" stroke-width="0.6" opacity="0.3"/>
+<!-- Output distributions -->
+<path d="M20,70 Q28,50 35,70" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.5"/>
+<path d="M65,70 Q73,45 80,70" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.5"/>
+<path d="M110,70 Q118,52 125,70" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.5"/>
+<text x="28" y="78" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">pop₁</text>
+<text x="73" y="78" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">pop₂</text>
+<text x="118" y="78" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">pop₃</text>
+<!-- Copula note -->
+<text x="80" y="95" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">Generative model / copula</text>
+<text x="80" y="108" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">preserves correlational structure</text>
+</svg>
+<h4>Generative Population Modeling</h4>
+<p>Train a generative model (VAE, normalizing flows, copula) on microdata. Sample new populations statistically indistinguishable from real ones but fully synthetic.</p>
+<ul>
+<li>Correlational structure preserved naturally</li>
+<li>Generate populations for places/times with no data</li>
+<li>Compositional: condition on known marginals</li>
+</ul>
+</div>
+
+<div class="col col-edge">
+<div class="col-label">Sam's Edge</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Partial pooling diagram: archetype clusters with individual draws -->
+<!-- Archetype 1 -->
+<ellipse cx="45" cy="45" rx="25" ry="20" fill="none" stroke="#e8a0be" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,2"/>
+<circle cx="38" cy="40" r="2.5" fill="#e8a0be" opacity="0.4"/><circle cx="50" cy="42" r="2.5" fill="#e8a0be" opacity="0.5"/>
+<circle cx="42" cy="50" r="2.5" fill="#e8a0be" opacity="0.3"/><circle cx="52" cy="48" r="2.5" fill="#e8a0be" opacity="0.6"/>
+<circle cx="35" cy="48" r="2.5" fill="#e8a0be" opacity="0.35"/>
+<text x="45" y="25" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">archetype α</text>
+<!-- Archetype 2 -->
+<ellipse cx="115" cy="45" rx="25" ry="20" fill="none" stroke="#e8a0be" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,2"/>
+<circle cx="108" cy="42" r="2.5" fill="#e8a0be" opacity="0.5"/><circle cx="120" cy="40" r="2.5" fill="#e8a0be" opacity="0.4"/>
+<circle cx="112" cy="50" r="2.5" fill="#e8a0be" opacity="0.6"/><circle cx="122" cy="48" r="2.5" fill="#e8a0be" opacity="0.3"/>
+<text x="115" y="25" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">archetype β</text>
+<!-- Overlap region -->
+<circle cx="80" cy="45" r="2.5" fill="#a78bfa" opacity="0.5"/>
+<text x="80" y="38" fill="#a78bfa" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">soft</text>
+<!-- Arrow to population -->
+<path d="M80,65 L80,80" stroke="#e8a0be" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowP)"/>
+<defs><marker id="arrowP" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><path d="M0,0 L5,2 L0,4" fill="#e8a0be" opacity="0.5"/></marker></defs>
+<text x="80" y="92" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">PRISM partial pooling</text>
+<text x="80" y="104" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">individuals ∈ soft clusters</text>
+<text x="80" y="114" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">sparse subgroups handled</text>
+</svg>
+<h4>Partial Pooling Across Subgroups</h4>
+<p>Hierarchical model where agent parameters drawn from subgroup-level distributions. Archetypes as cluster centers, individuals as draws from archetype distributions.</p>
+<ul>
+<li>Handles sparse subgroups naturally</li>
+<li>Uncertainty propagates correctly</li>
+<li>No hard clustering — soft membership</li>
+</ul>
+<div class="value">→ Direct PRISM architecture. Individuals aren't forced into archetypes — they're probabilistic draws from archetype distributions.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEGMENT 3: Behavior Simulation -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="segment">
+<div class="segment-header">
+<div class="segment-num">03</div>
+<div><div class="segment-title">Behavior Simulation</div><div class="segment-q">"Given an agent with traits, how do you predict what they do?"</div></div>
+</div>
+<div class="columns">
+
+<div class="col col-exists">
+<div class="col-label">What Exists</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Forward conditioning arrow -->
+<rect x="15" y="20" width="50" height="24" rx="4" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
+<text x="40" y="35" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">X</text>
+<rect x="95" y="20" width="50" height="24" rx="4" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
+<text x="120" y="35" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">Y</text>
+<!-- Forward arrow -->
+<line x1="65" y1="28" x2="93" y2="28" stroke="#10b981" stroke-width="1" marker-end="url(#arrowG)"/>
+<text x="79" y="25" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(Y|X)</text>
+<!-- Reverse arrow -->
+<line x1="93" y1="38" x2="65" y2="38" stroke="#10b981" stroke-width="1" marker-end="url(#arrowG)"/>
+<text x="79" y="47" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(X|Y)</text>
+<defs><marker id="arrowG" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#10b981"/></marker></defs>
+<!-- LLM block -->
+<rect x="25" y="65" width="40" height="16" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<text x="45" y="76" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">LLM</text>
+<!-- ML block -->
+<rect x="75" y="65" width="40" height="16" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<text x="95" y="76" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">ML</text>
+<!-- Gap callouts -->
+<text x="80" y="98" fill="#ef4444" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ no counterfactuals</text>
+<text x="80" y="110" fill="#ef4444" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ no abduction</text>
+</svg>
+<h4>Joint Distribution Sampling + LLM</h4>
+<p>Behavior derived by conditioning P(X,Y). Both forward and reverse must be consistent. Also uses LLM completion for open-ended scenarios.</p>
+<p><strong style="color:#ef4444">Confirmed gaps:</strong> No counterfactual simulation. No reverse/abductive simulation.</p>
+<div class="detail">⚡ Hauer: "We operate in P(X,Y)… both forward and reverse probability must hold."<br>⚡ Counterfactuals + abduction explicitly confirmed as missing.</div>
+</div>
+
+<div class="col col-optimal">
+<div class="col-label">Optimal</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Causal DAG -->
+<circle cx="40" cy="25" r="10" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.5"/>
+<text x="40" y="28" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">U</text>
+<circle cx="80" cy="55" r="10" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.5"/>
+<text x="80" y="58" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">X</text>
+<circle cx="120" cy="25" r="10" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.5"/>
+<text x="120" y="28" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">Y</text>
+<!-- Edges -->
+<line x1="48" y1="30" x2="72" y2="50" stroke="#89ccf0" stroke-width="0.8" opacity="0.4" marker-end="url(#arrowB)"/>
+<line x1="88" y1="50" x2="112" y2="30" stroke="#89ccf0" stroke-width="0.8" opacity="0.4" marker-end="url(#arrowB)"/>
+<line x1="50" y1="25" x2="110" y2="25" stroke="#89ccf0" stroke-width="0.8" opacity="0.4" marker-end="url(#arrowB)"/>
+<defs><marker id="arrowB" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#89ccf0" opacity="0.5"/></marker></defs>
+<!-- do-calculus notation -->
+<text x="80" y="80" fill="#89ccf0" font-size="8" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(Y | do(X))</text>
+<!-- Pearl's ladder -->
+<text x="30" y="100" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.35">L1: association</text>
+<text x="30" y="108" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.45">L2: intervention</text>
+<text x="30" y="116" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.55">L3: counterfactual</text>
+</svg>
+<h4>Causal + Counterfactual Simulation</h4>
+<p>Transform correlational joint into causal structure. Pearl's Ladder: association → intervention → counterfactual. Enables P(Y | do(X)) queries — what happens if we <em>intervene</em>, not just observe.</p>
+<ul>
+<li>do-calculus for intervention queries</li>
+<li>SCMs for counterfactual reasoning</li>
+<li>Abductive: outcome → best explanation</li>
+</ul>
+</div>
+
+<div class="col col-edge">
+<div class="col-label">Sam's Edge</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- 14-node DAG (simplified) -->
+<g opacity="0.7">
+<!-- Personality layer -->
+<circle cx="30" cy="18" r="6" fill="none" stroke="#e8a0be" stroke-width="0.6"/><text x="30" y="20" fill="#e8a0be" font-size="4" text-anchor="middle" font-family="JetBrains Mono">P</text>
+<circle cx="55" cy="18" r="6" fill="none" stroke="#e8a0be" stroke-width="0.6"/><text x="55" y="20" fill="#e8a0be" font-size="4" text-anchor="middle" font-family="JetBrains Mono">V</text>
+<!-- Formative -->
+<circle cx="80" cy="18" r="6" fill="none" stroke="#a78bfa" stroke-width="0.6"/><text x="80" y="20" fill="#a78bfa" font-size="4" text-anchor="middle" font-family="JetBrains Mono">F</text>
+<!-- Disposition -->
+<circle cx="42" cy="45" r="8" fill="none" stroke="#e8a0be" stroke-width="0.8"/><text x="42" y="47" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono">D</text>
+<!-- Milieu -->
+<circle cx="110" cy="35" r="6" fill="none" stroke="#89ccf0" stroke-width="0.6"/><text x="110" y="37" fill="#89ccf0" font-size="4" text-anchor="middle" font-family="JetBrains Mono">M</text>
+<!-- Choice architecture -->
+<circle cx="110" cy="60" r="6" fill="none" stroke="#89ccf0" stroke-width="0.6"/><text x="110" y="62" fill="#89ccf0" font-size="4" text-anchor="middle" font-family="JetBrains Mono">CA</text>
+<!-- Behavior -->
+<circle cx="80" cy="75" r="8" fill="#e8a0be" opacity="0.15" stroke="#e8a0be" stroke-width="0.8"/><text x="80" y="77" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono">B</text>
+<!-- Edges -->
+<line x1="33" y1="23" x2="38" y2="38" stroke="#e8a0be" stroke-width="0.5" opacity="0.4"/>
+<line x1="55" y1="24" x2="45" y2="38" stroke="#e8a0be" stroke-width="0.5" opacity="0.4"/>
+<line x1="80" y1="24" x2="45" y2="38" stroke="#a78bfa" stroke-width="0.5" opacity="0.3"/>
+<line x1="48" y1="51" x2="73" y2="69" stroke="#e8a0be" stroke-width="0.5" opacity="0.4"/>
+<line x1="110" y1="41" x2="85" y2="69" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
+<line x1="110" y1="66" x2="85" y2="72" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
+</g>
+<!-- Labels -->
+<text x="80" y="95" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">PRISM 14-node L3 DAG</text>
+<text x="80" y="106" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">causal DAG + do-calculus</text>
+<text x="80" y="116" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">abductive inference built in</text>
+</svg>
+<h4>Causal DAGs + Abductive Inference</h4>
+<p>PRISM's 14-node L3 DAG already implements causal structure. Enables P(Y | do(X)) for counterfactuals and abductive reasoning (outcome → best explanation).</p>
+<ul>
+<li><strong style="color:#ef4444">Fills gap:</strong> Counterfactual simulation</li>
+<li><strong style="color:#ef4444">Fills gap:</strong> Reverse/abductive simulation</li>
+<li>Already built and tested</li>
+</ul>
+<div class="detail">⚡ Hauer called abduction "really fucking weird" — it's inference to the best explanation, standard in philosophy of science.</div>
+<div class="value">→ Sam's causal DAGs + do-calculus directly enable both confirmed gaps.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEGMENT 4: Environment Modeling -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="segment">
+<div class="segment-header">
+<div class="segment-num">04</div>
+<div><div class="segment-title">Environment Modeling</div><div class="segment-q">"What world do the agents live in?"</div></div>
+</div>
+<div class="columns">
+
+<div class="col col-exists">
+<div class="col-label">What Exists</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Static scenario box -->
+<rect x="25" y="15" width="110" height="35" rx="5" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+<text x="80" y="36" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">SCENARIO</text>
+<!-- Arrow down to agents -->
+<line x1="80" y1="50" x2="80" y2="62" stroke="#10b981" stroke-width="0.8" opacity="0.3" marker-end="url(#arrowG)"/>
+<!-- Agent row -->
+<circle cx="35" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="60" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="85" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="110" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="135" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<!-- No feedback arrows -->
+<text x="80" y="100" fill="#fb923c" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">🔶 adversarial sim (uncap)</text>
+<text x="80" y="112" fill="#fb923c" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">🔶 org sim (uncap)</text>
+</svg>
+<h4>Static Scenario Injection</h4>
+<p>Define a scenario (election, policy change, crisis) and ask agents to respond. Environment is a fixed prompt — no feedback loops, no agent-agent interaction.</p>
+<p><strong style="color:#fb923c">Uncapitalized IP:</strong> Adversarial simulation (competitor modeling) and organizational simulation (HR/strategy) are built but not productized.</p>
+<div class="detail">⚡ Hauer: massive untapped product potential in org + adversarial simulation.</div>
+</div>
+
+<div class="col col-optimal">
+<div class="col-label">Optimal</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Dynamic feedback system -->
+<rect x="30" y="10" width="100" height="25" rx="4" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
+<text x="80" y="26" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">ENVIRONMENT</text>
+<!-- Feedback arrows -->
+<path d="M45,35 L45,55" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
+<path d="M55,55 L55,35" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
+<path d="M105,35 L105,55" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
+<path d="M115,55 L115,35" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
+<!-- Agent-agent interactions -->
+<rect x="20" y="55" width="120" height="30" rx="4" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.2"/>
+<circle cx="40" cy="70" r="5" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.4"/>
+<circle cx="70" cy="70" r="5" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.4"/>
+<circle cx="100" cy="70" r="5" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.4"/>
+<line x1="45" y1="70" x2="65" y2="70" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
+<line x1="75" y1="70" x2="95" y2="70" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
+<!-- Contagion / tipping -->
+<text x="80" y="100" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">feedback loops · contagion</text>
+<text x="80" y="112" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">tipping points · network effects</text>
+</svg>
+<h4>Dynamic Environment with Feedback</h4>
+<p>Environment as a dynamic system agents interact with. Economy, media, social networks as explicit stochastic processes. Enables feedback loops, contagion, tipping points.</p>
+<ul>
+<li>Agent-agent interaction networks</li>
+<li>Environment state updates from agent actions</li>
+<li>Emergent macro phenomena from micro rules</li>
+</ul>
+</div>
+
+<div class="col col-edge">
+<div class="col-label">Sam's Edge</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Refraction layers -->
+<rect x="20" y="10" width="120" height="16" rx="3" fill="none" stroke="#e8a0be" stroke-width="0.6" opacity="0.3"/>
+<text x="80" y="21" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">[F] Formative</text>
+<rect x="20" y="32" width="120" height="16" rx="3" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.3"/>
+<text x="80" y="43" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">[M] Milieu</text>
+<rect x="20" y="54" width="120" height="16" rx="3" fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0.3"/>
+<text x="80" y="65" fill="#a78bfa" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">[CA] Choice Architecture</text>
+<!-- Light beam refracting through layers -->
+<line x1="40" y1="8" x2="50" y2="26" stroke="#facc15" stroke-width="1" opacity="0.3"/>
+<line x1="50" y1="26" x2="65" y2="48" stroke="#facc15" stroke-width="1" opacity="0.3"/>
+<line x1="65" y1="48" x2="90" y2="70" stroke="#facc15" stroke-width="1" opacity="0.3"/>
+<line x1="90" y1="70" x2="100" y2="85" stroke="#facc15" stroke-width="1" opacity="0.4"/>
+<circle cx="100" cy="85" r="3" fill="#facc15" opacity="0.3"/>
+<text x="110" y="87" fill="#facc15" font-size="5" font-family="JetBrains Mono" opacity="0.5">behavior</text>
+<!-- Macro/micro distinction -->
+<line x1="145" y1="10" x2="145" y2="40" stroke="#10b981" stroke-width="2" opacity="0.2"/>
+<text x="150" y="28" fill="#10b981" font-size="4" font-family="Inter" opacity="0.5" writing-mode="tb">macro</text>
+<line x1="145" y1="50" x2="145" y2="85" stroke="#a78bfa" stroke-width="2" opacity="0.2"/>
+<text x="150" y="70" fill="#a78bfa" font-size="4" font-family="Inter" opacity="0.5" writing-mode="tb">micro</text>
+<!-- Label -->
+<text x="80" y="100" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">Exogenous refraction layers</text>
+<text x="80" y="112" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">macro = observable, micro = stochastic</text>
+</svg>
+<h4>Exogenous Refraction Layers</h4>
+<p>PRISM models environment as refraction layers that mediate between disposition and behavior. [F] Formative, [M] Milieu, [CA] Choice Architecture.</p>
+<ul>
+<li>Separates what's modelable from what's not</li>
+<li>Macro layers = observable, micro = stochastic</li>
+<li>Disposition → refraction → behavior</li>
+</ul>
+<div class="value">→ PRISM's [F]/[M]/[CA] layers. The micro/macro distinction is the key architectural insight.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEGMENT 5: Validation & Calibration -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="segment">
+<div class="segment-header">
+<div class="segment-num">05</div>
+<div><div class="segment-title">Validation & Calibration</div><div class="segment-q">"How do you know the simulation is right?"</div></div>
+</div>
+<div class="columns">
+
+<div class="col col-exists">
+<div class="col-label">What Exists</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Calibration loop -->
+<circle cx="50" cy="40" r="22" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+<text x="50" y="38" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">MODEL</text>
+<text x="50" y="46" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">8^50</text>
+<!-- Real data input -->
+<rect x="95" y="25" width="50" height="30" rx="4" fill="none" stroke="#facc15" stroke-width="0.8" opacity="0.3"/>
+<text x="120" y="38" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">REAL</text>
+<text x="120" y="46" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">DATA</text>
+<!-- Bidirectional arrows -->
+<line x1="72" y1="35" x2="93" y2="35" stroke="#10b981" stroke-width="0.6" opacity="0.4" marker-end="url(#arrowG)"/>
+<line x1="93" y1="45" x2="72" y2="45" stroke="#facc15" stroke-width="0.6" opacity="0.4" marker-end="url(#arrowY)"/>
+<!-- "whole way" label -->
+<text x="82" y="30" fill="#10b981" font-size="4" font-family="JetBrains Mono" opacity="0.4">continuous</text>
+<!-- Election benchmark -->
+<rect x="20" y="75" width="120" height="30" rx="4" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<text x="40" y="88" fill="#10b981" font-size="5" font-family="JetBrains Mono" opacity="0.4">SIM</text>
+<text x="80" y="88" fill="#888" font-size="5" font-family="Inter" opacity="0.4">vs</text>
+<text x="110" y="88" fill="#facc15" font-size="5" font-family="JetBrains Mono" opacity="0.4">ACTUAL</text>
+<text x="80" y="100" fill="#10b981" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">aggregate benchmarking</text>
+</svg>
+<h4>Continuous Calibration + Benchmarking</h4>
+<p>Joint distribution continuously anchored against observed data. Real data identifies populated regions of 8^50 space. Aggregate election results benchmarked against actual outcomes.</p>
+<div class="detail">⚡ Hauer: "Real-world data interfaces with the model the whole way. That's how we traverse the state space."</div>
+</div>
+
+<div class="col col-optimal">
+<div class="col-label">Optimal</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- PPC: simulated vs real distributions -->
+<text x="80" y="14" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">Posterior Predictive Check</text>
+<!-- Real distribution -->
+<path d="M20,80 Q35,30 50,60 Q60,70 70,50 Q80,40 90,55 Q100,65 110,45 Q120,55 140,80" fill="none" stroke="#facc15" stroke-width="1" opacity="0.4"/>
+<!-- Simulated distributions (multiple draws) -->
+<path d="M20,80 Q35,35 50,58 Q60,72 70,52 Q80,38 90,53 Q100,63 110,47 Q120,53 140,80" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.25"/>
+<path d="M20,80 Q35,28 50,62 Q60,68 70,48 Q80,42 90,57 Q100,67 110,43 Q120,57 140,80" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.25"/>
+<path d="M20,80 Q35,32 50,55 Q60,75 70,55 Q80,36 90,50 Q100,60 110,50 Q120,50 140,80" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.25"/>
+<!-- Legend -->
+<line x1="30" y1="95" x2="50" y2="95" stroke="#facc15" stroke-width="1" opacity="0.4"/>
+<text x="55" y="97" fill="#facc15" font-size="5" font-family="Inter" opacity="0.5">observed</text>
+<line x1="30" y1="108" x2="50" y2="108" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
+<text x="55" y="110" fill="#89ccf0" font-size="5" font-family="Inter" opacity="0.5">simulated draws</text>
+</svg>
+<h4>Posterior Predictive Checks</h4>
+<p>Generate simulated data from the model, compare to real data. If indistinguishable → well-calibrated. Plus individual plausibility: detect impossible trait bundles ("gun-owning vegan in rural Alabama").</p>
+<ul>
+<li>PPC: Bayesian gold standard for model checking</li>
+<li>WAIC/LOO for model comparison</li>
+<li>Calibration plots for probabilistic predictions</li>
+</ul>
+</div>
+
+<div class="col col-edge">
+<div class="col-label">Sam's Edge</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Individual agent plausibility -->
+<g opacity="0.7">
+<!-- Good agent -->
+<circle cx="40" cy="35" r="12" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
+<text x="40" y="33" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">✓</text>
+<text x="40" y="40" fill="#10b981" font-size="4" text-anchor="middle" font-family="Inter" opacity="0.5">coherent</text>
+<!-- Bad agent (ember) -->
+<circle cx="110" cy="35" r="12" fill="none" stroke="#ef4444" stroke-width="0.8" opacity="0.4"/>
+<text x="110" y="33" fill="#ef4444" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">✗</text>
+<text x="110" y="40" fill="#ef4444" font-size="4" text-anchor="middle" font-family="Inter" opacity="0.5">"ember"</text>
+</g>
+<!-- PPC workflow -->
+<rect x="15" y="58" width="130" height="50" rx="5" fill="none" stroke="#e8a0be" stroke-width="0.6" opacity="0.2"/>
+<text x="80" y="70" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">brms / Stan / NumPyro</text>
+<text x="80" y="82" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">posterior predictive checks</text>
+<text x="80" y="92" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">individual plausibility scoring</text>
+<text x="80" y="102" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">prior sensitivity analysis</text>
+<!-- Callout -->
+<text x="80" y="116" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">standard Bayesian workflow → production</text>
+</svg>
+<h4>Bayesian Model Checking Pipeline</h4>
+<p>Standard Bayesian workflow: posterior predictive checks, individual plausibility scoring (the "embers" problem), WAIC/LOO model comparison, prior sensitivity analysis.</p>
+<ul>
+<li>Detect incoherent trait bundles</li>
+<li>Compare model variants rigorously</li>
+<li>brms/Stan/NumPyro — 18 months production experience</li>
+</ul>
+<div class="value">→ The "embers" problem is a validation gap Sam can directly address. Individual coherence checking at scale.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEGMENT 6: Temporal Dynamics -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="segment">
+<div class="segment-header">
+<div class="segment-num">06</div>
+<div><div class="segment-title">Temporal Dynamics</div><div class="segment-q">"How do agents change over time?"</div></div>
+</div>
+<div class="columns">
+
+<div class="col col-exists">
+<div class="col-label">What Exists</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Single snapshot -->
+<rect x="35" y="20" width="90" height="50" rx="6" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+<!-- Agents frozen in time -->
+<circle cx="55" cy="40" r="4" fill="#10b981" opacity="0.3"/>
+<circle cx="75" cy="45" r="4" fill="#10b981" opacity="0.4"/>
+<circle cx="95" cy="38" r="4" fill="#10b981" opacity="0.3"/>
+<circle cx="65" cy="55" r="4" fill="#10b981" opacity="0.2"/>
+<circle cx="85" cy="52" r="4" fill="#10b981" opacity="0.35"/>
+<!-- Time axis with single point -->
+<line x1="25" y1="90" x2="135" y2="90" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<circle cx="80" cy="90" r="3" fill="#10b981" opacity="0.5"/>
+<text x="80" y="105" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">t₀</text>
+<!-- Labels -->
+<text x="80" y="16" fill="#10b981" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">snapshot — no persistence</text>
+<text x="80" y="115" fill="#555" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">no memory · no evolution · no drift</text>
+</svg>
+<h4>Snapshot Simulation</h4>
+<p>Generate a population at a point in time, simulate one event. No persistence, no memory, no evolution.</p>
+<p>Misses drift, learning, radicalization, disengagement over time.</p>
+</div>
+
+<div class="col col-optimal">
+<div class="col-label">Optimal</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Online Bayesian updating -->
+<text x="80" y="14" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">Online Bayesian Learning</text>
+<!-- Prior → posterior chain -->
+<path d="M20,55 Q30,30 40,55" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
+<text x="30" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">prior</text>
+<!-- Arrow + data -->
+<line x1="42" y1="45" x2="56" y2="45" stroke="#facc15" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowY)"/>
+<text x="49" y="40" fill="#facc15" font-size="4" font-family="JetBrains Mono" opacity="0.4">d₁</text>
+<!-- Updated posterior -->
+<path d="M58,55 Q68,25 78,55" fill="none" stroke="#89ccf0" stroke-width="1" opacity="0.4"/>
+<text x="68" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">post₁</text>
+<!-- Arrow + data -->
+<line x1="80" y1="45" x2="94" y2="45" stroke="#facc15" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowY)"/>
+<text x="87" y="40" fill="#facc15" font-size="4" font-family="JetBrains Mono" opacity="0.4">d₂</text>
+<!-- Further updated -->
+<path d="M96,55 Q106,20 116,55" fill="none" stroke="#89ccf0" stroke-width="1.2" opacity="0.5"/>
+<text x="106" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">post₂</text>
+<!-- SMC particles -->
+<text x="80" y="85" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">sequential Monte Carlo</text>
+<text x="80" y="97" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">particle filtering · variational</text>
+<text x="80" y="112" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.35">posteriors evolve continuously</text>
+</svg>
+<h4>Online Bayesian Learning</h4>
+<p>Agents update beliefs in real-time as new data arrives. Sequential Monte Carlo, particle filtering, or variational online updates. Population posteriors evolve continuously.</p>
+<ul>
+<li>Prior → data → posterior → new prior</li>
+<li>No full re-training needed</li>
+<li>Rolling forward with error accumulation detection</li>
+</ul>
+</div>
+
+<div class="col col-edge">
+<div class="col-label">Sam's Edge</div>
+<svg width="160" height="120" viewBox="0 0 160 120">
+<!-- Steady state DAG -->
+<rect x="10" y="12" width="60" height="40" rx="4" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.3"/>
+<text x="40" y="25" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">DAG</text>
+<text x="40" y="34" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">steady</text>
+<text x="40" y="43" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">state</text>
+<!-- Phase transition -->
+<path d="M72,32 L88,32" stroke="#ef4444" stroke-width="1.5" opacity="0.5" stroke-dasharray="3,2"/>
+<text x="80" y="28" fill="#ef4444" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">⚡</text>
+<!-- RL / re-opened formative -->
+<rect x="90" y="12" width="60" height="40" rx="4" fill="none" stroke="#e8a0be" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,2"/>
+<text x="120" y="25" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">RL</text>
+<text x="120" y="34" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">phase</text>
+<text x="120" y="43" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">transition</text>
+<!-- Examples -->
+<text x="80" y="68" fill="#e8a0be" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.5">divorce · war · migration · crisis</text>
+<text x="80" y="80" fill="#888" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">re-open formative layers</text>
+<text x="80" y="90" fill="#888" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">re-refract personality → disposition</text>
+<!-- CVaR callout -->
+<rect x="20" y="98" width="120" height="16" rx="4" fill="rgba(232,160,190,0.05)" stroke="#e8a0be" stroke-width="0.5" opacity="0.3"/>
+<text x="80" y="109" fill="#e8a0be" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">+ CVaR tail-risk optimization</text>
+</svg>
+<h4>Phase Transitions + CVaR</h4>
+<p>PRISM insight: most of life = feed-forward DAG (steady state). But phase transitions (divorce, war, migration) re-open formative layers and re-refract personality.</p>
+<ul>
+<li>DAG = steady state, RL = phase transitions</li>
+<li><strong style="color:#e8a0be">CVaR:</strong> Optimize for tail risk, not just means</li>
+<li>Client chooses risk posture → different strategy</li>
+</ul>
+<div class="detail">⚡ Hauer loved the CVaR pitch. "Geometry of Preference" — political disagreements as distributional preference differences.</div>
+<div class="value">→ Online Bayesian learning formalizes Aaru's "continuous calibration." Phase transitions + CVaR add decision-theoretic output.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SUMMARY -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="summary">
+<h3>The Integration Thesis</h3>
+<div class="summary-grid">
+<div>
+<h4 style="color:#10b981">What Aaru Has</h4>
+<ul>
+<li>Joint P(X,Y) over <strong>8^50</strong> state space</li>
+<li>Bidirectional Bayes' rule enforcement</li>
+<li><strong>700-variable</strong> differentially private synthetic data</li>
+<li>Continuous real-world calibration</li>
+<li>LLM-as-agent + classical ML pipeline</li>
+<li>Aggregate election benchmarking</li>
+<li>Adversarial + org simulation (uncapitalized)</li>
+</ul>
+</div>
+<div>
+<h4 style="color:#ef4444">Confirmed Gaps</h4>
+<ul>
+<li>❌ No counterfactual simulation</li>
+<li>❌ No reverse/abductive simulation</li>
+<li>❌ No distributional optimization (CVaR)</li>
+<li>❌ No formal probabilistic programming</li>
+<li>❌ No online Bayesian learning</li>
+<li>❌ No individual plausibility validation</li>
+<li>❌ Snapshot only — no temporal dynamics</li>
+</ul>
+</div>
+<div>
+<h4 style="color:#e8a0be">What Sam Brings</h4>
+<ul>
+<li>Causal DAGs + do-calculus → <strong>counterfactuals</strong></li>
+<li>Abductive inference → <strong>reverse simulation</strong></li>
+<li>CVaR / distributional optimization → <strong>risk-aware output</strong></li>
+<li>NumPyro probabilistic programming → <strong>rigorous inference</strong></li>
+<li>Online Bayesian learning → <strong>living agents</strong></li>
+<li>PRISM refraction layers → <strong>environment modeling</strong></li>
+<li>Posterior predictive checks → <strong>validation pipeline</strong></li>
+</ul>
+</div>
+</div>
+<p style="font-size:11px;color:#888;margin-top:20px;border-top:1px solid rgba(255,255,255,0.05);padding-top:14px">
+<strong style="color:#e8a0be">The pitch:</strong> All modules interface with Aaru's existing joint probability framework P(X,Y) over the 8^50 state space. They don't replace the engine — they extend it. Causal DAGs add direction. Abduction adds reverse traversal. CVaR adds decision theory. Probabilistic programming adds rigorous inference. Online learning adds temporal evolution. Refraction layers add environment dynamics. Each is independently valuable. Together they transform a correlational simulation engine into a causal, decision-theoretic, temporally-aware one.
+</p>
+</div>
+
+<div class="footer">Illustrated Capability Storyboard v2 · Aaru · March 18, 2026 · Post-Hauer confirmed</div>
+
+</div>
+</body>
+</html>
