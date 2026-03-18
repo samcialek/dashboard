@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../imgs/favicon.png">
+    <title>How Light Refracts - matrices of confusion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300..700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #E8E4DC;
+            --bg-secondary: #D4CFC4;
+            --accent-coral: #E07A5F;
+            --accent-green: #2D5A3D;
+            --accent-pink: #C97B98;
+            --accent-gold: #C9A227;
+            --accent-blue: #4A90A4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --figure-bg: #F5F3EF;
+        }
+        
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 19px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-coral);
+        }
+        
+        .article-header {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 2rem;
+        }
+
+        .article-header-text {
+            flex: 1;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .article-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+        }
+
+        .article-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: lowercase;
+        }
+        
+        .series-nav {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+        
+        .series-nav a {
+            color: var(--accent-coral);
+            text-decoration: none;
+        }
+        
+        .series-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+        
+        .content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+        }
+        
+        .content strong {
+            font-weight: 600;
+        }
+        
+        .content em {
+            font-style: italic;
+        }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin: 3rem 0;
+        }
+
+        /* Illustration placeholders */
+        .content details {
+            background: var(--figure-bg);
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 6px;
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .content details summary {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-coral);
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .content details .fig-spec {
+            margin-top: 1rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .content details .fig-spec strong {
+            color: var(--text-primary);
+        }
+        
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .footer-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .related-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .related-link {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-coral);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border-radius: 3px;
+        }
+        
+        .related-link:hover {
+            background: var(--accent-coral);
+            color: white;
+        }
+        
+        @media (max-width: 600px) {
+            .back-link {
+                position: static;
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .article-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-header-text {
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .content {
+                padding: 0 1.5rem 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../essays-preview.html" class="back-link">&#8592; essays</a>
+        <a href="../index.html"><img src="../imgs/matrices-logo.png" class="img-fluid" style="max-width: 400px;"></a>
+    </header>
+    
+    <div class="article-header">
+        <div class="article-header-text">
+            <h1 class="article-title">how light refracts</h1>
+            <div class="article-subtitle">four layers of political refraction, and why the same person votes differently in different worlds</div>
+            <div class="article-meta">march 2026 &middot; ~22 min read</div>
+            <div class="series-nav">companion to: <a href="draft6-cause-of-our-politics.html">The Cause of Our Politics</a></div>
+        </div>
+    </div>
+    
+    <article class="content">
+
+        <p>In the previous essay I described an attempt to build a generative political model &mdash; one that infers the upstream causes of political behavior rather than sorting declared beliefs into familiar buckets. I talked about why most political compasses start too close to the outputs, why self-report is lossy, why identity and ideology create an XOR problem that linear models can&rsquo;t solve, and why the real target is something deeper than the issue positions themselves.</p>
+
+        <p>What I didn&rsquo;t do is lay out the actual structure. This essay does that.</p>
+
+        <p>The central claim remains simple enough to state even if the implications take a while to unpack: &ldquo;liberal&rdquo; and &ldquo;conservative&rdquo; are not fundamental forces. They are principal components &mdash; compressions of a high-dimensional disposition space into convenient axes that capture the most variance in a given era. They feel real because they explain a lot. But principal components are artifacts of the decomposition, not the underlying reality. They rotate when the data changes. What &ldquo;liberal&rdquo; captures in 1972 is not what it captures in 2024. Same label, different loading vector.</p>
+
+        <p>If you build a model on the components, it breaks every time the political landscape rearranges. If you build a model on the underlying dimensions, it survives the rearrangement. That&rsquo;s the difference between descriptive and generative.</p>
+
+        <p>The framework &mdash; PRISM, Political Refraction of Innate Social Mapping &mdash; models political behavior as white light passing through a series of optical media. You are born with a particular beam of light: your innate temperament. That beam then passes through three successive prisms, each one an exogenous medium that bends the light in a different way. What emerges on the far side is political behavior &mdash; a particular color, at a particular angle, at a particular brightness. But the same beam of light, passed through different media, produces a different output. This is why the same person in a different country, a different era, or facing a different ballot would vote differently. The light didn&rsquo;t change. The medium did.</p>
+
+        <details>
+            <summary>&#9650; Figure 1 &mdash; Hero: The Four Prisms</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Animated GIF (Kling)<br>
+                <strong>Description:</strong> A single white beam of light enters from the left and passes through four sequential prisms arranged left-to-right. Each prism is labeled: [F] Formative, [M] Milieu, [CA] Choice Architecture. Between the prisms, the light progressively separates and bends &mdash; from white, to 6 spectral bands after [F], to shifted/filtered bands after [M], to a final narrow output beam after [CA] labeled &ldquo;Political Behavior.&rdquo; The animation cycles: light turns on (beam appears, propagates through each prism in sequence), holds for 3 seconds showing the full cascade, then fades off. Loop.<br>
+                <strong>Style:</strong> Dark background, clean vector-style beams with soft glow. Prisms rendered as translucent glass with subtle refraction caustics. Labels in Courier Prime.<br>
+                <strong>Dimensions:</strong> 780 &times; 300px
+            </div>
+        </details>
+
+        <p>The architecture has four layers, alternating between what is <em>inside</em> the person (endogenous) and what <em>happens to</em> the person (exogenous). The endogenous layers are the light itself &mdash; L1 (innate temperament), L2 (crystallized personality), L3 (political disposition), L4 (political behavior). The exogenous layers are the media the light passes through &mdash; [F] (formative experiences), [M] (milieu/zeitgeist), [CA] (choice architecture). Each exogenous layer refracts the endogenous layer above it into the endogenous layer below it. The model is feed-forward: light goes in one direction, from deep and stable to shallow and volatile.</p>
+
+        <hr>
+
+        <h2>L1 &mdash; innate temperament: the white light</h2>
+
+        <p>At the bottom of the stack are six neurobiological traits that precede ideology entirely. These are the hardware, not the software. They don&rsquo;t determine your politics, but they define the <em>range</em> of politics available to you. Think of them as Bayesian priors in the literal sense: before you encounter any evidence about the world &mdash; before you grow up anywhere, absorb any culture, or experience any economy &mdash; these priors constrain which political dispositions you&rsquo;ll find intuitive and which will always feel slightly wrong.</p>
+
+        <p>The six L1 dimensions:</p>
+
+        <p><strong>Threat Reactivity (TR)</strong> &mdash; how strongly your nervous system responds to perceived danger, disgust, or violation. High TR doesn&rsquo;t make you conservative; it makes you sensitive to threat cues, and the political system then determines which threats feel salient. The same high-TR person in 1955 fears communism; in 2024, immigration; in a different country, something else entirely. The reactivity is innate. The target is supplied by context.</p>
+
+        <p><strong>Novelty Drive (ND)</strong> &mdash; appetite for new experience, unfamiliar people, untested ideas. This is openness-to-experience narrowed to its politically relevant core. High ND makes cosmopolitan environments feel natural and monocultural ones feel stifling. Low ND makes tradition feel like wisdom and disruption feel like recklessness. Neither is wrong. But they produce genuinely different political intuitions about change, immigration, cultural evolution, and institutional reform.</p>
+
+        <p><strong>Empathic Capacity (EMP)</strong> &mdash; the radius and intensity of emotional resonance with others&rsquo; suffering. This is not &ldquo;empathy good, lack of empathy bad.&rdquo; Extremely high EMP can produce political paralysis (every policy hurts <em>someone</em>). Moderate EMP combined with high cognitive flexibility produces the technocratic reformer who can hold both the aggregate benefit and the individual cost in mind. Low EMP combined with high affiliative drive produces the communitarian who cares intensely &mdash; but only about their people.</p>
+
+        <p><strong>Temperamental Reactance (RX)</strong> &mdash; the instinctive pushback against perceived constraint or authority. This is not libertarianism; it&rsquo;s the pre-political impulse that libertarianism channels. High RX people chafe at being told what to do regardless of who is doing the telling. In a left-coded environment, RX produces contrarianism against progressive orthodoxy. In a right-coded one, it produces rebellion against traditional authority. Same trait, different political expression, because the constraint it&rsquo;s reacting against is supplied by context.</p>
+
+        <p><strong>Affiliative Drive (AF)</strong> &mdash; how strongly you seek belonging, group membership, collective identity. High AF makes party loyalty feel natural, movement politics feel exciting, and political loneliness feel unbearable. Low AF makes independence feel principled and partisanship feel like surrender. This is the dimension that most strongly predicts whether someone will <em>join</em> &mdash; a party, a movement, a coalition &mdash; regardless of which one.</p>
+
+        <p><strong>Cognitive Flexibility (CF)</strong> &mdash; the capacity to hold contradictory frames simultaneously, to update beliefs in response to evidence, to tolerate ambiguity without resolving it prematurely. Low CF combined with high TR produces the political phenotype that wants clear answers, clear enemies, strong leadership, and decisive action &mdash; a phenotype that can manifest on any point of the traditional spectrum. High CF allows for more exploratory political behavior, more cross-partisan curiosity, more willingness to hold multiple considerations at once. It also, honestly, can produce a paralyzing tendency to see all sides of everything.</p>
+
+        <details>
+            <summary>&#9650; Figure 2 &mdash; L1 Temperament Spectrum (Interactive)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Interactive (JS/Canvas)<br>
+                <strong>Description:</strong> Six horizontal sliders, one for each L1 trait (TR, ND, EMP, RX, AF, CF). Each slider runs from low (left) to high (right) with a labeled scale. As the user adjusts sliders, a composite &ldquo;white light beam&rdquo; visualization below the sliders changes character: its width, brightness, spectral composition, and pulsation speed reflect the current trait configuration. A text readout below describes what this particular temperament configuration tends to produce (e.g., &ldquo;High TR + Low CF + High AF = strong group-loyalty, threat-sensitive, decisive&rdquo;). Preset buttons: &ldquo;The Explorer,&rdquo; &ldquo;The Sentinel,&rdquo; &ldquo;The Bridge-Builder,&rdquo; &ldquo;The Contrarian&rdquo; snap sliders to characteristic profiles.<br>
+                <strong>Tech:</strong> Vanilla JS + Canvas. Sliders are range inputs styled to match MoC theme. Beam visualization uses gradient fills and oscillating alpha. Text readout updates on input event with debounce.<br>
+                <strong>Dimensions:</strong> 780 &times; 500px
+            </div>
+        </details>
+
+        <p>These six are chosen because each is upstream of political content, heritable to a significant degree, stable by late adolescence, and &mdash; crucially &mdash; they interact in ways that matter for prediction. A person isn&rsquo;t just &ldquo;high threat reactivity.&rdquo; They&rsquo;re high TR <em>combined with</em> a particular level of empathic capacity, a particular level of cognitive flexibility, a particular affiliative drive. The interactions matter more than the individual dimensions. High TR + high CF produces a very different person than high TR + low CF, even though both are &ldquo;threat-sensitive.&rdquo; The first can hold the threat in mind while also reasoning about it. The second needs to resolve it immediately.</p>
+
+        <p>The Bayesian framing is not a metaphor. Given someone&rsquo;s expressed politics, the question PRISM asks is: what are the possible L1 configurations that could have produced them? It&rsquo;s the inverse problem. We observe the output and try to infer the generator. A person&rsquo;s expressed politics don&rsquo;t map back to a single L1 profile. They map back to a <em>distribution</em> over L1 profiles, weighted by how plausible each configuration is given everything else we know about their formation, their era, and their choices.</p>
+
+        <hr>
+
+        <h2>[F] &mdash; formative refraction: the first prism</h2>
+
+        <p>This is where PRISM gets its name. L1 is white light &mdash; undifferentiated temperament, carrying all possible political dispositions as potential. The formative layer is the first prism: the medium through which that white light passes and separates into distinct colors.</p>
+
+        <details>
+            <summary>&#9650; Figure 3 &mdash; Formative Prism (Static)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Static illustration (Midjourney)<br>
+                <strong>Description:</strong> A triangular glass prism in the style of a 1960s physics textbook illustration &mdash; slightly yellowed paper, hand-drawn ink lines, halftone shading. A single white beam enters from the left and exits as 6 distinct colored bands on the right, each labeled with an L2 personality trait (Traditionalism, Economic Conservatism, Compassion, Defiance, Gregariousness, Risk Comfort). The prism itself is labeled &ldquo;[F] Formative&rdquo; and etched on its faces are the formative factors: Family, Religion, Geography, Economic Era, Media Environment. Small annotations in Courier-style typewriter font.<br>
+                <strong>Style:</strong> 1960s educational diagram. Cream/sepia palette. Visible paper texture. Technical but warm.<br>
+                <strong>Dimensions:</strong> 780 &times; 450px
+            </div>
+        </details>
+
+        <p>The formative medium includes everything that shapes how your raw temperament crystallizes into durable personality during childhood and early adulthood: family structure, parental ideology, religious upbringing, education path, childhood trauma on the micro side; region and geography, economic era, cultural zeitgeist, media environment, and the prevailing level of institutional trust on the macro side.</p>
+
+        <p>The metaphor is precise in a way I find genuinely useful. Two people with identical L1 who grow up in vastly different circumstances will express different politics &mdash; but their <em>range</em> is the same. The prism doesn&rsquo;t create new colors. It separates the ones that were already there. A high-threat-reactivity, high-affiliative-drive temperament formed inside a cosmopolitan meritocratic environment does not produce the same crystallized personality as the same temperament formed inside a locally rooted, status-threatened one. But both outputs were <em>possible</em> from the same L1 &mdash; one was just selected by the formative context.</p>
+
+        <p>This is where the endogenous meets the exogenous for the first time. L1 is endogenous &mdash; you were, to a considerable degree, born with it. [F] is exogenous &mdash; it happened to you. The transformation is not additive (temperament plus context does not equal personality). It&rsquo;s <em>refractive</em>. [F] doesn&rsquo;t add to L1; it selects from the possibility space that L1 defines. This means two things. First, [F] effects are bounded by L1 &mdash; no formative context can produce a personality that L1 doesn&rsquo;t permit. Second, the same [F] applied to different L1s produces different results, which is why siblings who grew up in the same house can end up with strikingly different dispositions.</p>
+
+        <hr>
+
+        <h2>L2 &mdash; crystallized personality: the first spectrum</h2>
+
+        <p>What comes out the other side of the formative prism are six personality dispositions &mdash; more specific than raw temperament, more durable than political opinion. Each one is a function of two to four L1 traits refracted through [F]:</p>
+
+        <p><strong>Traditionalism</strong> &mdash; comfort with established norms and inherited practices. A function of threat reactivity (how dangerous does novelty feel?), novelty drive (how appealing is the unfamiliar?), and cognitive flexibility (can you hold &ldquo;this is new&rdquo; and &ldquo;this might be good&rdquo; simultaneously?) &mdash; all filtered through whether your formative context rewarded tradition or punished it.</p>
+
+        <p><strong>Economic Conservatism</strong> &mdash; the disposition toward markets, individual economic agency, and skepticism of redistribution. Downstream of reactance (resistance to collective imposition), threat reactivity (economic anxiety sensitivity), and cognitive flexibility (can you model the system or only feel the personal impact?).</p>
+
+        <p><strong>Compassion</strong> &mdash; the politically relevant expression of empathic capacity, shaped by whether your formative context expanded or contracted your moral circle. High EMP + cosmopolitan [F] = universalist compassion. High EMP + parochial [F] = intense in-group care.</p>
+
+        <p><strong>Defiance</strong> &mdash; the crystallized form of reactance after it&rsquo;s been aimed by formative experience at particular authority structures. High RX + anti-establishment [F] = populist defiance. High RX + counter-cultural [F] = progressive defiance. Same engine, different target.</p>
+
+        <p><strong>Gregariousness</strong> &mdash; social energy and comfort with collective action, downstream of affiliative drive shaped by whether formative experiences made groups feel safe or suffocating.</p>
+
+        <p><strong>Risk Comfort</strong> &mdash; tolerance for uncertainty in practice, not just in theory. Novelty drive plus cognitive flexibility, tempered by whether your early life rewarded risk-taking or punished it.</p>
+
+        <p>These six are durable but not immutable. Under normal conditions, they&rsquo;re stable enough to treat as fixed for modeling purposes. But there are moments &mdash; phase transitions &mdash; when the formative prism reopens.</p>
+
+        <details>
+            <summary>&#9650; Figure 8 &mdash; Phase Transitions: When [F] Reopens</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Interactive (JS/Canvas)<br>
+                <strong>Description:</strong> A timeline running left to right showing a person&rsquo;s life from birth to age 70. The &ldquo;formative window&rdquo; is highlighted as a warm band from 0&ndash;25. After 25, the band narrows to a thin line (crystallized). At certain points, the band reopens with a glowing &ldquo;crack&rdquo;: labeled trigger events (war, migration, religious conversion, incarceration, catastrophic loss). Each crack shows the [F] prism briefly reappearing, allowing L1 to re-refract through new formative material. User can click each event to see a tooltip explaining the mechanism. A toggle switches between &ldquo;macro triggers&rdquo; (war, revolution, economic collapse) and &ldquo;micro triggers&rdquo; (divorce, conversion, near-death experience).<br>
+                <strong>Tech:</strong> SVG timeline with CSS transitions for the &ldquo;crack&rdquo; animations. Click handlers show/hide tooltip divs. Toggle is a simple radio button pair.<br>
+                <strong>Dimensions:</strong> 780 &times; 300px
+            </div>
+        </details>
+
+        <p>War, forced migration, religious conversion, incarceration, catastrophic economic collapse &mdash; these are experiences intense enough to re-liquify what had crystallized. When someone says &ldquo;I used to be liberal but 9/11 changed everything,&rdquo; what they&rsquo;re describing is a phase transition: a macro event ([F] reopening) that allowed their L1 traits to re-refract through new formative material, producing a different L2 configuration. Their threat reactivity didn&rsquo;t change. Their novelty drive didn&rsquo;t change. What changed was the medium those traits passed through &mdash; and a different medium produced different colors.</p>
+
+        <hr>
+
+        <h2>[M] &mdash; milieu: the second medium</h2>
+
+        <p>The six crystallized personality traits now enter the second optical medium: the current milieu. Where [F] was formative and largely historical &mdash; the world you grew up in &mdash; [M] is contemporaneous and ongoing. It&rsquo;s the atmosphere the light is currently traveling through.</p>
+
+        <details>
+            <summary>&#9650; Figure 4 &mdash; Milieu as Atmospheric Medium (Animated)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Animated GIF (Kling)<br>
+                <strong>Description:</strong> Six colored light beams (the L2 outputs from Figure 3) travel horizontally through a foggy, atmospheric medium labeled &ldquo;[M] Milieu.&rdquo; The fog shifts and swirls slowly, and as it does, the beams bend &mdash; some refract upward, some downward, some scatter and dim. Labels float in the fog: &ldquo;recession,&rdquo; &ldquo;housing crisis,&rdquo; &ldquo;institutional decay,&rdquo; &ldquo;personal income shock.&rdquo; As the fog density changes (animation cycles through &ldquo;calm era&rdquo; and &ldquo;turbulent era&rdquo;), the beams either pass through relatively straight or bend dramatically. The output beams on the right side are labeled with L3 cluster names: ENDS, MEANS, REALITY, SELF.<br>
+                <strong>Style:</strong> Dark, moody. Volumetric fog effect. Beams with soft glow. Slow, ambient animation. 4-second loop.<br>
+                <strong>Dimensions:</strong> 780 &times; 350px
+            </div>
+        </details>
+
+        <p>If [F] is a glass prism &mdash; solid, fixed, something you passed through once &mdash; then [M] is more like the atmosphere itself: a medium that&rsquo;s always there, always bending the light, but whose density and composition change over time. Some eras are clear air. The beams pass through relatively straight &mdash; your crystallized personality maps onto political dispositions in a fairly predictable way. Other eras are dense fog. The beams scatter, bend, converge unexpectedly. Dispositions that should produce one kind of politics produce another, because the medium is doing so much work.</p>
+
+        <p>[M] operates on two scales simultaneously. The macro milieu &mdash; recession or boom, inflation, housing costs, institutional decay or renewal, social mobility rates &mdash; is observable and roughly the same for everyone in a given time and place. The micro milieu &mdash; personal income shocks, health crises, divorce, migration, career trajectory &mdash; is unobservable at the individual level but predictable in aggregate. You can&rsquo;t know who will get divorced this year. But you can know the divorce rate, and you can model what divorce does to the L2&rarr;L3 mapping for different personality profiles.</p>
+
+        <p>This is the layer that makes realignment possible without requiring people to become fundamentally different creatures. The conservative libertarian moment of 2010 and the MAGA populist moment of 2016 didn&rsquo;t involve mass conversion. What changed was [M]: the financial crisis, the cultural backlash, the sense of elite betrayal. Those milieu shifts activated different L3 dispositions in people whose L1 and L2 hadn&rsquo;t changed at all. The communitarian impulse that was always latent became salient. The economic populism that had been dormant woke up. The institutional trust that had been fraying finally snapped. Same people, same deep structure, completely different political expression &mdash; because the atmosphere changed which beams bent which way.</p>
+
+        <hr>
+
+        <h2>L3 &mdash; political disposition: the spectrum in full color</h2>
+
+        <p>L3 is where things first look recognizably political. After two refractions &mdash; [F] crystallizing temperament into personality, [M] bending personality into disposition &mdash; we arrive at fourteen dimensions of political orientation, organized into four clusters.</p>
+
+        <details>
+            <summary>&#9650; Figure 5 &mdash; L3 Disposition Radar (Interactive)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Interactive (JS/Canvas)<br>
+                <strong>Description:</strong> A radar/spider chart with 14 axes, one for each L3 dimension. The axes are grouped by cluster and color-coded: ENDS (4 axes, green), MEANS (4 axes, teal), REALITY (3 axes, amber), SELF (3 axes, rose). Each axis runs from the center (low/left-pole) to the edge (high/right-pole), with the pole labels visible. The user can click preset archetype buttons (&ldquo;Progressive Technocrat,&rdquo; &ldquo;Populist Communitarian,&rdquo; &ldquo;Libertarian Cosmopolitan,&rdquo; &ldquo;Disengaged Moderate&rdquo;) to see different radar shapes fill in with a smooth animation. A hover tooltip on each axis shows the full dimension description and its pole labels. Optionally: user can drag points on each axis to build a custom profile and see which preset archetype they&rsquo;re closest to.<br>
+                <strong>Tech:</strong> Canvas 2D with polar coordinate math. Smooth bezier interpolation between radar shapes on preset switch. Hover detection via angle + distance calculation. Mobile: tap instead of hover.<br>
+                <strong>Dimensions:</strong> 780 &times; 600px
+            </div>
+        </details>
+
+        <p><strong>ENDS &mdash; what you want.</strong> Four dimensions defining the goals of politics. <em>Material</em>: structuralist (redistribute, regulate) vs. marketist (deregulate, privatize). <em>Cultural Direction</em>: progressive (change is progress) vs. traditional (change is loss). <em>Cultural Uniformity</em>: pluralist (diversity is strength) vs. assimilationist (cohesion requires conformity). <em>Moral Circle</em>: universalist (all humans count equally) vs. communitarian (your people come first).</p>
+
+        <p><strong>MEANS &mdash; how you get there.</strong> Four dimensions defining the methods of politics. <em>Procedural</em>: outcome-focused (do whatever works) vs. rules-bound (process matters intrinsically). <em>Compromise</em>: principled (hold the line) vs. pragmatic (half a loaf). <em>Epistemic Style</em>: a categorical dimension with six modes of deciding what to trust &mdash; institutional, empirical, experiential, traditional, revelatory, tribal. <em>Leadership Aesthetic</em>: also categorical, six preferred political styles &mdash; the statesman, the technocrat, the pastor, the fighter, the prophet, the everyman.</p>
+
+        <p><strong>REALITY &mdash; what you believe is true.</strong> Three dimensions about ontology rather than preference. <em>Zero-Sum</em>: do you see the world as positive-sum (we can all gain) or zero-sum (your gain is my loss)? <em>Human Ontology</em>: are people basically good (optimistic) or basically flawed (pessimistic)? <em>System Ontology</em>: is the current order declining or thriving?</p>
+
+        <p><strong>SELF &mdash; who you are politically.</strong> Three dimensions about political identity itself. <em>Political Fusion</em>: is your politics a thing you have (independent) or a thing you <em>are</em> (fused with identity)? <em>Tribalism</em>: universalist (issues over teams) vs. group-bound (my side, right or wrong). <em>Engagement</em>: disengaged (politics is noise) vs. highly engaged (politics is life).</p>
+
+        <p>I want to be upfront about why fourteen. The answer is empirical rather than theoretical. I kept adding dimensions until additional ones stopped improving the model&rsquo;s ability to distinguish archetypes that behave differently under counterfactual conditions. Two dimensions (the standard left-right plus libertarian-authoritarian) lose enormous amounts of information. Fourteen captures the major axes of variation. More than fourteen starts introducing redundancy.</p>
+
+        <p>The cross-pressures are the interesting part. Consider someone who scores high on Material (structuralist), high on Cultural Uniformity (assimilationist), high on Procedural (rules-bound), and low on Political Fusion (independent). In the current American arrangement, this person is genuinely homeless. They want redistribution (codes left), cultural cohesion (codes right), process integrity (codes centrist), and refuse to identify with either team. No party captures this configuration. Their actual political behavior &mdash; who they vote for, whether they vote at all &mdash; depends on which dimensions the choice architecture makes salient. Which brings us to the final refraction.</p>
+
+        <hr>
+
+        <h2>[CA] &mdash; choice architecture: the last prism</h2>
+
+        <p>The fourteen-dimensional political disposition now hits the final optical medium: the choice architecture. This is the structure of the actual political choice confronting the voter &mdash; the candidates on offer, the party platforms available, how the media frames the election, what&rsquo;s on the ballot, the mobilization infrastructure, the social cost of participation.</p>
+
+        <details>
+            <summary>&#9650; Figure 6 &mdash; Choice Architecture as Diffraction Grating (Static/Animated)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Static illustration (Midjourney) with optional animated variant (Kling)<br>
+                <strong>Description:</strong> The 14 colored beams from L3 approach a vertical structure that looks like a venetian blind or diffraction grating &mdash; a series of narrow slits labeled with choice-architecture elements: &ldquo;Candidate A,&rdquo; &ldquo;Candidate B,&rdquo; &ldquo;Party Platform,&rdquo; &ldquo;Media Frame,&rdquo; &ldquo;Ballot Design.&rdquo; Most beams are blocked or redirected; only a few pass through each slit, recombining on the far side into 2&ndash;3 output beams labeled &ldquo;Vote A,&rdquo; &ldquo;Vote B,&rdquo; &ldquo;Abstain.&rdquo; The visual shows how a rich spectrum gets compressed into a few discrete choices.<br>
+                <strong>Style:</strong> Technical diagram meets political art. The grating is metallic and institutional. The blocked beams scatter as wasted light. The output beams are bright but narrow &mdash; emphasizing information loss.<br>
+                <strong>Animated variant:</strong> The grating slits slide open and closed as &ldquo;different elections&rdquo; cycle, showing how the same incoming spectrum produces different outputs depending on which slits are open. 6-second loop.<br>
+                <strong>Dimensions:</strong> 780 &times; 400px
+            </div>
+        </details>
+
+        <p>Unlike [F] and [M], the choice architecture is purely macro &mdash; it&rsquo;s the same for everyone in a given district. And unlike [F] and [M], it&rsquo;s fully observable. You can see who&rsquo;s on the ballot. You can read the platforms. You can measure the media framing. This is why the L3&rarr;L4 mapping (disposition &rarr; behavior, through [CA]) is the <em>most</em> predictable step in the entire model, while the L2&rarr;L3 mapping (personality &rarr; disposition, through [M]) is the <em>least</em> predictable. The final prism is the one we can actually see.</p>
+
+        <p>But &ldquo;most predictable&rdquo; doesn&rsquo;t mean &ldquo;trivial.&rdquo; The choice architecture compresses fourteen continuous dimensions into a handful of discrete options. It&rsquo;s a massive information bottleneck. A voter with a rich, cross-pressured disposition profile enters the booth and must choose from two or three options, none of which match their full spectrum. Which dimensions dominate the choice depends on which ones the [CA] makes salient: Is this election about the economy or about culture? About competence or about identity? About fear or about hope? The same fourteen-dimensional profile produces different votes under different framings &mdash; not because the person changed, but because the grating let different beams through.</p>
+
+        <p>This is the mechanism behind the phenomenon everyone recognizes but few models capture: the same person voting for Obama in 2008 and Trump in 2016. Their L1 didn&rsquo;t change. Their L2 probably didn&rsquo;t change. Their L3 may have shifted slightly under [M] (the financial crisis, the recovery&rsquo;s uneven distribution, the cultural backlash). But the biggest shift was [CA]: different candidates, different framings, different slits in the grating. The 2008 [CA] made &ldquo;hope/change/competence&rdquo; dimensions salient. The 2016 [CA] made &ldquo;anti-establishment/economic anxiety/cultural threat&rdquo; dimensions salient. Same light, different grating, different output.</p>
+
+        <details>
+            <summary>&#9650; Figure 7 &mdash; Same Person, Different Context (Interactive)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Interactive (JS)<br>
+                <strong>Description:</strong> Split-screen comparison. On the left: a fixed L1/L2 profile (shown as a small temperament bar chart and personality bar chart). On the right: two parallel refraction cascades side by side, each with its own [M] and [CA] settings. Dropdown selectors let the user choose different milieu conditions (&ldquo;2008: post-crisis hope,&rdquo; &ldquo;2016: populist backlash,&rdquo; &ldquo;2024: polarized exhaustion&rdquo;) and different choice architectures (&ldquo;Obama vs. McCain,&rdquo; &ldquo;Trump vs. Clinton,&rdquo; &ldquo;Generic D vs. Generic R&rdquo;). The output at the bottom of each cascade shows the predicted behavior: vote choice and turnout probability, displayed as a colored beam hitting a target. The visual makes concrete how the same person produces different votes under different conditions.<br>
+                <strong>Tech:</strong> Two side-by-side SVG cascades with shared L1/L2 inputs. Dropdowns trigger CSS transitions on beam paths and output labels. Disposition radar thumbnails update to show which L3 dimensions are activated under each condition. Mobile: stacks vertically.<br>
+                <strong>Dimensions:</strong> 780 &times; 550px
+            </div>
+        </details>
+
+        <hr>
+
+        <h2>L4 &mdash; political behavior: the light that reaches the wall</h2>
+
+        <p>Only at the end do we get the things everyone actually measures: turnout, vote choice, and what the model calls the resistance-compliance scale &mdash; the full range of non-electoral political behavior, from active resistance through passive compliance to enthusiastic mobilization.</p>
+
+        <p>L4 is where most models start and stop. It&rsquo;s what surveys measure, what pundits discuss, what prediction markets price, what elections reveal. The problem with modeling only L4 is the same problem with modeling only the surface of anything: you get a decent snapshot and poor transfer. If you train on 2020 voting behavior, you&rsquo;ll do well on 2020. You&rsquo;ll do poorly on 2028, because the coalitional sorting will have shifted, the salient issues will be different, and some of the proxy variables that were informative in 2020 will have changed sign.</p>
+
+        <p>The overdetermination problem is acute. The same observed behavior &mdash; voting for a particular candidate &mdash; can be generated by completely different upstream configurations. Two voters with identical survey scores may have arrived there via entirely different causal paths, and their future behavior will diverge as soon as the context changes. One is a true believer whose L1-L3 alignment with the candidate is deep and stable. The other is a contextual voter whose [M] and [CA] happen to point in the same direction right now but could easily shift. &ldquo;Two voters, one survey score&rdquo; &mdash; same output, different generators, different futures. A political model that can&rsquo;t distinguish them is a model that will be surprised by the next realignment.</p>
+
+        <p>If you model the generative layers &mdash; L1 through [CA] &mdash; you have a shot at understanding why someone votes as they do now, why they might have voted differently in another setting, and what changes are likely to move them in the future. The light doesn&rsquo;t change. The media change. Map the media, and you can predict the output.</p>
+
+        <hr>
+
+        <h2>concept drift and the three-body problem</h2>
+
+        <p>There is one structural feature of politics that deserves separate treatment: concept drift.</p>
+
+        <p>The meaning of &ldquo;liberal,&rdquo; &ldquo;conservative,&rdquo; &ldquo;populist,&rdquo; &ldquo;establishment&rdquo; &mdash; these are labels attached to coalitional configurations that shift over time. Three forces act on each other in a way that genuinely resembles the gravitational three-body problem: (1) elite positioning &mdash; what party leaders advocate; (2) mass sentiment &mdash; the aggregate distribution of dispositional profiles across the electorate, which shifts with demographics, economics, and [M] events; and (3) media framing &mdash; how the available political options are described and which dispositions are mapped to which labels.</p>
+
+        <p>Each influences the other two. Elites respond to mass sentiment or lose elections. Mass sentiment is shaped by how elites and media frame the options. Media framing responds to both. The system is chaotic in the technical sense. And this is why &ldquo;liberal&rdquo; rotates: the coalitional sorting algorithm changed what the first principal component captures. The loading vector rotated, and the label went with it.</p>
+
+        <p>Simple models assume stationarity. PRISM assumes non-stationarity and tries to model the drift mechanism itself. The underlying dimensions (L1 temperament, L3 dispositions) don&rsquo;t drift &mdash; they&rsquo;re the invariants. What drifts is the mapping from those dimensions to coalitions, labels, and behavior. If you model only the surface, you&rsquo;re modeling the thing that drifts. If you model the depth, you&rsquo;re modeling the thing that stays.</p>
+
+        <hr>
+
+        <h2>where do you sit?</h2>
+
+        <p>The quiz is being built to answer exactly this question. Rather than asking you to self-report your positions (&ldquo;do you agree that government should regulate X?&rdquo;), it triangulates revealed preferences through scenarios, tradeoffs, and forced choices. The goal isn&rsquo;t to catch you lying &mdash; most people aren&rsquo;t lying; they genuinely believe the story they tell. The goal is to get at the structure underneath the story.</p>
+
+        <details>
+            <summary>&#9650; Figure 9 &mdash; The Flag Quiz (Reference)</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Reference to existing interactive<br>
+                <strong>Description:</strong> The flag quiz already exists as a standalone interactive. Link to it here with a brief description: &ldquo;One of the quiz&rsquo;s triangulation methods uses national flags as a forced-choice proxy for cultural disposition. Which flags you find appealing, which repel you, and which you&rsquo;re indifferent to reveals information about your universalism-parochialism axis, your aesthetic preferences for order vs. diversity, and your relationship to national identity &mdash; all without asking a single political question.&rdquo;<br>
+                <strong>Link:</strong> <code>../flag-quiz.html</code> (or wherever it lives)<br>
+                <strong>Display:</strong> Embedded screenshot or iframe of the flag quiz, with a &ldquo;Try it &rarr;&rdquo; button linking to the full version.
+            </div>
+        </details>
+
+        <p>The design principle I keep returning to: &ldquo;I Know This About Myself, I Assume as Much for Other People.&rdquo; If you can identify a disposition in yourself, you should expect it to operate in others as well, even when their surface politics look nothing like yours. The quiz is designed to surface these deep symmetries &mdash; to show you that the uncle who votes the other way might share more of your underlying temperament than either of you suspects, and that the divergence happened at [F] or [M] or [CA], not at L1.</p>
+
+        <hr>
+
+        <h2>what this enables</h2>
+
+        <p><strong>Coalition simulation.</strong> If you have a generative model, you can ask: which coalitions are stable? Which are held together only by the current [M] and would fracture under different conditions? Where are the fault lines? These questions are answerable with a model of disposition. They are unanswerable with survey snapshots.</p>
+
+        <p><strong>The Politracker.</strong> Put your dispositional map against someone else&rsquo;s and find areas of genuine overlap versus assumed opposition. Most political conversations operate on the assumption that disagreement is total. Usually it isn&rsquo;t. A tool that surfaces those overlaps could make political conversations less terrible. I am not optimistic about this but I think it&rsquo;s worth trying.</p>
+
+        <p><strong>Historical extension.</strong> Apply PRISM to the Founders. What were their L1s? How did colonial America and Enlightenment thought ([F]) refract those temperaments into the dispositions (L3) that produced the Constitution? This is speculative, obviously, but it&rsquo;s the kind of counterfactual reasoning that a generative model permits.</p>
+
+        <p><strong>Expansion packs.</strong> The architecture is modular &mdash; you can add domain-specific question sets that go deeper on particular policy areas without rebuilding the core model. Same framework, finer resolution in specific areas.</p>
+
+        <details>
+            <summary>&#9650; Figure 10 &mdash; Full Cascade Panoramic</summary>
+            <div class="fig-spec">
+                <strong>Type:</strong> Interactive (JS/Canvas) or high-resolution static (Midjourney panoramic)<br>
+                <strong>Description:</strong> A wide panoramic visualization showing the complete PRISM cascade from left to right: L1 (6 white beams) &rarr; [F] prism &rarr; L2 (6 colored beams) &rarr; [M] atmospheric medium &rarr; L3 (14 spectral lines grouped by cluster) &rarr; [CA] diffraction grating &rarr; L4 (2&ndash;3 output beams: Vote A, Vote B, Abstain). Each stage is visually distinct: L1 is clean white on black; [F] is a glass prism; L2 is a prismatic spectrum; [M] is fog/atmosphere; L3 is a dense rainbow organized into 4 cluster bands; [CA] is a metallic grating; L4 is a few bright beams hitting a wall.<br>
+                <strong>Interactive variant:</strong> User can hover over any stage to see a tooltip with details. Clicking an L3 dimension highlights the upstream L1 traits that feed it and the downstream [CA] factors that filter it. A &ldquo;trace the light&rdquo; mode lets the user select one L1 trait and watch its influence propagate through all four layers, with non-contributing paths dimmed.<br>
+                <strong>Tech:</strong> Full-width Canvas or SVG. Horizontal scroll on mobile. Hover/click event handlers for the interactive variant. Gradient fills, glow effects, and transparency for the optical metaphor.<br>
+                <strong>Dimensions:</strong> 1200 &times; 400px (scrollable on mobile)
+            </div>
+        </details>
+
+        <p>The political spectrum is a projection. It flattens a high-dimensional reality into a line. The line is useful &mdash; PCA&rsquo;s first component usually is &mdash; but it&rsquo;s not the territory. PRISM is an attempt to map the territory itself, layer by layer, from the temperament you were born with to the vote you cast last Tuesday. Four layers of light, three refractive media, fourteen dimensions of disposition, and one simple claim: what comes out depends not just on what went in, but on what it passed through.</p>
+
+        <p>The same light, through different prisms, produces different colors. That&rsquo;s not a metaphor. That&rsquo;s the model.</p>
+
+        <hr>
+
+        <p><em>March 2026. Companion to &ldquo;<a href="draft6-cause-of-our-politics.html">The Cause of Our Politics</a>.&rdquo;</em></p>
+
+    </article>
+    
+    <footer>
+        <div class="footer-text">series</div>
+        <div class="related-links">
+            <a href="draft6-cause-of-our-politics.html" class="related-link">&#8592; The Cause of Our Politics</a>
+        </div>
+    </footer>
+
+</body>
+</html>
