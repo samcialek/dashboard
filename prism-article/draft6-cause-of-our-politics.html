@@ -324,8 +324,8 @@
         }
 
         .fq-result {
-            background: #111;
-            border: 1px solid #333;
+            background: #ccc7bb;
+            border: 1px solid #b8b0a0;
             border-radius: 8px;
             padding: 16px;
             min-height: 60px;
@@ -339,7 +339,7 @@
         .fq-result-label {
             font-family: 'Courier Prime', monospace;
             font-size: 0.7rem;
-            color: #666;
+            color: #7a7060;
             margin-bottom: 6px;
         }
 
@@ -353,7 +353,7 @@
         .fq-result-desc {
             font-family: 'EB Garamond', serif;
             font-size: 0.85rem;
-            color: #aaa;
+            color: #4a4540;
             margin-top: 8px;
             line-height: 1.5;
         }
@@ -361,8 +361,8 @@
         .fq-reset {
             margin-top: 12px;
             background: none;
-            border: 1px solid #333;
-            color: #888;
+            border: 1px solid #b8b0a0;
+            color: #7a7060;
             padding: 6px 16px;
             border-radius: 4px;
             cursor: pointer;
@@ -372,8 +372,8 @@
         }
 
         .fq-reset:hover {
-            border-color: #666;
-            color: #ccc;
+            border-color: #8a8070;
+            color: #3a3530;
         }
 
         /* Two Steves canvas styles */
@@ -577,11 +577,11 @@
                             el.style.opacity = '1';
                             el.querySelector('svg').style.filter = 'saturate(0.8) brightness(1)';
                         } else {
-                            el.style.borderColor = '#333';
+                            el.style.borderColor = '#b8b0a0';
                             el.style.boxShadow = 'none';
                             el.style.transform = 'scale(0.92)';
                             el.style.opacity = '0.35';
-                            el.querySelector('svg').style.filter = 'saturate(0.3) brightness(0.6)';
+                            el.querySelector('svg').style.filter = 'saturate(0.3) brightness(0.8)';
                         }
                     });
                     label.textContent = c.label;
