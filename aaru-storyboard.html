@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaru — Strategic Capability Map</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a12; color: #e0e0e0; padding: 32px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .subtitle { font-size: 12px; color: #666; margin-bottom: 32px; }
+    
+    .axis-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    
+    .board { display: grid; grid-template-columns: 200px 1fr; gap: 0; }
+    .row-header { background: rgba(255,255,255,0.02); padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: center; }
+    .row-header h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .row-header p { font-size: 10px; color: #666; line-height: 1.4; }
+    .row-cells { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    
+    .cell { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 12px; min-height: 100px; position: relative; transition: all 0.2s; border: 1px solid transparent; }
+    .cell:hover { border-color: rgba(137,204,240,0.3); background: rgba(255,255,255,0.05); }
+    .cell h4 { font-size: 11px; font-weight: 600; color: #ccc; margin-bottom: 6px; }
+    .cell p { font-size: 10px; color: #888; line-height: 1.5; }
+    .cell .examples { font-size: 9px; color: #555; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+    
+    /* Status badges */
+    .badge { display: inline-block; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 8px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-current { background: rgba(16,185,129,0.15); color: #10b981; }
+    .badge-opportunity { background: rgba(137,204,240,0.15); color: #89ccf0; }
+    .badge-frontier { background: rgba(167,139,250,0.15); color: #a78bfa; }
+    .badge-sam { background: rgba(232,160,190,0.15); color: #e8a0be; }
+    
+    /* Column headers */
+    .col-headers { display: grid; grid-template-columns: 200px repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
+    .col-header { text-align: center; font-size: 10px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 1px; padding: 8px; }
+    .col-header:first-child { text-align: left; }
+    
+    /* Dimension rows */
+    .dimension { margin-bottom: 24px; }
+    .dimension-title { font-size: 14px; font-weight: 700; color: #89ccf0; margin-bottom: 4px; padding-left: 4px; border-left: 3px solid #89ccf0; padding-left: 12px; }
+    .dimension-q { font-size: 11px; color: #666; margin-bottom: 12px; padding-left: 15px; font-style: italic; }
+    
+    .approach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    .approach { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 14px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s; }
+    .approach:hover { border-color: rgba(137,204,240,0.2); }
+    .approach h4 { font-size: 12px; font-weight: 600; color: #ddd; margin-bottom: 4px; }
+    .approach .desc { font-size: 10px; color: #888; line-height: 1.5; margin-bottom: 6px; }
+    .approach .tradeoff { font-size: 9px; color: #555; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 6px; margin-top: 6px; }
+    .approach .tradeoff strong { color: #888; }
+    .approach .value { font-size: 9px; color: #a78bfa; margin-top: 4px; }
+    
+    .legend-bar { display: flex; gap: 16px; margin-bottom: 24px; padding: 12px 16px; background: rgba(255,255,255,0.02); border-radius: 8px; }
+    .legend-bar .badge { margin: 0; }
+    .legend-bar span { font-size: 10px; color: #666; }
+    
+    hr { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 32px 0; }
+    
+    .footer { text-align: center; margin-top: 40px; font-size: 10px; color: #333; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Aaru — Strategic Capability Map</h1>
+<div class="subtitle">All the ways synthetic population simulation could work · Where value is created · Where Sam fits</div>
+
+<div class="legend-bar">
+    <div><span class="badge badge-current">CURRENT</span> <span>Aaru does this now</span></div>
+    <div><span class="badge badge-opportunity">OPPORTUNITY</span> <span>Could be done, not yet</span></div>
+    <div><span class="badge badge-frontier">FRONTIER</span> <span>Research frontier</span></div>
+    <div><span class="badge badge-sam">SAM</span> <span>Direct match to your skills</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="dimension">
+    <div class="dimension-title">1. Agent Construction</div>
+    <div class="dimension-q">"How do you build a single synthetic person?"</div>
+    <div class="approach-grid">
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>LLM-as-Agent</h4>
+            <div class="desc">Prompt an LLM with a demographic profile + trait bundle. Agent "is" the LLM conditioned on its persona card. Behavior = LLM completion.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Rich, flexible, handles novel scenarios. <strong>Con:</strong> Stochastic, expensive at scale, consistency issues ("embers").</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>Classical ML Agent</h4>
+            <div class="desc">Statistical model (logistic regression, random forest) predicts behavior from demographic features. Deterministic, fast.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Fast, reproducible, well-understood. <strong>Con:</strong> Can't handle novel scenarios, no reasoning.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span> <span class="badge badge-sam">SAM</span>
+            <h4>Hierarchical Bayesian Agent</h4>
+            <div class="desc">Each agent = individual posterior drawn from population prior via partial pooling. Agent parameters are probability distributions, not point estimates.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Principled uncertainty, borrows strength across agents, updates with new data. <strong>Con:</strong> Computationally expensive, needs careful prior specification.</div>
+            <div class="value">→ This is Serif's engine. NumPyro + NUTS. Individual posteriors from cohort priors.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span>
+            <h4>Hybrid: LLM + Bayesian Backbone</h4>
+            <div class="desc">LLM generates rich behavior, Bayesian model constrains it to be distributionally plausible. LLM proposes, statistical model disposes.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Best of both — richness + consistency. <strong>Con:</strong> Architecture complexity, latency.</div>
+            <div class="value">→ The researcher role description: "hybrid LLM + classical social science architectures"</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="dimension">
+    <div class="dimension-title">2. Population Architecture</div>
+    <div class="dimension-q">"How do you build a million agents that look like a real population?"</div>
+    <div class="approach-grid">
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>Top-Down Demographic Allocation</h4>
+            <div class="desc">Start with census distributions (age, race, income, geography). Sample agents to match known marginals. Assign traits from conditional distributions.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Matches aggregate stats perfectly. <strong>Con:</strong> Assumes independence between traits, misses correlational structure.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span> <span class="badge badge-sam">SAM</span>
+            <h4>Partial Pooling Across Subgroups</h4>
+            <div class="desc">Hierarchical model where agent parameters are drawn from subgroup-level distributions, which are themselves drawn from population-level distributions. Captures correlational structure naturally.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Handles sparse subgroups, uncertainty propagates correctly. <strong>Con:</strong> Requires careful model specification.</div>
+            <div class="value">→ Direct PRISM architecture: archetypes as cluster centers, individuals as draws from archetype distributions.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span>
+            <h4>Microsimulation Uplift</h4>
+            <div class="desc">Start with real microdata (ACS PUMS, CPS) and "uplift" — add synthetic traits that aren't in the original data but are plausible given what is.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Grounded in real data. <strong>Con:</strong> Limited by what surveys measure.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span>
+            <h4>Generative Population Model</h4>
+            <div class="desc">Train a generative model (VAE, diffusion) on microdata. Sample new populations that are statistically indistinguishable from real ones but fully synthetic.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Can generate populations for places/times with no data. <strong>Con:</strong> Validation is hard — how do you know the fake population is realistic?</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="dimension">
+    <div class="dimension-title">3. Behavior Simulation</div>
+    <div class="dimension-q">"Given an agent with traits, how do you predict what they do?"</div>
+    <div class="approach-grid">
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>LLM Completion</h4>
+            <div class="desc">Ask the LLM: "Given this person's profile, how would they vote / respond to this scenario?" The LLM's output IS the behavior.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Handles open-ended scenarios. <strong>Con:</strong> No ground truth calibration, hallucination risk.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span> <span class="badge badge-sam">SAM</span>
+            <h4>Disposition → Behavior DAG</h4>
+            <div class="desc">Explicit causal graph: traits → dispositions → context → behavior. Each edge is a parameterized function. Behavior is downstream inference, not LLM generation.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Interpretable, counterfactual-capable, consistent. <strong>Con:</strong> Requires domain expertise to specify the DAG correctly.</div>
+            <div class="value">→ PRISM's L1→L2→L3→[CA]→L4 architecture. Already built.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span>
+            <h4>Discrete Choice Models</h4>
+            <div class="desc">Multinomial logit / mixed logit. Agent evaluates utility of each option and picks the highest. Well-studied in economics.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Theoretically grounded, fast. <strong>Con:</strong> Assumes rational utility maximization, which is often wrong.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span>
+            <h4>Reinforcement Learning Agents</h4>
+            <div class="desc">Agents learn behavior through interaction with environment. Policy updates based on rewards. Emergent behavior rather than specified behavior.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Captures adaptation, learning, strategic interaction. <strong>Con:</strong> Reward specification is hard, computationally expensive, hard to validate.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="dimension">
+    <div class="dimension-title">4. Environment Modeling</div>
+    <div class="dimension-q">"What world do the agents live in?"</div>
+    <div class="approach-grid">
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>Static Scenario Injection</h4>
+            <div class="desc">Define a scenario (election, policy change, crisis) and ask agents to respond. Environment is a fixed prompt, not dynamic.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Simple, controllable. <strong>Con:</strong> No feedback loops, no agent-agent interaction.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span>
+            <h4>Agent-Agent Interaction</h4>
+            <div class="desc">Agents influence each other. Social networks, information cascading, norm formation. One agent's vote changes another agent's calculus.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Captures contagion, polarization, tipping points. <strong>Con:</strong> Combinatorial explosion, hard to validate.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span>
+            <h4>Dynamic Environment</h4>
+            <div class="desc">Environment evolves over time. Economy changes, candidates drop out, news breaks. Agents re-evaluate as conditions shift.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Captures temporal dynamics. <strong>Con:</strong> Need a model of the environment itself, not just agents.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span> <span class="badge badge-sam">SAM</span>
+            <h4>Exogenous Refraction Layers</h4>
+            <div class="desc">Environment modeled as refraction layers ([M] Milieu, [CA] Choice Architecture) that mediate between agent dispositions and behavior. Macro = observable, micro = stochastic.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Separates what's modelable from what's not. <strong>Con:</strong> Novel architecture, no established tooling.</div>
+            <div class="value">→ PRISM's [F]/[M]/[CA] layers. The micro/macro distinction is the key insight.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="dimension">
+    <div class="dimension-title">5. Validation & Calibration</div>
+    <div class="dimension-q">"How do you know the simulation is right?"</div>
+    <div class="approach-grid">
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>Aggregate Benchmarking</h4>
+            <div class="desc">Compare simulated election results to actual election results. Does the model get the right winner, right margin, right state-level breakdown?</div>
+            <div class="tradeoff"><strong>Pro:</strong> Clear success metric. <strong>Con:</strong> Can be right for wrong reasons (calibrated aggregates, wrong individuals).</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span> <span class="badge badge-sam">SAM</span>
+            <h4>Individual Plausibility Checks</h4>
+            <div class="desc">Do individual agents make sense? "Gun-owning vegan environmentalist in rural Alabama" detection. Cross-validation of trait bundles against survey microdata.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Catches distributional fidelity failures. <strong>Con:</strong> Expensive, need ground truth at individual level.</div>
+            <div class="value">→ The "embers" problem Matt described. Directly relevant to the researcher role.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span> <span class="badge badge-sam">SAM</span>
+            <h4>Posterior Predictive Checks</h4>
+            <div class="desc">Generate simulated data from the model, compare to real data. If you can't tell the difference, the model is well-calibrated.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Bayesian gold standard for model checking. <strong>Con:</strong> Requires generative model, not just predictive.</div>
+            <div class="value">→ Standard Bayesian workflow. brms/Stan/NumPyro PPC.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span>
+            <h4>Counterfactual Validation</h4>
+            <div class="desc">Validate on scenarios that didn't happen: "What if candidate X had dropped out?" Compare to natural experiments, quasi-experiments, or historical counterfactuals.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Tests the model's causal structure. <strong>Con:</strong> No ground truth for counterfactuals by definition.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="dimension">
+    <div class="dimension-title">6. Temporal Dynamics</div>
+    <div class="dimension-q">"How do agents change over time?"</div>
+    <div class="approach-grid">
+        <div class="approach">
+            <span class="badge badge-current">CURRENT</span>
+            <h4>Snapshot Simulation</h4>
+            <div class="desc">Generate a population at a point in time, simulate one event. No persistence, no memory, no evolution.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Simple, fast. <strong>Con:</strong> Misses drift, learning, radicalization, disengagement over time.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-opportunity">OPPORTUNITY</span>
+            <h4>Rolling Forward</h4>
+            <div class="desc">Same population, rolled forward through time. Agents accumulate experiences, update beliefs. Demographics shift (aging, migration, births/deaths).</div>
+            <div class="tradeoff"><strong>Pro:</strong> Captures longitudinal dynamics. <strong>Con:</strong> Error accumulates, drift detection needed.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span> <span class="badge badge-sam">SAM</span>
+            <h4>Phase Transitions</h4>
+            <div class="desc">Most of the time, agents are in steady state (feed-forward DAG). But phase transitions (divorce, war, migration) re-open formative layers and re-refract personality into disposition.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Captures why people change politics dramatically. <strong>Con:</strong> Detecting phase transitions is itself a modeling problem.</div>
+            <div class="value">→ PRISM's feed-forward vs. RL insight. DAG = steady state, RL = phase transitions.</div>
+        </div>
+        <div class="approach">
+            <span class="badge badge-frontier">FRONTIER</span>
+            <h4>Generational Simulation</h4>
+            <div class="desc">Simulate across generations. Children inherit some traits from parents, refracted through their own formative context. Population evolution over decades.</div>
+            <div class="tradeoff"><strong>Pro:</strong> Captures long-run political realignment. <strong>Con:</strong> Speculative, very hard to validate.</div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<!-- Summary: Sam's Value-Add -->
+<div style="background: rgba(232,160,190,0.05); border: 1px solid rgba(232,160,190,0.15); border-radius: 10px; padding: 24px; margin-top: 8px;">
+    <h3 style="font-size: 14px; color: #e8a0be; margin-bottom: 12px;">Sam's Incremental Value</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 11px; color: #999;">
+        <div>
+            <strong style="color: #ccc;">What Aaru has:</strong>
+            <ul style="margin-top: 6px; padding-left: 16px;">
+                <li>LLM-as-agent at scale</li>
+                <li>Classical ML pipeline</li>
+                <li>Top-down demographic allocation</li>
+                <li>Aggregate election benchmarking</li>
+                <li>Snapshot simulation</li>
+            </ul>
+        </div>
+        <div>
+            <strong style="color: #ccc;">What Sam brings:</strong>
+            <ul style="margin-top: 6px; padding-left: 16px;">
+                <li>Hierarchical Bayesian agent construction (built it for Serif)</li>
+                <li>Partial pooling population architecture (PRISM archetypes)</li>
+                <li>Causal DAG for disposition → behavior (14-node L3)</li>
+                <li>Exogenous refraction layers (micro/macro separation)</li>
+                <li>Individual plausibility validation</li>
+                <li>Phase transition detection</li>
+                <li>Posterior predictive model checking</li>
+            </ul>
+        </div>
+    </div>
+    <p style="font-size: 11px; color: #888; margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+        <strong style="color: #e8a0be;">The pitch:</strong> Aaru has the LLM layer and the engineering. What's missing is the statistical backbone that makes agents <em>distributionally plausible</em> and <em>causally grounded</em>. That's the gap the Researcher role fills. That's what PRISM and Serif demonstrate.
+    </p>
+</div>
+
+<div class="footer">Strategic Capability Map · Aaru · March 2026</div>
+
+</div>
+</body>
+</html>
