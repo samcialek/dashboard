@@ -10,11 +10,14 @@
 body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 .hero{padding:60px 32px 40px;text-align:center;background:linear-gradient(180deg,#0f0f1a 0%,#0a0a12 100%);border-bottom:1px solid rgba(255,255,255,0.04)}
 .hero h1{font-size:36px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px}
-.hero .sub{font-size:13px;color:#555;max-width:700px;margin:0 auto}
+.hero .sub{font-size:13px;color:#555;max-width:700px;margin:0 auto;line-height:1.6}
 .hero .sub strong{color:#89ccf0}
 .container{max-width:1200px;margin:0 auto;padding:32px 24px}
 
-/* Legend */
+.sources{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+.src-badge{font-size:9px;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);color:#888;background:rgba(255,255,255,0.02)}
+.src-badge strong{color:#89ccf0}
+
 .legend{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-bottom:40px;padding:16px 24px;background:rgba(255,255,255,0.015);border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:#666}
 .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -22,12 +25,6 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 .dot-optimal{background:#89ccf0}
 .dot-edge{background:#e8a0be}
 
-/* Source badges */
-.sources{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
-.src-badge{font-size:9px;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);color:#888;background:rgba(255,255,255,0.02)}
-.src-badge strong{color:#89ccf0}
-
-/* Segment */
 .segment{margin-bottom:48px;position:relative}
 .segment-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06)}
 .segment-num{font-size:48px;font-weight:900;color:rgba(137,204,240,0.12);line-height:1;font-family:'JetBrains Mono',monospace}
@@ -55,7 +52,6 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 .col ul{font-size:10px;color:#888;padding-left:14px;line-height:1.7}
 .col ul li{margin-bottom:2px}
 
-/* Summary */
 .summary{background:rgba(232,160,190,0.04);border:1px solid rgba(232,160,190,0.15);border-radius:14px;padding:28px;margin-top:16px}
 .summary h3{font-size:15px;color:#e8a0be;margin-bottom:16px;font-weight:700}
 .summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
@@ -71,7 +67,7 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 
 <div class="hero">
 <h1>Aaru — Capability Storyboard</h1>
-<div class="sub">Synthetic population simulation · Comprehensive intel from <strong>5 sources</strong> · 6 dimensions × 3 lenses</div>
+<div class="sub">Synthetic population simulation · Intel from <strong>5 first-hand sources</strong> + domain knowledge · 6 dimensions × 3 lenses</div>
 </div>
 
 <div class="container">
@@ -85,8 +81,8 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 </div>
 
 <div class="legend">
-<div class="legend-item"><div class="legend-dot dot-exists"></div>What Exists — confirmed current capabilities</div>
-<div class="legend-item"><div class="legend-dot dot-optimal"></div>Optimal — what the field says is best practice</div>
+<div class="legend-item"><div class="legend-dot dot-exists"></div>What Exists — confirmed + inferred current capabilities</div>
+<div class="legend-item"><div class="legend-dot dot-optimal"></div>Optimal — state-of-the-art in the field</div>
 <div class="legend-item"><div class="legend-dot dot-edge"></div>Sam's Edge — what Sam uniquely brings</div>
 </div>
 
@@ -122,11 +118,12 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="50" y="112" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono">Bayes ↔</text>
 <defs><marker id="arrowY" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#facc15"/></marker></defs>
 </svg>
-<h4>Joint Probability Agent · ~103 Traits</h4>
-<p>Each agent = point in joint probability space P(X,Y) over <strong style="color:#facc15">8^50</strong> (~10<sup>45</sup>) configurations. ~50 variables, 8 discretization levels. Bayes' rule enforced bidirectionally — P(Y|X) and P(X|Y) must both hold.</p>
-<p>System called <strong style="color:#10b981">"Audience Gen"</strong>. Defines <strong style="color:#facc15">~103 personality/demographic traits</strong> per agent. Currently shipping "second generation tenement traits" (v2 of trait definitions). Matt building <strong style="color:#10b981">logical consistency replacement module</strong> to catch incoherent trait bundles ("embers").</p>
-<p>Also: LLM-as-agent (prompt with persona card) + classical ML agents (logistic regression, random forest).</p>
-<div class="detail">⚡ Hauer: "8^50… more than all the data on the internet." Previously 8^300, collapsed for bias-variance.<br>⚡ Yoonduk: ~103 traits defined. All latent — "nothing you can directly observe."<br>⚡ Standup: Matt finishing logical consistency module in Audience Gen. PRs stacked, results "look really good."</div>
+<h4>Joint Probability over Discrete State Space</h4>
+<p>Each agent is a point in a joint probability space P(X,Y) over <strong style="color:#facc15">8^50</strong> (~10<sup>45</sup>) configurations. Roughly 50 variables, each discretized into 8 levels. Bayes' rule enforced bidirectionally: P(Y|X) and P(X|Y) must both be consistent. Previously 8^300, collapsed down as a bias-variance decision.</p>
+<p>The system is called <strong style="color:#10b981">Audience Gen</strong>. It defines <strong style="color:#facc15">~103 personality and demographic traits</strong> per agent, all latent. Currently shipping "second generation tenement traits" (v2 trait schema). Matt Hauer is building a <strong style="color:#10b981">logical consistency replacement module</strong> to catch incoherent trait combinations ("embers" that keep sparking up after the main fire is out).</p>
+<p>Three agent modalities running in parallel: (1) the joint probability model, (2) LLM-as-agent with persona cards for open-ended queries, (3) classical ML agents (logistic regression, random forest) for structured predictions. An <strong style="color:#10b981">Agent SDK</strong> is under development for external developers.</p>
+<p>This approach is closer to <strong>statistical mechanics</strong> (partition functions over discrete states) than traditional ABM. The "agents" aren't rule-based entities in a simulation; they're samples from a massive discrete probability space, and "simulation" means sampling trajectories consistent with the joint distribution.</p>
+<div class="detail">⚡ Hauer [29:26]: "The size of our state space is 8^50… more than all the data on the internet."<br>⚡ Hauer [32:30]: "We operate in the joint probability P(X,Y)… both forward and reverse must hold."<br>⚡ Yoonduk: ~103 traits, all latent — "nothing you can directly observe." Inferred from behavior.<br>⚡ Standup: Matt finishing logical consistency module. PRs stacked, results "look really good."<br>⚡ Standup: Agent SDK in review. Adaptive compute allocation experiments for Diffuser.</div>
 </div>
 
 <div class="col col-optimal">
@@ -158,12 +155,15 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <path d="M25,100 Q30,88 35,100 Q40,88 45,100 Q50,92 55,100" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.3"/>
 <text x="80" y="100" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">partial pooling</text>
 </svg>
-<h4>Hierarchical Bayesian Agent</h4>
-<p>Each agent = individual posterior drawn from population prior via partial pooling. Parameters are <em>distributions</em>, not point estimates. Borrows strength across agents, principled uncertainty.</p>
+<h4>Hierarchical Bayesian Agents</h4>
+<p>State-of-the-art synthetic agents represent each person as an <strong>individual posterior distribution</strong> drawn from a population prior via partial pooling. Parameters are distributions, not point estimates. Uncertainty is first-class.</p>
+<p>The literature (Gelman et al., BDA3; synthetic population microsimulation) shows that the key problems with discrete state-space approaches are: (1) <strong>curse of dimensionality</strong> makes enumeration impossible past ~20 variables, requiring compressed traversal; (2) <strong>discretization artifacts</strong> lose information at bin boundaries; (3) <strong>no principled uncertainty</strong> on the agent parameters themselves.</p>
 <ul>
 <li>Population hyperprior → subgroup prior → individual posterior</li>
-<li>MCMC/VI inference (NUTS, SVI)</li>
-<li>Uncertainty propagates end-to-end</li>
+<li>MCMC/VI inference (NUTS, SVI, normalizing flows)</li>
+<li>Automatic relevance determination for variable selection</li>
+<li>Gaussian copulas or vine copulas for dependency structure</li>
+<li>Variational autoencoders for learned latent representations</li>
 </ul>
 </div>
 
@@ -181,14 +181,15 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="100" y="78" fill="#e8a0be" font-size="5" font-family="JetBrains Mono" opacity="0.6">MAP</text>
 </svg>
 <h4>Probabilistic Programming (NumPyro + NUTS)</h4>
-<p>18 months production experience building hierarchical Bayesian models in NumPyro. Individual posteriors from cohort priors — the <strong style="color:#e8a0be">Serif engine</strong>.</p>
+<p>18 months production experience building hierarchical Bayesian models in NumPyro at Serif. Individual posteriors from cohort priors. Partial pooling is the native architecture: cohort-level distributions narrow as individual data accumulates, with recommendations exposed only after sufficient posterior concentration.</p>
 <ul>
-<li>Replaces ad-hoc uncertainty with rigorous posterior inference</li>
-<li>Model comparison via WAIC/LOO</li>
-<li>Prior sensitivity analysis</li>
-<li>Composable generative models</li>
+<li>Replaces heuristic state-space traversal with principled MCMC/VI</li>
+<li>Model comparison via WAIC/LOO-CV (Vehtari et al.)</li>
+<li>Prior sensitivity analysis and prior predictive checks</li>
+<li>Composable generative models: swap likelihoods, add hierarchy</li>
+<li>Production-tested: health outcome distributions for B2B SaaS clients</li>
 </ul>
-<div class="value">→ Direct plug-in to Aaru's joint P(X,Y) framework. Adds formal inference where they currently use heuristic traversal.</div>
+<div class="value">→ Direct plug-in to Aaru's P(X,Y) framework. Replaces heuristic traversal of 8^50 space with formal posterior inference over the populated regions.</div>
 </div>
 
 </div>
@@ -207,7 +208,7 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <div class="col col-exists">
 <div class="col-label">What Exists</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
-<text x="80" y="12" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">700 VARIABLES</text>
+<text x="80" y="12" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">700 VARIABLES · ε-DP</text>
 <g opacity="0.6">
 <circle cx="25" cy="30" r="1.5" fill="#10b981"/><circle cx="40" cy="35" r="1.5" fill="#10b981"/><circle cx="55" cy="28" r="1.5" fill="#10b981"/>
 <circle cx="70" cy="40" r="1.5" fill="#10b981"/><circle cx="85" cy="32" r="1.5" fill="#10b981"/><circle cx="100" cy="38" r="1.5" fill="#10b981"/>
@@ -225,11 +226,12 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="80" y="104" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">ε-DP</text>
 <text x="80" y="118" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">NVIDIA: 6 vars | Census: $100M</text>
 </svg>
-<h4>700-Variable Synthetic Population</h4>
-<p>Differentially private synthetic data across <strong style="color:#facc15">700 variables</strong> generated in seconds. Vastly exceeds NVIDIA's 6-variable personas. Census Bureau spent $100M on inferior capability.</p>
-<p>Top-down demographic allocation from census marginals. Traits assigned from conditional distributions. Heterogeneity is core philosophy — <strong style="color:#10b981">no archetypes or clustering</strong>. Every individual modeled with intersecting identities.</p>
-<p>Headcount: <strong style="color:#facc15">24 people</strong> (as of visit #2), growing quickly. Research team: Matt, Yoonduk, Mateusz, John. Engineering: Kasia, Andrew, others. Revenue: Patrick. CEO: Cameron Fink. CTO: John Kessler.</p>
-<div class="detail">⚡ Hauer: "We can make something in 700 variables." Refuses archetypes — "the real world is messiness."<br>⚡ Standup: 24 headcount, closing new engineering hires. Agent SDK in development.<br>⚡ Yoonduk: traits are all latent — derived from behavior, never directly observed.</div>
+<h4>700-Variable Differentially Private Synthetic Data</h4>
+<p>Aaru generates differentially private synthetic populations across <strong style="color:#facc15">700 variables</strong> in seconds. For context, NVIDIA's persona product uses six variables. The US Census Bureau spent $100M on TopDown to achieve something similar (and arguably worse). This is the most technically impressive confirmed capability.</p>
+<p>Population assembly likely uses <strong>iterative proportional fitting</strong> (IPF/raking) or a generative model to match known marginal distributions from census, ACS, and survey data, then fills in the joint distribution. The 103 personality traits are assigned as conditional draws from the joint model.</p>
+<p>Core philosophy: <strong style="color:#10b981">no archetypes, no clustering</strong>. Every individual modeled with full intersecting identities. Hauer explicitly rejects reducing people to types because "the real world is messiness."</p>
+<p>Team: 24 people. Research: Matt Hauer, Yoonduk, Mateusz, John. Engineering: Kasia, Andrew. Revenue: Patrick. CEO: Cameron Fink. CTO: John Kessler. $88M raised, internal valuation ~$5-10B.</p>
+<div class="detail">⚡ Hauer [79:02]: "We can make something in 700 variables." NVIDIA comparison: 6 vs 700.<br>⚡ Hauer [25:52]: "The real world is heterogeneity. The real world is messiness."<br>⚡ Yoonduk: all ~103 traits are latent. Inferred from behavior, never directly observed.<br>⚡ Standup: 24 headcount, actively closing engineering hires. Dinner with candidate that night.</div>
 </div>
 
 <div class="col col-optimal">
@@ -246,15 +248,18 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="28" y="78" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">pop₁</text>
 <text x="73" y="78" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">pop₂</text>
 <text x="118" y="78" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">pop₃</text>
-<text x="80" y="95" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">Generative model / copula</text>
-<text x="80" y="108" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">preserves correlational structure</text>
+<text x="80" y="95" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">deep generative + copula</text>
+<text x="80" y="108" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">preserves full dependency structure</text>
 </svg>
-<h4>Generative Population Modeling</h4>
-<p>Train a generative model (VAE, normalizing flows, copula) on microdata. Sample new populations statistically indistinguishable from real ones but fully synthetic.</p>
+<h4>Deep Generative Population Synthesis</h4>
+<p>State-of-the-art synthetic population generation uses <strong>deep generative models</strong>: VAEs, normalizing flows (RealNVP, Glow), diffusion models, or vine copulas. These learn the full joint distribution over continuous and discrete variables without discretization.</p>
+<p>Key advances beyond IPF/raking: (1) <strong>CTGAN / TVAE</strong> (Xu et al., 2019) for tabular data synthesis; (2) <strong>normalizing flows</strong> that give exact log-likelihoods; (3) <strong>Bayesian nonparametric</strong> approaches (Dirichlet process mixtures) that automatically determine the number of subpopulations.</p>
 <ul>
-<li>Correlational structure preserved naturally</li>
-<li>Generate populations for places/times with no data</li>
-<li>Compositional: condition on known marginals</li>
+<li>Preserves all pairwise and higher-order correlations</li>
+<li>Conditional generation: fix known marginals, sample the rest</li>
+<li>Privacy: formal DP-SGD guarantees during training (Abadi et al.)</li>
+<li>Evaluation: statistical fidelity (JSD, MMD), ML efficacy, privacy leakage (membership inference)</li>
+<li>Multi-resolution: national → state → county → individual with consistent marginals</li>
 </ul>
 </div>
 
@@ -278,14 +283,16 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="80" y="104" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">individuals ∈ soft clusters</text>
 <text x="80" y="114" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">sparse subgroups handled</text>
 </svg>
-<h4>Partial Pooling Across Subgroups</h4>
-<p>Hierarchical model where agent parameters drawn from subgroup-level distributions. Archetypes as cluster centers, individuals as draws from archetype distributions.</p>
+<h4>Partial Pooling + Sparse Subgroup Handling</h4>
+<p>Hierarchical model where agent parameters are drawn from subgroup-level distributions. Archetypes as cluster centers, individuals as draws. Soft membership avoids Hauer's objection to hard clustering while still borrowing strength across similar agents.</p>
+<p>Critical for Aaru's scale: with 700 variables, most subgroup intersections have near-zero observations. Partial pooling naturally regularizes toward the group mean when data is sparse, and toward the individual when data is rich.</p>
 <ul>
-<li>Handles sparse subgroups naturally</li>
-<li>Uncertainty propagates correctly</li>
-<li>No hard clustering — soft membership</li>
+<li>Handles sparse subgroups without ad-hoc imputation</li>
+<li>Uncertainty widens for rare populations (honest about what you don't know)</li>
+<li>No hard clustering: compatible with Aaru's anti-archetype philosophy</li>
+<li>Tested at Serif: cohort priors → individual posteriors for health outcomes</li>
 </ul>
-<div class="value">→ Direct PRISM architecture. Individuals aren't forced into archetypes — they're probabilistic draws from archetype distributions.</div>
+<div class="value">→ Bridges Aaru's anti-archetype philosophy with the practical need to handle sparse subpopulations in 700-dimensional space.</div>
 </div>
 
 </div>
@@ -304,28 +311,31 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <div class="col col-exists">
 <div class="col-label">What Exists</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
-<rect x="15" y="20" width="50" height="24" rx="4" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
-<text x="40" y="35" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">X</text>
-<rect x="95" y="20" width="50" height="24" rx="4" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
-<text x="120" y="35" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">Y</text>
-<line x1="65" y1="28" x2="93" y2="28" stroke="#10b981" stroke-width="1" marker-end="url(#arrowG)"/>
-<text x="79" y="25" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(Y|X)</text>
-<line x1="93" y1="38" x2="65" y2="38" stroke="#10b981" stroke-width="1" marker-end="url(#arrowG)"/>
-<text x="79" y="47" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(X|Y)</text>
+<rect x="15" y="15" width="50" height="24" rx="4" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
+<text x="40" y="30" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">X</text>
+<rect x="95" y="15" width="50" height="24" rx="4" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.4"/>
+<text x="120" y="30" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">Y</text>
+<line x1="65" y1="23" x2="93" y2="23" stroke="#10b981" stroke-width="1" marker-end="url(#arrowG)"/>
+<text x="79" y="20" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(Y|X)</text>
+<line x1="93" y1="33" x2="65" y2="33" stroke="#10b981" stroke-width="1" marker-end="url(#arrowG)"/>
+<text x="79" y="44" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(X|Y)</text>
 <defs><marker id="arrowG" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#10b981"/></marker></defs>
-<rect x="25" y="55" width="40" height="16" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
-<text x="45" y="66" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">LLM</text>
-<rect x="75" y="55" width="40" height="16" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
-<text x="95" y="66" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">ML</text>
-<text x="80" y="84" fill="#fb923c" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">⚖️ accuracy vs explainability</text>
-<text x="80" y="98" fill="#ef4444" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ no counterfactuals</text>
-<text x="80" y="110" fill="#ef4444" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ no abduction</text>
+<rect x="15" y="52" width="35" height="14" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<text x="32" y="62" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">LLM</text>
+<rect x="58" y="52" width="35" height="14" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<text x="75" y="62" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">ML</text>
+<rect x="101" y="52" width="42" height="14" rx="3" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<text x="122" y="62" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">P(X,Y)</text>
+<text x="80" y="80" fill="#fb923c" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">⚖️ accuracy vs explainability tension</text>
+<text x="80" y="93" fill="#ef4444" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ no counterfactual simulation</text>
+<text x="80" y="103" fill="#ef4444" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ no abductive (reverse) inference</text>
+<text x="80" y="113" fill="#ef4444" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">❌ cyclic dependencies unresolved</text>
 </svg>
-<h4>Joint Distribution Sampling + LLM</h4>
-<p>Behavior derived by conditioning P(X,Y). Both forward and reverse must be consistent. Also uses LLM completion for open-ended scenarios.</p>
-<p><strong style="color:#fb923c">Yoonduk tension:</strong> Trade-off between black-box neural nets (better F1 scores) vs. interpretable trait variables (explanatory power). "Do we just really want to predict the next thing really well?" vs. variables that offer prescriptive value.</p>
-<p><strong style="color:#ef4444">Confirmed gaps:</strong> No counterfactual simulation. No reverse/abductive simulation. Cyclic variable dependencies make topological sort impossible — "a lot of everything eating up into each other."</p>
-<div class="detail">⚡ Hauer: "We operate in P(X,Y)… both forward and reverse probability must hold."<br>⚡ Yoonduk: "Tricky part — the interactions, a lot of recursive components." Cyclic dependencies break DAG assumption.<br>⚡ Yoonduk: Variables valued for explanatory + prescriptive power, not just predictive accuracy.</div>
+<h4>Three-Model Ensemble with Known Gaps</h4>
+<p>Behavior is predicted by conditioning the joint P(X,Y): given traits X, derive likely behavior Y. The inverse P(X|Y) is also maintained for coherence checking. The LLM handles open-ended qualitative queries. Classical ML handles structured predictions with known feature sets.</p>
+<p><strong style="color:#fb923c">Internal tension (Yoonduk):</strong> black-box neural nets yield better F1 scores, but interpretable trait variables offer explanatory and prescriptive power. "Do we just really want to predict the next thing really well?" This is unresolved.</p>
+<p><strong style="color:#ef4444">Three confirmed gaps:</strong> (1) No counterfactual simulation: can't ask "what would this person have done if X were different?" (2) No abductive inference: can't reason backward from an outcome Y to what conditions X would have produced it. (3) Cyclic dependencies between traits break topological sort, creating computational headaches ("everything eating up into each other").</p>
+<div class="detail">⚡ Hauer [35:35]: Counterfactuals + abduction explicitly confirmed as missing. Called abduction "really fucking weird."<br>⚡ Yoonduk: "The tricky part is the interactions, a lot of recursive components." Can't topologically sort.<br>⚡ Yoonduk: Variables valued for explanatory power, not just prediction. Tension is live.</div>
 </div>
 
 <div class="col col-optimal">
@@ -341,17 +351,19 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <line x1="88" y1="50" x2="112" y2="30" stroke="#89ccf0" stroke-width="0.8" opacity="0.4" marker-end="url(#arrowB)"/>
 <line x1="50" y1="25" x2="110" y2="25" stroke="#89ccf0" stroke-width="0.8" opacity="0.4" marker-end="url(#arrowB)"/>
 <defs><marker id="arrowB" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#89ccf0" opacity="0.5"/></marker></defs>
-<text x="80" y="80" fill="#89ccf0" font-size="8" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(Y | do(X))</text>
-<text x="30" y="100" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.35">L1: association</text>
-<text x="30" y="108" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.45">L2: intervention</text>
-<text x="30" y="116" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.55">L3: counterfactual</text>
+<text x="80" y="78" fill="#89ccf0" font-size="8" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">P(Y | do(X))</text>
+<text x="30" y="96" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.35">L1: P(Y|X) — association</text>
+<text x="30" y="104" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.45">L2: P(Y|do(X)) — intervention</text>
+<text x="30" y="112" fill="#89ccf0" font-size="5" font-family="JetBrains Mono" opacity="0.55">L3: P(Y_x'|X=x, Y=y) — counterfactual</text>
 </svg>
-<h4>Causal + Counterfactual Simulation</h4>
-<p>Transform correlational joint into causal structure. Pearl's Ladder: association → intervention → counterfactual. Enables P(Y | do(X)) queries.</p>
+<h4>Structural Causal Models + Pearl's Ladder</h4>
+<p>State-of-the-art behavioral simulation uses <strong>structural causal models</strong> (SCMs) that encode directed causal relationships. Pearl's Ladder of Causation (2018) defines three levels: association (observational), intervention (do-calculus), and counterfactual (individual-level "what if").</p>
+<p>Key methods: (1) <strong>do-calculus</strong> for identifiability of causal effects from observational data; (2) <strong>twin networks</strong> for counterfactual reasoning; (3) <strong>abductive-action-prediction</strong> framework for computing counterfactuals via SCMs; (4) <strong>causal discovery</strong> algorithms (PC, GES, NOTEARS) to learn DAG structure from data.</p>
 <ul>
-<li>do-calculus for intervention queries</li>
-<li>SCMs for counterfactual reasoning</li>
-<li>Abductive: outcome → best explanation</li>
+<li>Resolves correlation vs. causation: P(Y|X) ≠ P(Y|do(X))</li>
+<li>Counterfactuals: "What would have happened if this person had seen ad B instead of ad A?"</li>
+<li>Abduction: "Given this election result, what population conditions would explain it?"</li>
+<li>Transportability: apply causal effects learned in one population to another</li>
 </ul>
 </div>
 
@@ -373,19 +385,21 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <line x1="110" y1="41" x2="85" y2="69" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
 <line x1="110" y1="66" x2="85" y2="72" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
 </g>
-<text x="80" y="95" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">PRISM 14-node L3 DAG</text>
-<text x="80" y="106" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">causal DAG + do-calculus</text>
-<text x="80" y="116" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">abductive inference built in</text>
+<text x="80" y="95" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">PRISM causal DAG</text>
+<text x="80" y="106" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">do-calculus + abductive inference</text>
+<text x="80" y="116" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">resolves cyclic → directed with time</text>
 </svg>
 <h4>Causal DAGs + Abductive Inference</h4>
-<p>PRISM's 14-node L3 DAG implements causal structure. Enables P(Y | do(X)) for counterfactuals and abductive reasoning. Resolves Yoonduk's cyclic dependency problem by enforcing directed structure with explicit feedback paths.</p>
+<p>PRISM's layered DAG (Personality → Values → Formative → Disposition → Behavior, modulated by Milieu and Choice Architecture) implements causal structure. Enables do-calculus for interventional queries and abductive reasoning for reverse inference.</p>
+<p>Crucially, resolves Yoonduk's cyclic dependency problem: apparent cycles are broken by <strong>time-indexing</strong>. A variable can cause itself at a later time, but within a time slice the graph is directed. This is standard in dynamic Bayesian networks (DBNs).</p>
 <ul>
-<li><strong style="color:#ef4444">Fills gap:</strong> Counterfactual simulation</li>
-<li><strong style="color:#ef4444">Fills gap:</strong> Reverse/abductive simulation</li>
-<li><strong style="color:#ef4444">Fills gap:</strong> Cyclic → directed with explicit time indexing</li>
+<li><strong style="color:#ef4444">Fills gap:</strong> Counterfactual simulation via twin-network SCM approach</li>
+<li><strong style="color:#ef4444">Fills gap:</strong> Abductive inference (outcome → best-explanation conditions)</li>
+<li><strong style="color:#ef4444">Fills gap:</strong> Cycles → DAG with explicit temporal unrolling</li>
+<li>Causal robustness framework (Matt wants to co-publish, doesn't reveal core IP)</li>
+<li>Tested: causal confounders in health (rain → exercise → sleep example from Serif)</li>
 </ul>
-<div class="detail">⚡ Hauer called abduction "really fucking weird" — it's standard philosophy of science.<br>⚡ Yoonduk acknowledged cyclicality kills topological sort — causal DAGs solve this.</div>
-<div class="value">→ Sam's causal DAGs + do-calculus directly enable both confirmed gaps and resolve the cyclic dependency issue.</div>
+<div class="value">→ Sam's causal DAGs fill both confirmed gaps and resolve the cyclic dependency problem. The causal robustness framework is a publishable contribution that builds Aaru's academic credibility.</div>
 </div>
 
 </div>
@@ -397,37 +411,39 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <div class="segment">
 <div class="segment-header">
 <div class="segment-num">04</div>
-<div><div class="segment-title">Environment Modeling</div><div class="segment-q">"What world do the agents live in?"</div></div>
+<div><div class="segment-title">Environment & Scenario Modeling</div><div class="segment-q">"What world do the agents live in, and how do you define it?"</div></div>
 </div>
 <div class="columns">
 
 <div class="col col-exists">
 <div class="col-label">What Exists</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
-<rect x="25" y="15" width="110" height="35" rx="5" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
-<text x="80" y="36" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">SCENARIO</text>
-<line x1="80" y1="50" x2="80" y2="62" stroke="#10b981" stroke-width="0.8" opacity="0.3" marker-end="url(#arrowG)"/>
-<circle cx="35" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
-<circle cx="60" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
-<circle cx="85" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
-<circle cx="110" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
-<circle cx="135" cy="75" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
-<text x="80" y="95" fill="#10b981" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">clients define scenario</text>
-<text x="80" y="106" fill="#fb923c" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">🔶 adversarial sim (uncap)</text>
-<text x="80" y="116" fill="#fb923c" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">🔶 org sim (uncap)</text>
+<rect x="25" y="10" width="110" height="30" rx="5" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+<text x="80" y="29" fill="#10b981" font-size="7" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">CLIENT SCENARIO</text>
+<line x1="80" y1="40" x2="80" y2="52" stroke="#10b981" stroke-width="0.8" opacity="0.3" marker-end="url(#arrowG)"/>
+<circle cx="35" cy="65" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="60" cy="65" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="85" cy="65" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="110" cy="65" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<circle cx="135" cy="65" r="6" fill="none" stroke="#10b981" stroke-width="0.6" opacity="0.4"/>
+<text x="80" y="86" fill="#10b981" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.5">one-shot: scenario → response</text>
+<text x="80" y="97" fill="#fb923c" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">🔶 adversarial sim (concept only)</text>
+<text x="80" y="107" fill="#fb923c" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">🔶 org sim (concept only)</text>
+<text x="80" y="117" fill="#ef4444" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">⚠️ butterfly effect in context</text>
 </svg>
-<h4>Client-Defined Static Scenarios</h4>
-<p>Define a scenario (election, marketing campaign, policy change) and ask agents to respond. Environment is a fixed prompt — no feedback loops, no agent-agent interaction. <strong style="color:#10b981">Butterfly effect problem:</strong> changing one minor detail in context can produce wildly different outputs.</p>
-<p>Diverse client base: political elections (Mississippi midterms upcoming), marketing (sneakerheads / Foot Locker $100M ad buy), hardware store sensitivity mapping (ICE raid heat maps), fantasy drink market share.</p>
-<p><strong style="color:#fb923c">Uncapitalized IP:</strong> Adversarial simulation (competitor modeling) and organizational simulation (what happens if we fire Bob? return-to-office mandate?) are conceptualized but not productized.</p>
-<div class="detail">⚡ Yoonduk: "The product dictates that you don't really need to explore [dynamic environments] that much." Clients want cross-sectional snapshots.<br>⚡ Yoonduk: "Such a butterfly effect — change one minor detail about the context, very big change from original."<br>⚡ Hauer: massive untapped product potential in org + adversarial simulation.</div>
+<h4>Static Client-Defined Scenarios</h4>
+<p>Clients define a scenario (election, marketing campaign, ICE raid sensitivity, pricing change) and agents respond to it. The environment is a <strong>fixed prompt or parameter set</strong> with no feedback loops, no agent-agent interaction, no temporal unfolding.</p>
+<p>The product delivers diverse use cases: political elections (Mississippi midterms upcoming), marketing ($100M Foot Locker ad buy), retail sensitivity mapping (hardware store heat maps for ICE raids), fantasy drink market share. Results are rendered via <strong style="color:#10b981">dynamic chart generation</strong>: the LLM composer writes React/TSX chart code stored in ClickHouse, rendered per-report.</p>
+<p><strong style="color:#ef4444">Butterfly effect (Yoonduk):</strong> "Change one minor detail about the context of the simulation and you get a very big change." No principled way to identify which context variations matter most.</p>
+<p><strong style="color:#fb923c">Uncapitalized IP (Hauer):</strong> Adversarial simulation (model competitors' responses) and organizational simulation (what happens if you mandate return-to-office?) are conceptualized but not productized.</p>
+<div class="detail">⚡ Yoonduk: "The product dictates that you don't really need to explore [dynamic environments] that much."<br>⚡ Yoonduk: "Such a butterfly effect — change one minor detail, very big change from original."<br>⚡ Hauer [54:46]: Foot Locker exec said "holy shit, I'm in charge of $100M in ad buy."<br>⚡ Standup: Dynamic chart rendering via React/TSX in composer. ClickHouse for analytics.</div>
 </div>
 
 <div class="col col-optimal">
 <div class="col-label">Optimal</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
 <rect x="30" y="10" width="100" height="25" rx="4" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
-<text x="80" y="26" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">ENVIRONMENT</text>
+<text x="80" y="26" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">STOCHASTIC ENVIRONMENT</text>
 <path d="M45,35 L45,55" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
 <path d="M55,55 L55,35" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
 <path d="M105,35 L105,55" stroke="#89ccf0" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowB)"/>
@@ -438,15 +454,18 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <circle cx="100" cy="70" r="5" fill="none" stroke="#89ccf0" stroke-width="0.6" opacity="0.4"/>
 <line x1="45" y1="70" x2="65" y2="70" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
 <line x1="75" y1="70" x2="95" y2="70" stroke="#89ccf0" stroke-width="0.5" opacity="0.3"/>
-<text x="80" y="100" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">feedback loops · contagion</text>
-<text x="80" y="112" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">tipping points · network effects</text>
+<text x="80" y="98" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">feedback · contagion · tipping</text>
+<text x="80" y="110" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">multi-agent RL · game theory</text>
 </svg>
-<h4>Dynamic Environment with Feedback</h4>
-<p>Environment as a dynamic system agents interact with. Economy, media, social networks as explicit stochastic processes. Enables feedback loops, contagion, tipping points.</p>
+<h4>Dynamic Multi-Agent Environments</h4>
+<p>State-of-the-art ABM (Epstein, Axtell; MASON; Mesa) models environments as <strong>endogenous stochastic processes</strong> that agents interact with and modify. Key paradigms:</p>
 <ul>
-<li>Agent-agent interaction networks</li>
-<li>Environment state updates from agent actions</li>
-<li>Emergent macro phenomena from micro rules</li>
+<li><strong>Schelling models:</strong> simple local rules → emergent macro patterns (segregation, tipping)</li>
+<li><strong>Network contagion:</strong> information/behavior spreads through social graphs (Watts-Strogatz, Barabasi-Albert)</li>
+<li><strong>Multi-agent RL:</strong> agents learn policies that adapt to other agents' strategies (MARL, Nash equilibria)</li>
+<li><strong>Scenario trees:</strong> branch on key uncertainties, compute expected values across branches</li>
+<li><strong>Sensitivity analysis:</strong> Sobol indices, Morris screening to identify which parameters drive output variance</li>
+<li><strong>Game-theoretic:</strong> adversarial simulation as competitive equilibrium (Stackelberg, mechanism design)</li>
 </ul>
 </div>
 
@@ -465,21 +484,19 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <line x1="90" y1="70" x2="100" y2="85" stroke="#facc15" stroke-width="1" opacity="0.4"/>
 <circle cx="100" cy="85" r="3" fill="#facc15" opacity="0.3"/>
 <text x="110" y="87" fill="#facc15" font-size="5" font-family="JetBrains Mono" opacity="0.5">behavior</text>
-<line x1="145" y1="10" x2="145" y2="40" stroke="#10b981" stroke-width="2" opacity="0.2"/>
-<text x="150" y="28" fill="#10b981" font-size="4" font-family="Inter" opacity="0.5" writing-mode="tb">macro</text>
-<line x1="145" y1="50" x2="145" y2="85" stroke="#a78bfa" stroke-width="2" opacity="0.2"/>
-<text x="150" y="70" fill="#a78bfa" font-size="4" font-family="Inter" opacity="0.5" writing-mode="tb">micro</text>
 <text x="80" y="100" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">Exogenous refraction layers</text>
-<text x="80" y="112" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">macro = observable, micro = stochastic</text>
+<text x="80" y="112" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">Sobol sensitivity on scenario axes</text>
 </svg>
-<h4>Exogenous Refraction Layers</h4>
-<p>PRISM models environment as refraction layers that mediate between disposition and behavior. [F] Formative, [M] Milieu, [CA] Choice Architecture.</p>
+<h4>Refraction Layers + Principled Scenario Reduction</h4>
+<p>PRISM models environment as <strong>refraction layers</strong> that mediate between disposition and behavior: [F] Formative (upbringing, culture), [M] Milieu (current economic/social context), [CA] Choice Architecture (what options are presented).</p>
+<p>For the butterfly effect problem: apply <strong>Sobol sensitivity analysis</strong> or PCA on the scenario parameter space to identify the 3 to 5 axes that explain most output variance. Simulate on those axes instead of random context permutations. Gives clients an honest "these are the parameters that matter most for your question."</p>
 <ul>
-<li>Separates what's modelable from what's not</li>
-<li>Macro layers = observable, micro = stochastic</li>
-<li>PCA on context space to identify key scenario axes</li>
+<li>Separates endogenous (agent) from exogenous (world) in a principled way</li>
+<li>Scenario reduction: Sobol + PCA to find dominant context dimensions</li>
+<li>Nash equilibrium framing for adversarial simulation (competitor modeling)</li>
+<li>Directly maps to Aaru's client deliverable: "here's what happens under these 5 scenarios"</li>
 </ul>
-<div class="value">→ Directly addresses Yoonduk's butterfly effect concern. Instead of simulating every possible context, identify principal scenario axes and simulate those.</div>
+<div class="value">→ Addresses the butterfly effect with formal sensitivity analysis. Turns ad-hoc scenario definition into principled scenario reduction.</div>
 </div>
 
 </div>
@@ -498,26 +515,26 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <div class="col col-exists">
 <div class="col-label">What Exists</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
-<circle cx="50" cy="40" r="22" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
-<text x="50" y="38" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">MODEL</text>
-<text x="50" y="46" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">8^50</text>
-<rect x="95" y="25" width="50" height="30" rx="4" fill="none" stroke="#facc15" stroke-width="0.8" opacity="0.3"/>
-<text x="120" y="38" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">REAL</text>
-<text x="120" y="46" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">DATA</text>
-<line x1="72" y1="35" x2="93" y2="35" stroke="#10b981" stroke-width="0.6" opacity="0.4" marker-end="url(#arrowG)"/>
-<line x1="93" y1="45" x2="72" y2="45" stroke="#facc15" stroke-width="0.6" opacity="0.4" marker-end="url(#arrowY)"/>
-<text x="82" y="30" fill="#10b981" font-size="4" font-family="JetBrains Mono" opacity="0.4">continuous</text>
-<rect x="20" y="68" width="120" height="42" rx="4" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
-<text x="80" y="80" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">SIM vs ACTUAL</text>
-<text x="80" y="90" fill="#10b981" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">aggregate election benchmarking</text>
-<text x="80" y="100" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">web search ablation (John)</text>
-<text x="80" y="108" fill="#10b981" font-size="4.5" text-anchor="middle" font-family="Inter" opacity="0.4">ClickHouse for reporting/analytics</text>
+<circle cx="50" cy="35" r="22" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+<text x="50" y="33" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">MODEL</text>
+<text x="50" y="41" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">8^50</text>
+<rect x="95" y="20" width="50" height="30" rx="4" fill="none" stroke="#facc15" stroke-width="0.8" opacity="0.3"/>
+<text x="120" y="33" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">REAL</text>
+<text x="120" y="41" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">DATA</text>
+<line x1="72" y1="30" x2="93" y2="30" stroke="#10b981" stroke-width="0.6" opacity="0.4" marker-end="url(#arrowG)"/>
+<line x1="93" y1="40" x2="72" y2="40" stroke="#facc15" stroke-width="0.6" opacity="0.4" marker-end="url(#arrowY)"/>
+<text x="82" y="25" fill="#10b981" font-size="4" font-family="JetBrains Mono" opacity="0.4">continuous</text>
+<rect x="15" y="65" width="130" height="46" rx="4" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0.2"/>
+<text x="80" y="78" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">aggregate election benchmarking</text>
+<text x="80" y="88" fill="#facc15" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">web search ablation backtesting (John)</text>
+<text x="80" y="98" fill="#fb923c" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">⚠️ latent trait validation gap</text>
+<text x="80" y="108" fill="#fb923c" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">⚠️ manual ember-fixing (Matt, weeks)</text>
 </svg>
-<h4>Continuous Calibration + Benchmarking</h4>
-<p>Joint distribution continuously anchored against observed data. Real data identifies populated regions of 8^50 space. Aggregate election results benchmarked against actual outcomes.</p>
-<p><strong style="color:#facc15">Backtesting ideas (John):</strong> Web search result ablation — remove information and test if predictions still hold. Exploring "new modalities of simulation for backtesting." Mississippi midterms as upcoming test case.</p>
-<p><strong style="color:#fb923c">Calibration challenge (Yoonduk):</strong> Client feedback is often about marketing outcomes, not underlying trait accuracy. Hard to validate latent traits directly — "there's a layer between what is simulated and the observations." Data sparsity: diverse clients mean few repeated observations.</p>
-<div class="detail">⚡ Hauer: "Real-world data interfaces with the model the whole way."<br>⚡ John: exploring backtesting via web search ablation.<br>⚡ Yoonduk: "Average is better than half because the tails roll really messed up." Calibration hard when traits are latent.</div>
+<h4>Continuous Calibration + Aggregate Benchmarking</h4>
+<p>The joint distribution is continuously anchored against observed data, which identifies the populated regions of the 8^50 space. Aggregate election results are benchmarked against actual outcomes (e.g., county-level vote shares).</p>
+<p><strong style="color:#facc15">Backtesting innovation (John):</strong> "web search result ablation" as a validation technique: remove information from the model and check if predictions still hold. Exploring "new modalities of simulation for past population" backtesting. Mississippi midterms as upcoming live test.</p>
+<p><strong style="color:#fb923c">Calibration challenges:</strong> (1) Client feedback is about marketing outcomes, not underlying trait accuracy. "There's a layer between what is simulated and the observations." (2) Data sparsity: diverse client base means few repeated observations per domain. (3) Matt is spending weeks manually fixing agent inconsistencies ("embers"): the logical consistency replacement module is active work, not solved. (4) All 103 traits are latent, making direct validation impossible.</p>
+<div class="detail">⚡ Hauer [34:17]: "Real-world data interfaces with the model the whole way."<br>⚡ Yoonduk: "Average is better than half because the tails roll really messed up."<br>⚡ John: exploring backtesting via web search ablation. ClickHouse for analytics.<br>⚡ Matt (standup): "Raising the fire is out, putting up little embers that keep sparking up."</div>
 </div>
 
 <div class="col col-optimal">
@@ -528,17 +545,20 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <path d="M20,80 Q35,35 50,58 Q60,72 70,52 Q80,38 90,53 Q100,63 110,47 Q120,53 140,80" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.25"/>
 <path d="M20,80 Q35,28 50,62 Q60,68 70,48 Q80,42 90,57 Q100,67 110,43 Q120,57 140,80" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.25"/>
 <path d="M20,80 Q35,32 50,55 Q60,75 70,55 Q80,36 90,50 Q100,60 110,50 Q120,50 140,80" fill="none" stroke="#89ccf0" stroke-width="0.5" opacity="0.25"/>
-<line x1="30" y1="95" x2="50" y2="95" stroke="#facc15" stroke-width="1" opacity="0.4"/>
-<text x="55" y="97" fill="#facc15" font-size="5" font-family="Inter" opacity="0.5">observed</text>
-<line x1="30" y1="108" x2="50" y2="108" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
-<text x="55" y="110" fill="#89ccf0" font-size="5" font-family="Inter" opacity="0.5">simulated draws</text>
+<line x1="30" y1="92" x2="50" y2="92" stroke="#facc15" stroke-width="1" opacity="0.4"/>
+<text x="55" y="94" fill="#facc15" font-size="5" font-family="Inter" opacity="0.5">observed</text>
+<line x1="30" y1="104" x2="50" y2="104" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
+<text x="55" y="106" fill="#89ccf0" font-size="5" font-family="Inter" opacity="0.5">simulated draws</text>
 </svg>
-<h4>Posterior Predictive Checks</h4>
-<p>Generate simulated data from the model, compare to real data. If indistinguishable → well-calibrated. Plus individual plausibility: detect impossible trait bundles.</p>
+<h4>Multi-Level Validation Pipeline</h4>
+<p>Best practice for simulation validation operates at <strong>four levels</strong> (Kennedy & O'Hagan, 2001; Bayarri et al.):</p>
 <ul>
-<li>PPC: Bayesian gold standard for model checking</li>
-<li>WAIC/LOO for model comparison</li>
-<li>Calibration plots for probabilistic predictions</li>
+<li><strong>Internal consistency:</strong> trait coherence checks (no impossible trait bundles). Gelman's "p-value" style checks for model misfit.</li>
+<li><strong>Posterior predictive checks (PPC):</strong> simulate data from model, compare distributional shape to real data. Not just point accuracy but full distribution match.</li>
+<li><strong>External validation:</strong> holdout sets, cross-domain transfer (e.g., model trained on 2020 predicts 2022 midterms). Out-of-sample calibration curves.</li>
+<li><strong>Individual plausibility:</strong> sample agents and assess whether they represent real-world-plausible human profiles. Subject matter expert review + automated scoring.</li>
+<li><strong>Model comparison:</strong> WAIC, LOO-CV, Bayes factors for comparing model variants. Stacking weights for ensemble models.</li>
+<li><strong>Sensitivity:</strong> how do outputs change as priors or hyperparameters vary?</li>
 </ul>
 </div>
 
@@ -554,20 +574,22 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="110" y="40" fill="#ef4444" font-size="4" text-anchor="middle" font-family="Inter" opacity="0.5">"ember"</text>
 </g>
 <rect x="15" y="58" width="130" height="50" rx="5" fill="none" stroke="#e8a0be" stroke-width="0.6" opacity="0.2"/>
-<text x="80" y="70" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">brms / Stan / NumPyro</text>
-<text x="80" y="82" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">posterior predictive checks</text>
-<text x="80" y="92" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">individual plausibility scoring</text>
-<text x="80" y="102" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">prior sensitivity analysis</text>
-<text x="80" y="116" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">standard Bayesian workflow → production</text>
+<text x="80" y="70" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">NumPyro / Stan / brms</text>
+<text x="80" y="82" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">PPC + individual plausibility at scale</text>
+<text x="80" y="92" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">latent → observable validation chain</text>
+<text x="80" y="102" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">prior sensitivity + model comparison</text>
+<text x="80" y="116" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">automates Matt's manual ember-fixing</text>
 </svg>
 <h4>Bayesian Model Checking Pipeline</h4>
-<p>Standard Bayesian workflow: posterior predictive checks, individual plausibility scoring (the "embers" problem Matt is manually fixing), WAIC/LOO model comparison, prior sensitivity analysis.</p>
+<p>Standard Bayesian workflow (Gelman et al., Bayesian Data Analysis 3e): posterior predictive checks, individual plausibility scoring, WAIC/LOO model comparison, prior sensitivity analysis. All standard tools in NumPyro/Stan/brms.</p>
+<p>Key insight for the latent trait problem: even if you can't validate traits directly, you can validate their <strong>downstream observable predictions</strong>. If agents with inferred trait profiles produce accurate behavioral predictions, the traits are justified instrumentally. This is the latent → observable validation chain.</p>
 <ul>
-<li>Detect incoherent trait bundles at scale (automates Matt's manual ember-fixing)</li>
-<li>Compare model variants rigorously</li>
-<li>Addresses Yoonduk's latent variable validation concern — PPC validates downstream observables even when traits are latent</li>
+<li><strong>Automates ember-fixing:</strong> PPC flags incoherent agents automatically instead of Matt checking them one by one</li>
+<li><strong>Handles latent traits:</strong> validates through observable consequences, not direct measurement</li>
+<li><strong>Model comparison at scale:</strong> swap likelihoods, compare WAIC scores, identify which model variants work for which domains</li>
+<li>18 months production experience in this exact workflow at Serif</li>
 </ul>
-<div class="value">→ The "embers" problem is exactly what Matt is spending weeks on manually. PPC + plausibility scoring automates this. Validates latent traits through observable predictions.</div>
+<div class="value">→ The ember problem is the most concrete pain point. Matt is spending weeks on it manually. This automates it and makes it principled. Publishable as causal robustness framework.</div>
 </div>
 
 </div>
@@ -579,56 +601,62 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <div class="segment">
 <div class="segment-header">
 <div class="segment-num">06</div>
-<div><div class="segment-title">Temporal Dynamics</div><div class="segment-q">"How do agents change over time?"</div></div>
+<div><div class="segment-title">Temporal Dynamics & Decision Theory</div><div class="segment-q">"How do agents change over time, and how do you use simulations to make decisions?"</div></div>
 </div>
 <div class="columns">
 
 <div class="col col-exists">
 <div class="col-label">What Exists</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
-<rect x="35" y="20" width="90" height="50" rx="6" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
-<circle cx="55" cy="40" r="4" fill="#10b981" opacity="0.3"/>
-<circle cx="75" cy="45" r="4" fill="#10b981" opacity="0.4"/>
-<circle cx="95" cy="38" r="4" fill="#10b981" opacity="0.3"/>
-<circle cx="65" cy="55" r="4" fill="#10b981" opacity="0.2"/>
-<circle cx="85" cy="52" r="4" fill="#10b981" opacity="0.35"/>
-<line x1="25" y1="90" x2="135" y2="90" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
-<circle cx="80" cy="90" r="3" fill="#10b981" opacity="0.5"/>
-<text x="80" y="105" fill="#10b981" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">t₀</text>
-<text x="80" y="16" fill="#10b981" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.5">snapshot — Markov checkpoint</text>
-<text x="80" y="115" fill="#555" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">Markov assumption: only current state matters</text>
+<rect x="35" y="15" width="90" height="45" rx="6" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0.3"/>
+<circle cx="55" cy="32" r="4" fill="#10b981" opacity="0.3"/>
+<circle cx="75" cy="38" r="4" fill="#10b981" opacity="0.4"/>
+<circle cx="95" cy="30" r="4" fill="#10b981" opacity="0.3"/>
+<circle cx="65" cy="48" r="4" fill="#10b981" opacity="0.2"/>
+<circle cx="85" cy="45" r="4" fill="#10b981" opacity="0.35"/>
+<line x1="25" y1="78" x2="135" y2="78" stroke="#10b981" stroke-width="0.5" opacity="0.3"/>
+<circle cx="80" cy="78" r="3" fill="#10b981" opacity="0.5"/>
+<text x="80" y="90" fill="#10b981" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">t₀ (single snapshot)</text>
+<text x="80" y="12" fill="#10b981" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.5">cross-sectional · Markov checkpoint</text>
+<text x="80" y="100" fill="#fb923c" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">⚠️ Markov assumption too limiting</text>
+<text x="80" y="110" fill="#fb923c" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">⚠️ clients mostly want snapshots</text>
+<text x="80" y="118" fill="#ef4444" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">❌ no risk-aware decision output</text>
 </svg>
-<h4>Snapshot with Markov Checkpoints</h4>
-<p>Generate a population at a point in time, simulate one event. Clients mostly want <strong style="color:#10b981">cross-sectional snapshots</strong>. Use Markov assumption: current state represents all history.</p>
-<p><strong style="color:#fb923c">Known limitation (Yoonduk):</strong> "Decisions from 20 years ago might matter." Markov assumption acknowledged as insufficient for long-range effects. Exploring checkpointing: "like a Markov chain — imagine everything before is represented in the current state."</p>
-<p>Thinking about "new modalities of simulation for past population" backtesting but early stage.</p>
-<div class="detail">⚡ Yoonduk: "Most of our clients are cross-sectional — a snapshot in the timeline."<br>⚡ Yoonduk: "Decisions from 20 years ago might seem to [matter] a year later." Markov too limiting.<br>⚡ John: exploring "new modalities of simulation" for backtesting with real-world data.</div>
+<h4>Snapshot Simulation with Markov Checkpointing</h4>
+<p>Generate a population at a point in time, simulate one event, deliver results. Clients mostly want <strong>cross-sectional snapshots</strong>. When temporal reasoning is needed, the Markov assumption is applied: "imagine everything before is represented in the current state."</p>
+<p><strong style="color:#fb923c">Known limitations (Yoonduk):</strong> "Decisions from 20 years ago might seem to [matter] a year later." The Markov assumption drops long-range dependencies that matter for things like radicalization, brand loyalty decay, and voter realignment. Yoonduk explicitly wants the ability to "roll things back, change things, and roll forward."</p>
+<p><strong style="color:#ef4444">No decision-theoretic output:</strong> Simulations produce point predictions or distributions, but there's no framework for converting those into <em>optimal decisions under uncertainty</em>. Clients get "here's what will happen" but not "here's what you should do given your risk tolerance."</p>
+<div class="detail">⚡ Yoonduk: "Most of our clients are cross-sectional, a snapshot in the timeline. That's easier."<br>⚡ Yoonduk: "Decisions from 20 years ago might matter." Wants rollback/rollforward.<br>⚡ Hauer: "Most of the time clients don't want uncertainty." Georgia governor wanted exact numbers.<br>⚡ John: exploring "new modalities of simulation for past population" backtesting.</div>
 </div>
 
 <div class="col col-optimal">
 <div class="col-label">Optimal</div>
 <svg width="160" height="120" viewBox="0 0 160 120">
-<text x="80" y="14" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">Online Bayesian Learning</text>
+<text x="80" y="14" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">Dynamic Bayesian Network</text>
 <path d="M20,55 Q30,30 40,55" fill="none" stroke="#89ccf0" stroke-width="0.8" opacity="0.3"/>
-<text x="30" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">prior</text>
+<text x="30" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">t₀</text>
 <line x1="42" y1="45" x2="56" y2="45" stroke="#facc15" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowY)"/>
 <text x="49" y="40" fill="#facc15" font-size="4" font-family="JetBrains Mono" opacity="0.4">d₁</text>
 <path d="M58,55 Q68,25 78,55" fill="none" stroke="#89ccf0" stroke-width="1" opacity="0.4"/>
-<text x="68" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">post₁</text>
+<text x="68" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.4">t₁</text>
 <line x1="80" y1="45" x2="94" y2="45" stroke="#facc15" stroke-width="0.6" opacity="0.3" marker-end="url(#arrowY)"/>
 <text x="87" y="40" fill="#facc15" font-size="4" font-family="JetBrains Mono" opacity="0.4">d₂</text>
 <path d="M96,55 Q106,20 116,55" fill="none" stroke="#89ccf0" stroke-width="1.2" opacity="0.5"/>
-<text x="106" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">post₂</text>
-<text x="80" y="85" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">sequential Monte Carlo</text>
-<text x="80" y="97" fill="#89ccf0" font-size="6" text-anchor="middle" font-family="Inter" opacity="0.4">particle filtering · variational</text>
-<text x="80" y="112" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.35">posteriors evolve continuously</text>
+<text x="106" y="65" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">t₂</text>
+<text x="80" y="82" fill="#89ccf0" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.4">sequential Monte Carlo / particle filters</text>
+<text x="80" y="93" fill="#89ccf0" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.4">decision theory: expected utility maximization</text>
+<text x="80" y="104" fill="#89ccf0" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.4">robust optimization under distributional uncertainty</text>
+<text x="80" y="115" fill="#89ccf0" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.35">Bayesian decision theory + influence diagrams</text>
 </svg>
-<h4>Online Bayesian Learning</h4>
-<p>Agents update beliefs in real-time as new data arrives. Sequential Monte Carlo, particle filtering, or variational online updates. Population posteriors evolve continuously.</p>
+<h4>Dynamic Bayesian Networks + Decision Theory</h4>
+<p>State-of-the-art temporal simulation uses <strong>dynamic Bayesian networks</strong> (DBNs) or <strong>state-space models</strong> with sequential Monte Carlo (particle filtering) for online inference. For decision-making:</p>
 <ul>
-<li>Prior → data → posterior → new prior</li>
-<li>No full re-training needed</li>
-<li>Rolling forward with error accumulation detection</li>
+<li><strong>Influence diagrams:</strong> extend Bayesian networks with decision and utility nodes</li>
+<li><strong>Expected utility maximization:</strong> optimal actions given posterior beliefs</li>
+<li><strong>Robust optimization:</strong> worst-case over uncertainty sets (distributionally robust)</li>
+<li><strong>CVaR optimization:</strong> expected value in the worst α% of outcomes</li>
+<li><strong>Multi-objective:</strong> Pareto frontiers when clients care about multiple outcomes</li>
+<li><strong>Information value:</strong> expected value of perfect/imperfect information (should client gather more data?)</li>
 </ul>
 </div>
 
@@ -645,21 +673,23 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <text x="120" y="25" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">RL</text>
 <text x="120" y="34" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">phase</text>
 <text x="120" y="43" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">transition</text>
-<text x="80" y="68" fill="#e8a0be" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.5">divorce · war · migration · crisis</text>
-<text x="80" y="80" fill="#888" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">re-open formative layers</text>
-<text x="80" y="90" fill="#888" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">re-refract personality → disposition</text>
-<rect x="20" y="98" width="120" height="16" rx="4" fill="rgba(232,160,190,0.05)" stroke="#e8a0be" stroke-width="0.5" opacity="0.3"/>
-<text x="80" y="109" fill="#e8a0be" font-size="5.5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">+ CVaR tail-risk optimization</text>
+<text x="80" y="66" fill="#e8a0be" font-size="5.5" text-anchor="middle" font-family="Inter" opacity="0.5">divorce · war · migration · recession</text>
+<text x="80" y="78" fill="#888" font-size="5" text-anchor="middle" font-family="Inter" opacity="0.4">posteriors carry full history (not Markov)</text>
+<rect x="15" y="86" width="130" height="26" rx="4" fill="rgba(232,160,190,0.05)" stroke="#e8a0be" stroke-width="0.5" opacity="0.3"/>
+<text x="80" y="97" fill="#e8a0be" font-size="6" text-anchor="middle" font-family="JetBrains Mono" opacity="0.6">CVaR tail-risk optimization</text>
+<text x="80" y="107" fill="#e8a0be" font-size="5" text-anchor="middle" font-family="JetBrains Mono" opacity="0.5">"Geometry of Preference"</text>
 </svg>
-<h4>Phase Transitions + CVaR</h4>
-<p>PRISM insight: most of life = feed-forward DAG (steady state). But phase transitions (divorce, war, migration) re-open formative layers and re-refract personality. Solves Yoonduk's Markov concern: the prior posterior itself encodes long-range history.</p>
+<h4>Phase Transitions + CVaR Decision Theory</h4>
+<p>PRISM insight: most of life is a feed-forward DAG (steady state). But <strong>phase transitions</strong> (divorce, war, migration, recession) re-open formative layers, re-refracting personality through new circumstances. This is more nuanced than simple Markov: the posterior distribution itself encodes history without storing explicit trajectories.</p>
+<p><strong style="color:#e8a0be">CVaR (Conditional Value at Risk):</strong> Instead of optimizing for the expected outcome, optimize for the expected outcome in the worst tail. Client chooses risk posture → simulation output changes accordingly. "What's the best marketing strategy if we optimize for the worst 10% of scenarios?" This is the "Geometry of Preference" idea: political disagreements (and business strategy disagreements) are often just different distributional preferences.</p>
 <ul>
-<li>DAG = steady state, RL = phase transitions</li>
-<li><strong style="color:#e8a0be">CVaR:</strong> Optimize for tail risk, not just means</li>
-<li>Client chooses risk posture → different strategy</li>
+<li>Phase transitions: steady-state DAG ↔ RL exploration when conditions rupture</li>
+<li>CVaR: tail-risk optimization for risk-averse clients</li>
+<li>Geometry of Preference: different stakeholders want different quantiles</li>
+<li>Hauer explicitly said they don't do distributional optimization yet, and loved the pitch</li>
 </ul>
-<div class="detail">⚡ Hauer loved the CVaR pitch. "Geometry of Preference" — distributional preference differences.<br>⚡ Yoonduk wants rollback: "roll things back, change things, roll forward" — exactly counterfactual + phase transitions.</div>
-<div class="value">→ Online Bayesian learning formalizes Aaru's "continuous calibration." Phase transitions + CVaR add decision-theoretic output. Posteriors carry history beyond Markov.</div>
+<div class="detail">⚡ Hauer loved CVaR pitch. Called distributional optimization "something we don't do yet."<br>⚡ Yoonduk wants rollback: "roll things back, change, roll forward" = counterfactual phase transition.</div>
+<div class="value">→ CVaR is the cleanest new product capability Sam brings. It transforms "here's what will happen" into "here's what you should do." Hauer was visibly excited.</div>
 </div>
 
 </div>
@@ -672,60 +702,60 @@ body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0e0;padding:0}
 <h3>The Integration Thesis</h3>
 <div class="summary-grid">
 <div>
-<h4 style="color:#10b981">What Aaru Has</h4>
+<h4 style="color:#10b981">What Aaru Has (Confirmed)</h4>
 <ul>
-<li>Joint P(X,Y) over <strong>8^50</strong> state space</li>
-<li>Bidirectional Bayes' rule enforcement</li>
-<li><strong>700-variable</strong> differentially private synthetic data</li>
-<li><strong>~103 personality traits</strong> per agent (all latent)</li>
+<li>Joint P(X,Y) over <strong>8^50</strong> state space (statistical mechanics style)</li>
+<li>Bidirectional Bayes' rule enforcement (P(Y|X) ↔ P(X|Y))</li>
+<li><strong>700-variable</strong> differentially private synthetic data in seconds</li>
+<li><strong>~103 latent personality traits</strong> per agent, all inferred from behavior</li>
 <li><strong>Audience Gen</strong> system with logical consistency module (in progress)</li>
-<li>Continuous real-world calibration</li>
-<li>LLM-as-agent + classical ML pipeline + <strong>Agent SDK</strong></li>
+<li>Three-model ensemble: joint probability + LLM persona cards + classical ML</li>
+<li>Continuous real-world calibration across the state space</li>
+<li>Agent SDK under development for external developers</li>
+<li>ClickHouse analytics + dynamic React/TSX chart generation</li>
 <li>Aggregate election benchmarking + web search ablation backtesting</li>
-<li><strong>ClickHouse</strong> for analytics, dynamic chart rendering via React/TSX</li>
-<li>Adversarial + org simulation (uncapitalized)</li>
-<li>Client base: political (elections), marketing ($100M ad buys), sensitivity mapping</li>
+<li>Diverse client base: politics, marketing, retail, org simulation (concept)</li>
 <li>24 headcount, $88M raised, internal valuation ~$5-10B</li>
 </ul>
 </div>
 <div>
-<h4 style="color:#ef4444">Confirmed Gaps</h4>
+<h4 style="color:#ef4444">Confirmed Gaps & Tensions</h4>
 <ul>
-<li>❌ No counterfactual simulation</li>
-<li>❌ No reverse/abductive simulation</li>
-<li>❌ No distributional optimization (CVaR)</li>
-<li>❌ No formal probabilistic programming</li>
-<li>❌ No online Bayesian learning</li>
-<li>❌ No individual plausibility validation at scale (Matt fixing "embers" manually)</li>
-<li>❌ Snapshot only — no temporal dynamics (Markov assumption too limiting)</li>
-<li>❌ Cyclic variable dependencies break topological sort</li>
-<li>❌ Butterfly effect in context sensitivity — no principled scenario reduction</li>
-<li>❌ Latent trait calibration gap — hard to validate traits that aren't directly observable</li>
-<li>❌ Accuracy vs. explainability unresolved (black-box NN vs. interpretable traits)</li>
+<li>❌ <strong>No counterfactual simulation</strong> (Hauer: explicitly confirmed missing)</li>
+<li>❌ <strong>No abductive/reverse inference</strong> (Hauer: "really fucking weird" but needed)</li>
+<li>❌ <strong>No distributional optimization</strong> (no CVaR, no risk-aware output)</li>
+<li>❌ <strong>No formal probabilistic programming</strong> (heuristic traversal, not MCMC/VI)</li>
+<li>❌ <strong>Snapshot only</strong> — Markov too limiting for long-range effects</li>
+<li>❌ <strong>Manual ember-fixing</strong> — Matt spending weeks on consistency by hand</li>
+<li>❌ <strong>Cyclic dependencies</strong> break topological sort, no resolution</li>
+<li>❌ <strong>Butterfly effect</strong> in scenario sensitivity, no principled reduction</li>
+<li>❌ <strong>Latent trait validation gap</strong> — can't directly observe the 103 traits</li>
+<li>⚖️ <strong>Accuracy vs. explainability</strong> — NN vs. interpretable traits, unresolved</li>
+<li>⚖️ <strong>Clients hate uncertainty</strong> — but the model is fundamentally probabilistic</li>
 </ul>
 </div>
 <div>
-<h4 style="color:#e8a0be">What Sam Brings</h4>
+<h4 style="color:#e8a0be">What Sam Brings (Mapped to Gaps)</h4>
 <ul>
-<li>Causal DAGs + do-calculus → <strong>counterfactuals</strong></li>
-<li>Abductive inference → <strong>reverse simulation</strong></li>
-<li>CVaR / distributional optimization → <strong>risk-aware output</strong></li>
-<li>NumPyro probabilistic programming → <strong>rigorous inference</strong></li>
-<li>Online Bayesian learning → <strong>living agents beyond Markov</strong></li>
-<li>PRISM refraction layers → <strong>principled scenario reduction</strong></li>
-<li>Posterior predictive checks → <strong>automates ember-fixing at scale</strong></li>
-<li>DAG structure → <strong>resolves cyclic dependency problem</strong></li>
-<li>Partial pooling → <strong>handles sparse subgroups, bridges accuracy/explainability</strong></li>
-<li>L1-L5 layered trait model → <strong>maps to Aaru's ~103 traits with causal ordering</strong></li>
+<li>Causal DAGs + do-calculus → <strong>counterfactual simulation</strong></li>
+<li>Abductive inference via SCMs → <strong>reverse simulation</strong></li>
+<li>CVaR / Geometry of Preference → <strong>risk-aware decision output</strong></li>
+<li>NumPyro + NUTS → <strong>rigorous posterior inference</strong></li>
+<li>Online Bayesian learning → <strong>agents with memory beyond Markov</strong></li>
+<li>PPC + plausibility scoring → <strong>automated ember-fixing at scale</strong></li>
+<li>Time-indexed DAGs → <strong>resolves cyclic dependency problem</strong></li>
+<li>Sobol sensitivity + PCA → <strong>principled scenario reduction</strong></li>
+<li>Partial pooling → <strong>bridges accuracy/explainability tension</strong></li>
+<li>Latent → observable validation chain → <strong>trait validation pathway</strong></li>
 </ul>
 </div>
 </div>
 <p style="font-size:11px;color:#888;margin-top:20px;border-top:1px solid rgba(255,255,255,0.05);padding-top:14px">
-<strong style="color:#e8a0be">The pitch:</strong> All modules interface with Aaru's existing joint probability framework P(X,Y) over the 8^50 state space. They don't replace the engine — they extend it. Causal DAGs add direction and resolve cyclic dependencies. Abduction adds reverse traversal. CVaR adds decision theory. Probabilistic programming adds rigorous inference. Online learning adds temporal evolution beyond Markov snapshots. Refraction layers add principled scenario reduction. PPC automates the "embers" problem Matt is manually fixing. Each is independently valuable. Together they transform a correlational simulation engine into a causal, decision-theoretic, temporally-aware one.
+<strong style="color:#e8a0be">The pitch:</strong> Every module interfaces with Aaru's existing joint probability framework P(X,Y) over the 8^50 state space. Nothing is replaced. Causal DAGs add direction to the undirected joint and resolve cyclic dependencies. Abduction adds reverse traversal. CVaR adds decision theory and risk-aware output. Probabilistic programming replaces heuristic traversal with rigorous MCMC inference. Online Bayesian learning adds temporal evolution with posteriors that carry history beyond Markov. Refraction layers add principled scenario reduction via sensitivity analysis. PPC automates the ember-fixing problem that's consuming Matt's weeks. Each capability is independently valuable and immediately deployable. Together they transform a correlational simulation engine into a causal, decision-theoretic, temporally-aware platform.
 </p>
 </div>
 
-<div class="footer">Illustrated Capability Storyboard v2 · Aaru · March 18, 2026 · Comprehensive intel from Hauer, Yoonduk, standup, office visit, Jev call</div>
+<div class="footer">Capability Storyboard v2 · Aaru · March 18, 2026 · Comprehensive: Hauer, Yoonduk, standup, office visit, Jev + domain knowledge</div>
 
 </div>
 </body>
