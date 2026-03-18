@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关节保健方案 — Joint Health Regimen</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', 'Inter', sans-serif; background: #0a0a12; color: #e0e0e0; padding: 24px; max-width: 680px; margin: 0 auto; line-height: 1.7; }
+    h1 { font-size: 24px; color: #89ccf0; margin-bottom: 4px; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 32px; }
+    h2 { font-size: 17px; color: #a78bfa; margin: 32px 0 14px; border-bottom: 1px solid rgba(167,139,250,0.25); padding-bottom: 8px; }
+    h3 { font-size: 14px; color: #e8a0be; margin: 20px 0 8px; }
+
+    .product-card { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; border-left: 3px solid #89ccf0; }
+    .product-card.card-2 { border-left-color: #a78bfa; }
+    .product-card.card-3 { border-left-color: #10b981; }
+    .product-card.card-4 { border-left-color: #e8a0be; }
+    .product-name { font-weight: 700; font-size: 15px; color: #f0f0f0; margin-bottom: 4px; }
+    .product-name-zh { font-size: 13px; color: #89ccf0; margin-bottom: 8px; }
+    .product-desc { font-size: 13px; color: #999; }
+    .product-desc strong { color: #ccc; }
+    .ingredient { display: inline-block; background: rgba(137,204,240,0.1); color: #89ccf0; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin: 2px 4px 2px 0; }
+
+    .synergy { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: 10px; padding: 18px 20px; margin: 24px 0; }
+    .synergy h3 { color: #10b981; margin-top: 0; }
+    .synergy p { font-size: 13px; color: #999; }
+    .synergy-item { margin-bottom: 10px; }
+    .synergy-item strong { color: #ccc; }
+
+    .schedule { background: rgba(137,204,240,0.04); border-radius: 10px; padding: 20px; margin: 20px 0; }
+    .time-block { margin-bottom: 16px; }
+    .time-label { font-size: 14px; font-weight: 600; color: #f0f0f0; margin-bottom: 6px; }
+    .time-label-zh { font-size: 12px; color: #89ccf0; }
+    .pill { font-size: 13px; color: #bbb; margin-left: 8px; line-height: 1.8; }
+    .pill::before { content: "💊 "; }
+    .lotion { font-size: 13px; color: #bbb; margin-left: 8px; line-height: 1.8; }
+    .lotion::before { content: "🧴 "; }
+
+    .tips { background: rgba(232,160,190,0.06); border: 1px solid rgba(232,160,190,0.15); border-radius: 10px; padding: 16px 20px; margin-top: 20px; }
+    .tips li { font-size: 12px; color: #999; margin-bottom: 6px; list-style: none; }
+    .tips li::before { content: "→ "; color: #e8a0be; }
+
+    .footer { text-align: center; margin-top: 40px; font-size: 11px; color: #444; }
+</style>
+</head>
+<body>
+
+<h1>🦴 关节保健方案</h1>
+<div class="subtitle">Joint Health Regimen · Daily Supplement Schedule</div>
+
+<!-- PRODUCTS -->
+<h2>四种补充剂 — The Four Supplements</h2>
+
+<div class="product-card">
+    <div class="product-name">1. Glucosamine Chondroitin MSM with OptiMSM</div>
+    <div class="product-name-zh">氨基葡萄糖 + 软骨素 + MSM（关节修复三合一）</div>
+    <div style="margin: 8px 0;">
+        <span class="ingredient">Glucosamine 氨基葡萄糖</span>
+        <span class="ingredient">Chondroitin 软骨素</span>
+        <span class="ingredient">MSM 甲基磺酰甲烷</span>
+    </div>
+    <div class="product-desc">
+        <strong>What it does:</strong> The foundation of the stack. Glucosamine is a building block your body uses to make and repair cartilage — the cushioning between joints. Chondroitin helps cartilage retain water and elasticity, keeping it spongy and shock-absorbent. MSM (OptiMSM is the purest form) is an organic sulfur compound that reduces inflammation and supports connective tissue repair.
+        <br><br>
+        <strong>作用：</strong>氨基葡萄糖是软骨的修复原料，软骨素帮助软骨保持弹性和水分，MSM减少关节炎症，支持结缔组织修复。三者协同是关节保健的基础。
+    </div>
+</div>
+
+<div class="product-card card-2">
+    <div class="product-name">2. BioAvailable Boswellia + UC-II</div>
+    <div class="product-name-zh">乳香提取物 + UC-II型胶原蛋白（抗炎 + 免疫调节）</div>
+    <div style="margin: 8px 0;">
+        <span class="ingredient">Boswellia 乳香</span>
+        <span class="ingredient">UC-II 非变性II型胶原蛋白</span>
+    </div>
+    <div class="product-desc">
+        <strong>What it does:</strong> Boswellia (Indian frankincense) is a natural anti-inflammatory — it blocks the 5-LOX enzyme pathway, reducing joint swelling and pain without the side effects of NSAIDs. UC-II is undenatured type-II collagen: a small daily dose trains your immune system to stop attacking your own cartilage (oral tolerance mechanism). Clinical studies show 40mg UC-II outperforms glucosamine+chondroitin alone for knee function.
+        <br><br>
+        <strong>作用：</strong>乳香是天然抗炎成分，阻断5-LOX酶通路，减少关节肿胀。UC-II是非变性II型胶原蛋白，每天小剂量可以"训练"免疫系统不再攻击自身软骨。临床研究显示效果优于单独使用氨基葡萄糖。
+    </div>
+</div>
+
+<div class="product-card card-3">
+    <div class="product-name">3. NAC (N-Acetyl Cysteine) 600mg with Selenium</div>
+    <div class="product-name-zh">N-乙酰半胱氨酸 + 硒（抗氧化 + 全身保健）</div>
+    <div style="margin: 8px 0;">
+        <span class="ingredient">NAC N-乙酰半胱氨酸</span>
+        <span class="ingredient">Selenium 硒</span>
+    </div>
+    <div class="product-desc">
+        <strong>What it does:</strong> NAC is the precursor to glutathione — your body's most powerful antioxidant. It is primarily for <em>general well-being</em>, not joints specifically. However, it supports the joint stack indirectly: chronic joint inflammation generates oxidative stress, which depletes glutathione. NAC replenishes it, helping your body manage the inflammation cycle. Selenium boosts immune function and thyroid health.
+        <br><br>
+        <strong>作用：</strong>NAC是谷胱甘肽（身体最强抗氧化剂）的前体。主要用于全身保健，不是专门针对关节。但慢性关节炎症会产生氧化应激，消耗抗氧化物——NAC帮助补充，间接支持关节恢复。硒增强免疫力。
+    </div>
+</div>
+
+<div class="product-card card-4">
+    <div class="product-name">4. Glucosamine, MSM & Arnica Liposome Lotion</div>
+    <div class="product-name-zh">氨基葡萄糖 + MSM + 山金车外用乳液（局部缓解）</div>
+    <div style="margin: 8px 0;">
+        <span class="ingredient">Glucosamine 氨基葡萄糖</span>
+        <span class="ingredient">MSM</span>
+        <span class="ingredient">Arnica 山金车</span>
+        <span class="ingredient">Liposome 脂质体</span>
+    </div>
+    <div class="product-desc">
+        <strong>What it does:</strong> Topical delivery of the same joint-support compounds directly to the skin over sore areas. Arnica is a traditional anti-inflammatory herb that reduces bruising and pain. Liposome technology wraps the active ingredients in tiny fat bubbles for deeper skin penetration. Use daily on problem joints — think of it like moisturizer for your joints.
+        <br><br>
+        <strong>作用：</strong>将氨基葡萄糖和MSM直接外用于疼痛关节部位。山金车是传统抗炎草药，减轻肿痛。脂质体技术让有效成分更深入皮肤。每天涂抹——像给关节擦"保养霜"。
+    </div>
+</div>
+
+<!-- SYNERGY -->
+<div class="synergy">
+    <h3>🔗 How They Work Together 协同作用</h3>
+    <div class="synergy-item">
+        <strong>Layer 1 — Rebuild:</strong> Glucosamine + Chondroitin supply raw materials to repair and maintain cartilage.
+        <br><span style="color:#89ccf0; font-size: 12px;">第一层：修复 — 提供软骨修复的原材料</span>
+    </div>
+    <div class="synergy-item">
+        <strong>Layer 2 — Protect:</strong> UC-II retrains the immune system to stop degrading cartilage. Boswellia blocks the inflammatory enzymes that cause swelling.
+        <br><span style="color:#a78bfa; font-size: 12px;">第二层：保护 — 调节免疫，阻断炎症酶</span>
+    </div>
+    <div class="synergy-item">
+        <strong>Layer 3 — Defend:</strong> NAC replenishes glutathione, neutralizing the oxidative stress that chronic inflammation creates. Selenium supports immune balance.
+        <br><span style="color:#10b981; font-size: 12px;">第三层：防御 — 补充抗氧化物，对抗氧化应激</span>
+    </div>
+    <div class="synergy-item">
+        <strong>Layer 4 — Target:</strong> The lotion delivers anti-inflammatory and repair compounds directly to the joints that hurt most.
+        <br><span style="color:#e8a0be; font-size: 12px;">第四层：靶向 — 外用乳液直接作用于疼痛部位</span>
+    </div>
+</div>
+
+<!-- SCHEDULE -->
+<h2>每日服用时间表 — Daily Schedule</h2>
+
+<div class="schedule">
+    <div class="time-block">
+        <div class="time-label">🌅 Morning — with breakfast <span class="time-label-zh">早上（随早餐服用）</span></div>
+        <div class="pill">Glucosamine Chondroitin MSM — 2 capsules 氨基葡萄糖软骨素MSM — 2粒</div>
+        <div class="pill">Boswellia + UC-II — 1 capsule 乳香+UC-II — 1粒</div>
+    </div>
+    <div class="time-block">
+        <div class="time-label">🌙 Evening — with dinner <span class="time-label-zh">晚上（随晚餐服用）</span></div>
+        <div class="pill">Glucosamine Chondroitin MSM — 2 capsules 氨基葡萄糖软骨素MSM — 2粒</div>
+        <div class="pill">NAC 600mg — 1 capsule N-乙酰半胱氨酸 — 1粒</div>
+    </div>
+    <div class="time-block">
+        <div class="time-label">🧴 Daily — morning or evening <span class="time-label-zh">每天（早上或晚上）</span></div>
+        <div class="lotion">Apply lotion to sore joints, massage 30 seconds 涂抹于疼痛关节，按摩30秒</div>
+        <div style="font-size: 12px; color: #666; margin-left: 8px; margin-top: 4px;">If a joint is particularly sore, apply twice that day. 如果某个关节特别疼，当天可涂两次。</div>
+    </div>
+</div>
+
+<!-- TIPS -->
+<div class="tips">
+    <h3 style="color: #e8a0be; margin-top: 0; margin-bottom: 10px;">注意事项 Tips</h3>
+    <ul>
+        <li>Always take capsules with food to avoid stomach upset 请随餐服用，避免胃部不适</li>
+        <li>Allow 4-8 weeks for full benefit — these build up gradually 需要4-8周才能感受到全部效果</li>
+        <li>The lotion gives faster local relief while capsules work from inside 乳液见效更快，胶囊从内部修复</li>
+        <li>Stay hydrated — MSM works better with enough water 多喝水——MSM需要充足水分才能发挥最佳效果</li>
+        <li>This is a maintenance regimen — take daily, not just when in pain 这是日常保养方案，请每天服用，不只是疼的时候</li>
+    </ul>
+</div>
+
+<div class="footer">Prepared with care · Sam</div>
+
+</body>
+</html>
