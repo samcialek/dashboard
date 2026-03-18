@@ -7,414 +7,300 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #0a0a12; color: #e0e0e0; min-height: 100vh; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a12; color: #e0e0e0; min-height: 100vh; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+    h1 { font-size: 26px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 4px; }
+    .subtitle { text-align: center; font-size: 12px; color: #666; margin-bottom: 40px; }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
-    h1 { font-size: 28px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 4px; letter-spacing: -0.5px; }
-    .subtitle { text-align: center; font-size: 13px; color: #666; margin-bottom: 48px; }
+    /* Layer bands */
+    .layer { margin-bottom: 12px; }
+    .layer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .layer-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; min-width: 32px; text-align: center; }
+    .layer-name { font-size: 13px; font-weight: 600; }
+    .layer-meta { font-size: 10px; color: #666; margin-left: auto; font-family: 'JetBrains Mono', monospace; }
 
-    svg { width: 100%; height: auto; display: block; }
+    /* Endogenous layer nodes */
+    .node-grid { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 44px; }
+    .node { border-radius: 8px; padding: 8px 14px; font-size: 10px; font-weight: 500; line-height: 1.3; border: 1px solid; min-width: 90px; text-align: center; }
+    .node .node-label { font-size: 8px; opacity: 0.5; margin-top: 2px; }
 
-    /* Legend */
-    .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 32px; font-size: 11px; }
-    .legend-item { display: flex; align-items: center; gap: 6px; color: #888; }
-    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .legend-rect { width: 10px; height: 10px; border-radius: 2px; }
+    /* Exogenous refraction layers */
+    .refraction { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 44px; }
+    .ref-node { border-radius: 6px; padding: 6px 12px; font-size: 9px; font-weight: 600; }
+    .ref-node.macro { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; }
+    .ref-node.micro { background: #1a1a2e; color: #a0a0c0; border: 1px solid #2a2a4e; }
+    .ref-node.both { background: linear-gradient(135deg, #1a1a2e 50%, #1e293b 50%); color: #c0c0e0; border: 1px solid #334155; }
+
+    /* Cluster grouping */
+    .cluster-group { display: flex; flex-direction: column; gap: 6px; }
+    .cluster-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.4; padding-left: 44px; margin-bottom: 2px; }
+    .cluster-row { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 44px; }
+
+    /* Connector zone */
+    .connector { height: 20px; display: flex; align-items: center; padding-left: 44px; }
+    .connector-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); }
+    .connector-label { font-size: 8px; color: #444; padding: 0 12px; font-family: 'JetBrains Mono', monospace; }
+
+    /* Color schemes */
+    .l1-tag { background: #1e3a5f; color: #60a5fa; }
+    .l1-name { color: #60a5fa; }
+    .l1-node { background: rgba(96,165,250,0.08); border-color: rgba(96,165,250,0.25); color: #93bbf5; }
+
+    .f-tag { background: #3d2e0a; color: #f59e0b; }
+    .f-name { color: #f59e0b; }
+
+    .l2-tag { background: #2d1f5e; color: #a78bfa; }
+    .l2-name { color: #a78bfa; }
+    .l2-node { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.25); color: #b8a3f7; }
+
+    .m-tag { background: #3d1f0a; color: #f97316; }
+    .m-name { color: #f97316; }
+
+    .l3-tag { background: #0a3d2e; color: #10b981; }
+    .l3-name { color: #10b981; }
+    .l3-node-ends { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.25); color: #5dd9a8; }
+    .l3-node-means { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.25); color: #6ee7b7; }
+    .l3-node-reality { background: rgba(110,231,183,0.06); border-color: rgba(110,231,183,0.2); color: #8ae8c4; }
+    .l3-node-self { background: rgba(167,243,208,0.06); border-color: rgba(167,243,208,0.2); color: #a7f3d0; }
+    .l3-node-cat { border-style: dashed; }
+
+    .c-tag { background: #3d0a2e; color: #ec4899; }
+    .c-name { color: #ec4899; }
+
+    .l4-tag { background: #3d1a2e; color: #e8a0be; }
+    .l4-name { color: #e8a0be; }
+    .l4-node { background: rgba(232,160,190,0.1); border-color: rgba(232,160,190,0.3); color: #e8a0be; font-weight: 700; font-size: 11px; }
 
     /* Annotations */
-    .annotations { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .anno { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 14px 16px; border-left: 3px solid #444; }
-    .anno h3 { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
-    .anno p { font-size: 11px; color: #888; line-height: 1.5; }
-    .anno.l1 { border-left-color: #60a5fa; } .anno.l1 h3 { color: #60a5fa; }
-    .anno.f { border-left-color: #f59e0b; } .anno.f h3 { color: #f59e0b; }
-    .anno.l2 { border-left-color: #a78bfa; } .anno.l2 h3 { color: #a78bfa; }
-    .anno.e { border-left-color: #f97316; } .anno.e h3 { color: #f97316; }
-    .anno.l3 { border-left-color: #10b981; } .anno.l3 h3 { color: #10b981; }
-    .anno.c { border-left-color: #ef4444; } .anno.c h3 { color: #ef4444; }
-    .anno.l4 { border-left-color: #e8a0be; } .anno.l4 h3 { color: #e8a0be; }
-    .anno.p { border-left-color: #ec4899; } .anno.p h3 { color: #ec4899; }
+    .annotations { margin-top: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .anno { background: rgba(255,255,255,0.02); border-radius: 8px; padding: 12px 14px; border-left: 3px solid #444; }
+    .anno h3 { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+    .anno p { font-size: 10px; color: #777; line-height: 1.5; }
 
-    .footer { text-align: center; margin-top: 48px; font-size: 11px; color: #333; }
+    .legend { display: flex; gap: 20px; justify-content: center; margin-top: 28px; font-size: 10px; color: #666; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-swatch { width: 20px; height: 12px; border-radius: 3px; }
 
-    @media (max-width: 600px) { .annotations { grid-template-columns: 1fr; } }
+    .footer { text-align: center; margin-top: 36px; font-size: 10px; color: #333; }
+
+    @media (max-width: 700px) {
+        .annotations { grid-template-columns: 1fr; }
+        .node { min-width: 80px; padding: 6px 10px; font-size: 9px; }
+    }
 </style>
 </head>
 <body>
 <div class="container">
 
 <h1>PRISM Architecture</h1>
-<div class="subtitle">Political Refraction of Innate Social Mapping · Feed-Forward DAG v12.2</div>
+<div class="subtitle">Political Refraction of Innate Social Mapping · Feed-Forward DAG v12.3</div>
 
-<svg viewBox="0 0 900 680" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <marker id="arrow-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#444" stroke-width="1"/>
-        </marker>
-        <marker id="arrow-amber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#f59e0b" stroke-width="1"/>
-        </marker>
-        <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#f97316" stroke-width="1"/>
-        </marker>
-        <marker id="arrow-pink" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#ec4899" stroke-width="1"/>
-        </marker>
-        <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#ef4444" stroke-width="1"/>
-        </marker>
-        <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-    </defs>
+<!-- ═══════ L1: INNATE TEMPERAMENT ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag l1-tag">L1</span>
+        <span class="layer-name l1-name">Innate Temperament</span>
+        <span class="layer-meta">neurobiological · largely heritable · stable by late adolescence</span>
+    </div>
+    <div class="node-grid">
+        <div class="node l1-node">Threat Reactivity</div>
+        <div class="node l1-node">Novelty Drive</div>
+        <div class="node l1-node">Empathic Capacity</div>
+        <div class="node l1-node">Temperamental Reactance</div>
+        <div class="node l1-node">Affiliative Drive</div>
+        <div class="node l1-node">Cognitive Flexibility</div>
+    </div>
+</div>
 
-    <!-- Background grid -->
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
-    </pattern>
-    <rect width="900" height="680" fill="url(#grid)"/>
+<div class="connector"><div class="connector-line"></div><span class="connector-label">many-to-many</span><div class="connector-line"></div></div>
 
-    <!-- LAYER BANDS (horizontal) -->
-    <rect x="0" y="10" width="900" height="75" rx="4" fill="rgba(96,165,250,0.04)"/>
-    <rect x="0" y="100" width="900" height="55" rx="4" fill="rgba(245,158,11,0.03)"/>
-    <rect x="0" y="170" width="900" height="75" rx="4" fill="rgba(167,139,250,0.04)"/>
-    <rect x="0" y="260" width="900" height="55" rx="4" fill="rgba(249,115,22,0.03)"/>
-    <rect x="0" y="330" width="900" height="120" rx="4" fill="rgba(16,185,129,0.04)"/>
-    <rect x="0" y="465" width="900" height="120" rx="4" fill="rgba(236,72,153,0.03)"/>
-    <rect x="0" y="605" width="900" height="65" rx="4" fill="rgba(232,160,190,0.04)"/>
+<!-- ═══════ [F]: FORMATIVE REFRACTION ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag f-tag">[F]</span>
+        <span class="layer-name f-name">Formative Refraction</span>
+        <span class="layer-meta">exogenous · micro + macro · childhood through early adulthood</span>
+    </div>
+    <div class="refraction">
+        <div class="ref-node micro">Family Structure</div>
+        <div class="ref-node micro">Parental Ideology</div>
+        <div class="ref-node micro">Childhood Trauma</div>
+        <div class="ref-node micro">Religious Upbringing</div>
+        <div class="ref-node micro">Education Path</div>
+        <div class="ref-node macro">Region / Geography</div>
+        <div class="ref-node macro">Economic Era</div>
+        <div class="ref-node macro">Cultural Zeitgeist</div>
+        <div class="ref-node macro">Media Environment</div>
+        <div class="ref-node macro">Institutional Trust Era</div>
+    </div>
+</div>
 
-    <!-- LAYER LABELS (left) -->
-    <text x="16" y="52" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#60a5fa" opacity="0.8">L1</text>
-    <text x="16" y="63" font-family="Inter" font-size="9" fill="#60a5fa" opacity="0.5">INNATE</text>
-    <text x="16" y="132" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#f59e0b" opacity="0.8">[F]</text>
-    <text x="16" y="143" font-family="Inter" font-size="9" fill="#f59e0b" opacity="0.5">FORMATIVE</text>
-    <text x="16" y="212" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#a78bfa" opacity="0.8">L2</text>
-    <text x="16" y="223" font-family="Inter" font-size="9" fill="#a78bfa" opacity="0.5">PERSONALITY</text>
-    <text x="16" y="292" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#f97316" opacity="0.8">[E]</text>
-    <text x="16" y="303" font-family="Inter" font-size="9" fill="#f97316" opacity="0.5">MILIEU</text>
-    <text x="16" y="395" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#10b981" opacity="0.8">L3</text>
-    <text x="16" y="406" font-family="Inter" font-size="9" fill="#10b981" opacity="0.5">DISPOSITION</text>
-    <text x="16" y="520" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#ec4899" opacity="0.8">[CA]</text>
-    <text x="16" y="531" font-family="Inter" font-size="9" fill="#ec4899" opacity="0.5">CHOICE ARCH.</text>
-    <text x="16" y="642" font-family="JetBrains Mono" font-size="11" font-weight="700" fill="#e8a0be" opacity="0.8">L4</text>
-    <text x="16" y="653" font-family="Inter" font-size="9" fill="#e8a0be" opacity="0.5">BEHAVIOR</text>
+<div class="connector"><div class="connector-line"></div><span class="connector-label">refracts L1 into L2</span><div class="connector-line"></div></div>
 
-    <!-- ═══════════════ L1: INNATE TEMPERAMENT (6 nodes) ═══════════════ -->
-    <g filter="url(#glow)">
-        <circle cx="175" cy="45" r="18" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="175" y="49" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60a5fa" text-anchor="middle">TR</text>
-    </g>
-    <g filter="url(#glow)">
-        <circle cx="295" cy="45" r="18" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="295" y="49" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60a5fa" text-anchor="middle">ND</text>
-    </g>
-    <g filter="url(#glow)">
-        <circle cx="415" cy="45" r="18" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="415" y="49" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60a5fa" text-anchor="middle">EMP</text>
-    </g>
-    <g filter="url(#glow)">
-        <circle cx="535" cy="45" r="18" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="535" y="49" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60a5fa" text-anchor="middle">RX</text>
-    </g>
-    <g filter="url(#glow)">
-        <circle cx="655" cy="45" r="18" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="655" y="49" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60a5fa" text-anchor="middle">AF</text>
-    </g>
-    <g filter="url(#glow)">
-        <circle cx="775" cy="45" r="18" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="775" y="49" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60a5fa" text-anchor="middle">CF</text>
-    </g>
+<!-- ═══════ L2: CRYSTALLIZED PERSONALITY ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag l2-tag">L2</span>
+        <span class="layer-name l2-name">Crystallized Personality</span>
+        <span class="layer-meta">each = f(2-4 L1 nodes) × [F] · durable but not immutable</span>
+    </div>
+    <div class="node-grid">
+        <div class="node l2-node">Traditionalism</div>
+        <div class="node l2-node">Economic Conservatism</div>
+        <div class="node l2-node">Compassion</div>
+        <div class="node l2-node">Defiance</div>
+        <div class="node l2-node">Gregariousness</div>
+        <div class="node l2-node">Risk Comfort</div>
+    </div>
+</div>
 
-    <!-- L1 labels -->
-    <text x="175" y="72" font-size="7" fill="#60a5fa" opacity="0.4" text-anchor="middle">Threat React.</text>
-    <text x="295" y="72" font-size="7" fill="#60a5fa" opacity="0.4" text-anchor="middle">Novelty Drive</text>
-    <text x="415" y="72" font-size="7" fill="#60a5fa" opacity="0.4" text-anchor="middle">Empathic Cap.</text>
-    <text x="535" y="72" font-size="7" fill="#60a5fa" opacity="0.4" text-anchor="middle">Reactance</text>
-    <text x="655" y="72" font-size="7" fill="#60a5fa" opacity="0.4" text-anchor="middle">Affiliative</text>
-    <text x="775" y="72" font-size="7" fill="#60a5fa" opacity="0.4" text-anchor="middle">Cog. Flex.</text>
+<div class="connector"><div class="connector-line"></div><span class="connector-label">many-to-many</span><div class="connector-line"></div></div>
 
-    <!-- ═══════════════ [F]: FORMATIVE (7 nodes) ═══════════════ -->
-    <rect x="128" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="164" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">FAMILY</text>
+<!-- ═══════ [M]: MILIEU ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag m-tag">[M]</span>
+        <span class="layer-name m-name">Milieu</span>
+        <span class="layer-meta">exogenous · micro (unobservable per-person) + macro (observable) · base rates predictable in aggregate</span>
+    </div>
+    <div class="refraction">
+        <div class="ref-node micro">Personal Income Shock</div>
+        <div class="ref-node micro">Health Crisis</div>
+        <div class="ref-node micro">Divorce / Family Rupture</div>
+        <div class="ref-node micro">Migration / Relocation</div>
+        <div class="ref-node micro">Career Trajectory</div>
+        <div class="ref-node macro">Recession / Boom</div>
+        <div class="ref-node macro">Inflation Rate</div>
+        <div class="ref-node macro">Housing Market</div>
+        <div class="ref-node macro">Institutional Decay</div>
+        <div class="ref-node macro">Social Mobility Rate</div>
+    </div>
+</div>
 
-    <rect x="218" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="254" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">REGION</text>
+<div class="connector"><div class="connector-line"></div><span class="connector-label">refracts L2 into L3</span><div class="connector-line"></div></div>
 
-    <rect x="308" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="344" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">RELIGION</text>
+<!-- ═══════ L3: POLITICAL DISPOSITION ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag l3-tag">L3</span>
+        <span class="layer-name l3-name">Political Disposition</span>
+        <span class="layer-meta">14 nodes · 4 clusters · 12 continuous (position 1-5 + salience 0-1) · 2 categorical (6 categories each)</span>
+    </div>
 
-    <rect x="398" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="434" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">EDUCATION</text>
+    <div class="cluster-label" style="color: #10b981;">ENDS — what you want</div>
+    <div class="cluster-row">
+        <div class="node l3-node-ends">Material<div class="node-label">structuralist ↔ marketist</div></div>
+        <div class="node l3-node-ends">Cultural Direction<div class="node-label">progressive ↔ traditional</div></div>
+        <div class="node l3-node-ends">Cultural Uniformity<div class="node-label">pluralist ↔ assimilationist</div></div>
+        <div class="node l3-node-ends">Moral Circle<div class="node-label">universalist ↔ communitarian</div></div>
+    </div>
 
-    <rect x="488" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="524" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">CLASS</text>
+    <div class="cluster-label" style="color: #34d399; margin-top: 10px;">MEANS — how you get there</div>
+    <div class="cluster-row">
+        <div class="node l3-node-means">Procedural<div class="node-label">outcome-focused ↔ rules-bound</div></div>
+        <div class="node l3-node-means">Compromise<div class="node-label">principled ↔ pragmatic</div></div>
+        <div class="node l3-node-means l3-node-cat">Epistemic Style<div class="node-label">6 categories · how you decide what to trust</div></div>
+        <div class="node l3-node-means l3-node-cat">Leadership Aesthetic<div class="node-label">6 categories · preferred political style</div></div>
+    </div>
 
-    <rect x="578" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="614" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">TRAUMA</text>
+    <div class="cluster-label" style="color: #6ee7b7; margin-top: 10px;">REALITY — what you believe is true</div>
+    <div class="cluster-row">
+        <div class="node l3-node-reality">Zero-Sum<div class="node-label">positive-sum ↔ zero-sum</div></div>
+        <div class="node l3-node-reality">Human Ontology<div class="node-label">pessimistic ↔ optimistic</div></div>
+        <div class="node l3-node-reality">System Ontology<div class="node-label">declining ↔ thriving</div></div>
+    </div>
 
-    <rect x="668" y="110" rx="4" width="72" height="24" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="704" y="126" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" text-anchor="middle">MEDIA</text>
+    <div class="cluster-label" style="color: #a7f3d0; margin-top: 10px;">SELF — who you are politically</div>
+    <div class="cluster-row">
+        <div class="node l3-node-self">Political Fusion<div class="node-label">independent ↔ fused with identity</div></div>
+        <div class="node l3-node-self">Tribalism<div class="node-label">universalist ↔ group-bound</div></div>
+        <div class="node l3-node-self">Engagement<div class="node-label">disengaged ↔ highly engaged</div></div>
+    </div>
+</div>
 
-    <!-- ═══════════════ L2: CRYSTALLIZED PERSONALITY (6 nodes) ═══════════════ -->
-    <g>
-        <circle cx="175" cy="205" r="18" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="175" y="209" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#a78bfa" text-anchor="middle">T</text>
-    </g>
-    <g>
-        <circle cx="295" cy="205" r="18" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="295" y="209" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#a78bfa" text-anchor="middle">EC</text>
-    </g>
-    <g>
-        <circle cx="415" cy="205" r="18" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="415" y="209" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#a78bfa" text-anchor="middle">COMP</text>
-    </g>
-    <g>
-        <circle cx="535" cy="205" r="18" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="535" y="209" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#a78bfa" text-anchor="middle">D</text>
-    </g>
-    <g>
-        <circle cx="655" cy="205" r="18" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="655" y="209" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#a78bfa" text-anchor="middle">G</text>
-    </g>
-    <g>
-        <circle cx="775" cy="205" r="18" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="775" y="209" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#a78bfa" text-anchor="middle">RC</text>
-    </g>
+<div class="connector"><div class="connector-line"></div><span class="connector-label">many-to-many</span><div class="connector-line"></div></div>
 
-    <!-- L2 labels -->
-    <text x="175" y="232" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="middle">Traditionalism</text>
-    <text x="295" y="232" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="middle">Econ. Conserv.</text>
-    <text x="415" y="232" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="middle">Compassion</text>
-    <text x="535" y="232" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="middle">Defiance</text>
-    <text x="655" y="232" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="middle">Gregariousness</text>
-    <text x="775" y="232" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="middle">Risk Comfort</text>
+<!-- ═══════ [C]: CHOICE ARCHITECTURE ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag c-tag">[C]</span>
+        <span class="layer-name c-name">Choice Architecture</span>
+        <span class="layer-meta">exogenous · macro only · fully observable · same for everyone in a given district</span>
+    </div>
+    <div class="refraction">
+        <div class="ref-node macro">Candidates</div>
+        <div class="ref-node macro">Party Platforms</div>
+        <div class="ref-node macro">Ballot Access</div>
+        <div class="ref-node macro">Mobilization Infrastructure</div>
+        <div class="ref-node macro">Social Cost of Participation</div>
+        <div class="ref-node macro">Election Cycle</div>
+        <div class="ref-node macro">Scandal</div>
+        <div class="ref-node macro">Crisis</div>
+        <div class="ref-node macro">Media Environment</div>
+        <div class="ref-node macro">Zeitgeist</div>
+    </div>
+</div>
 
-    <!-- ═══════════════ [E]: ECONOMIC/POLITICAL CONDITIONS ═══════════════ -->
-    <rect x="148" y="272" rx="4" width="84" height="24" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="190" y="288" font-family="JetBrains Mono" font-size="8" fill="#f97316" text-anchor="middle">INCOME</text>
+<div class="connector"><div class="connector-line"></div><span class="connector-label">constrains L3 into L4</span><div class="connector-line"></div></div>
 
-    <rect x="248" y="272" rx="4" width="84" height="24" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="290" y="288" font-family="JetBrains Mono" font-size="8" fill="#f97316" text-anchor="middle">HOUSING</text>
-
-    <rect x="348" y="272" rx="4" width="84" height="24" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="390" y="288" font-family="JetBrains Mono" font-size="8" fill="#f97316" text-anchor="middle">HEALTH</text>
-
-    <rect x="448" y="272" rx="4" width="84" height="24" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="490" y="288" font-family="JetBrains Mono" font-size="8" fill="#f97316" text-anchor="middle">INFLATION</text>
-
-    <rect x="548" y="272" rx="4" width="84" height="24" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="590" y="288" font-family="JetBrains Mono" font-size="8" fill="#f97316" text-anchor="middle">MOBILITY</text>
-
-    <rect x="648" y="272" rx="4" width="105" height="24" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="700" y="288" font-family="JetBrains Mono" font-size="8" fill="#f97316" text-anchor="middle">INSTITUTIONAL</text>
-
-    <!-- ═══════════════ L3: POLITICAL DISPOSITION (14 nodes, 4 clusters) ═══════════════ -->
-    <!-- Cluster labels -->
-    <text x="260" y="348" font-family="JetBrains Mono" font-size="8" fill="#10b981" opacity="0.35" text-anchor="middle">ENDS</text>
-    <text x="545" y="348" font-family="JetBrains Mono" font-size="8" fill="#34d399" opacity="0.35" text-anchor="middle">MEANS</text>
-    <text x="370" y="408" font-family="JetBrains Mono" font-size="8" fill="#6ee7b7" opacity="0.35" text-anchor="middle">REALITY</text>
-    <text x="620" y="408" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0" opacity="0.35" text-anchor="middle">SELF</text>
-
-    <!-- Row 1: ENDS (4) + MEANS (4) -->
-    <g><circle cx="150" cy="365" r="15" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><text x="150" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#10b981" text-anchor="middle">MAT</text></g>
-    <g><circle cx="223" cy="365" r="15" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><text x="223" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#10b981" text-anchor="middle">CD</text></g>
-    <g><circle cx="296" cy="365" r="15" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><text x="296" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#10b981" text-anchor="middle">CU</text></g>
-    <g><circle cx="369" cy="365" r="15" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><text x="369" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#10b981" text-anchor="middle">MOR</text></g>
-    <g><circle cx="472" cy="365" r="15" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/><text x="472" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#34d399" text-anchor="middle">PRO</text></g>
-    <g><circle cx="545" cy="365" r="15" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/><text x="545" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#34d399" text-anchor="middle">COM</text></g>
-    <g><circle cx="618" cy="365" r="15" fill="rgba(52,211,153,0.1)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,2"/><text x="618" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#34d399" text-anchor="middle">EPS</text></g>
-    <g><circle cx="691" cy="365" r="15" fill="rgba(52,211,153,0.1)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,2"/><text x="691" y="369" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#34d399" text-anchor="middle">AES</text></g>
-
-    <!-- Row 2: REALITY (3) + SELF (3) -->
-    <g><circle cx="260" cy="425" r="15" fill="rgba(110,231,183,0.12)" stroke="#6ee7b7" stroke-width="1.5"/><text x="260" y="429" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#6ee7b7" text-anchor="middle">ZS</text></g>
-    <g><circle cx="340" cy="425" r="15" fill="rgba(110,231,183,0.12)" stroke="#6ee7b7" stroke-width="1.5"/><text x="340" y="422" font-family="JetBrains Mono" font-size="6" font-weight="600" fill="#6ee7b7" text-anchor="middle">ONT</text><text x="340" y="431" font-family="JetBrains Mono" font-size="6" font-weight="600" fill="#6ee7b7" text-anchor="middle">_H</text></g>
-    <g><circle cx="420" cy="425" r="15" fill="rgba(110,231,183,0.12)" stroke="#6ee7b7" stroke-width="1.5"/><text x="420" y="422" font-family="JetBrains Mono" font-size="6" font-weight="600" fill="#6ee7b7" text-anchor="middle">ONT</text><text x="420" y="431" font-family="JetBrains Mono" font-size="6" font-weight="600" fill="#6ee7b7" text-anchor="middle">_S</text></g>
-    <g><circle cx="540" cy="425" r="15" fill="rgba(167,243,208,0.12)" stroke="#a7f3d0" stroke-width="1.5"/><text x="540" y="429" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#a7f3d0" text-anchor="middle">PF</text></g>
-    <g><circle cx="620" cy="425" r="15" fill="rgba(167,243,208,0.12)" stroke="#a7f3d0" stroke-width="1.5"/><text x="620" y="429" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#a7f3d0" text-anchor="middle">TRB</text></g>
-    <g><circle cx="700" cy="425" r="15" fill="rgba(167,243,208,0.12)" stroke="#a7f3d0" stroke-width="1.5"/><text x="700" y="429" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#a7f3d0" text-anchor="middle">ENG</text></g>
-
-    <!-- L3 sublabels -->
-    <text x="150" y="385" font-size="5.5" fill="#10b981" opacity="0.3" text-anchor="middle">Material</text>
-    <text x="223" y="385" font-size="5.5" fill="#10b981" opacity="0.3" text-anchor="middle">Cult. Dir.</text>
-    <text x="296" y="385" font-size="5.5" fill="#10b981" opacity="0.3" text-anchor="middle">Cult. Unif.</text>
-    <text x="369" y="385" font-size="5.5" fill="#10b981" opacity="0.3" text-anchor="middle">Moral Circle</text>
-    <text x="472" y="385" font-size="5.5" fill="#34d399" opacity="0.3" text-anchor="middle">Procedural</text>
-    <text x="545" y="385" font-size="5.5" fill="#34d399" opacity="0.3" text-anchor="middle">Compromise</text>
-    <text x="618" y="385" font-size="5.5" fill="#34d399" opacity="0.3" text-anchor="middle">Epistemic*</text>
-    <text x="691" y="385" font-size="5.5" fill="#34d399" opacity="0.3" text-anchor="middle">Aesthetic*</text>
-    <text x="260" y="445" font-size="5.5" fill="#6ee7b7" opacity="0.3" text-anchor="middle">Zero-Sum</text>
-    <text x="340" y="445" font-size="5.5" fill="#6ee7b7" opacity="0.3" text-anchor="middle">Human Ont.</text>
-    <text x="420" y="445" font-size="5.5" fill="#6ee7b7" opacity="0.3" text-anchor="middle">System Ont.</text>
-    <text x="540" y="445" font-size="5.5" fill="#a7f3d0" opacity="0.3" text-anchor="middle">Pol. Fusion</text>
-    <text x="620" y="445" font-size="5.5" fill="#a7f3d0" opacity="0.3" text-anchor="middle">Tribalism</text>
-    <text x="700" y="445" font-size="5.5" fill="#a7f3d0" opacity="0.3" text-anchor="middle">Engagement</text>
-
-    <text x="810" y="370" font-size="6" fill="#34d399" opacity="0.3" text-anchor="start">* categorical (6 cat.)</text>
-
-    <!-- Dual-value annotation (continuous nodes) -->
-    <text x="860" y="360" font-size="7" fill="#10b981" opacity="0.5" text-anchor="end">pos (1-5)</text>
-    <text x="860" y="370" font-size="7" fill="#10b981" opacity="0.3" text-anchor="end">+ salience (0-1)</text>
-
-    <!-- Dual-value annotation -->
-    <text x="860" y="385" font-size="7" fill="#10b981" opacity="0.5" text-anchor="end">pos (0-100)</text>
-    <text x="860" y="395" font-size="7" fill="#10b981" opacity="0.3" text-anchor="end">+ salience (0-1)</text>
-
-    <!-- ═══════════════ [CA]: CHOICE ARCHITECTURE ═══════════════ -->
-    <!-- Row 1: Context -->
-    <rect x="128" y="480" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="168" y="495" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">CANDIDATES</text>
-
-    <rect x="224" y="480" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="264" y="495" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">PLATFORMS</text>
-
-    <rect x="320" y="480" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="360" y="495" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">BALLOT</text>
-
-    <rect x="416" y="480" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="456" y="495" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">MOBILIZE</text>
-
-    <rect x="512" y="480" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="552" y="495" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">SOCIAL COST</text>
-
-    <!-- Row 2: Zeitgeist -->
-    <rect x="128" y="516" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="168" y="531" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">ELECTION</text>
-
-    <rect x="224" y="516" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="264" y="531" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">SCANDAL</text>
-
-    <rect x="320" y="516" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="360" y="531" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">CRISIS</text>
-
-    <rect x="416" y="516" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="456" y="531" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">MEDIA ENV</text>
-
-    <rect x="512" y="516" rx="4" width="80" height="22" fill="rgba(236,72,153,0.08)" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
-    <text x="552" y="531" font-family="JetBrains Mono" font-size="7" fill="#ec4899" text-anchor="middle">ZEITGEIST</text>
-
-    <!-- ═══════════════ L4: BEHAVIOR ═══════════════ -->
-    <g>
-        <rect x="250" y="618" rx="20" width="120" height="36" fill="rgba(232,160,190,0.15)" stroke="#e8a0be" stroke-width="1.5"/>
-        <text x="310" y="640" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#e8a0be" text-anchor="middle">TURNOUT</text>
-    </g>
-    <g>
-        <rect x="420" y="618" rx="20" width="120" height="36" fill="rgba(232,160,190,0.15)" stroke="#e8a0be" stroke-width="1.5"/>
-        <text x="480" y="640" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#e8a0be" text-anchor="middle">VOTE</text>
-    </g>
-    <g>
-        <rect x="590" y="618" rx="20" width="160" height="36" fill="rgba(232,160,190,0.15)" stroke="#e8a0be" stroke-width="1.5"/>
-        <text x="670" y="640" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#e8a0be" text-anchor="middle">RCS (−3 to +3)</text>
-    </g>
-
-    <!-- ═══════════════ CONNECTIONS ═══════════════ -->
-    <!-- L1 → [F] many-to-many (show representative connections) -->
-    <line x1="175" y1="63" x2="164" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="175" y1="63" x2="254" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="295" y1="63" x2="254" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="295" y1="63" x2="344" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="415" y1="63" x2="434" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="535" y1="63" x2="524" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="535" y1="63" x2="614" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="655" y1="63" x2="614" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="655" y1="63" x2="704" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-    <line x1="775" y1="63" x2="704" y2="110" stroke="#f59e0b" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-amber)"/>
-
-    <!-- [F] → L2 -->
-    <line x1="164" y1="134" x2="175" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="254" y1="134" x2="175" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="344" y1="134" x2="295" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="434" y1="134" x2="415" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="524" y1="134" x2="535" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="614" y1="134" x2="535" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="614" y1="134" x2="655" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="704" y1="134" x2="775" y2="187" stroke="#a78bfa" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-gray)"/>
-
-    <!-- L2 → [E] (representative) -->
-    <line x1="175" y1="223" x2="190" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
-    <line x1="295" y1="223" x2="290" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
-    <line x1="415" y1="223" x2="390" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
-    <line x1="535" y1="223" x2="490" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
-    <line x1="655" y1="223" x2="590" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
-    <line x1="775" y1="223" x2="700" y2="272" stroke="#f97316" stroke-width="0.6" opacity="0.3" marker-end="url(#arrow-orange)"/>
-
-    <!-- [E] → L3 (fan out) -->
-    <line x1="190" y1="296" x2="175" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="290" y1="296" x2="295" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="390" y1="296" x2="415" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="490" y1="296" x2="535" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="590" y1="296" x2="655" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-    <line x1="700" y1="296" x2="775" y2="368" stroke="#10b981" stroke-width="0.5" opacity="0.2" marker-end="url(#arrow-gray)"/>
-
-    <!-- L3 → [CA] -->
-    <line x1="175" y1="412" x2="168" y2="480" stroke="#ec4899" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-pink)"/>
-    <line x1="295" y1="412" x2="264" y2="480" stroke="#ec4899" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-pink)"/>
-    <line x1="415" y1="412" x2="360" y2="480" stroke="#ec4899" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-pink)"/>
-    <line x1="535" y1="412" x2="456" y2="480" stroke="#ec4899" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-pink)"/>
-    <line x1="655" y1="412" x2="552" y2="480" stroke="#ec4899" stroke-width="0.6" opacity="0.25" marker-end="url(#arrow-pink)"/>
-
-    <!-- [CA] → L4 -->
-    <line x1="264" y1="538" x2="310" y2="618" stroke="#e8a0be" stroke-width="0.8" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="360" y1="538" x2="310" y2="618" stroke="#e8a0be" stroke-width="0.8" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="456" y1="538" x2="480" y2="618" stroke="#e8a0be" stroke-width="0.8" opacity="0.3" marker-end="url(#arrow-gray)"/>
-    <line x1="552" y1="538" x2="670" y2="618" stroke="#e8a0be" stroke-width="0.8" opacity="0.3" marker-end="url(#arrow-gray)"/>
-
-    <!-- MANY-TO-MANY annotation -->
-    <text x="860" y="120" font-size="7" fill="#f59e0b" opacity="0.4" text-anchor="end" font-style="italic">many-to-many</text>
-    <text x="860" y="130" font-size="7" fill="#f59e0b" opacity="0.3" text-anchor="end">MICRO — unobservable</text>
-    <text x="860" y="210" font-size="7" fill="#a78bfa" opacity="0.4" text-anchor="end" font-style="italic">crystallized</text>
-    <text x="860" y="280" font-size="7" fill="#f97316" opacity="0.4" text-anchor="end" font-style="italic">micro + macro</text>
-    <text x="860" y="290" font-size="7" fill="#f97316" opacity="0.3" text-anchor="end">micro: unobservable per-person</text>
-    <text x="860" y="300" font-size="7" fill="#f97316" opacity="0.3" text-anchor="end">macro: observable, modelable</text>
-    <text x="860" y="310" font-size="7" fill="#f97316" opacity="0.25" text-anchor="end">base rates predictable in aggregate</text>
-    <text x="860" y="505" font-size="7" fill="#ec4899" opacity="0.4" text-anchor="end" font-style="italic">MACRO — fully observable</text>
-    <text x="860" y="515" font-size="7" fill="#ec4899" opacity="0.3" text-anchor="end">same for all in district</text>
-
-    <!-- Predictability gradient arrow -->
-    <text x="75" y="360" font-size="7" fill="#666" text-anchor="middle" transform="rotate(-90, 75, 400)">← less predictable ─── more predictable →</text>
-</svg>
+<!-- ═══════ L4: POLITICAL BEHAVIOR ═══════ -->
+<div class="layer">
+    <div class="layer-header">
+        <span class="layer-tag l4-tag">L4</span>
+        <span class="layer-name l4-name">Political Behavior</span>
+        <span class="layer-meta">observable output · f(L3, practical constraints)</span>
+    </div>
+    <div class="node-grid">
+        <div class="node l4-node">Turnout<div class="node-label">binary: vote or abstain</div></div>
+        <div class="node l4-node">Vote Choice<div class="node-label">party / candidate selection</div></div>
+        <div class="node l4-node">Resistance-Compliance Scale<div class="node-label">-3 to +3 · non-electoral behavior</div></div>
+    </div>
+</div>
 
 <!-- Legend -->
 <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background: #60a5fa;"></div>Endogenous Layer</div>
-    <div class="legend-item"><div class="legend-rect" style="background: transparent; border: 1.5px dashed #f59e0b;"></div>Exogenous Refraction</div>
-    <div class="legend-item"><div class="legend-dot" style="background: #10b981;"></div>Position + Salience</div>
-    <div class="legend-item"><div class="legend-dot" style="background: #e8a0be;"></div>Observable Behavior</div>
+    <div class="legend-item"><div class="legend-swatch" style="background: #1e293b; border: 1px solid #334155;"></div>Macro (observable)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background: #1a1a2e; border: 1px solid #2a2a4e;"></div>Micro (unobservable per-person)</div>
+    <div class="legend-item"><div class="legend-swatch" style="border: 1px dashed rgba(52,211,153,0.4);"></div>Categorical (6 categories)</div>
 </div>
 
 <!-- Annotations -->
 <div class="annotations">
-    <div class="anno l1">
-        <h3>L1 — Innate Temperament</h3>
-        <p>6 neurobiological primitives. Largely heritable, stable by late adolescence. TR (Threat Reactivity), ND (Novelty Drive), EMP (Empathic Capacity), RX (Temperamental Reactance), AF (Affiliative Drive), CF (Cognitive Flexibility).</p>
+    <div class="anno" style="border-left-color: #60a5fa;">
+        <h3 style="color: #60a5fa;">L1 — Innate Temperament</h3>
+        <p>6 neurobiological primitives. Largely heritable, stable by late adolescence. The raw material that formative experience refracts into personality.</p>
     </div>
-    <div class="anno f">
-        <h3>[F] — Formative Refraction <span style="font-size:10px; opacity:0.6;">MICRO</span></h3>
-        <p>Family, region, religion, education, class, trauma, media environment. Refracts innate temperament into crystallized personality. Many-to-many mapping. <strong>Unobservable per individual</strong> — but distributions are estimable from census/survey data at the population level. Re-opens during phase transitions (divorce, war, migration).</p>
+    <div class="anno" style="border-left-color: #f59e0b;">
+        <h3 style="color: #f59e0b;">[F] — Formative Refraction <span style="font-size:9px; opacity:0.6;">MICRO + MACRO</span></h3>
+        <p>Family, religion, trauma, education (micro) PLUS region, economic era, cultural zeitgeist, media environment (macro). Both shape how innate temperament crystallizes. Re-opens during phase transitions.</p>
     </div>
-    <div class="anno l2">
-        <h3>L2 — Crystallized Personality</h3>
-        <p>6 dispositional traits. Each is f(2-4 L1 nodes) × [F]. Traditionalism, Economic Conservatism, Compassion, Defiance, Gregariousness, Risk Comfort. Durable but not immutable.</p>
+    <div class="anno" style="border-left-color: #a78bfa;">
+        <h3 style="color: #a78bfa;">L2 — Crystallized Personality</h3>
+        <p>6 dispositional traits. Each is f(2-4 L1 nodes) refracted through [F]. Durable but not immutable — phase transitions can re-open formative refraction.</p>
     </div>
-    <div class="anno e">
-        <h3>[M] — Milieu <span style="font-size:10px; opacity:0.6;">MICRO + MACRO</span></h3>
-        <p><strong>Micro:</strong> Personal life events (layoff, divorce, health crisis) — unobservable per individual, but base rates are predictable in aggregate (you can't predict WHO gets divorced, but you can predict the divorce rate). <strong>Macro:</strong> Recession, inflation, institutional decay — observable, same for everyone. This dual nature makes L3 partly idiosyncratic.</p>
+    <div class="anno" style="border-left-color: #f97316;">
+        <h3 style="color: #f97316;">[M] — Milieu <span style="font-size:9px; opacity:0.6;">MICRO + MACRO</span></h3>
+        <p>Micro: personal life events (unobservable per-person, but base rates predictable in aggregate — you can't predict WHO gets divorced, but you can predict the divorce rate). Macro: recession, inflation, institutional decay (observable, same for all).</p>
     </div>
-    <div class="anno l3">
-        <h3>L3 — Political Disposition</h3>
-        <p>14 nodes across 4 clusters. ENDS: MAT, CD, CU, MOR (what you want). MEANS: PRO, COM, EPS*, AES* (how you get there). REALITY: ZS, ONT_H, ONT_S (what you believe is true). SELF: PF, TRB, ENG (who you are politically). 12 continuous (pos 1-5 + salience) + 2 categorical* (6 categories each). The inflection point: last layer before everything becomes macro.</p>
+    <div class="anno" style="border-left-color: #10b981;">
+        <h3 style="color: #10b981;">L3 — Political Disposition</h3>
+        <p>14 nodes across 4 clusters. ENDS (what you want), MEANS (how you get there), REALITY (what you believe is true), SELF (who you are politically). 12 continuous (position 1-5 + salience) + 2 categorical (6 categories each). The inflection point: last layer before everything becomes macro.</p>
     </div>
-    <div class="anno p">
-        <h3>[CA] — Choice Architecture <span style="font-size:10px; opacity:0.6;">MACRO</span></h3>
-        <p>Candidates, platforms, ballot access, mobilization, social cost, election cycle, scandal, crisis, media environment. <strong>Purely macro — same for everyone in a given district. Fully observable and modelable.</strong> This is why L4 (behavior) is more predictable than L3 (disposition): the refraction layer feeding it is entirely observable.</p>
+    <div class="anno" style="border-left-color: #ec4899;">
+        <h3 style="color: #ec4899;">[C] — Choice Architecture <span style="font-size:9px; opacity:0.6;">MACRO</span></h3>
+        <p>Candidates, platforms, ballot access, mobilization, social cost, election cycle, scandal, crisis, media, zeitgeist. Purely macro — same for everyone in a given district. Fully observable and modelable. This is why L4 is more predictable than L3.</p>
     </div>
     <div class="anno" style="border-left-color: #e8a0be;">
         <h3 style="color: #e8a0be;">L4 — Political Behavior</h3>
-        <p>Observable output: TURNOUT (binary), VOTE (party choice), RCS (−3 to +3 resistance-compliance scale for non-electoral behavior). NOT a lookup table — f(L3, practical constraints).</p>
+        <p>Observable output. Turnout (binary), Vote Choice (party/candidate), Resistance-Compliance Scale (-3 to +3 for non-electoral behavior). NOT a lookup table — f(L3, practical constraints).</p>
+    </div>
+    <div class="anno" style="border-left-color: #666;">
+        <h3 style="color: #888;">Predictability Gradient</h3>
+        <p>L2→L3: LEAST predictable (micro + macro refraction, can't observe individual life events). L3→L4: MOST predictable (pure macro refraction, all observable). L3 is the inflection point — "closer to the bone."</p>
     </div>
 </div>
 
-<div class="footer">PRISM v12.2 · Feed-Forward DAG · Matrices of Confusion</div>
+<div class="footer">PRISM v12.3 · Feed-Forward DAG · Matrices of Confusion</div>
 
 </div>
 </body>
