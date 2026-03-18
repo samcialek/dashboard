@@ -597,15 +597,16 @@ details .expand-content{padding:10px 0 0;font-size:13px;color:var(--text2);line-
 
 <div class="card card-step">
 <div class="card-label">Next Best Step</div>
-<h4>Bayesian Model Checking Pipeline</h4>
-<p>Standard Bayesian workflow (Gelman et al., BDA3): posterior predictive checks, automated plausibility scoring, WAIC/LOO model comparison, prior sensitivity analysis.</p>
+<h4>Ember-Fixing Pipeline: Automated Agent Coherence</h4>
+<p>The highest-ROI initiative. If researchers are spending weeks manually reviewing agent consistency after generation — finding implausible trait combinations, fixing contradictions one by one — that process can be almost entirely automated.</p>
+<p><strong>The pipeline:</strong></p>
 <ul>
-<li><strong>Automates coherence checking:</strong> PPC flags incoherent agents automatically at scale</li>
-<li><strong>Latent → observable chain:</strong> validates traits through downstream predictions</li>
-<li><strong>Model comparison:</strong> swap likelihoods, compare WAIC scores, identify which variants work for which domains</li>
-<li><strong>Prior sensitivity:</strong> how much do outputs depend on modeling assumptions?</li>
+<li><strong>Step 1 — Posterior predictive scoring:</strong> For each agent, compute P(observed behaviors | trait profile). Agents whose behaviors are implausible given their traits get flagged automatically. The check: "given this agent's profile, are these predicted behaviors within the posterior uncertainty of population-level data?"</li>
+<li><strong>Step 2 — Anomaly ranking:</strong> Score every agent by their predictive plausibility. Surface the bottom 5% for review. The 95% that pass skip manual review entirely.</li>
+<li><strong>Step 3 — Automated repair:</strong> For flagged agents, identify which trait(s) are inconsistent by holding others fixed and resampling from the conditional. The joint distribution itself provides the correction — the "right" value is the one most consistent with the rest of the profile.</li>
+<li><strong>Step 4 — Model comparison (WAIC/LOO):</strong> Test whether alternative model specifications reduce the inconsistency rate. Swap likelihoods, compare scores, find the structural root cause.</li>
 </ul>
-<details><summary>The ember-fixing automation →</summary><div class="expand-content">If there's a process where researchers manually review agent consistency after generation - finding and fixing implausible trait combinations - that's the highest-ROI automation target. Posterior predictive checks can flag incoherent agents automatically, turning weeks of manual work into minutes of compute. The check becomes: "for this agent's trait profile, are the predicted behaviors consistent with observed population-level data within the posterior uncertainty?"</div></details>
+<p>This transforms manual QA from a bottleneck into a CI pipeline. Run it after every population generation. Weeks become minutes.</p>
 </div>
 
 <div class="card card-impact">
