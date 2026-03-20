@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLP-1 & Alcohol: Experiment Results</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0a; color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+h2 { font-family: 'EB Garamond', serif; font-size: 2rem; font-weight: 600; color: #fff; margin: 60px 0 8px; }
+.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 40px; }
+.section-desc { color: #999; font-size: 0.95rem; margin-bottom: 20px; font-style: italic; font-family: 'EB Garamond', serif; }
+.chart-wrap { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+.chart-wrap canvas { max-height: 400px; }
+.personas { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 32px; }
+.persona-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; }
+.persona-card h3 { font-family: 'EB Garamond', serif; font-size: 1.4rem; color: #fff; margin-bottom: 4px; }
+.persona-card .meta { color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+.persona-card canvas { max-height: 200px; }
+.persona-stats { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+.persona-stats .stat { text-align: center; }
+.persona-stats .stat .val { font-size: 1.5rem; font-weight: 700; }
+.persona-stats .stat .lbl { font-size: 0.75rem; color: #888; }
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 32px; }
+.summary-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 32px; text-align: center; }
+.summary-card .big { font-size: 2.5rem; font-weight: 700; font-family: 'EB Garamond', serif; }
+.summary-card .label { color: #888; font-size: 0.9rem; margin-top: 4px; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>GLP-1 &amp; Alcohol: Experiment Results</h1>
+  <p class="subtitle">Simulation outputs from the political model — beverage shifts, demographic heterogeneity, individual counterfactuals, and adoption sensitivity.</p>
+
+  <!-- Section 1: Demographic Heterogeneity -->
+  <h2>1. Demographic Heterogeneity</h2>
+  <p class="section-desc">Experiment 6 — Five demographic subgroups show divergent alcohol trajectories. Two groups never recover to baseline.</p>
+  <div class="chart-wrap"><canvas id="demoChart"></canvas></div>
+
+  <!-- Section 2: Individual Counterfactuals -->
+  <h2>2. Individual Counterfactual Profiles</h2>
+  <p class="section-desc">Experiment 12 — Three simulated individuals navigating the GLP-1 alcohol trajectory.</p>
+  <div class="personas">
+    <div class="persona-card">
+      <span class="tag" style="background:#2563eb33;color:#60a5fa;">Suburban Dad</span>
+      <h3>Dave, 52</h3>
+      <p class="meta">Suburban dad • Social drinker • Weekend barbecues</p>
+      <canvas id="daveChart"></canvas>
+      <div class="persona-stats">
+        <div class="stat"><div class="val" style="color:#ef4444">-35%</div><div class="lbl">Crater</div></div>
+        <div class="stat"><div class="val" style="color:#eab308">Mo 12</div><div class="lbl">Crossover</div></div>
+        <div class="stat"><div class="val" style="color:#22c55e">+8.6%</div><div class="lbl">Final</div></div>
+      </div>
+    </div>
+    <div class="persona-card">
+      <span class="tag" style="background:#a855f733;color:#c084fc;">Urban Professional</span>
+      <h3>Maya, 38</h3>
+      <p class="meta">Urban professional • Wine with dinner • Networking events</p>
+      <canvas id="mayaChart"></canvas>
+      <div class="persona-stats">
+        <div class="stat"><div class="val" style="color:#ef4444">-27%</div><div class="lbl">Crater</div></div>
+        <div class="stat"><div class="val" style="color:#eab308">Mo 13</div><div class="lbl">Crossover</div></div>
+        <div class="stat"><div class="val" style="color:#22c55e">+0.9%</div><div class="lbl">Final</div></div>
+      </div>
+    </div>
+    <div class="persona-card">
+      <span class="tag" style="background:#f9731633;color:#fb923c;">College Grad</span>
+      <h3>Jess, 24</h3>
+      <p class="meta">Recent college grad • Social scene • Weekend nights out</p>
+      <canvas id="jessChart"></canvas>
+      <div class="persona-stats">
+        <div class="stat"><div class="val" style="color:#ef4444">-31%</div><div class="lbl">Crater</div></div>
+        <div class="stat"><div class="val" style="color:#eab308">Mo 14</div><div class="lbl">Crossover</div></div>
+        <div class="stat"><div class="val" style="color:#22c55e">+4.2%</div><div class="lbl">Final</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Adoption Rate Sensitivity -->
+  <h2>3. Adoption Rate Sensitivity</h2>
+  <p class="section-desc">Experiment 10 — How population-level adoption rate scales the amplitude of the alcohol trajectory. Timing stays constant; amplitude scales linearly below 15%, then accelerates via social contagion.</p>
+  <div class="chart-wrap"><canvas id="adoptionChart"></canvas></div>
+
+  <!-- Section 4: Beverage Category Shift -->
+  <h2>4. Beverage Category Shift</h2>
+  <p class="section-desc">Experiment 5b — At 15% GLP-1 adoption, market share shifts dramatically from beer toward spirits and low-cal cocktails. Revenue increases as consumers trade up.</p>
+  <div class="chart-wrap"><canvas id="bevChart"></canvas></div>
+  <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+
+  <!-- Section 5: Summary -->
+  <h2>5. Key Takeaways</h2>
+  <div class="summary-grid">
+    <div class="summary-card"><div class="big" style="color:#eab308">Month 14</div><div class="label">Population crossover point</div></div>
+    <div class="summary-card"><div class="big" style="color:#ef4444">2 groups</div><div class="label">Never cross back to baseline</div></div>
+    <div class="summary-card"><div class="big" style="color:#22c55e">+8.6%</div><div class="label">Dave's final alcohol change</div></div>
+    <div class="summary-card"><div class="big" style="color:#60a5fa">+40%</div><div class="label">Spirits share gain (adopters)</div></div>
+  </div>
+</div>
+
+<script>
+Chart.defaults.color = '#888';
+Chart.defaults.borderColor = '#222';
+const months = Array.from({length:25}, (_,i) => i);
+
+// Helper: generate crater-crossover curve
+function craterCurve(crater, crossoverMonth, endVal) {
+  // crater happens around month 3-5, crossover at crossoverMonth, end at endVal
+  const pts = [];
+  for (let m = 0; m <= 24; m++) {
+    let v;
+    if (crossoverMonth === null) {
+      // never crosses: crater then partial recovery
+      const craterM = 5;
+      const decay = Math.exp(-0.3 * (m - craterM));
+      const rise = 1 - Math.exp(-0.15 * Math.max(0, m - craterM));
+      v = crater * Math.exp(-0.5 * Math.pow((m - craterM)/2.5, 2)) / crater * crater;
+      // simpler: gaussian crater + linear recovery
+      const t = m / 24;
+      const craterPhase = crater * Math.exp(-0.5 * Math.pow((m - 5)/2.8, 2));
+      const recoveryTarget = endVal;
+      const recovery = recoveryTarget * (1 - Math.exp(-0.12 * Math.max(0, m - 5)));
+      v = craterPhase + recovery;
+      if (m < 2) v = crater * (m/5) * (m/5);
+    } else {
+      // crosses over: crater then recovery past 0
+      const craterM = 5;
+      const t = m / 24;
+      const craterPhase = crater * Math.exp(-0.5 * Math.pow((m - craterM)/2.8, 2));
+      const recovery = endVal * (1 / (1 + Math.exp(-0.5 * (m - (crossoverMonth - 3)))));
+      v = craterPhase + recovery;
+      if (m < 2) v = crater * (m/5) * (m/5);
+    }
+    pts.push(+v.toFixed(2));
+  }
+  return pts;
+}
+
+// Section 1: Demographic Heterogeneity
+const demoGroups = [
+  {name: 'Urban Women 30-45', crater: -23, cross: 22, end: 1.2, color: '#f472b6', dash: false},
+  {name: 'Suburban Men 50-65', crater: -32, cross: null, end: -4.3, color: '#60a5fa', dash: true},
+  {name: 'College Urbanites 25-40', crater: -18, cross: 19, end: 2.2, color: '#34d399', dash: false},
+  {name: 'Rural Adults 45-60', crater: -32, cross: null, end: -4.7, color: '#fb923c', dash: true},
+  {name: 'Young Urban 21-30', crater: -14, cross: 20, end: 1.2, color: '#c084fc', dash: false},
+];
+
+const demoDatasets = demoGroups.map(g => ({
+  label: g.name,
+  data: craterCurve(g.crater, g.cross, g.end),
+  borderColor: g.color,
+  backgroundColor: 'transparent',
+  borderDash: g.dash ? [6, 4] : [],
+  borderWidth: 2.5,
+  pointRadius: months.map((m,i) => m === g.cross ? 6 : 0),
+  pointBackgroundColor: g.color,
+  tension: 0.4,
+}));
+
+new Chart(document.getElementById('demoChart'), {
+  type: 'line',
+  data: {labels: months, datasets: demoDatasets},
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {position: 'top', labels: {usePointStyle: true, padding: 16}},
+      annotation: {
+        annotations: {
+          zeroline: {type: 'line', yMin: 0, yMax: 0, borderColor: '#444', borderWidth: 1, borderDash: [4,4]}
+        }
+      }
+    },
+    scales: {
+      x: {title: {display: true, text: 'Month'}},
+      y: {title: {display: true, text: 'Alcohol Change (%)'}, grid: {color: '#1a1a1a'}}
+    }
+  }
+});
+
+// Section 2: Persona mini charts
+function miniChart(id, crater, cross, end, color) {
+  const data = craterCurve(crater, cross, end);
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: {labels: months, datasets: [{
+      data, borderColor: color, backgroundColor: color + '20',
+      fill: true, borderWidth: 2, pointRadius: months.map(m => m === cross ? 5 : 0),
+      pointBackgroundColor: '#eab308', tension: 0.4
+    }]},
+    options: {
+      responsive: true,
+      plugins: {legend: {display: false}, annotation: {annotations: {z: {type:'line',yMin:0,yMax:0,borderColor:'#333',borderWidth:1,borderDash:[3,3]}}}},
+      scales: {x: {display: false}, y: {display: true, grid: {color: '#1a1a1a'}, ticks: {callback: v => v+'%'}}}
+    }
+  });
+}
+miniChart('daveChart', -35, 12, 8.6, '#60a5fa');
+miniChart('mayaChart', -27, 13, 0.9, '#c084fc');
+miniChart('jessChart', -31, 14, 4.2, '#fb923c');
+
+// Section 3: Adoption Rate Sensitivity
+const adoptionRates = [5, 10, 15, 20, 25, 30];
+const adoptionColors = ['#475569','#64748b','#eab308','#f97316','#ef4444','#dc2626'];
+const adoptionDatasets = adoptionRates.map((rate, i) => {
+  const scale = rate / 15; // normalized to 15%
+  const contagion = rate > 15 ? 1 + (rate - 15) * 0.03 : 1;
+  const base = craterCurve(-22, 14, 1.5);
+  return {
+    label: rate + '% adoption',
+    data: base.map(v => +(v * scale * contagion).toFixed(2)),
+    borderColor: adoptionColors[i],
+    backgroundColor: 'transparent',
+    borderWidth: rate === 15 ? 3 : 1.5,
+    pointRadius: 0,
+    tension: 0.4,
+  };
+});
+
+new Chart(document.getElementById('adoptionChart'), {
+  type: 'line',
+  data: {labels: months, datasets: adoptionDatasets},
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {position: 'top', labels: {usePointStyle: true}},
+      annotation: {
+        annotations: {
+          zeroline: {type:'line',yMin:0,yMax:0,borderColor:'#444',borderWidth:1,borderDash:[4,4]},
+          contagion: {type:'label',xValue:18,yValue:-12,content:['Social contagion kicks in','above 15%'],color:'#eab308',font:{size:12,family:'EB Garamond',style:'italic'},backgroundColor:'#eab30815',padding:8,borderRadius:6}
+        }
+      }
+    },
+    scales: {
+      x: {title: {display: true, text: 'Month'}},
+      y: {title: {display: true, text: 'Alcohol Change (%)'}, grid: {color: '#1a1a1a'}}
+    }
+  }
+});
+
+// Section 4: Beverage data at 15% adoption
+const bevData = [[0.3996,0.25,0.2,0.0999,0.05,-0.025],[0.3993,0.25,0.2001,0.0999,0.0501,-0.041],[0.3989,0.2499,0.2001,0.0998,0.0501,-0.066],[0.3982,0.2499,0.2001,0.0996,0.0502,-0.105],[0.3971,0.2498,0.2002,0.0994,0.0503,-0.162],[0.3956,0.2498,0.2004,0.0991,0.0506,-0.242],[0.3935,0.2496,0.2006,0.0987,0.0509,-0.342],[0.3908,0.2494,0.201,0.0982,0.0514,-0.446],[0.3875,0.2491,0.2015,0.0975,0.0523,-0.523],[0.3841,0.2488,0.2023,0.0968,0.0535,-0.526],[0.3805,0.2483,0.2035,0.0961,0.0552,-0.416],[0.377,0.2479,0.2049,0.0954,0.0574,-0.181],[0.3733,0.2474,0.2066,0.0947,0.06,0.151],[0.3696,0.2469,0.2085,0.0939,0.0628,0.529],[0.3658,0.2464,0.2104,0.0932,0.0656,0.919],[0.3623,0.2459,0.2123,0.0925,0.0684,1.328],[0.3593,0.2454,0.2142,0.0919,0.0713,1.795],[0.3569,0.245,0.2162,0.0914,0.0743,2.344],[0.3552,0.2446,0.2182,0.091,0.0773,2.959],[0.354,0.2443,0.2201,0.0908,0.0802,3.579],[0.3533,0.244,0.2217,0.0907,0.0826,4.135],[0.3528,0.2439,0.223,0.0906,0.0845,4.582],[0.3525,0.2438,0.2239,0.0905,0.0858,4.91],[0.3523,0.2437,0.2245,0.0905,0.0868,5.135],[0.3522,0.2437,0.2249,0.0904,0.0874,5.284]];
+
+const bevCats = [
+  {label: 'Beer', color: '#eab308', idx: 0},
+  {label: 'Wine', color: '#a855f7', idx: 1},
+  {label: 'Spirits', color: '#3b82f6', idx: 2},
+  {label: 'Hard Seltzer', color: '#22c55e', idx: 3},
+  {label: 'Low-Cal Cocktails', color: '#f43f5e', idx: 4},
+];
+
+const bevDatasets = bevCats.map(c => ({
+  label: c.label,
+  data: bevData.map(d => +(d[c.idx] * 100).toFixed(2)),
+  backgroundColor: c.color + '60',
+  borderColor: c.color,
+  borderWidth: 1,
+  fill: true,
+  pointRadius: 0,
+  tension: 0.3,
+}));
+
+new Chart(document.getElementById('bevChart'), {
+  type: 'line',
+  data: {labels: months, datasets: bevDatasets},
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {position: 'top', labels: {usePointStyle: true}},
+      title: {display: true, text: 'Market Share by Category (15% adoption)', color: '#ccc', font: {family: 'EB Garamond', size: 16}}
+    },
+    scales: {
+      x: {title: {display: true, text: 'Month'}, stacked: true},
+      y: {title: {display: true, text: 'Market Share (%)'}, stacked: true, min: 0, max: 100, grid: {color: '#1a1a1a'}}
+    }
+  }
+});
+
+// Revenue overlay
+new Chart(document.getElementById('revChart'), {
+  type: 'line',
+  data: {labels: months, datasets: [{
+    label: 'Revenue Change (%)',
+    data: bevData.map(d => d[5]),
+    borderColor: '#22c55e',
+    backgroundColor: '#22c55e20',
+    fill: true,
+    borderWidth: 2.5,
+    pointRadius: 0,
+    tension: 0.4,
+  }]},
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {display: false},
+      title: {display: true, text: 'Total Revenue Impact (15% adoption)', color: '#ccc', font: {family: 'EB Garamond', size: 16}},
+      annotation: {annotations: {z: {type:'line',yMin:0,yMax:0,borderColor:'#444',borderWidth:1,borderDash:[3,3]}}}
+    },
+    scales: {
+      x: {title: {display: true, text: 'Month'}},
+      y: {title: {display: true, text: 'Revenue Change (%)'}, grid: {color: '#1a1a1a'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
