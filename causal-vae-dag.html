@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CausalVAE — Learned Latent DAG Structure (iter3)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a12; color: #e0e0e0; font-family: 'Inter', sans-serif; padding: 40px; min-height: 100vh; }
+h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.subtitle { color: #888; font-size: 14px; margin-bottom: 40px; }
+.subtitle span { color: #5BA8D9; font-weight: 600; }
+
+.dag-container { position: relative; width: 1100px; margin: 0 auto; height: 800px; }
+
+.node {
+  position: absolute; padding: 12px 18px; border-radius: 12px;
+  font-size: 13px; font-weight: 600; text-align: center;
+  cursor: default; transition: all 0.2s; z-index: 2;
+  border: 2px solid transparent;
+}
+.node:hover { transform: scale(1.08); z-index: 10; }
+.node .strength { font-size: 10px; font-weight: 400; opacity: 0.7; margin-top: 4px; }
+.node .corr { font-size: 10px; color: #aaa; margin-top: 2px; }
+
+/* Demographic latents */
+.demo { background: #1a2a4a; border-color: #3366aa; color: #88bbff; }
+
+/* Psychographic clusters */
+.foundation { background: #2a1a2a; border-color: #8844aa; color: #cc88ff; }
+.attitudes { background: #1a2a2a; border-color: #44aa88; color: #88ffcc; }
+.behavioral { background: #2a2a1a; border-color: #aa8844; color: #ffcc88; }
+.contextual { background: #2a1a1a; border-color: #aa4444; color: #ff8888; }
+
+svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.edge { stroke-width: 1.5; fill: none; opacity: 0.5; }
+.edge-strong { stroke-width: 2.5; opacity: 0.8; }
+.edge-demo { stroke: #3366aa; }
+.edge-psycho { stroke: #cc88ff; }
+.edge-cross { stroke: #888; stroke-dasharray: 4,3; }
+
+.legend { display: flex; gap: 24px; margin-bottom: 30px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #aaa; }
+.legend-dot { width: 12px; height: 12px; border-radius: 4px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+.stat { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
+.stat .label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+.stat .value { font-size: 24px; font-weight: 700; color: #fff; margin-top: 4px; }
+.stat .detail { font-size: 11px; color: #888; margin-top: 4px; }
+
+.comparison { margin-top: 40px; }
+.comparison table { width: 100%; border-collapse: collapse; }
+.comparison th { text-align: left; padding: 10px 12px; font-size: 12px; color: #666; border-bottom: 1px solid #222; text-transform: uppercase; letter-spacing: 1px; }
+.comparison td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid #1a1a1a; }
+.comparison tr.winner td { color: #88ffcc; }
+.comparison .r2-bar { display: inline-block; height: 6px; border-radius: 3px; background: #3366aa; margin-left: 8px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>CausalVAE — Latent DAG Structure</h1>
+<p class="subtitle">iter3: Theory-driven DAG with 16 latent dimensions | <span>R² = 0.163</span> | 74,223 respondents (ANES + CES + VSG)</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3366aa"></div> Demographic Latents (z0-z3)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8844aa"></div> Foundation (auth, openness, gender)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#44aa88"></div> Attitudes (economic, cultural, racial, immigration)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#aa8844"></div> Behavioral (engagement, tribal)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#aa4444"></div> Contextual (religion, media, trust)</div>
+</div>
+
+<div class="dag-container">
+  <svg id="edges" viewBox="0 0 1100 800"></svg>
+
+  <!-- DEMOGRAPHIC LATENTS (top row) -->
+  <div class="node demo" style="left:150px; top:20px" id="z0">z0<br>Demo 0<div class="corr">religion, children</div></div>
+  <div class="node demo" style="left:350px; top:20px" id="z1">z1<br>Demo 1<div class="corr">investor, education</div></div>
+  <div class="node demo" style="left:550px; top:20px" id="z2">z2<br>Demo 2<div class="corr">investor, marital</div></div>
+  <div class="node demo" style="left:750px; top:20px" id="z3">z3<br>Demo 3<div class="corr">religion, education</div></div>
+
+  <!-- FOUNDATION (row 2) -->
+  <div class="node foundation" style="left:80px; top:200px" id="z14">z14<br>Religious Salience<div class="strength">→ auth (1.44)</div><div class="corr">r=0.91 religion_imp</div></div>
+  <div class="node foundation" style="left:330px; top:200px" id="z4">z4<br>Authoritarianism<div class="strength">→ racial (1.58)</div><div class="corr">r=0.06 auth battery</div></div>
+  <div class="node foundation" style="left:580px; top:200px" id="z12">z12<br>Gender Attitudes<div class="strength">→ openness (1.31)</div><div class="corr">r=-0.31 sexism3</div></div>
+  <div class="node foundation" style="left:830px; top:200px" id="z5">z5<br>Openness<div class="strength">→ econ (1.30)</div><div class="corr">r=-0.55 environment</div></div>
+
+  <!-- ATTITUDES (row 3) -->
+  <div class="node attitudes" style="left:50px; top:400px" id="z8">z8<br>Racial Attitudes<div class="strength">→ tribal (1.09)</div><div class="corr">r=0.05 rr battery</div></div>
+  <div class="node attitudes" style="left:270px; top:400px" id="z7">z7<br>Cultural Conservatism<div class="strength">3 parents</div><div class="corr">r=0.37 abortion</div></div>
+  <div class="node attitudes" style="left:500px; top:400px" id="z6">z6<br>Economic Left-Right<div class="strength">→ engage (1.38)</div><div class="corr">r=0.37 healthcare</div></div>
+  <div class="node attitudes" style="left:750px; top:400px" id="z13">z13<br>Immigration Attitudes<div class="strength">2 parents</div><div class="corr">r=0.33 muslim_ban</div></div>
+
+  <!-- CONTEXTUAL (row 3.5) -->
+  <div class="node contextual" style="left:850px; top:300px" id="z9">z9<br>Institutional Trust<div class="strength">→ engage (1.44)</div><div class="corr">r=-0.07 approve_pres</div></div>
+  <div class="node contextual" style="left:920px; top:500px" id="z15">z15<br>Media Orientation<div class="strength">→ engage (1.04)</div><div class="corr">r=-0.56 news_interest</div></div>
+
+  <!-- BEHAVIORAL (bottom row) -->
+  <div class="node behavioral" style="left:300px; top:600px" id="z10">z10<br>Political Engagement<div class="strength">4 parents</div><div class="corr">r=-0.56 news_interest</div></div>
+  <div class="node behavioral" style="left:600px; top:600px" id="z11">z11<br>Tribal Identity<div class="strength">4 parents</div><div class="corr">r=0.31 pid7, r=0.38 ideology</div></div>
+</div>
+
+<script>
+const edges = [
+  // Psychographic edges (theory-driven)
+  {from:'z14',to:'z4', w:1.44, type:'psycho'},
+  {from:'z14',to:'z7', w:1.14, type:'psycho'},
+  {from:'z4', to:'z8', w:1.58, type:'psycho'},
+  {from:'z4', to:'z7', w:1.15, type:'psycho'},
+  {from:'z4', to:'z11',w:1.27, type:'psycho'},
+  {from:'z12',to:'z5', w:1.31, type:'psycho'},
+  {from:'z5', to:'z6', w:1.30, type:'psycho'},
+  {from:'z5', to:'z7', w:1.26, type:'psycho'},
+  {from:'z5', to:'z13',w:1.34, type:'psycho'},
+  {from:'z8', to:'z11',w:1.09, type:'psycho'},
+  {from:'z8', to:'z13',w:1.28, type:'psycho'},
+  {from:'z9', to:'z10',w:1.44, type:'psycho'},
+  {from:'z9', to:'z11',w:1.07, type:'psycho'},
+  {from:'z6', to:'z10',w:1.38, type:'psycho'},
+  {from:'z15',to:'z10',w:1.04, type:'psycho'},
+  {from:'z15',to:'z11',w:0.96, type:'psycho'},
+];
+
+function getCenter(id) {
+  const el = document.getElementById(id);
+  const r = el.getBoundingClientRect();
+  const c = document.querySelector('.dag-container').getBoundingClientRect();
+  return { x: r.left - c.left + r.width/2, y: r.top - c.top + r.height/2 };
+}
+
+window.addEventListener('load', () => {
+  const svg = document.getElementById('edges');
+  edges.forEach(e => {
+    const f = getCenter(e.from);
+    const t = getCenter(e.to);
+    // Curved path
+    const mx = (f.x+t.x)/2;
+    const my = (f.y+t.y)/2;
+    const dx = t.x-f.x;
+    const dy = t.y-f.y;
+    const cx = mx - dy*0.15;
+    const cy = my + dx*0.15;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', `M${f.x},${f.y} Q${cx},${cy} ${t.x},${t.y}`);
+    const strong = e.w > 1.2;
+    path.setAttribute('class', `edge ${strong?'edge-strong':''} edge-${e.type}`);
+    path.setAttribute('marker-end', 'url(#arrow)');
+    svg.appendChild(path);
+  });
+});
+</script>
+
+<svg style="position:absolute;width:0;height:0">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#cc88ff" opacity="0.7"/>
+    </marker>
+  </defs>
+</svg>
+
+<div class="stats">
+  <div class="stat"><div class="label">Psychographic R²</div><div class="value">0.163</div><div class="detail">High-coverage variables only</div></div>
+  <div class="stat"><div class="label">DAG Edges</div><div class="value">16</div><div class="detail">All edges > 0.96 strength</div></div>
+  <div class="stat"><div class="label">Strongest Edge</div><div class="value">Auth → Racial</div><div class="detail">Weight: 1.577</div></div>
+  <div class="stat"><div class="label">Best Alignment</div><div class="value">Religious</div><div class="detail">r=0.91 with religion_importance</div></div>
+</div>
+
+<div class="comparison">
+  <h2 style="font-size:18px; margin-bottom:16px; color:#fff;">Experiment Comparison</h2>
+  <table>
+    <tr><th>Experiment</th><th>Approach</th><th>Psycho R²</th><th>DAG</th><th>Interpretable</th></tr>
+    <tr class="winner"><td>iter2c</td><td>16-dim Gumbel, no DAG</td><td>0.205 <span class="r2-bar" style="width:102px"></span></td><td>None</td><td>No</td></tr>
+    <tr><td>iter2d</td><td>8-dim theory DAG</td><td>0.204 <span class="r2-bar" style="width:101px"></span></td><td>7 edges</td><td>Yes</td></tr>
+    <tr><td>iter1</td><td>10-dim, learned DAG</td><td>0.192 <span class="r2-bar" style="width:96px"></span></td><td>Uniform</td><td>No</td></tr>
+    <tr><td>iter2b</td><td>Psycho bottleneck</td><td>0.179 <span class="r2-bar" style="width:89px"></span></td><td>None</td><td>Partial</td></tr>
+    <tr><td>iter2a</td><td>Aggressive sparsity</td><td>0.170 <span class="r2-bar" style="width:85px"></span></td><td>Killed</td><td>No</td></tr>
+    <tr><td style="color:#ff8888">iter3</td><td>16-dim theory + aux(0.3)</td><td>0.163 <span class="r2-bar" style="width:81px;background:#aa4444"></span></td><td><strong>16 strong</strong></td><td><strong>Yes</strong></td></tr>
+    <tr><td colspan="5" style="color:#666; font-size:12px; border:none;">Baseline MLP: R² = 0.161</td></tr>
+  </table>
+</div>
+
+</body>
+</html>
