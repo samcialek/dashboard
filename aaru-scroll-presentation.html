@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Causal Structure Matters</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0a0a0a;color:#e0e0e0;font-family:'EB Garamond',serif;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6,.heading{font-family:'Space Grotesk',sans-serif}
+.section{width:100%;min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.section-inner{max-width:1200px;width:90%;margin:0 auto;position:relative;z-index:2}
+.salmon{color:#fa8072}.blue{color:#5BA8D9}.teal{color:#4ecdc4}.red{color:#ff4444}
+.big-number{font-family:'Space Grotesk',sans-serif;font-size:clamp(80px,15vw,200px);font-weight:700;line-height:1}
+.subtitle{font-size:clamp(18px,2.5vw,28px);opacity:0.7;margin-top:12px}
+.body-text{font-size:clamp(16px,1.8vw,22px);line-height:1.6;max-width:700px}
+.label{font-family:'Space Grotesk',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:2px;opacity:0.5;margin-bottom:8px}
+
+/* Hero */
+#hero{height:100vh}
+#hero-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+.hero-title{font-size:clamp(36px,6vw,72px);font-weight:700;letter-spacing:-1px}
+.hero-title .letter{display:inline-block;opacity:0}
+.hero-subtitle{font-size:clamp(18px,2.5vw,32px);font-weight:300;opacity:0;transform:translateY(30px);margin-top:16px;font-family:'EB Garamond',serif;font-style:italic}
+
+/* Ceiling */
+#ceiling{min-height:200vh}
+.ceiling-pin{height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.chart-container{width:100%;max-width:900px;margin-top:40px}
+.bar-row{display:flex;align-items:center;margin:4px 0;height:28px}
+.bar-label{width:180px;text-align:right;padding-right:16px;font-family:'Space Grotesk',sans-serif;font-size:13px;flex-shrink:0;white-space:nowrap}
+.bar-track{flex:1;height:20px;position:relative;border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;width:0;position:relative}
+.bar-val{position:absolute;right:-50px;top:0;font-family:'Space Grotesk',sans-serif;font-size:12px;line-height:20px;color:#e0e0e0;opacity:0.8}
+.bar-fill.xgb{background:#5BA8D9}
+.bar-fill.vae{background:#fa8072}
+.bar-fill.other{background:rgba(224,224,224,0.25)}
+
+/* Causal Wins */
+#causal-wins{min-height:200vh}
+.wins-pin{height:100vh;display:flex;align-items:center;justify-content:center}
+.split{display:flex;gap:80px;width:100%}
+.split-half{flex:1}
+.split-half h3{font-size:28px;margin-bottom:24px}
+.var-row{margin:12px 0;font-size:20px}
+.var-name{opacity:0.6;font-family:'Space Grotesk',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:1px}
+.var-val{font-size:36px;font-weight:600;font-family:'Space Grotesk',sans-serif}
+.var-compare{font-size:16px;opacity:0.4;margin-left:8px}
+.overlay-text{position:absolute;bottom:15%;left:0;right:0;text-align:center;font-size:clamp(20px,3vw,36px);font-style:italic;opacity:0}
+
+/* Counterfactual */
+#counterfactual{min-height:300vh}
+.cf-pin{height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.persona{text-align:center;margin-bottom:40px}
+.persona-icon{font-size:80px;margin-bottom:12px;opacity:0.8}
+.persona-label{font-family:'Space Grotesk',sans-serif;font-size:18px;opacity:0.7}
+.intervention{font-family:'Space Grotesk',sans-serif;font-size:24px;margin:16px 0 32px;opacity:0}
+.intervention code{background:rgba(250,128,114,0.15);color:#fa8072;padding:4px 12px;border-radius:4px;font-size:22px}
+.cf-bars{width:100%;max-width:700px}
+.cf-row{display:flex;align-items:center;margin:16px 0;gap:16px}
+.cf-label{width:140px;text-align:right;font-family:'Space Grotesk',sans-serif;font-size:14px;flex-shrink:0}
+.cf-bar-wrap{flex:1;position:relative;height:32px}
+.cf-bar-before,.cf-bar-after{position:absolute;top:0;height:32px;border-radius:4px;transition:width 0.3s}
+.cf-bar-before{background:rgba(224,224,224,0.2);z-index:1}
+.cf-bar-after{z-index:2}
+.cf-vals{width:160px;font-family:'Space Grotesk',sans-serif;font-size:15px;flex-shrink:0;display:flex;gap:8px;align-items:center}
+.cf-arrow{opacity:0.4}
+.cf-big-text{text-align:center;font-size:clamp(22px,3.5vw,40px);font-weight:600;margin-top:40px;opacity:0;font-family:'Space Grotesk',sans-serif;line-height:1.4}
+.cf-xgb-text{text-align:center;font-size:22px;opacity:0;margin-top:20px;font-style:italic;color:#fa8072}
+
+/* GLP-1 */
+#glp1{min-height:250vh}
+.glp1-pin{height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.glp1-title{font-size:clamp(24px,4vw,48px);font-weight:700;margin-bottom:8px;text-align:center}
+.glp1-sub{font-size:18px;opacity:0.5;margin-bottom:32px;text-align:center}
+.chart-svg-wrap{width:100%;max-width:900px;position:relative}
+.chart-svg-wrap svg{width:100%;height:auto}
+.glp1-annotation{position:absolute;font-family:'Space Grotesk',sans-serif;font-size:13px;opacity:0;padding:6px 12px;border-radius:4px;background:rgba(255,255,255,0.08);pointer-events:none}
+.glp1-conclusion{text-align:center;font-size:clamp(16px,2vw,22px);margin-top:24px;opacity:0;font-style:italic;max-width:700px}
+
+/* Environment */
+#environment{min-height:200vh}
+.env-pin{height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.env-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin-bottom:48px;text-align:center}
+.dag-flow{display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.dag-node{padding:14px 24px;border:1.5px solid rgba(224,224,224,0.3);border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:15px;opacity:0;transform:translateY(20px);background:rgba(255,255,255,0.03)}
+.dag-arrow{font-size:24px;opacity:0;margin:0 8px;color:rgba(224,224,224,0.3)}
+.env-text{text-align:center;font-size:20px;max-width:700px;opacity:0;line-height:1.6;font-style:italic}
+
+/* Bottom Line */
+#bottomline{min-height:200vh}
+.bl-pin{height:100vh;display:flex;align-items:center;justify-content:center}
+.cap-table{border-collapse:collapse;width:100%;max-width:800px}
+.cap-table th{font-family:'Space Grotesk',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:1px;padding:12px 16px;border-bottom:1px solid rgba(224,224,224,0.15);text-align:left}
+.cap-table td{padding:12px 16px;font-size:18px;border-bottom:1px solid rgba(224,224,224,0.06)}
+.cap-table tr{opacity:0;transform:translateY(10px)}
+.cap-table td:nth-child(2),.cap-table td:nth-child(3){text-align:center;font-size:20px}
+.cap-table th:nth-child(2),.cap-table th:nth-child(3){text-align:center}
+.check{color:#4ecdc4}.cross{color:rgba(224,224,224,0.2)}
+
+/* Closing */
+#closing{min-height:150vh}
+.close-pin{height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+.close-line{font-size:clamp(28px,5vw,56px);font-weight:700;opacity:0;margin:12px 0;font-family:'Space Grotesk',sans-serif}
+.close-byline{font-size:18px;opacity:0;margin-top:40px;font-style:italic}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="section" id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="section-inner" style="text-align:center">
+<h1 class="heading hero-title" id="hero-title"></h1>
+<p class="hero-subtitle" id="hero-subtitle">A Technical Demonstration</p>
+</div>
+</section>
+
+<!-- THE CEILING -->
+<section class="section" id="ceiling">
+<div class="ceiling-pin">
+<div class="section-inner" style="text-align:center">
+<div class="label">The Predictive Ceiling</div>
+<div class="big-number salmon" id="r2-number">0.00</div>
+<p class="body-text" style="margin:16px auto 0;opacity:0" id="ceiling-text">14 models. Same ceiling. The signal is finite.</p>
+<div class="chart-container" id="bar-chart" style="opacity:0"></div>
+</div>
+</div>
+</section>
+
+<!-- WHERE CAUSAL WINS -->
+<section class="section" id="causal-wins">
+<div class="wins-pin">
+<div class="section-inner">
+<div class="split" id="split-container">
+<div class="split-half" id="split-left" style="opacity:0;transform:translateX(-40px)">
+<h3 class="heading blue">XGBoost Dominates</h3>
+<div class="var-row"><div class="var-name">immigration</div><div class="var-val blue" data-target="0.444">0.000</div></div>
+<div class="var-row"><div class="var-name">news_interest</div><div class="var-val blue" data-target="0.318">0.000</div></div>
+</div>
+<div class="split-half" id="split-right" style="opacity:0;transform:translateX(40px)">
+<h3 class="heading salmon">VAE Dominates</h3>
+<div class="var-row"><div class="var-name">trump_approval</div><div class="var-val salmon" data-target="0.217">0.000</div><span class="var-compare">vs XGB: 0.024</span></div>
+<div class="var-row"><div class="var-name">imm_legal_status</div><div class="var-val salmon" data-target="0.199">0.000</div><span class="var-compare">vs XGB: 0.038</span></div>
+</div>
+</div>
+<p class="overlay-text" id="wins-overlay">XGBoost finds correlations. The VAE traces causal pathways.</p>
+</div>
+</div>
+</section>
+
+<!-- COUNTERFACTUAL -->
+<section class="section" id="counterfactual">
+<div class="cf-pin">
+<div class="section-inner">
+<div class="persona">
+<div class="persona-icon">👤</div>
+<div class="persona-label">Rural Evangelical White Male, 50</div>
+</div>
+<div class="intervention" id="cf-intervention"><code>do(education = graduate)</code></div>
+<div class="cf-bars" id="cf-bars">
+<div class="cf-row" data-before="0.458" data-after="0.265" data-label="Party ID" data-color="#fa8072"></div>
+<div class="cf-row" data-before="0.512" data-after="0.325" data-label="Ideology" data-color="#fa8072"></div>
+<div class="cf-row" data-before="0.598" data-after="0.856" data-label="Trump Approval" data-color="#ff4444"></div>
+<div class="cf-row" data-before="0.443" data-after="0.275" data-label="Gun Control" data-color="#fa8072"></div>
+</div>
+<div class="cf-big-text" id="cf-big">Education makes him more liberal…<br>but <span class="red">INCREASES</span> Trump approval.</div>
+<div class="cf-xgb-text" id="cf-xgb">XGBoost cannot compute this.</div>
+</div>
+</div>
+</section>
+
+<!-- GLP-1 -->
+<section class="section" id="glp1">
+<div class="glp1-pin">
+<div class="section-inner" style="display:flex;flex-direction:column;align-items:center">
+<div class="glp1-title heading">GLP-1 Impact Divergence</div>
+<div class="glp1-sub">Republican vote share change over 24 months</div>
+<div class="chart-svg-wrap" id="glp1-chart">
+<svg viewBox="0 0 900 400" id="glp1-svg"></svg>
+<div class="glp1-annotation" id="glp1-annot" style="right:28%;top:35%">Second-order effects kick in</div>
+</div>
+<p class="glp1-conclusion" id="glp1-conclusion">The correlation model misses the rebound. The causal model captures it.</p>
+</div>
+</div>
+</section>
+
+<!-- ENVIRONMENT SIMULATION -->
+<section class="section" id="environment">
+<div class="env-pin">
+<div class="section-inner" style="display:flex;flex-direction:column;align-items:center">
+<div class="env-title heading">Agent Architecture</div>
+<div class="dag-flow" id="dag-flow">
+<div class="dag-node">Demographics</div><div class="dag-arrow">→</div>
+<div class="dag-node">Encoder</div><div class="dag-arrow">→</div>
+<div class="dag-node" style="border-color:#fa8072">Latent Profile</div><div class="dag-arrow">→</div>
+<div class="dag-node">DAG</div><div class="dag-arrow">→</div>
+<div class="dag-node" style="border-color:#5BA8D9">Response</div><div class="dag-arrow">↻</div>
+<div class="dag-node" style="border-color:#4ecdc4">Feedback</div>
+</div>
+<p class="env-text" id="env-text">Each agent carries causal structure. When the environment changes, responses propagate through the DAG.</p>
+</div>
+</div>
+</section>
+
+<!-- BOTTOM LINE -->
+<section class="section" id="bottomline">
+<div class="bl-pin">
+<div class="section-inner" style="display:flex;justify-content:center">
+<table class="cap-table" id="cap-table">
+<thead><tr style="opacity:1;transform:none"><th>Capability</th><th>XGBoost</th><th>Causal VAE</th></tr></thead>
+<tbody>
+<tr><td>Raw prediction</td><td><span class="check">✅</span> 0.218</td><td><span class="check">✅</span> 0.202</td></tr>
+<tr><td>Counterfactual intervention</td><td><span class="cross">✗</span></td><td><span class="check">✅</span></td></tr>
+<tr><td>Heterogeneous treatment effects</td><td><span class="cross">✗</span></td><td><span class="check">✅</span></td></tr>
+<tr><td>Interpretable latent pathways</td><td><span class="cross">✗</span></td><td><span class="check">✅</span></td></tr>
+<tr><td>Environment simulation</td><td><span class="cross">✗</span></td><td><span class="check">✅</span></td></tr>
+<tr><td>Temporal projection</td><td><span class="cross">✗</span></td><td><span class="check">✅</span></td></tr>
+<tr><td>Enterprise auditability</td><td><span class="cross">✗</span></td><td><span class="check">✅</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- CLOSING -->
+<section class="section" id="closing">
+<div class="close-pin">
+<div class="section-inner" style="text-align:center">
+<div class="close-line" id="close1">Prediction is table stakes.</div>
+<div class="close-line" id="close2">Intervention design is the moat.</div>
+<div class="close-byline" id="close3">Prepared by Sam Cialek — March 2026</div>
+</div>
+</div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Hero particles ──
+(function(){
+const c=document.getElementById('hero-canvas'),ctx=c.getContext('2d');
+let w,h,dots=[];
+function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;dots=[];for(let i=0;i<80;i++)dots.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+0.5,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3})}
+resize();window.addEventListener('resize',resize);
+function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(224,224,224,0.15)';dots.forEach(d=>{d.x+=d.vx;d.y+=d.vy;if(d.x<0)d.x=w;if(d.x>w)d.x=0;if(d.y<0)d.y=h;if(d.y>h)d.y=0;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill()});requestAnimationFrame(draw)}
+draw();
+})();
+
+// ── Hero title letter-by-letter ──
+(function(){
+const title="Why Causal Structure Matters";
+const el=document.getElementById('hero-title');
+el.innerHTML=title.split('').map(ch=>ch===' '?'<span class="letter" style="opacity:1">&nbsp;</span>':`<span class="letter">${ch}</span>`).join('');
+const letters=el.querySelectorAll('.letter');
+gsap.to(letters,{opacity:1,duration:0.05,stagger:0.04,delay:0.5});
+gsap.to('#hero-subtitle',{opacity:0.7,y:0,duration:0.8,delay:1.2});
+})();
+
+// ── Ceiling ──
+(function(){
+const pin=document.querySelector('.ceiling-pin');
+const tl=gsap.timeline({scrollTrigger:{trigger:'#ceiling',start:'top top',end:'+=150%',pin:pin,scrub:1}});
+tl.to('#r2-number',{duration:1,onUpdate:function(){const p=this.progress();document.getElementById('r2-number').textContent='R² ≈ '+(0.20*p).toFixed(2)},onComplete:()=>{document.getElementById('r2-number').textContent='R² ≈ 0.20'}})
+.to('#ceiling-text',{opacity:0.7,duration:0.3},0.6)
+.to('#bar-chart',{opacity:1,duration:0.3},0.7);
+
+// Build bars
+const models=[
+{n:'XGBoost',v:0.218,c:'xgb'},{n:'Tuned XGBoost',v:0.217,c:'xgb'},{n:'Engineered XGB',v:0.217,c:'xgb'},
+{n:'Hybrid VAE+XGB',v:0.209,c:'other'},{n:'CausalVAE iter2c',v:0.205,c:'vae'},{n:'CausalVAE iter4d',v:0.202,c:'vae'},
+{n:'Tuned LightGBM',v:0.198,c:'other'},{n:'LightGBM',v:0.198,c:'other'},{n:'EmbeddingNN',v:0.197,c:'other'},
+{n:'Random Forest',v:0.185,c:'other'},{n:'Ridge',v:0.117,c:'other'},{n:'Lasso',v:0.116,c:'other'}
+];
+const chart=document.getElementById('bar-chart');
+models.forEach(m=>{
+const row=document.createElement('div');row.className='bar-row';
+row.innerHTML=`<div class="bar-label">${m.n}</div><div class="bar-track"><div class="bar-fill ${m.c}" data-w="${m.v/0.25*100}%"><div class="bar-val">${m.v.toFixed(3)}</div></div></div>`;
+chart.appendChild(row);
+});
+const fills=chart.querySelectorAll('.bar-fill');
+tl.to(fills,{width:i=>fills[i].dataset.w,duration:0.5,stagger:0.02},0.8);
+})();
+
+// ── Causal Wins ──
+(function(){
+const tl=gsap.timeline({scrollTrigger:{trigger:'#causal-wins',start:'top top',end:'+=150%',pin:'.wins-pin',scrub:1}});
+tl.to('#split-left',{opacity:1,x:0,duration:0.4})
+.to('#split-right',{opacity:1,x:0,duration:0.4},0.1);
+// count up vals
+document.querySelectorAll('#causal-wins .var-val').forEach(el=>{
+const t=parseFloat(el.dataset.target);
+tl.to(el,{duration:0.5,onUpdate:function(){el.textContent=((t)*this.progress()).toFixed(3)}},0.3);
+});
+tl.to('#wins-overlay',{opacity:1,duration:0.3},0.85);
+})();
+
+// ── Counterfactual ──
+(function(){
+const data=[
+{label:'Party ID',before:0.458,after:0.265,color:'#fa8072'},
+{label:'Ideology',before:0.512,after:0.325,color:'#fa8072'},
+{label:'Trump Approval',before:0.598,after:0.856,color:'#ff4444'},
+{label:'Gun Control',before:0.443,after:0.275,color:'#fa8072'}
+];
+const container=document.getElementById('cf-bars');
+container.innerHTML='';
+data.forEach(d=>{
+const row=document.createElement('div');row.className='cf-row';
+const maxV=Math.max(d.before,d.after,1);
+row.innerHTML=`<div class="cf-label">${d.label}</div>
+<div class="cf-bar-wrap">
+<div class="cf-bar-before" style="width:${d.before*100}%;background:rgba(224,224,224,0.15)"></div>
+<div class="cf-bar-after" style="width:0%;background:${d.color};opacity:0.85"></div>
+</div>
+<div class="cf-vals"><span class="cf-v-before">${d.before.toFixed(3)}</span><span class="cf-arrow">→</span><span class="cf-v-after" style="color:${d.color}">—</span></div>`;
+container.appendChild(row);
+row._d=d;
+});
+
+const tl=gsap.timeline({scrollTrigger:{trigger:'#counterfactual',start:'top top',end:'+=250%',pin:'.cf-pin',scrub:1}});
+tl.to('#cf-intervention',{opacity:1,duration:0.2},0.1);
+container.querySelectorAll('.cf-row').forEach((row,i)=>{
+const d=row._d;
+const afterBar=row.querySelector('.cf-bar-after');
+const afterVal=row.querySelector('.cf-v-after');
+tl.to(afterBar,{width:d.after*100+'%',duration:0.3,onUpdate:function(){afterVal.textContent=(d.after*this.progress()).toFixed(3)}},0.25+i*0.08);
+});
+tl.to('#cf-big',{opacity:1,duration:0.2},0.75)
+.to('#cf-xgb',{opacity:1,duration:0.2},0.88);
+})();
+
+// ── GLP-1 Chart ──
+(function(){
+const jp=[-0.62,-1.26,-1.82,-2.52,-3.24,-4.01,-4.84,-5.67,-6.58,-7.54,-8.52,-9.55,-10.59,-11.62,-12.65,-13.63,-14.56,-15.42,-16.19,-16.85,-17.25,-17.25,-17.25,-17.25];
+const cs=[-0.31,-0.83,-1.42,-2.12,-2.87,-3.52,-4.21,-4.87,-5.49,-6.12,-6.71,-7.26,-7.73,-8.11,-8.41,-8.61,-8.70,-8.67,-8.51,-8.21,-7.64,-7.64,-7.64,-7.64];
+
+const svg=document.getElementById('glp1-svg');
+const W=900,H=400,pad={t:40,r:60,b:50,l:70};
+const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+const minY=-18,maxY=0;
+
+function x(i){return pad.l+(i/(jp.length-1))*cw}
+function y(v){return pad.t+((maxY-v)/(maxY-minY))*ch}
+
+// axes
+let axes=`<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}" stroke="rgba(224,224,224,0.2)" stroke-width="1"/>`;
+axes+=`<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="rgba(224,224,224,0.2)" stroke-width="1"/>`;
+// y labels
+for(let v=0;v>=-18;v-=3){
+axes+=`<text x="${pad.l-10}" y="${y(v)+4}" fill="#e0e0e0" font-size="12" text-anchor="end" font-family="Space Grotesk">${v}%</text>`;
+axes+=`<line x1="${pad.l}" y1="${y(v)}" x2="${W-pad.r}" y2="${y(v)}" stroke="rgba(224,224,224,0.06)" stroke-width="1"/>`;
+}
+// x labels
+for(let i=0;i<24;i+=3){
+axes+=`<text x="${x(i)}" y="${H-pad.b+20}" fill="#e0e0e0" font-size="12" text-anchor="middle" font-family="Space Grotesk">M${i+1}</text>`;
+}
+
+// paths
+let jpPath='M'+jp.map((v,i)=>`${x(i)},${y(v)}`).join('L');
+let csPath='M'+cs.map((v,i)=>`${x(i)},${y(v)}`).join('L');
+
+const jpLen=3000;const csLen=3000;
+
+svg.innerHTML=axes+
+`<path d="${jpPath}" fill="none" stroke="#5BA8D9" stroke-width="2.5" stroke-dasharray="8,4" id="jp-line" stroke-dashoffset="${jpLen}" opacity="0.9"/>
+<path d="${csPath}" fill="none" stroke="#fa8072" stroke-width="3" id="cs-line" stroke-dashoffset="${csLen}" opacity="0.9"/>
+<text x="${W-pad.r+5}" y="${y(jp[23])+4}" fill="#5BA8D9" font-size="12" font-family="Space Grotesk">Joint Prob</text>
+<text x="${W-pad.r+5}" y="${y(cs[23])+4}" fill="#fa8072" font-size="12" font-family="Space Grotesk">Causal Sim</text>`;
+
+// set actual path lengths
+const jpEl=document.getElementById('jp-line');
+const csEl=document.getElementById('cs-line');
+const jpReal=jpEl.getTotalLength();
+const csReal=csEl.getTotalLength();
+jpEl.style.strokeDasharray=jpReal;jpEl.style.strokeDashoffset=jpReal;
+csEl.style.strokeDasharray=csReal;csEl.style.strokeDashoffset=csReal;
+
+const tl=gsap.timeline({scrollTrigger:{trigger:'#glp1',start:'top top',end:'+=200%',pin:'.glp1-pin',scrub:1}});
+tl.to(jpEl,{strokeDashoffset:0,duration:1},0)
+.to(csEl,{strokeDashoffset:0,duration:1},0)
+.to('#glp1-annot',{opacity:1,duration:0.15},0.7)
+.to('#glp1-conclusion',{opacity:0.8,duration:0.2},0.85);
+})();
+
+// ── Environment ──
+(function(){
+const nodes=document.querySelectorAll('#dag-flow .dag-node');
+const arrows=document.querySelectorAll('#dag-flow .dag-arrow');
+const tl=gsap.timeline({scrollTrigger:{trigger:'#environment',start:'top top',end:'+=150%',pin:'.env-pin',scrub:1}});
+nodes.forEach((n,i)=>{
+tl.to(n,{opacity:1,y:0,duration:0.15},i*0.1);
+if(arrows[i])tl.to(arrows[i],{opacity:1,duration:0.1},i*0.1+0.08);
+});
+tl.to('#env-text',{opacity:0.8,duration:0.3},0.7);
+})();
+
+// ── Bottom Line ──
+(function(){
+const rows=document.querySelectorAll('#cap-table tbody tr');
+const tl=gsap.timeline({scrollTrigger:{trigger:'#bottomline',start:'top top',end:'+=150%',pin:'.bl-pin',scrub:1}});
+rows.forEach((r,i)=>{tl.to(r,{opacity:1,y:0,duration:0.12},i*0.1)});
+})();
+
+// ── Closing ──
+(function(){
+const tl=gsap.timeline({scrollTrigger:{trigger:'#closing',start:'top top',end:'+=100%',pin:'.close-pin',scrub:1}});
+tl.to('#close1',{opacity:1,duration:0.3},0)
+.to('#close2',{opacity:1,duration:0.3},0.4)
+.to('#close3',{opacity:0.5,duration:0.3},0.7);
+})();
+</script>
+</body>
+</html>
