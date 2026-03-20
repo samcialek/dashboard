@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLP-1 → Alcohol Behavior: Causal DAG</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;font-family:'Space Grotesk',sans-serif;color:#eee;overflow:hidden;width:100vw;height:100vh}
+svg{width:100%;height:100%}
+.node-group{cursor:pointer}
+.node-circle{stroke-width:2;transition:opacity .3s}
+.node-label{fill:#eee;font-size:12px;font-family:'Space Grotesk',sans-serif;font-weight:500;text-anchor:middle;pointer-events:none}
+.edge-path{fill:none;stroke-width:2.5;transition:opacity .3s}
+.edge-dot{transition:opacity .3s}
+.dimmed{opacity:.08!important}
+.time-label{font-size:11px;font-family:'Space Grotesk',sans-serif;fill:#aaa;font-weight:300}
+.legend{font-family:'Space Grotesk',sans-serif}
+.annotation{font-family:'Space Grotesk',sans-serif;fill:#777;font-size:12px;font-weight:300}
+.pathway-label{cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;fill-opacity:.7;transition:fill-opacity .3s}
+.pathway-label:hover{fill-opacity:1}
+.title-text{font-family:'Space Grotesk',sans-serif;fill:#eee;font-weight:700}
+</style>
+</head>
+<body>
+<svg id="dag"></svg>
+<script>
+const W=window.innerWidth, H=window.innerHeight;
+const svg=document.getElementById('dag');
+svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+
+// Nodes
+const nodes=[
+  {id:'glp1',label:'GLP-1 Adoption',x:W/2,y:70,r:32,color:'#4ecdc4',glow:true,pathway:'root'},
+  {id:'appetite',label:'Appetite Suppression',x:W/2-220,y:200,r:22,color:'#5BA8D9',pathway:'p1'},
+  {id:'neuro',label:'Neurological Reward\nModulation',x:W/2+260,y:200,r:22,color:'#9b59b6',pathway:'p4'},
+  {id:'cravings',label:'Cravings Reduction',x:W/2-280,y:340,r:20,color:'#5BA8D9',pathway:'p1'},
+  {id:'reduced_craving',label:'Reduced Alcohol\nCraving',x:W/2+300,y:340,r:20,color:'#9b59b6',pathway:'p4'},
+  {id:'weight',label:'Weight Loss',x:W/2+40,y:220,r:22,color:'#888',pathway:'shared'},
+  {id:'body_image',label:'Body Image',x:W/2+100,y:350,r:19,color:'#fa8072',pathway:'p2'},
+  {id:'confidence',label:'Self-Confidence',x:W/2+160,y:450,r:19,color:'#fa8072',pathway:'p2'},
+  {id:'social',label:'Social Motivation',x:W/2+100,y:550,r:19,color:'#fa8072',pathway:'p2'},
+  {id:'health_id',label:'Health Identity',x:W/2-60,y:370,r:19,color:'#4ecdc4',pathway:'p3'},
+  {id:'drink_shift',label:'Drink Choice Shift',x:W/2-120,y:490,r:19,color:'#4ecdc4',pathway:'p3'},
+  {id:'per_occasion',label:'Per-Occasion\nDrinking ↓',x:W/2-200,y:520,r:21,color:'#1a1a1a',stroke:'#fff',pathway:'outcome'},
+  {id:'occasion_freq',label:'Occasion\nFrequency ↑',x:W/2+60,y:620,r:21,color:'#1a1a1a',stroke:'#fff',pathway:'outcome'},
+  {id:'per_vol',label:'Per-Occasion\nVolume ↓',x:W/2-160,y:620,r:21,color:'#1a1a1a',stroke:'#fff',pathway:'outcome'},
+  {id:'total',label:'Total Alcohol\nBehavior',x:W/2,y:H-90,r:36,color:'#1a1a1a',stroke:'#fff',glow:true,pathway:'final'}
+];
+
+// Edges: [source, target, color, pathway, dashed, thickness]
+const edges=[
+  ['glp1','appetite','#5BA8D9','p1',false,3],
+  ['appetite','cravings','#5BA8D9','p1',false,3],
+  ['cravings','per_occasion','#5BA8D9','p1',false,3],
+  ['per_occasion','total','#5BA8D9','p1',false,3],
+  ['glp1','neuro','#9b59b6','p4',false,2.5],
+  ['neuro','reduced_craving','#9b59b6','p4',false,2.5],
+  ['reduced_craving','per_occasion','#9b59b6','p4',false,2.5],
+  ['glp1','weight','#888','shared',false,2],
+  ['weight','body_image','#fa8072','p2',true,2],
+  ['body_image','confidence','#fa8072','p2',true,2],
+  ['confidence','social','#fa8072','p2',true,2],
+  ['social','occasion_freq','#fa8072','p2',true,2.5],
+  ['occasion_freq','total','#fa8072','p2',true,2.5],
+  ['weight','health_id','#4ecdc4','p3',false,2],
+  ['health_id','drink_shift','#4ecdc4','p3',false,2],
+  ['drink_shift','per_vol','#4ecdc4','p3',false,2],
+  ['per_vol','total','#4ecdc4','p3',false,2],
+];
+
+const nodeMap={};
+nodes.forEach(n=>nodeMap[n.id]=n);
+
+// Defs
+const defs=el('defs');
+// Glow filter
+defs.innerHTML=`
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur stdDeviation="6" result="blur"/>
+  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="glow-white" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur stdDeviation="8" result="blur"/>
+  <feFlood flood-color="#ffffff" flood-opacity="0.3" result="color"/>
+  <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+  <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+`;
+svg.appendChild(defs);
+
+function el(tag,attrs){
+  const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  if(attrs)Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));
+  return e;
+}
+
+// Draw edges
+const edgeGroup=el('g');
+svg.appendChild(edgeGroup);
+const edgeEls=[];
+
+edges.forEach((e,i)=>{
+  const s=nodeMap[e[0]], t=nodeMap[e[1]];
+  const dx=t.x-s.x, dy=t.y-s.y;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  const sx=s.x+dx/dist*s.r, sy=s.y+dy/dist*s.r;
+  const tx=t.x-dx/dist*t.r, ty=t.y-dy/dist*t.r;
+  // Curve control point
+  const mx=(sx+tx)/2, my=(sy+ty)/2;
+  const nx=-dy/dist*30, ny=dx/dist*30;
+  const cx=mx+nx, cy=my+ny;
+  const d=`M${sx},${sy} Q${cx},${cy} ${tx},${ty}`;
+
+  const path=el('path',{d,stroke:e[2],'stroke-width':e[5],class:'edge-path','data-pathway':e[3]});
+  if(e[4])path.setAttribute('stroke-dasharray','8,6');
+  path.setAttribute('opacity','0.6');
+  edgeGroup.appendChild(path);
+
+  // Arrow
+  const at=0.92;
+  const arrowT=at;
+  const ax=(1-arrowT)*(1-arrowT)*sx+2*(1-arrowT)*arrowT*cx+arrowT*arrowT*tx;
+  const ay=(1-arrowT)*(1-arrowT)*sy+2*(1-arrowT)*arrowT*cy+arrowT*arrowT*ty;
+  const adx=2*(1-arrowT)*(cx-sx)+2*arrowT*(tx-cx);
+  const ady=2*(1-arrowT)*(cy-sy)+2*arrowT*(ty-cy);
+  const al=Math.sqrt(adx*adx+ady*ady);
+  const aSize=7;
+  const arrow=el('polygon',{
+    points:`${ax},${ay} ${ax-adx/al*aSize+ady/al*aSize*.5},${ay-ady/al*aSize-adx/al*aSize*.5} ${ax-adx/al*aSize-ady/al*aSize*.5},${ay-ady/al*aSize+adx/al*aSize*.5}`,
+    fill:e[2],opacity:'0.7',class:'edge-path','data-pathway':e[3]
+  });
+  edgeGroup.appendChild(arrow);
+
+  // Animated dot
+  const dot=el('circle',{r:3,fill:e[2],opacity:'0.9',class:'edge-dot','data-pathway':e[3]});
+  edgeGroup.appendChild(dot);
+
+  const pathLen=path.getTotalLength?null:null;
+  edgeEls.push({path,dot,sx,sy,cx,cy,tx,ty,color:e[2],pathway:e[3],arrow,delay:i*400+Math.random()*2000,duration:2500+Math.random()*1500});
+});
+
+// Animate dots
+function animateDots(t){
+  edgeEls.forEach(e=>{
+    const p=((t+e.delay)%e.duration)/e.duration;
+    const x=(1-p)*(1-p)*e.sx+2*(1-p)*p*e.cx+p*p*e.tx;
+    const y=(1-p)*(1-p)*e.sy+2*(1-p)*p*e.cy+p*p*e.ty;
+    e.dot.setAttribute('cx',x);
+    e.dot.setAttribute('cy',y);
+  });
+  requestAnimationFrame(animateDots);
+}
+requestAnimationFrame(animateDots);
+
+// Draw nodes
+const nodeGroup=el('g');
+svg.appendChild(nodeGroup);
+const nodeEls=[];
+
+nodes.forEach(n=>{
+  const g=el('g',{class:'node-group','data-id':n.id});
+  // Breathing animation via CSS
+  const circle=el('circle',{
+    cx:n.x,cy:n.y,r:n.r,
+    fill:n.color,stroke:n.stroke||n.color,'stroke-width':n.stroke?2.5:1.5,
+    opacity:n.color==='#1a1a1a'?1:0.85,
+    class:'node-circle','data-pathway':n.pathway
+  });
+  if(n.glow)circle.setAttribute('filter',n.id==='total'?'url(#glow-white)':'url(#glow)');
+  g.appendChild(circle);
+
+  // Multi-line label
+  const lines=n.label.split('\n');
+  lines.forEach((line,i)=>{
+    const txt=el('text',{
+      x:n.x,y:n.y+(i-(lines.length-1)/2)*14+1,
+      class:'node-label',
+      'font-size':n.r>28?'13px':'11px'
+    });
+    txt.textContent=line;
+    g.appendChild(txt);
+  });
+
+  g.addEventListener('mouseenter',()=>highlightNode(n.id));
+  g.addEventListener('mouseleave',clearHighlight);
+  nodeGroup.appendChild(g);
+  nodeEls.push({el:g,node:n,circle});
+});
+
+// Breathing animation
+let breathT=0;
+function breathe(t){
+  breathT=t;
+  nodeEls.forEach(ne=>{
+    const phase=ne.node.x*0.01+ne.node.y*0.01;
+    const s=1+Math.sin(t/1500+phase)*0.015;
+    ne.circle.setAttribute('r',ne.node.r*s);
+  });
+  requestAnimationFrame(breathe);
+}
+requestAnimationFrame(breathe);
+
+// Highlight
+function highlightNode(id){
+  const connected=new Set([id]);
+  edges.forEach(e=>{if(e[0]===id||e[1]===id){connected.add(e[0]);connected.add(e[1])}});
+  nodeEls.forEach(ne=>{
+    if(!connected.has(ne.node.id))ne.el.classList.add('dimmed');
+  });
+  edgeEls.forEach(e=>{
+    const eData=edges[edgeEls.indexOf(e)];
+    if(eData[0]!==id&&eData[1]!==id){
+      e.path.classList.add('dimmed');e.dot.classList.add('dimmed');e.arrow.classList.add('dimmed');
+    }
+  });
+}
+function highlightPathway(pw){
+  nodeEls.forEach(ne=>{
+    if(ne.node.pathway!==pw&&ne.node.pathway!=='root'&&ne.node.pathway!=='final'&&ne.node.pathway!=='shared')
+      ne.el.classList.add('dimmed');
+  });
+  edgeEls.forEach(e=>{
+    if(e.pathway!==pw)
+      {e.path.classList.add('dimmed');e.dot.classList.add('dimmed');e.arrow.classList.add('dimmed');}
+  });
+}
+function clearHighlight(){
+  document.querySelectorAll('.dimmed').forEach(e=>e.classList.remove('dimmed'));
+}
+
+// Time annotations
+const timeLabels=[
+  {text:'Weeks 1–4',x:W/2-300,y:270,pathway:'p1',color:'#5BA8D9'},
+  {text:'Weeks 1–2',x:W/2+340,y:270,pathway:'p4',color:'#9b59b6'},
+  {text:'Months 6–18',x:W/2+200,y:500,pathway:'p2',color:'#fa8072'},
+  {text:'Months 3–12',x:W/2-180,y:430,pathway:'p3',color:'#4ecdc4'},
+];
+timeLabels.forEach(tl=>{
+  const t=el('text',{x:tl.x,y:tl.y,class:'time-label',fill:tl.color,'font-style':'italic',opacity:'0.7'});
+  t.textContent='⏱ '+tl.text;
+  svg.appendChild(t);
+});
+
+// Pathway labels (interactive)
+const pathwayLabels=[
+  {text:'P1: Appetite Suppression',x:W/2-320,y:160,pw:'p1',color:'#5BA8D9'},
+  {text:'P4: Pharmacological',x:W/2+300,y:160,pw:'p4',color:'#9b59b6'},
+  {text:'P2: Confidence / Sociality',x:W/2+220,y:400,pw:'p2',color:'#fa8072'},
+  {text:'P3: Health Identity',x:W/2-200,y:360,pw:'p3',color:'#4ecdc4'},
+];
+pathwayLabels.forEach(pl=>{
+  const t=el('text',{x:pl.x,y:pl.y,class:'pathway-label',fill:pl.color,'text-anchor':'middle'});
+  t.textContent=pl.text;
+  t.addEventListener('mouseenter',()=>highlightPathway(pl.pw));
+  t.addEventListener('mouseleave',clearHighlight);
+  svg.appendChild(t);
+});
+
+// Legend
+const lg=el('g',{class:'legend',transform:`translate(${W-220},${H-140})`});
+[
+  {text:'→ Decreases alcohol',color:'#5BA8D9',dash:false},
+  {text:'→ Increases alcohol',color:'#fa8072',dash:true},
+].forEach((item,i)=>{
+  const line=el('line',{x1:0,y1:i*28+5,x2:30,y2:i*28+5,stroke:item.color,'stroke-width':2.5});
+  if(item.dash)line.setAttribute('stroke-dasharray','6,4');
+  lg.appendChild(line);
+  const t=el('text',{x:38,y:i*28+10,fill:'#aaa','font-size':'12px'});
+  t.textContent=item.text;
+  lg.appendChild(t);
+});
+svg.appendChild(lg);
+
+// Title
+const title=el('text',{x:W/2,y:30,class:'title-text','text-anchor':'middle','font-size':'18px',opacity:'0.9'});
+title.textContent='GLP-1 → Alcohol Behavior: Causal Pathway DAG';
+svg.appendChild(title);
+
+// Bottom annotations
+const ann1=el('text',{x:W/2,y:H-30,class:'annotation','text-anchor':'middle'});
+ann1.textContent='Crossover: Month 14 — sociality force overtakes appetite suppression  ·  Data: 15,123 MEPS respondents, 579 confirmed GLP-1 users';
+svg.appendChild(ann1);
+</script>
+</body>
+</html>
