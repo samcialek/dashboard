@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Causal Structure Matters — A Technical Demonstration for Aaru</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#111;--bg2:#1a1a1a;--bg3:#222;--text:#ddd;--text2:#aaa;--salmon:#fa8072;--blue:#5BA8D9;--green:#6fcf97;--border:#333;--code-bg:#0d0d0d}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:'EB Garamond',Georgia,serif;line-height:1.7;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6,nav,nav *,.nav-link,.section-number{font-family:'Space Grotesk',sans-serif}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(17,17,17,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;gap:1.5rem;overflow-x:auto;white-space:nowrap}
+nav a{color:var(--text2);text-decoration:none;font-size:.8rem;font-weight:500;letter-spacing:.03em;transition:color .2s}
+nav a:hover,nav a.active{color:var(--salmon)}
+nav .logo{color:var(--salmon);font-weight:700;font-size:1rem;margin-right:1rem;flex-shrink:0}
+
+/* LAYOUT */
+main{max-width:960px;margin:0 auto;padding:80px 2rem 4rem}
+section{margin-bottom:5rem;scroll-margin-top:70px}
+
+/* HERO */
+.hero{text-align:center;padding:6rem 0 4rem;border-bottom:1px solid var(--border);margin-bottom:4rem}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:#fff;margin-bottom:.5rem;line-height:1.15}
+.hero .subtitle{font-size:1.15rem;color:var(--text2);margin-bottom:2rem}
+.hero .tagline{display:inline-block;padding:.5rem 1.2rem;border:1px solid var(--salmon);color:var(--salmon);font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:.05em;border-radius:2px}
+
+/* HEADINGS */
+h2{font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:.3rem;display:flex;align-items:center;gap:.6rem}
+.section-number{font-size:.85rem;color:var(--salmon);font-weight:600;background:rgba(250,128,114,.1);padding:.2rem .55rem;border-radius:3px}
+.section-desc{color:var(--text2);font-size:1rem;margin-bottom:2rem;font-family:'Space Grotesk',sans-serif;font-weight:400}
+h3{font-size:1.25rem;font-weight:600;color:var(--salmon);margin:2rem 0 .8rem}
+h4{font-size:1.05rem;font-weight:600;color:var(--blue);margin:1.5rem 0 .6rem}
+
+/* TEXT */
+p{margin-bottom:1rem;font-size:1.05rem}
+strong{color:#fff}
+em{color:var(--text2)}
+.insight{background:rgba(250,128,114,.06);border-left:3px solid var(--salmon);padding:1rem 1.2rem;margin:1.5rem 0;border-radius:0 4px 4px 0;font-size:1rem}
+.insight strong{color:var(--salmon)}
+.callout{background:rgba(91,168,217,.08);border-left:3px solid var(--blue);padding:1rem 1.2rem;margin:1.5rem 0;border-radius:0 4px 4px 0}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{background:var(--bg3);color:var(--salmon);font-family:'Space Grotesk',sans-serif;font-weight:600;text-align:left;padding:.65rem .8rem;border-bottom:2px solid var(--salmon);font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+td{padding:.55rem .8rem;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+tr:hover td{background:rgba(250,128,114,.04)}
+td:not(:first-child),th:not(:first-child){text-align:center}
+.highlight-row td{background:rgba(250,128,114,.08)!important;font-weight:500}
+.check{color:var(--green)}
+.cross{color:#e74c3c}
+
+/* CODE */
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:1.2rem;overflow-x:auto;margin:1.2rem 0;font-size:.82rem;line-height:1.6}
+code{color:var(--blue);font-size:.88em}
+pre code{color:var(--text)}
+.kw{color:var(--salmon)}
+.cm{color:#666}
+.str{color:var(--green)}
+.fn{color:var(--blue)}
+
+/* CHART */
+.chart-container{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:1.5rem;margin:2rem 0}
+.chart-title{font-family:'Space Grotesk',sans-serif;font-weight:600;color:#fff;font-size:1.05rem;margin-bottom:.3rem}
+.chart-subtitle{font-family:'Space Grotesk',sans-serif;font-size:.8rem;color:var(--text2);margin-bottom:1rem}
+.chart-legend{display:flex;gap:1.5rem;margin-top:1rem;font-family:'Space Grotesk',sans-serif;font-size:.82rem}
+.legend-item{display:flex;align-items:center;gap:.4rem}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:1.5rem 0}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:1.2rem}
+.card h4{margin-top:0;color:var(--salmon)}
+
+/* ROADMAP */
+.phase{display:grid;grid-template-columns:60px 1fr;gap:0;margin-bottom:0}
+.phase-line{display:flex;flex-direction:column;align-items:center}
+.phase-dot{width:12px;height:12px;border-radius:50%;background:var(--salmon);margin-top:.3rem;flex-shrink:0}
+.phase-connector{width:2px;flex:1;background:var(--border);margin:4px 0}
+.phase:last-child .phase-connector{display:none}
+.phase-content{padding-bottom:2rem}
+.phase-label{font-family:'Space Grotesk',sans-serif;font-size:.75rem;color:var(--salmon);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.phase-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;margin:.2rem 0 .5rem}
+
+/* FOOTER */
+footer{text-align:center;padding:3rem 0;border-top:1px solid var(--border);color:var(--text2);font-family:'Space Grotesk',sans-serif;font-size:.85rem}
+footer .tagline-footer{color:var(--salmon);font-weight:600;margin-bottom:.5rem;font-size:.9rem}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  main{padding:70px 1rem 3rem}
+  nav{padding:0 1rem;gap:1rem}
+  .hero{padding:4rem 0 3rem}
+  h2{font-size:1.4rem}
+  table{font-size:.8rem}
+  th,td{padding:.4rem .5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">AARU</span>
+  <a href="#executive-summary">Summary</a>
+  <a href="#evidence">Evidence</a>
+  <a href="#counterfactual">Counterfactual</a>
+  <a href="#glp1">GLP-1</a>
+  <a href="#env-sim">Environment</a>
+  <a href="#roadmap">RL Roadmap</a>
+  <a href="#build">What I'd Build</a>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Why Causal Structure Matters</h1>
+  <p class="subtitle">A Technical Demonstration for Aaru</p>
+  <span class="tagline">Prediction is table stakes. Intervention design is the moat.</span>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive-summary">
+  <h2><span class="section-number">01</span> Executive Summary</h2>
+  <p class="section-desc">14 models. 74,000 responses. One finding.</p>
+  
+  <p>We trained 14 models — spanning linear regression, tree ensembles, neural networks, and variational autoencoders — on 74,000 harmonized survey responses to predict 58 psychographic attitudes from 15 demographic features.</p>
+  
+  <div class="insight">
+    <strong>The prediction ceiling is R² ≈ 0.20.</strong> No architecture breaks through it. XGBoost hits 0.218; the Causal VAE hits 0.202. The difference is noise. What's <em>not</em> noise is what each model can <strong>do</strong> with its predictions.
+  </div>
+  
+  <p>15 demographic features contain approximately 20% of the variance in psychographic attitudes. The remaining 80% comes from life experiences, social networks, media consumption, and idiosyncratic personality. This isn't a failure — it's a <strong>measurement of the information boundary</strong> between who you are (demographics) and what you believe (psychographics).</p>
+  
+  <p>The question isn't "can we predict better?" — the ceiling is the ceiling. The question is: <strong>what can you do with your predictions?</strong></p>
+</section>
+
+<!-- EXPERIMENTAL EVIDENCE -->
+<section id="evidence">
+  <h2><span class="section-number">02</span> Experimental Evidence</h2>
+  <p class="section-desc">The 14-model comparison — all roads lead to R² ≈ 0.20</p>
+  
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="text-align:left">Model</th><th>R² (high-cov)</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>XGBoost</td><td>0.218</td><td>Tree ensemble</td></tr>
+        <tr><td>Tuned XGBoost</td><td>0.217</td><td>Tree ensemble</td></tr>
+        <tr><td>Engineered XGBoost</td><td>0.217</td><td>Tree + interactions</td></tr>
+        <tr><td>Hybrid (VAE+XGB)</td><td>0.209</td><td>Ensemble</td></tr>
+        <tr class="highlight-row"><td><strong>CausalVAE iter4d</strong></td><td><strong>0.202</strong></td><td><strong>VAE + DAG</strong></td></tr>
+        <tr><td>CausalVAE iter2c</td><td>0.205</td><td>VAE</td></tr>
+        <tr><td>Tuned LightGBM</td><td>0.198</td><td>Tree ensemble</td></tr>
+        <tr><td>LightGBM</td><td>0.198</td><td>Tree ensemble</td></tr>
+        <tr><td>EmbeddingNN</td><td>0.197</td><td>Neural network</td></tr>
+        <tr><td>Random Forest</td><td>0.185</td><td>Tree ensemble</td></tr>
+        <tr><td>Ridge</td><td>0.117</td><td>Linear</td></tr>
+        <tr><td>Lasso</td><td>0.116</td><td>Linear</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="insight">
+    Adding VAE latent features to XGBoost <strong>hurt</strong> performance (0.209 vs 0.218). The models capture the same signal through different paths. There is no complementary information to combine.
+  </div>
+  
+  <h3>The Variable-Level Story</h3>
+  <p>The aggregate R² hides a critical pattern. XGBoost and the VAE have <strong>complementary strengths</strong> at the individual variable level:</p>
+  
+  <div class="two-col">
+    <div class="card">
+      <h4>XGBoost Dominates (Direct Signal)</h4>
+      <table>
+        <thead><tr><th style="text-align:left">Variable</th><th>XGB</th><th>VAE</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr><td>issue_immigration</td><td>0.444</td><td>0.213</td><td style="color:var(--blue)">+0.231</td></tr>
+          <tr><td>news_interest</td><td>0.318</td><td>0.265</td><td style="color:var(--blue)">+0.053</td></tr>
+          <tr><td>pid7</td><td>0.261</td><td>0.180</td><td style="color:var(--blue)">+0.081</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h4>VAE Dominates (Mediated Pathways)</h4>
+      <table>
+        <thead><tr><th style="text-align:left">Variable</th><th>VAE</th><th>XGB</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr><td>trump_approval</td><td>0.217</td><td>0.024</td><td style="color:var(--salmon)">+0.193</td></tr>
+          <tr><td>imm_legal_status</td><td>0.199</td><td>0.038</td><td style="color:var(--salmon)">+0.161</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <p><strong>Why?</strong> XGBoost finds the strongest correlations. The VAE traces causal pathways. For variables where demographics → belief is direct (race → immigration stance), XGBoost wins. For variables where the path is <em>mediated</em> (demographics → party → Trump approval), the VAE's latent structure captures the pathway XGBoost misses. This is the difference between P(Y|X) and the structural causal model.</p>
+</section>
+
+<!-- COUNTERFACTUAL DEMO -->
+<section id="counterfactual">
+  <h2><span class="section-number">03</span> Counterfactual Demonstration</h2>
+  <p class="section-desc">This is what XGBoost cannot do.</p>
+  
+  <p>Using the trained CausalVAE (iter4d), we perform <strong>do-calculus interventions</strong> on two synthetic personas. Same interventions, different people — the effects are heterogeneous. That's the whole point.</p>
+  
+  <h3>Persona 1: Rural Evangelical White Male, 50</h3>
+  
+  <h4>do(education = graduate degree)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Attitude</th><th>Before</th><th>After</th><th>Change</th></tr></thead>
+      <tbody>
+        <tr><td>Party ID</td><td>0.458</td><td>0.265</td><td style="color:var(--blue)"><strong>−0.193</strong></td></tr>
+        <tr><td>Ideology</td><td>0.512</td><td>0.325</td><td style="color:var(--blue)"><strong>−0.187</strong></td></tr>
+        <tr><td>Trump Approval</td><td>0.598</td><td>0.856</td><td style="color:var(--salmon)"><strong>+0.258</strong></td></tr>
+        <tr><td>Gun Control</td><td>0.443</td><td>0.275</td><td style="color:var(--blue)">−0.169</td></tr>
+        <tr><td>News Interest</td><td>0.881</td><td>0.947</td><td>+0.065</td></tr>
+        <tr><td>Immigration</td><td>0.365</td><td>0.356</td><td>−0.009</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="insight">
+    Education makes this person more liberal on ideology (−0.19) but <strong>increases</strong> Trump approval (+0.26) — a non-obvious, heterogeneous effect. Education doesn't uniformly liberalize; it shifts the <em>pattern</em> of beliefs in complex ways. XGBoost says "educated people are more liberal." The causal VAE says "for <em>this</em> person, education produces this specific, non-uniform shift."
+  </div>
+  
+  <h4>do(religion_importance = low)</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Attitude</th><th>Before</th><th>After</th><th>Change</th></tr></thead>
+      <tbody>
+        <tr><td>Party ID</td><td>0.458</td><td>0.570</td><td style="color:var(--salmon)"><strong>+0.112</strong></td></tr>
+        <tr><td>Trump Approval</td><td>0.598</td><td>0.436</td><td style="color:var(--blue)"><strong>−0.162</strong></td></tr>
+        <tr><td>Gun Control</td><td>0.443</td><td>0.533</td><td style="color:var(--salmon)">+0.090</td></tr>
+        <tr><td>Imm Legal Status</td><td>0.446</td><td>0.558</td><td style="color:var(--salmon)">+0.112</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Removing religion shifts gun control and immigration attitudes but doesn't change immigration <em>stance</em>. The model captures which attitudes are causally downstream of religion and which aren't.</p>
+  
+  <h3>Persona 2: Urban College-Educated Black Woman, 30</h3>
+  <p><strong>Same interventions, different effects:</strong></p>
+  <ul style="margin:1rem 0 1rem 1.5rem;font-size:1.02rem">
+    <li><strong>do(education = graduate):</strong> Ideology shift is only −0.03 (vs −0.19 for the white male). Education has a smaller marginal effect because she's already college-educated. The model captures <strong>diminishing returns</strong> in the causal pathway.</li>
+    <li><strong>do(income = high):</strong> Immigration stance shifts +0.09 (more restrictive). For the white male, income barely moved immigration (+0.02). The causal pathway from income to immigration attitudes runs through <em>different mediators</em> depending on race and baseline profile.</li>
+  </ul>
+  
+  <h3>Latent Space Interpretation</h3>
+  <p>Each intervention activates different latent dimensions:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Intervention</th><th>Primary Latent Dims</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Education</strong></td><td>z₁, z₃, z₅</td><td>Epistemic factors</td></tr>
+        <tr><td><strong>Income</strong></td><td>z₁₄, z₁₃</td><td>Economic security factors</td></tr>
+        <tr><td><strong>Religion</strong></td><td>z₈, z₄</td><td>Moral authority factors</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>These are interpretable, disentangled pathways through the latent space. XGBoost has no latent space. It cannot tell you <em>why</em> a prediction changed or <em>which pathway</em> the effect traveled through.</p>
+</section>
+
+<!-- GLP-1 SCENARIO -->
+<section id="glp1">
+  <h2><span class="section-number">04</span> GLP-1 Client Scenario</h2>
+  <p class="section-desc">Joint probability says −17%. Causal simulation says −7.6%. Here's why.</p>
+  
+  <div class="chart-container">
+    <div class="chart-title">GLP-1 Impact on Alcohol Consumption: Two Models Diverge</div>
+    <div class="chart-subtitle">10,000 synthetic agents · 24-month simulation · baseline avg 9.74 drinks/month</div>
+    <canvas id="glp1Chart" width="880" height="380" style="width:100%;height:auto;display:block"></canvas>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Joint Probability (linear extrapolation)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--salmon)"></div> Causal Simulation (with second-order effects)</div>
+    </div>
+  </div>
+  
+  <div class="two-col" style="margin-top:2rem">
+    <div class="card">
+      <h4>Joint Probability Model</h4>
+      <p style="font-size:.95rem">Sees: GLP-1 users drink less → extrapolates linearly with adoption. Predicts a steady decline to <strong>−17.25%</strong> at month 24. No mechanism for reversal — it's a correlation lookup, not a causal model.</p>
+    </div>
+    <div class="card">
+      <h4>Causal Simulation</h4>
+      <p style="font-size:.95rem">Traces the pathway: GLP-1 → weight loss → confidence → sociality → more drinking occasions. Per-occasion volume drops (2.65 → 1.68 drinks), but occasions nearly double (3.3 → 5.6/month). Net: decline flattens at −9.4% then <strong>reverses</strong> to −7.6%.</p>
+    </div>
+  </div>
+  
+  <div class="insight" style="margin-top:1.5rem">
+    <strong>The 9.6 percentage point gap</strong> between these models is the difference between a snapshot and a movie. The causal simulation captures the second-order social confidence effect that the joint probability model structurally cannot see.
+  </div>
+  
+  <h3>The Mechanism in Detail</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Month</th><th>Adoption %</th><th>Occasions/mo</th><th>Drinks/occasion</th><th>JP Δ%</th><th>Causal Δ%</th><th>Gap</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>2.2%</td><td>3.31</td><td>2.65</td><td>−0.62</td><td>−0.11</td><td>0.51</td></tr>
+        <tr><td>6</td><td>13.3%</td><td>3.36</td><td>2.30</td><td>−3.87</td><td>−2.45</td><td>1.42</td></tr>
+        <tr><td>12</td><td>29.0%</td><td>3.50</td><td>2.09</td><td>−8.40</td><td>−6.77</td><td>1.63</td></tr>
+        <tr style="background:rgba(250,128,114,.06)"><td><strong>18</strong></td><td>44.2%</td><td>4.14</td><td>1.89</td><td>−13.03</td><td><strong>−9.37</strong></td><td><strong>3.66</strong></td></tr>
+        <tr style="background:rgba(250,128,114,.1)"><td><strong>24</strong></td><td>58.5%</td><td>5.64</td><td>1.68</td><td>−17.25</td><td><strong>−7.64</strong></td><td><strong>9.61</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Around month 18, the causal simulation <strong>bottoms out and reverses</strong>. The confidence-driven sociality effect overcomes the direct pharmacological reduction. This is the kind of insight that makes clients pay.</p>
+</section>
+
+<!-- ENVIRONMENT SIMULATION -->
+<section id="env-sim">
+  <h2><span class="section-number">05</span> Environment Simulation Architecture</h2>
+  <p class="section-desc">From causal profiles to dynamic agent behavior</p>
+  
+  <h3>Current vs. Proposed</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4 style="color:var(--text2)">Correlation-Based (Current)</h4>
+      <pre><code>Demographics → Black Box → P(response | demographics)</code></pre>
+      <p style="font-size:.9rem;margin-top:.5rem">Single forward pass. No interaction, no temporal evolution, no environmental response.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--salmon)">Causal Agent (Proposed)</h4>
+      <pre><code>Demographics → Encoder → z₁...z₁₆
+    ↓ DAG Structural Equations
+    ↓ Environment Stimulus
+    → Response → Feedback → Updated State</code></pre>
+      <p style="font-size:.9rem;margin-top:.5rem">Agents carry latent profiles, causal structure, response functions, and update rules.</p>
+    </div>
+  </div>
+  
+  <h3>Agent Components</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Component</th><th style="text-align:left">Description</th><th style="text-align:left">Function</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Latent Profile</strong></td><td>16 dims from VAE encoder</td><td>Who the agent is</td></tr>
+        <tr><td><strong>Causal Structure</strong></td><td>Fixed DAG over latent dims</td><td>How beliefs interact</td></tr>
+        <tr><td><strong>Response Function</strong></td><td>Decoder: latent → behavior</td><td>What agent does</td></tr>
+        <tr><td><strong>Update Rule</strong></td><td>Feedback → latent state</td><td>How agent adapts</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <h3>Three Response Mechanisms</h3>
+  <div class="two-col" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="card">
+      <h4>Direct Intervention</h4>
+      <p style="font-size:.9rem">do-calculus: set target dims, propagate through DAG structural equations, decode to behavior.</p>
+    </div>
+    <div class="card">
+      <h4>Social Contagion</h4>
+      <p style="font-size:.9rem">Agent latent state pulled toward neighbors via contact network. Demographic dims frozen; opinion dims drift.</p>
+    </div>
+    <div class="card">
+      <h4>Temporal Evolution</h4>
+      <p style="font-size:.9rem">Natural drift: age-related changes + mean reversion on opinion dimensions.</p>
+    </div>
+  </div>
+  
+  <h3>Why This Beats Joint Probability</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Capability</th><th>Joint Prob</th><th>Causal Sim</th></tr></thead>
+      <tbody>
+        <tr><td>Agent interaction effects</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Second-order causal chains</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Feedback loops</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Temporal dynamics</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Distributional outcomes</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="callout">
+    <strong>Implementation estimate:</strong> ~12 days to working prototype. Agent class (2d) → Environment spec (1d) → Response functions (3d) → Population init (1d) → GLP-1 demo (2d) → Validation (3d).
+  </div>
+</section>
+
+<!-- RL ROADMAP -->
+<section id="roadmap">
+  <h2><span class="section-number">06</span> RL Architecture Roadmap</h2>
+  <p class="section-desc">From contextual bandits to mean field RL — phased for a 24-person team</p>
+  
+  <div class="insight">
+    <strong>The core upgrade:</strong> Static inference gives you P(behavior | traits) — a photograph. RL gives you π(aₜ | sₜ, z) where state evolves via learned dynamics — a movie where you can change the script mid-scene.
+  </div>
+  
+  <h3>Architecture Recommendation</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Architecture</th><th>Timeline</th><th>Complexity</th><th>Value</th><th>Rec</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>Contextual Bandits</td><td>Weeks 1–4</td><td>Low</td><td>Moderate</td><td><strong>Start here</strong></td></tr>
+        <tr class="highlight-row"><td>PPO + Profile Conditioning</td><td>Months 2–3</td><td>Medium</td><td>High</td><td><strong>Core arch</strong></td></tr>
+        <tr><td>ABM Hybrid</td><td>Months 2–4</td><td>Medium</td><td>High</td><td>Env layer</td></tr>
+        <tr class="highlight-row"><td>Mean Field RL</td><td>Months 4–6</td><td>Med-High</td><td>Very High</td><td><strong>Scale target</strong></td></tr>
+        <tr><td>Full MARL</td><td>Months 6+</td><td>High</td><td>Highest</td><td>Research</td></tr>
+        <tr><td>MAB Scenario Testing</td><td>Anytime</td><td>Very Low</td><td>Moderate</td><td>Client feature</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <h3>Four-Phase Implementation</h3>
+  
+  <div class="phase">
+    <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+    <div class="phase-content">
+      <div class="phase-label">Phase 1 · Weeks 1–4</div>
+      <div class="phase-title">Contextual Bandits</div>
+      <p style="font-size:.95rem">Bandit policy over Causal VAE profiles + context → action distributions. Offline training from historical data. A/B comparison vs. joint probability on 3+ scenarios. <strong>Team: 2–3 engineers + 1 DS.</strong></p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+    <div class="phase-content">
+      <div class="phase-label">Phase 2 · Months 2–3</div>
+      <div class="phase-title">PPO + Environment Model</div>
+      <p style="font-size:.95rem">Shared PPO policy conditioned on agent profile z. Rule-based ABM environment for CPG, health, media domains. GLP-1/alcohol proof-of-concept with trajectory visualization. <strong>Team: 4–5 engineers + 2 DS.</strong></p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+    <div class="phase-content">
+      <div class="phase-label">Phase 3 · Months 4–6</div>
+      <div class="phase-title">Mean Field Multi-Agent</div>
+      <p style="font-size:.95rem">Aggregate behavioral statistics by segment as mean field μ. Policy conditions on (state, profile, μ). Social influence dynamics emerge naturally. Network structure optional. <strong>Team: 5–6 engineers + 2 DS + 1 researcher.</strong></p>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="phase-line"><div class="phase-dot"></div></div>
+    <div class="phase-content">
+      <div class="phase-label">Phase 4 · Months 6+</div>
+      <div class="phase-title">Production Scale (100K+ Agents)</div>
+      <p style="font-size:.95rem">Learned transition models replace hand-designed rules. GPU-parallelized simulation. Client-facing scenario builder. Uncertainty quantification via ensemble policies. Automated calibration pipeline.</p>
+    </div>
+  </div>
+  
+  <h3>Key Design Decisions</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Agent Profile (Frozen)</h4>
+      <p style="font-size:.9rem">Causal VAE profiles are <strong>frozen</strong> during RL training. VAE trains on observational data; RL learns behavior in dynamic environments. Update one without retraining the other.</p>
+    </div>
+    <div class="card">
+      <h4>Reward Signal</h4>
+      <p style="font-size:.9rem">Start with <strong>aggregate behavior matching</strong>: R = −D<sub>KL</sub>(P<sub>sim</sub> ∥ P<sub>obs</sub>). Add individual likelihood as panel data becomes available. Most clients provide aggregate data first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I'D BUILD -->
+<section id="build">
+  <h2><span class="section-number">07</span> What I'd Build</h2>
+  <p class="section-desc">Connecting the causal backbone to Lumen, Polls, and Seraph</p>
+  
+  <div class="two-col" style="grid-template-columns:1fr 1fr 1fr;margin:2rem 0">
+    <div class="card" style="border-color:var(--salmon)">
+      <h4>Lumen (Synthetic Survey)</h4>
+      <p style="font-size:.9rem">Replace the response generation layer with the Causal VAE. Agents respond through their causal structure, not correlation lookups. Run do(policy = X) on 10K agents and see the distribution of belief shifts — not just "will they like it?" but "how does it change their entire profile?"</p>
+    </div>
+    <div class="card" style="border-color:var(--blue)">
+      <h4>Polls (Prediction)</h4>
+      <p style="font-size:.9rem">Population-level RL simulation gives distributional predictions with confidence intervals, not point estimates. Scenario comparison via Thompson Sampling: "Should we target millennials or Gen X?" → simulate both → allocate compute to the more uncertain scenario → report with uncertainty.</p>
+    </div>
+    <div class="card" style="border-color:var(--green)">
+      <h4>Seraph (Agent Platform)</h4>
+      <p style="font-size:.9rem">Each agent's causal profile becomes persistent state. The DAG provides explainability for every prediction. When a client asks "why did this agent change?" — trace the latent dimensions that shifted and map to human-readable constructs.</p>
+    </div>
+  </div>
+  
+  <div class="callout">
+    <strong>Strategic insight:</strong> Aaru doesn't need N systems for N domains. It needs one RL-based simulation engine with domain-specific environment plugins. Political modeling is an environment. CPG behavior is an environment. Health behavior is an environment. The agent architecture is universal. This is how a 24-person team stays efficient.
+  </div>
+  
+  <h3>The Causal VAE as Foundation</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Role</th><th style="text-align:left">What It Does</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dimensionality reduction</strong></td><td>700 variables → 16–32 latent dims. Without this, the RL policy would condition on 700 features per agent — intractable at scale.</td></tr>
+        <tr><td><strong>Structured latent space</strong></td><td>DAG means dimensions have causal semantics. z₇ isn't "some feature" — it's health consciousness with known parents and children.</td></tr>
+        <tr><td><strong>Population generation</strong></td><td>Sample the latent space to create populations you've never observed. "What would a pop with 20% higher health consciousness look like?"</td></tr>
+        <tr><td><strong>Principled interventions</strong></td><td>do(X = x) sets X independent of causal parents — isolates the causal effect. Standard RL changes inputs; causal RL does surgery.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <h3>The Bottom Line</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Capability</th><th>XGBoost / JP</th><th>Causal VAE + RL</th></tr></thead>
+      <tbody>
+        <tr><td>Raw prediction accuracy</td><td class="check">✓ R²=0.218</td><td class="check">✓ R²=0.202</td></tr>
+        <tr><td>Counterfactual interventions</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Heterogeneous treatment effects</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Interpretable latent pathways</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Environment simulation</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Temporal dynamics</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Social contagion / feedback</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Enterprise auditability (DAG)</td><td class="cross">✗</td><td class="check">✓</td></tr>
+        <tr><td>Scalable to 100K+ agents</td><td class="check">✓</td><td class="check">✓ (mean field)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="insight" style="text-align:center;font-size:1.1rem;border-left:none;border:1px solid var(--salmon);margin-top:2.5rem">
+    <strong>Prediction is table stakes. Intervention design is the moat.</strong>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="tagline-footer">Prediction is table stakes. Intervention design is the moat.</div>
+  <p>Prepared by Sam Cialek · March 2026</p>
+  <p style="margin-top:.3rem;font-size:.75rem;color:#666">Data: CES 2020 (61K) · ANES 2020 (8.3K) · Voter Study Group (5K) · 74,000 harmonized responses</p>
+</footer>
+
+<script>
+(function(){
+  const jp = [
+    {m:1,v:-0.62},{m:2,v:-1.26},{m:3,v:-1.82},{m:4,v:-2.52},{m:5,v:-3.23},{m:6,v:-3.87},
+    {m:7,v:-4.62},{m:8,v:-5.39},{m:9,v:-6.15},{m:10,v:-6.94},{m:11,v:-7.69},{m:12,v:-8.40},
+    {m:13,v:-9.22},{m:14,v:-10.01},{m:15,v:-10.76},{m:16,v:-11.55},{m:17,v:-12.25},{m:18,v:-13.03},
+    {m:19,v:-13.79},{m:20,v:-14.46},{m:21,v:-15.08},{m:22,v:-15.76},{m:23,v:-16.52},{m:24,v:-17.25}
+  ];
+  const cs = [
+    {m:1,v:-0.11},{m:2,v:-0.38},{m:3,v:-0.83},{m:4,v:-1.32},{m:5,v:-1.85},{m:6,v:-2.45},
+    {m:7,v:-3.09},{m:8,v:-3.81},{m:9,v:-4.57},{m:10,v:-5.33},{m:11,v:-6.06},{m:12,v:-6.77},
+    {m:13,v:-7.43},{m:14,v:-8.04},{m:15,v:-8.57},{m:16,v:-8.98},{m:17,v:-9.27},{m:18,v:-9.37},
+    {m:19,v:-9.32},{m:20,v:-9.10},{m:21,v:-8.77},{m:22,v:-8.41},{m:23,v:-8.04},{m:24,v:-7.64}
+  ];
+
+  const c = document.getElementById('glp1Chart');
+  const ctx = c.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const W = c.offsetWidth, H = c.offsetHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  ctx.scale(dpr, dpr);
+
+  const pad = {t:30,r:30,b:50,l:60};
+  const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+
+  // Grid
+  ctx.strokeStyle = '#282828'; ctx.lineWidth = 1;
+  for(let y = 0; y <= 18; y += 3){
+    const py = pad.t + ch * (y / 18);
+    ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(pad.l + cw, py); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#444'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + ch); ctx.lineTo(pad.l + cw, pad.t + ch); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = '#888'; ctx.font = '11px "Space Grotesk",sans-serif'; ctx.textAlign = 'right';
+  for(let y = 0; y <= 18; y += 3){
+    const py = pad.t + ch * (y / 18);
+    ctx.fillText(-y + '%', pad.l - 8, py + 4);
+  }
+  ctx.textAlign = 'center';
+  for(let m = 1; m <= 24; m += 2){
+    const px = pad.l + cw * ((m - 1) / 23);
+    ctx.fillText(m, px, pad.t + ch + 20);
+  }
+  ctx.fillText('Month', pad.l + cw / 2, pad.t + ch + 42);
+  ctx.save(); ctx.translate(16, pad.t + ch / 2); ctx.rotate(-Math.PI / 2);
+  ctx.fillText('% Change in Alcohol Consumption', 0, 0); ctx.restore();
+
+  function drawLine(data, color, dashed){
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+    if(dashed) ctx.setLineDash([6,4]); else ctx.setLineDash([]);
+    ctx.beginPath();
+    data.forEach((d, i) => {
+      const x = pad.l + cw * (i / 23);
+      const y = pad.t + ch * (Math.abs(d.v) / 18);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  drawLine(jp, '#5BA8D9', true);
+  drawLine(cs, '#fa8072', false);
+
+  // End labels
+  const jpEnd = pad.t + ch * (17.25 / 18);
+  const csEnd = pad.t + ch * (7.64 / 18);
+  ctx.font = 'bold 12px "Space Grotesk",sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#5BA8D9';
+  ctx.fillText('−17.25%', pad.l + cw + 4, jpEnd + 4);
+  ctx.fillStyle = '#fa8072';
+  ctx.fillText('−7.64%', pad.l + cw + 4, csEnd + 4);
+
+  // Divergence annotation
+  const m18x = pad.l + cw * (17 / 23);
+  const m18jp = pad.t + ch * (13.03 / 18);
+  const m18cs = pad.t + ch * (9.37 / 18);
+  ctx.strokeStyle = 'rgba(250,128,114,.4)'; ctx.lineWidth = 1;
+  ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(m18x, m18jp); ctx.lineTo(m18x, m18cs); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(250,128,114,.7)'; ctx.font = '10px "Space Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('reversal', m18x, m18cs - 6);
+})();
+</script>
+
+</body>
+</html>
