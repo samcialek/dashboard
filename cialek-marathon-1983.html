@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Christopher Cialek — 1983 Ottawa Marathon</title>
+<title>The Cialeks — A Running Family</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
@@ -12,10 +12,18 @@
 body { background: #0a0a0a; color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; line-height: 1.6; min-height: 100vh; }
 .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
 
+/* Photo hero */
+.photo-hero { position: relative; margin-bottom: 16px; border-radius: 16px; overflow: hidden; }
+.photo-hero img { width: 100%; display: block; filter: grayscale(30%) contrast(1.1); }
+.photo-hero .overlay { position: absolute; inset: 0; background: linear-gradient(0deg, #0a0a0a 0%, rgba(10,10,10,0.6) 40%, rgba(10,10,10,0.2) 100%); }
+.photo-hero .caption { position: absolute; bottom: 24px; left: 28px; right: 28px; }
+.photo-hero .caption h1 { font-family: 'EB Garamond', serif; font-size: 2.8rem; font-weight: 600; color: #fff; line-height: 1.1; }
+.photo-hero .caption .sub { color: #aaa; font-size: 1rem; margin-top: 6px; font-family: 'EB Garamond', serif; font-style: italic; }
+
 /* Hero */
-.hero { text-align: center; margin-bottom: 56px; padding: 48px 0; }
+.hero { text-align: center; margin-bottom: 56px; padding: 32px 0 48px; }
 .hero .race-name { font-family: 'EB Garamond', serif; font-size: 1rem; color: #666; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; }
-.hero h1 { font-family: 'EB Garamond', serif; font-size: 3.2rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.hero h2 { font-family: 'EB Garamond', serif; font-size: 2.4rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
 .hero .location { color: #888; font-size: 1rem; margin-bottom: 32px; }
 .hero .time-display { font-family: 'Space Grotesk', monospace; font-size: 5rem; font-weight: 700; color: #5BA8D9; letter-spacing: 0.02em; margin: 24px 0; text-shadow: 0 0 40px rgba(91,168,217,0.3); }
 .hero .time-label { color: #666; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; }
@@ -27,6 +35,8 @@ body { background: #0a0a0a; color: #e0e0e0; font-family: 'Space Grotesk', sans-s
 .stat-card .lbl { color: #888; font-size: 0.78rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
 .stat-card.highlight { border-color: #5BA8D9; }
 .stat-card.highlight .val { color: #5BA8D9; }
+.stat-card.grace { border-color: #D4A84B; }
+.stat-card.grace .val { color: #D4A84B; }
 
 /* Sections */
 h2 { font-family: 'EB Garamond', serif; font-size: 1.6rem; font-weight: 600; color: #fff; margin: 48px 0 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
@@ -48,6 +58,8 @@ h2 { font-family: 'EB Garamond', serif; font-size: 1.6rem; font-weight: 600; col
 .context h3 { font-family: 'EB Garamond', serif; font-size: 1.1rem; color: #D4A84B; margin-bottom: 8px; }
 .context p { color: #bbb; font-size: 0.9rem; line-height: 1.7; }
 .context ul { color: #bbb; font-size: 0.9rem; line-height: 1.7; padding-left: 20px; margin-top: 8px; }
+.context.blue { border-left-color: #5BA8D9; }
+.context.blue h3 { color: #5BA8D9; }
 
 /* Nearby runners */
 .runners-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
@@ -56,22 +68,71 @@ h2 { font-family: 'EB Garamond', serif; font-size: 1.6rem; font-weight: 600; col
 .runners-table tr.highlight-row { background: #152535; }
 .runners-table tr.highlight-row td { color: #5BA8D9; font-weight: 600; }
 
+/* Grace section */
+.grace-section { margin-top: 72px; padding-top: 48px; border-top: 1px solid #222; }
+.grace-section .runner-tag { display: inline-block; background: #D4A84B22; color: #D4A84B; border: 1px solid #D4A84B44; border-radius: 6px; padding: 4px 12px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+
+/* Race record cards */
+.race-records { display: grid; gap: 16px; margin-bottom: 32px; }
+.race-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+.race-card .race-info .race-title { font-weight: 600; color: #fff; font-size: 1rem; }
+.race-card .race-info .race-detail { color: #888; font-size: 0.85rem; margin-top: 2px; }
+.race-card .race-time { font-family: 'Space Grotesk', monospace; font-size: 1.6rem; font-weight: 700; }
+.race-card .race-time.chris { color: #5BA8D9; }
+.race-card .race-time.grace { color: #D4A84B; }
+.race-card .race-time.sam { color: #7ED687; }
+.race-card .race-note { color: #666; font-size: 0.75rem; text-align: right; margin-top: 2px; }
+
+/* Divider */
+.section-divider { display: flex; align-items: center; gap: 16px; margin: 56px 0 40px; }
+.section-divider .line { flex: 1; height: 1px; background: #222; }
+.section-divider .icon { font-size: 1.4rem; color: #444; }
+
+/* Sam section */
+.sam-section .runner-tag { background: #7ED68722; color: #7ED687; border-color: #7ED68744; }
+
+/* Family timeline */
+.timeline { position: relative; padding-left: 24px; margin: 32px 0; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: #222; }
+.timeline-item { position: relative; margin-bottom: 20px; padding-left: 20px; }
+.timeline-item::before { content: ''; position: absolute; left: -20px; top: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #333; background: #0a0a0a; }
+.timeline-item.chris::before { border-color: #5BA8D9; background: #5BA8D9; }
+.timeline-item.grace::before { border-color: #D4A84B; background: #D4A84B; }
+.timeline-item.sam::before { border-color: #7ED687; background: #7ED687; }
+.timeline-year { font-weight: 700; color: #fff; font-size: 0.9rem; }
+.timeline-desc { color: #999; font-size: 0.85rem; }
+
 footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.75rem; text-align: center; }
 
 @media (max-width: 600px) {
   .hero .time-display { font-size: 3rem; }
-  .hero h1 { font-size: 2rem; }
+  .hero h2 { font-size: 1.8rem; }
   .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .photo-hero .caption h1 { font-size: 2rem; }
+  .race-card { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
 </style>
 </head>
 <body>
 <div class="container">
 
-<!-- Hero -->
+<!-- Photo Hero -->
+<div class="photo-hero">
+  <img src="chris-grace-cialek.jpg" alt="Grace and Christopher Cialek">
+  <div class="overlay"></div>
+  <div class="caption">
+    <h1>The Cialeks</h1>
+    <div class="sub">A running family from Schenectady, New York</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CHRISTOPHER -->
+<!-- ═══════════════════════════════════════════ -->
+
 <div class="hero">
   <div class="race-name">Labatt's Lite National Capital Marathon &bull; Ottawa, Canada</div>
-  <h1>Christopher Cialek</h1>
+  <h2>Christopher Cialek</h2>
   <div class="location">Schenectady, New York &bull; May 15, 1983</div>
   <div class="time-label">Official Gun Time</div>
   <div class="time-display">2:46:54</div>
@@ -125,7 +186,7 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; col
 
 <!-- Nearby runners -->
 <h2>Runners Nearby in the Field</h2>
-<p class="section-desc">The runners who finished within 30 seconds of Christopher — his race-day companions through Ottawa.</p>
+<p class="section-desc">The runners who finished within 30 seconds of Christopher, his race-day companions through Ottawa.</p>
 <table class="runners-table">
   <thead><tr><th>Place</th><th>Name</th><th>From</th><th>Time</th><th>Gap</th></tr></thead>
   <tbody>
@@ -147,27 +208,158 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; col
 <!-- Historical context -->
 <div class="context">
   <h3>Historical Context</h3>
-  <p>The 1983 National Capital Marathon was one of Canada's premier road races, attracting 3,224 finishers. Christopher traveled from Schenectady, New York — roughly a 5-hour drive — to compete.</p>
+  <p>The 1983 National Capital Marathon was one of Canada's premier road races, attracting 3,224 finishers. Christopher traveled from Schenectady, New York to compete.</p>
   <ul>
     <li><strong>2:46:54</strong> in 1983 was an exceptional amateur time, well within BQ standards</li>
     <li>Finishing <strong>126th of 3,224</strong> placed him in the <strong>top 3.9%</strong> of the field</li>
     <li>His <strong>6:23/mi pace</strong> was sustained for the full 26.2 miles</li>
-    <li>For reference, the 1983 Boston Marathon qualifying time for men was approximately <strong>2:50:00</strong> — Christopher beat that by over 3 minutes</li>
+    <li>The 1983 Boston Marathon qualifying time for men was approximately <strong>2:50:00</strong> — Christopher beat that by over 3 minutes</li>
+    <li>Christopher also served on the race committee for the <strong>Mohawk Hudson River Marathon</strong>, helping build the Capital Region's running community</li>
   </ul>
 </div>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- GRACE -->
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="grace-section">
+  <span class="runner-tag">Grace Cialek</span>
+  <h2 style="margin-top: 8px; border-bottom: 1px solid #D4A84B33;">Grace Cialek</h2>
+  <p class="section-desc">Hudson-Mohawk Road Runners Club, Schenectady, NY. A decorated local runner across distances from 15K to the marathon.</p>
+
+  <div class="race-records">
+    <div class="race-card">
+      <div class="race-info">
+        <div class="race-title">Marathon (likely Mohawk Hudson)</div>
+        <div class="race-detail">Albany-Schenectady, NY &bull; circa 2011</div>
+      </div>
+      <div>
+        <div class="race-time grace">3:17:00</div>
+        <div class="race-note">Top local female</div>
+      </div>
+    </div>
+    <div class="race-card">
+      <div class="race-info">
+        <div class="race-title">HMRRC 18.9-Mile Race</div>
+        <div class="race-detail">Schenectady, NY &bull; 1986</div>
+      </div>
+      <div>
+        <div class="race-time grace">Winner</div>
+        <div class="race-note">Female champion</div>
+      </div>
+    </div>
+    <div class="race-card">
+      <div class="race-info">
+        <div class="race-title">HMRRC Race</div>
+        <div class="race-detail">Schenectady, NY &bull; circa 2014</div>
+      </div>
+      <div>
+        <div class="race-time grace">70:02</div>
+        <div class="race-note">Female winner</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="context">
+    <h3>The HMRRC Connection</h3>
+    <p>Both Grace and Christopher were active members of the <strong>Hudson-Mohawk Road Runners Club</strong> (HMRRC), one of the oldest and most respected running clubs in New York's Capital Region. Grace's results span nearly three decades of competition, from winning the 18.9-miler in 1986 to taking female titles into the 2010s. Most of her detailed race records live in the HMRRC <em>Pace Setter</em> newsletter archives, predating the era of digital timing chips.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SAM -->
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="sam-section grace-section" style="border-top-color: #7ED68733;">
+  <span class="runner-tag">Sam Cialek</span>
+  <h2 style="margin-top: 8px; border-bottom: 1px solid #7ED68733;">Sam Cialek</h2>
+  <p class="section-desc">Brooklyn, NY. Carrying the family tradition into the next generation.</p>
+
+  <div class="race-records">
+    <div class="race-card">
+      <div class="race-info">
+        <div class="race-title">Run for the Red Marathon</div>
+        <div class="race-detail">Stroudsburg, PA &bull; May 19, 2013</div>
+      </div>
+      <div>
+        <div class="race-time sam">3:16:40</div>
+        <div class="race-note">Chip time &bull; 7:30/mi</div>
+      </div>
+    </div>
+    <div class="race-card">
+      <div class="race-info">
+        <div class="race-title">Miami Marathon</div>
+        <div class="race-detail">Miami, FL</div>
+      </div>
+      <div>
+        <div class="race-time sam">3:33:18</div>
+        <div class="race-note"></div>
+      </div>
+    </div>
+    <div class="race-card">
+      <div class="race-info">
+        <div class="race-title">NYC Marathon</div>
+        <div class="race-detail">New York, NY &bull; 2010</div>
+      </div>
+      <div>
+        <div class="race-time sam">3:56:43</div>
+        <div class="race-note"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FAMILY TIMELINE -->
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="section-divider"><div class="line"></div><span class="icon">&#9201;</span><div class="line"></div></div>
+
+<h2>Family Racing Timeline</h2>
+<p class="section-desc">Three decades of marathons, from Ottawa to New York.</p>
+
+<div class="timeline">
+  <div class="timeline-item chris">
+    <div class="timeline-year">1983 &mdash; Christopher</div>
+    <div class="timeline-desc">Ottawa National Capital Marathon &bull; 2:46:54 &bull; 126th of 3,224</div>
+  </div>
+  <div class="timeline-item grace">
+    <div class="timeline-year">1986 &mdash; Grace</div>
+    <div class="timeline-desc">HMRRC 18.9-Mile Race &bull; Female winner</div>
+  </div>
+  <div class="timeline-item sam">
+    <div class="timeline-year">2010 &mdash; Sam</div>
+    <div class="timeline-desc">NYC Marathon &bull; 3:56:43</div>
+  </div>
+  <div class="timeline-item grace">
+    <div class="timeline-year">~2011 &mdash; Grace</div>
+    <div class="timeline-desc">Marathon &bull; 3:17 &bull; Top local female</div>
+  </div>
+  <div class="timeline-item sam">
+    <div class="timeline-year">2013 &mdash; Sam</div>
+    <div class="timeline-desc">Run for the Red Marathon &bull; 3:16:40</div>
+  </div>
+  <div class="timeline-item grace">
+    <div class="timeline-year">~2014 &mdash; Grace</div>
+    <div class="timeline-desc">HMRRC Race &bull; 70:02 &bull; Female winner</div>
+  </div>
+</div>
+
+<div class="context blue">
+  <h3>Like Father, Like Son</h3>
+  <p>Sam's best marathon (3:16:40 at Run for the Red, 2013) puts him about 30 minutes behind his father's 1983 Ottawa time. But the apple doesn't fall far: both finished in the <strong>top percentiles</strong> of their respective fields, and both chose hilly, out-of-town courses for their biggest races. Christopher's 6:23 pace would have had him crossing the finish line at Stroudsburg a full 30 minutes before Sam — but give Sam 30 more years of training...</p>
+</div>
+
 <footer>
-  Data source: iskio.ca &bull; 1983 Labatt's Lite National Capital Marathon, Ottawa &bull; May 15, 1983
+  Data sources: iskio.ca (1983 Ottawa), runhigh.com (2013 Run for the Red), HMRRC Pace Setter newsletters &bull; Page built March 2026
 </footer>
 
 </div>
 
 <script>
-// Field position chart — simulated distribution of finishing times
+// Field position chart
 const fieldCtx = document.getElementById('fieldChart').getContext('2d');
 
-// Generate approximate distribution of 3224 runners
-// Winners around 2:15, median around 3:20, tail to 5:00+
 function genDistribution() {
   const bins = [];
   const labels = [];
@@ -175,7 +367,6 @@ function genDistribution() {
     const h = Math.floor(m / 60);
     const mm = m % 60;
     labels.push(`${h}:${mm.toString().padStart(2,'0')}`);
-    // Log-normal-ish shape
     const mu = 210, sigma = 35;
     const x = (m - mu) / sigma;
     const density = Math.exp(-0.5 * x * x) / (sigma * Math.sqrt(2 * Math.PI));
@@ -185,7 +376,7 @@ function genDistribution() {
 }
 
 const dist = genDistribution();
-const chrisMin = 166.9; // 2:46:54 in minutes
+const chrisMin = 166.9;
 const chrisBinIdx = Math.round((chrisMin - 130) / 5);
 
 const bgColors = dist.bins.map((_, i) => i === chrisBinIdx ? '#5BA8D9' : '#333');
@@ -221,7 +412,7 @@ new Chart(fieldCtx, {
             borderDash: [6, 3],
             label: {
               display: true,
-              content: 'Christopher Cialek — 2:46:54',
+              content: 'Christopher Cialek  2:46:54',
               position: 'start',
               backgroundColor: 'rgba(91,168,217,0.9)',
               color: '#fff',
@@ -245,17 +436,18 @@ new Chart(paceCtx, {
   type: 'bar',
   data: {
     labels: [
-      '1983 Winner\n(~2:15)',
-      'Christopher\nCialek',
-      '1983 BQ\nStandard',
-      '1983 Median\n(~3:20)',
-      'Modern BQ\n(M 18-34)',
-      'Modern Avg\nMarathon'
+      '1983 Winner (~2:15)',
+      'Christopher Cialek',
+      '1983 BQ Standard',
+      'Grace Cialek (~2011)',
+      'Sam Cialek (2013)',
+      '1983 Median (~3:20)',
+      'Modern Avg Marathon'
     ],
     datasets: [{
       label: 'Finish Time (minutes)',
-      data: [135, 166.9, 170, 200, 180, 270],
-      backgroundColor: ['#D4A84B', '#5BA8D9', '#888', '#555', '#888', '#555'],
+      data: [135, 166.9, 170, 197, 196.7, 200, 270],
+      backgroundColor: ['#888', '#5BA8D9', '#555', '#D4A84B', '#7ED687', '#555', '#333'],
       borderRadius: 6,
       barPercentage: 0.6
     }]
