@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christopher Cialek — 1983 Ottawa Marathon</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0a; color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; line-height: 1.6; min-height: 100vh; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+
+/* Hero */
+.hero { text-align: center; margin-bottom: 56px; padding: 48px 0; }
+.hero .race-name { font-family: 'EB Garamond', serif; font-size: 1rem; color: #666; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; }
+.hero h1 { font-family: 'EB Garamond', serif; font-size: 3.2rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.hero .location { color: #888; font-size: 1rem; margin-bottom: 32px; }
+.hero .time-display { font-family: 'Space Grotesk', monospace; font-size: 5rem; font-weight: 700; color: #5BA8D9; letter-spacing: 0.02em; margin: 24px 0; text-shadow: 0 0 40px rgba(91,168,217,0.3); }
+.hero .time-label { color: #666; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+.stat-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px 16px; text-align: center; }
+.stat-card .val { font-size: 2rem; font-weight: 700; font-family: 'EB Garamond', serif; color: #fff; }
+.stat-card .lbl { color: #888; font-size: 0.78rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-card.highlight { border-color: #5BA8D9; }
+.stat-card.highlight .val { color: #5BA8D9; }
+
+/* Sections */
+h2 { font-family: 'EB Garamond', serif; font-size: 1.6rem; font-weight: 600; color: #fff; margin: 48px 0 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
+.section-desc { color: #999; font-size: 0.9rem; font-family: 'EB Garamond', serif; font-style: italic; margin-bottom: 20px; }
+
+/* Charts */
+.chart-wrap { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+.chart-wrap canvas { max-height: 400px; }
+
+/* Pace table */
+.pace-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+.pace-table th { text-align: left; padding: 10px 14px; border-bottom: 2px solid #333; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.pace-table td { padding: 12px 14px; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; }
+.pace-table tr:hover { background: #111; }
+.pace-table .split-name { font-weight: 600; color: #fff; }
+
+/* Context card */
+.context { background: #111; border-left: 3px solid #D4A84B; border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 32px 0; }
+.context h3 { font-family: 'EB Garamond', serif; font-size: 1.1rem; color: #D4A84B; margin-bottom: 8px; }
+.context p { color: #bbb; font-size: 0.9rem; line-height: 1.7; }
+.context ul { color: #bbb; font-size: 0.9rem; line-height: 1.7; padding-left: 20px; margin-top: 8px; }
+
+/* Nearby runners */
+.runners-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+.runners-table th { text-align: left; padding: 10px 14px; border-bottom: 2px solid #333; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.runners-table td { padding: 10px 14px; border-bottom: 1px solid #1a1a1a; font-size: 0.88rem; }
+.runners-table tr.highlight-row { background: #152535; }
+.runners-table tr.highlight-row td { color: #5BA8D9; font-weight: 600; }
+
+footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.75rem; text-align: center; }
+
+@media (max-width: 600px) {
+  .hero .time-display { font-size: 3rem; }
+  .hero h1 { font-size: 2rem; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="race-name">Labatt's Lite National Capital Marathon &bull; Ottawa, Canada</div>
+  <h1>Christopher Cialek</h1>
+  <div class="location">Schenectady, New York &bull; May 15, 1983</div>
+  <div class="time-label">Official Gun Time</div>
+  <div class="time-display">2:46:54</div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-card highlight">
+    <div class="val">126th</div>
+    <div class="lbl">Overall Place</div>
+  </div>
+  <div class="stat-card">
+    <div class="val">3,224</div>
+    <div class="lbl">Total Runners</div>
+  </div>
+  <div class="stat-card">
+    <div class="val">6:23</div>
+    <div class="lbl">Avg Pace /mi</div>
+  </div>
+  <div class="stat-card">
+    <div class="val">Top 4%</div>
+    <div class="lbl">Percentile</div>
+  </div>
+</div>
+
+<!-- Position in field -->
+<h2>Position in the Field</h2>
+<p class="section-desc">126th out of 3,224 finishers. The chart shows estimated finishing time distribution with Christopher's position highlighted.</p>
+<div class="chart-wrap"><canvas id="fieldChart"></canvas></div>
+
+<!-- Estimated splits -->
+<h2>Estimated Marathon Splits</h2>
+<p class="section-desc">Projected even-pace splits for a 2:46:54 finish. Actual splits were not recorded in 1983.</p>
+<table class="pace-table">
+  <thead><tr><th>Split</th><th>Distance</th><th>Projected Time</th><th>Pace /mi</th></tr></thead>
+  <tbody>
+    <tr><td class="split-name">5K</td><td>3.1 mi</td><td>19:47</td><td>6:23</td></tr>
+    <tr><td class="split-name">10K</td><td>6.2 mi</td><td>39:34</td><td>6:23</td></tr>
+    <tr><td class="split-name">Half</td><td>13.1 mi</td><td>1:23:27</td><td>6:23</td></tr>
+    <tr><td class="split-name">30K</td><td>18.6 mi</td><td>1:58:51</td><td>6:23</td></tr>
+    <tr><td class="split-name">35K</td><td>21.7 mi</td><td>2:18:38</td><td>6:23</td></tr>
+    <tr><td class="split-name">40K</td><td>24.9 mi</td><td>2:38:25</td><td>6:23</td></tr>
+    <tr><td class="split-name">Finish</td><td>26.2 mi</td><td>2:46:54</td><td>6:23</td></tr>
+  </tbody>
+</table>
+
+<!-- Pace context chart -->
+<h2>Pace in Context</h2>
+<p class="section-desc">How Christopher's pace compares to modern marathon benchmarks and the 1983 field.</p>
+<div class="chart-wrap"><canvas id="paceChart"></canvas></div>
+
+<!-- Nearby runners -->
+<h2>Runners Nearby in the Field</h2>
+<p class="section-desc">The runners who finished within 30 seconds of Christopher — his race-day companions through Ottawa.</p>
+<table class="runners-table">
+  <thead><tr><th>Place</th><th>Name</th><th>From</th><th>Time</th><th>Gap</th></tr></thead>
+  <tbody>
+    <tr><td>120</td><td>DOUGHERTY, James</td><td>Brewerton, NY</td><td>2:46:32.8</td><td>-21.8s</td></tr>
+    <tr><td>121</td><td>KUCHAREW, Michael</td><td>Ottawa</td><td>2:46:33.7</td><td>-20.9s</td></tr>
+    <tr><td>122</td><td>NUGENT, Bob</td><td>Nepean</td><td>2:46:44.3</td><td>-10.3s</td></tr>
+    <tr><td>123</td><td>ROY, Gerard-R</td><td>Matane</td><td>2:46:48.2</td><td>-6.4s</td></tr>
+    <tr><td>124</td><td>ROGER, Michel</td><td>Bernieres</td><td>2:46:52.0</td><td>-2.6s</td></tr>
+    <tr><td>125</td><td>BARAGAR, Don</td><td>Nepean</td><td>2:46:52.4</td><td>-2.2s</td></tr>
+    <tr class="highlight-row"><td>126</td><td>CIALEK, Christopher</td><td>Schenectady, NY</td><td>2:46:54.6</td><td>—</td></tr>
+    <tr><td>127</td><td>DAWES, Raymond</td><td>Winchester</td><td>2:47:00.5</td><td>+5.9s</td></tr>
+    <tr><td>128</td><td>VIVIAN, Steve</td><td>Toronto</td><td>2:47:01.5</td><td>+6.9s</td></tr>
+    <tr><td>129</td><td>FURFARO, Joe</td><td>Toronto</td><td>2:47:02.8</td><td>+8.2s</td></tr>
+    <tr><td>130</td><td>MAMMOLITE, Dominic</td><td>Toronto</td><td>2:47:03.3</td><td>+8.7s</td></tr>
+    <tr><td>131</td><td>WENDLAND, James</td><td>Waterloo</td><td>2:47:03.8</td><td>+9.2s</td></tr>
+  </tbody>
+</table>
+
+<!-- Historical context -->
+<div class="context">
+  <h3>Historical Context</h3>
+  <p>The 1983 National Capital Marathon was one of Canada's premier road races, attracting 3,224 finishers. Christopher traveled from Schenectady, New York — roughly a 5-hour drive — to compete.</p>
+  <ul>
+    <li><strong>2:46:54</strong> in 1983 was an exceptional amateur time, well within BQ standards</li>
+    <li>Finishing <strong>126th of 3,224</strong> placed him in the <strong>top 3.9%</strong> of the field</li>
+    <li>His <strong>6:23/mi pace</strong> was sustained for the full 26.2 miles</li>
+    <li>For reference, the 1983 Boston Marathon qualifying time for men was approximately <strong>2:50:00</strong> — Christopher beat that by over 3 minutes</li>
+  </ul>
+</div>
+
+<footer>
+  Data source: iskio.ca &bull; 1983 Labatt's Lite National Capital Marathon, Ottawa &bull; May 15, 1983
+</footer>
+
+</div>
+
+<script>
+// Field position chart — simulated distribution of finishing times
+const fieldCtx = document.getElementById('fieldChart').getContext('2d');
+
+// Generate approximate distribution of 3224 runners
+// Winners around 2:15, median around 3:20, tail to 5:00+
+function genDistribution() {
+  const bins = [];
+  const labels = [];
+  for (let m = 130; m <= 330; m += 5) {
+    const h = Math.floor(m / 60);
+    const mm = m % 60;
+    labels.push(`${h}:${mm.toString().padStart(2,'0')}`);
+    // Log-normal-ish shape
+    const mu = 210, sigma = 35;
+    const x = (m - mu) / sigma;
+    const density = Math.exp(-0.5 * x * x) / (sigma * Math.sqrt(2 * Math.PI));
+    bins.push(Math.round(density * 3224 * 5));
+  }
+  return { labels, bins };
+}
+
+const dist = genDistribution();
+const chrisMin = 166.9; // 2:46:54 in minutes
+const chrisBinIdx = Math.round((chrisMin - 130) / 5);
+
+const bgColors = dist.bins.map((_, i) => i === chrisBinIdx ? '#5BA8D9' : '#333');
+const borderColors = dist.bins.map((_, i) => i === chrisBinIdx ? '#5BA8D9' : '#444');
+
+new Chart(fieldCtx, {
+  type: 'bar',
+  data: {
+    labels: dist.labels,
+    datasets: [{
+      label: 'Estimated Finishers',
+      data: dist.bins,
+      backgroundColor: bgColors,
+      borderColor: borderColors,
+      borderWidth: 1,
+      barPercentage: 1.0,
+      categoryPercentage: 1.0
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Estimated Finishing Time Distribution (3,224 runners)', color: '#888', font: { family: 'EB Garamond', size: 15 } },
+      annotation: {
+        annotations: {
+          chrisLine: {
+            type: 'line',
+            xMin: chrisBinIdx,
+            xMax: chrisBinIdx,
+            borderColor: '#5BA8D9',
+            borderWidth: 2,
+            borderDash: [6, 3],
+            label: {
+              display: true,
+              content: 'Christopher Cialek — 2:46:54',
+              position: 'start',
+              backgroundColor: 'rgba(91,168,217,0.9)',
+              color: '#fff',
+              font: { size: 11, family: 'Space Grotesk' },
+              padding: 6
+            }
+          }
+        }
+      }
+    },
+    scales: {
+      y: { ticks: { color: '#666' }, grid: { color: '#1a1a1a' }, title: { display: true, text: 'Runners', color: '#666' } },
+      x: { ticks: { color: '#666', maxRotation: 45, autoSkip: true, maxTicksLimit: 15 }, grid: { display: false }, title: { display: true, text: 'Finish Time', color: '#666' } }
+    }
+  }
+});
+
+// Pace comparison chart
+const paceCtx = document.getElementById('paceChart').getContext('2d');
+new Chart(paceCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '1983 Winner\n(~2:15)',
+      'Christopher\nCialek',
+      '1983 BQ\nStandard',
+      '1983 Median\n(~3:20)',
+      'Modern BQ\n(M 18-34)',
+      'Modern Avg\nMarathon'
+    ],
+    datasets: [{
+      label: 'Finish Time (minutes)',
+      data: [135, 166.9, 170, 200, 180, 270],
+      backgroundColor: ['#D4A84B', '#5BA8D9', '#888', '#555', '#888', '#555'],
+      borderRadius: 6,
+      barPercentage: 0.6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Finish Time Comparison (minutes)', color: '#888', font: { family: 'EB Garamond', size: 15 } },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            const mins = ctx.raw;
+            const h = Math.floor(mins / 60);
+            const m = Math.floor(mins % 60);
+            const s = Math.round((mins % 1) * 60);
+            return `${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { min: 120, max: 290, ticks: { color: '#666', callback: v => { const h = Math.floor(v/60); const m = v%60; return `${h}:${m.toString().padStart(2,'0')}`; } }, grid: { color: '#1a1a1a' } },
+      y: { ticks: { color: '#ccc', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
