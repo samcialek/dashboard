@@ -82,6 +82,9 @@ h2 { font-family: 'EB Garamond', serif; font-size: 1.6rem; font-weight: 600; col
 .race-card .race-time.grace { color: #D4A84B; }
 .race-card .race-time.sam { color: #7ED687; }
 .race-card .race-note { color: #666; font-size: 0.75rem; text-align: right; margin-top: 2px; }
+.race-card.unverified { border-style: dashed; border-color: #D4A84B44; background: #0f0e0a; }
+.race-card.unverified .race-title::after { content: ' ✦'; color: #D4A84B88; font-size: 0.7rem; }
+.unverified-note { color: #888; font-size: 0.78rem; font-style: italic; margin-top: 8px; padding-left: 4px; }
 
 /* Divider */
 .section-divider { display: flex; align-items: center; gap: 16px; margin: 56px 0 40px; }
@@ -228,6 +231,16 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; col
   <p class="section-desc">Hudson-Mohawk Road Runners Club, Schenectady, NY. A decorated local runner across distances from 15K to the marathon.</p>
 
   <div class="race-records">
+    <div class="race-card unverified">
+      <div class="race-info">
+        <div class="race-title">Boston Marathon</div>
+        <div class="race-detail">Hopkinton to Boston, MA &bull; pre-1997</div>
+      </div>
+      <div>
+        <div class="race-time grace" style="opacity: 0.6;">TBD</div>
+        <div class="race-note">Confirmed, time pending</div>
+      </div>
+    </div>
     <div class="race-card">
       <div class="race-info">
         <div class="race-title">Marathon (likely Mohawk Hudson)</div>
@@ -258,6 +271,7 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; col
         <div class="race-note">Female winner</div>
       </div>
     </div>
+    <p class="unverified-note">✦ Dashed border = confirmed by family, exact year and time pending. BAA digital archives (1997-2026) searched exhaustively — result predates online records.</p>
   </div>
 
   <div class="context">
@@ -322,6 +336,10 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid #1a1a1a; col
   <div class="timeline-item chris">
     <div class="timeline-year">1983 &mdash; Christopher</div>
     <div class="timeline-desc">Ottawa National Capital Marathon &bull; 2:46:54 &bull; 126th of 3,224</div>
+  </div>
+  <div class="timeline-item grace">
+    <div class="timeline-year">~1980s &mdash; Grace</div>
+    <div class="timeline-desc">Boston Marathon &bull; Time TBD (pre-1997, not in digital archives)</div>
   </div>
   <div class="timeline-item grace">
     <div class="timeline-year">1986 &mdash; Grace</div>
