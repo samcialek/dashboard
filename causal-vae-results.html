@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal VAE — Experiment Results</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0a; color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-family: 'EB Garamond', serif; font-size: 2.8rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+h2 { font-family: 'EB Garamond', serif; font-size: 1.8rem; font-weight: 600; color: #fff; margin: 56px 0 8px; border-bottom: 1px solid #222; padding-bottom: 8px; }
+.subtitle { color: #888; font-size: 1.05rem; margin-bottom: 48px; font-family: 'EB Garamond', serif; font-style: italic; }
+.timestamp { color: #555; font-size: 0.8rem; margin-bottom: 8px; }
+.section-desc { color: #999; font-size: 0.95rem; margin-bottom: 24px; font-family: 'EB Garamond', serif; font-style: italic; }
+
+/* Summary cards */
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 48px; }
+.summary-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 28px 20px; text-align: center; }
+.summary-card .big { font-size: 2.2rem; font-weight: 700; font-family: 'EB Garamond', serif; }
+.summary-card .label { color: #888; font-size: 0.82rem; margin-top: 4px; }
+.summary-card.best { border-color: #5BA8D9; }
+.summary-card.best .big { color: #5BA8D9; }
+.summary-card.ref { border-color: #D4A84B; }
+.summary-card.ref .big { color: #D4A84B; }
+
+/* Tables */
+.results-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+.results-table th { text-align: left; padding: 12px 16px; border-bottom: 2px solid #333; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.results-table td { padding: 14px 16px; border-bottom: 1px solid #1a1a1a; font-size: 0.95rem; }
+.results-table tr:hover { background: #111; }
+.results-table .model-name { font-weight: 600; color: #fff; }
+.results-table .best-val { color: #5BA8D9; font-weight: 700; }
+.results-table .ref-val { color: #D4A84B; }
+.results-table .ref-row { background: #0d0d0d; }
+
+/* Chart */
+.chart-wrap { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+.chart-wrap canvas { max-height: 400px; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+@media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+
+/* Insight cards */
+.insight { background: #111; border-left: 3px solid #5BA8D9; border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 24px 0; }
+.insight h3 { font-family: 'EB Garamond', serif; font-size: 1.1rem; color: #5BA8D9; margin-bottom: 8px; }
+.insight p { color: #bbb; font-size: 0.92rem; }
+
+/* Archetype section */
+.arch-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.arch-card h3 { font-family: 'EB Garamond', serif; font-size: 1.3rem; color: #fff; margin-bottom: 4px; }
+.arch-card .meta { color: #666; font-size: 0.82rem; margin-bottom: 16px; }
+.arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+/* Tags */
+.tag { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; margin-right: 6px; }
+.tag-new { background: #1a2a1a; color: #6BCB77; }
+.tag-ref { background: #2a2210; color: #D4A84B; }
+.tag-best { background: #152535; color: #5BA8D9; }
+.tag-pending { background: #1a1a2a; color: #9B8FD8; }
+
+/* Phase timeline */
+.timeline { position: relative; padding-left: 32px; margin: 24px 0; }
+.timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: #222; }
+.timeline-item { position: relative; margin-bottom: 28px; }
+.timeline-item::before { content: ''; position: absolute; left: -25px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: #333; border: 2px solid #444; }
+.timeline-item.active::before { background: #5BA8D9; border-color: #5BA8D9; }
+.timeline-item.done::before { background: #6BCB77; border-color: #6BCB77; }
+.timeline-item h4 { color: #fff; font-size: 0.95rem; margin-bottom: 4px; }
+.timeline-item p { color: #888; font-size: 0.85rem; }
+
+footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.75rem; text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p class="timestamp">Updated March 21, 2026</p>
+<h1>Causal VAE &mdash; Experiment Results</h1>
+<p class="subtitle">Architecture comparison, archetype partial pooling, and the road to VQ-VAE. All models trained on the same demographic &rarr; psychographic pipeline.</p>
+
+<!-- ============ SUMMARY CARDS ============ -->
+<div class="summary-grid">
+  <div class="summary-card best">
+    <div class="big">0.989</div>
+    <div class="label">Best Reconstruction<br><span style="color:#5BA8D9;font-size:0.75rem">&beta;-VAE (&beta;=0.001)</span></div>
+  </div>
+  <div class="summary-card ref">
+    <div class="big">0.210</div>
+    <div class="label">Best R&sup2;<br><span style="color:#D4A84B;font-size:0.75rem">XGBoost (reference)</span></div>
+  </div>
+  <div class="summary-card">
+    <div class="big">0.202</div>
+    <div class="label">Best VAE R&sup2;<br><span style="color:#aaa;font-size:0.75rem">iter4d (59K params)</span></div>
+  </div>
+  <div class="summary-card">
+    <div class="big">5</div>
+    <div class="label">Architectures Tested</div>
+  </div>
+</div>
+
+<!-- ============ ARCHITECTURE COMPARISON ============ -->
+<h2>1. Architecture Comparison</h2>
+<p class="section-desc">Five model variants tested overnight. Better reconstruction does not translate to better downstream prediction &mdash; the core finding.</p>
+
+<table class="results-table">
+  <thead>
+    <tr><th>Model</th><th>Params</th><th>Reconstruction</th><th>Disentanglement</th><th>R&sup2; (Prediction)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="model-name"><span class="tag tag-best">best recon</span> &beta;-VAE (&beta;=0.001)</td>
+      <td>~59K</td>
+      <td class="best-val">0.989</td>
+      <td>0.068</td>
+      <td>0.183</td>
+      <td>Near-perfect recon, weak latent structure</td>
+    </tr>
+    <tr>
+      <td class="model-name">Wide VAE (H=512)</td>
+      <td>~130K</td>
+      <td>0.978</td>
+      <td>0.068</td>
+      <td>0.182</td>
+      <td>More capacity, same prediction ceiling</td>
+    </tr>
+    <tr>
+      <td class="model-name">Attention VAE</td>
+      <td>~85K</td>
+      <td>0.976</td>
+      <td>0.065</td>
+      <td>0.176</td>
+      <td>Self-attention in encoder; slightly worse</td>
+    </tr>
+    <tr class="ref-row">
+      <td class="model-name"><span class="tag tag-ref">reference</span> iter4d</td>
+      <td>59K</td>
+      <td>0.909</td>
+      <td>&mdash;</td>
+      <td class="ref-val">0.202</td>
+      <td>Iterative causal DAG &mdash; best VAE R&sup2;</td>
+    </tr>
+    <tr class="ref-row">
+      <td class="model-name"><span class="tag tag-ref">reference</span> XGBoost</td>
+      <td>&mdash;</td>
+      <td>&mdash;</td>
+      <td>0.069</td>
+      <td class="ref-val">0.210</td>
+      <td>Non-generative ceiling</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="chart-row">
+  <div class="chart-wrap"><canvas id="reconChart"></canvas></div>
+  <div class="chart-wrap"><canvas id="r2Chart"></canvas></div>
+</div>
+
+<div class="insight">
+  <h3>Key Finding: The Smoothness&ndash;Structure Tradeoff</h3>
+  <p>&beta;-VAE achieves 0.989 reconstruction by essentially memorizing inputs, but its latent space is smooth without causal structure. iter4d sacrifices reconstruction (0.909) to enforce DAG constraints, and that structure is what drives better downstream prediction (R&sup2; 0.202 vs 0.183). The gap suggests we need discrete structure, not continuous smoothness &mdash; which is exactly what VQ-VAE provides.</p>
+</div>
+
+<!-- ============ ARCHETYPE PARTIAL POOLING ============ -->
+<h2>2. Archetype Partial Pooling</h2>
+<p class="section-desc">The next deliverable: ~1,000 learned archetypes from a VQ-VAE, not hand-specified segments. Each is a soft attractor with uncertainty. Partial pooling shrinks sparse types toward group means.</p>
+
+<div class="arch-grid">
+  <div class="arch-card">
+    <h3>VQ-VAE Codebook</h3>
+    <div class="meta">Experiment #21 &mdash; In Progress</div>
+    <p style="color:#bbb;font-size:0.9rem;">Replace continuous latent z with a discrete codebook of K entries. Each entry becomes an archetype. Training objective:</p>
+    <pre style="background:#0a0a0a;padding:16px;border-radius:8px;margin-top:12px;font-size:0.82rem;color:#aaa;overflow-x:auto;">L = L_recon + &beta;||z_e - sg[e]||&sup2; + ||sg[z_e] - e||&sup2;
+
+Demographics &rarr; Encoder &rarr; z_continuous &rarr; Quantize &rarr; z_discrete &rarr; Decoder &rarr; Psychographics</pre>
+    <p style="color:#666;font-size:0.82rem;margin-top:12px;">Sweep: K &isin; {256, 512, 1024, 2048} &mdash; targeting iter4d R&sup2; = 0.202</p>
+  </div>
+
+  <div class="arch-card">
+    <h3>Distributed Compute</h3>
+    <div class="meta">Architecture Design</div>
+    <p style="color:#bbb;font-size:0.9rem;">One archetype = one compute node. Population queries fan out to all nodes and aggregate with &pi;-weights. Embarrassingly parallel &mdash; ~1000&times; faster than individual agent simulation.</p>
+  </div>
+
+  <div class="arch-card">
+    <h3>Beck's CRP Integration</h3>
+    <div class="meta">Nonparametric Type Genesis</div>
+    <p style="color:#bbb;font-size:0.9rem;">Archetype count isn't fixed &mdash; it grows via Chinese Restaurant Process. &alpha; becomes a social diversity dial. New cultural types (QAnon, tradwife, crypto-libertarian) emerge without pre-specification.</p>
+  </div>
+</div>
+
+<!-- ============ VQ-VAE SWEEP (PENDING) ============ -->
+<h2>3. VQ-VAE Sweep <span class="tag tag-pending">in progress</span></h2>
+<p class="section-desc">Experiment #21 &mdash; sweeping codebook size. Results will populate as runs complete.</p>
+
+<table class="results-table">
+  <thead>
+    <tr><th>Codebook K</th><th>Reconstruction</th><th>Codebook Usage</th><th>R&sup2;</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="model-name">K = 256</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#D4A84B">Running</td></tr>
+    <tr><td class="model-name">K = 512</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#555">Queued</td></tr>
+    <tr><td class="model-name">K = 1024</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#555">Queued</td></tr>
+    <tr><td class="model-name">K = 2048</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#555">Queued</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ MIGRATION ROADMAP ============ -->
+<h2>4. Migration Roadmap</h2>
+<p class="section-desc">Four phases from current causal VAE to distributed archetype simulation.</p>
+
+<div class="timeline">
+  <div class="timeline-item done">
+    <h4>Phase 1: Causal VAE Proof</h4>
+    <p>DAG-constrained latent space. Completed &mdash; iter4d achieves R&sup2; 0.202 with causal structure.</p>
+  </div>
+  <div class="timeline-item active">
+    <h4>Phase 2: VQ-VAE Training</h4>
+    <p>Discrete bottleneck, codebook quality validation. K sweep in progress (Experiment #21).</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Phase 3: Population Calibration</h4>
+    <p>&pi;-weight estimation from census/survey data. Each archetype represents a known population fraction.</p>
+  </div>
+  <div class="timeline-item">
+    <h4>Phase 4: Distributed Deployment + CRP Dynamics</h4>
+    <p>One node per archetype. Nonparametric type genesis via CRP. &alpha; dial for social diversity.</p>
+  </div>
+</div>
+
+<footer>
+  Causal VAE Project &mdash; Aaru Deliverable Suite &bull; Last updated March 21, 2026
+</footer>
+
+</div>
+
+<script>
+// Reconstruction chart
+const reconCtx = document.getElementById('reconChart').getContext('2d');
+new Chart(reconCtx, {
+  type: 'bar',
+  data: {
+    labels: ['β-VAE\n(β=0.001)', 'Wide VAE\n(H=512)', 'Attention\nVAE', 'iter4d\n(reference)'],
+    datasets: [{
+      label: 'Reconstruction Score',
+      data: [0.989, 0.978, 0.976, 0.909],
+      backgroundColor: ['#5BA8D9', '#3d7a9e', '#3d7a9e', '#D4A84B'],
+      borderRadius: 6,
+      barPercentage: 0.6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: 'Reconstruction Score', color: '#888', font: { family: 'EB Garamond', size: 16 } },
+      legend: { display: false }
+    },
+    scales: {
+      y: { min: 0.85, max: 1.0, ticks: { color: '#666' }, grid: { color: '#1a1a1a' } },
+      x: { ticks: { color: '#888', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// R² chart
+const r2Ctx = document.getElementById('r2Chart').getContext('2d');
+new Chart(r2Ctx, {
+  type: 'bar',
+  data: {
+    labels: ['XGBoost', 'iter4d', 'β-VAE', 'Wide VAE', 'Attention VAE'],
+    datasets: [{
+      label: 'R² (Downstream Prediction)',
+      data: [0.210, 0.202, 0.183, 0.182, 0.176],
+      backgroundColor: ['#D4A84B', '#D4A84B', '#5BA8D9', '#3d7a9e', '#3d7a9e'],
+      borderRadius: 6,
+      barPercentage: 0.6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: 'R² — Downstream Prediction', color: '#888', font: { family: 'EB Garamond', size: 16 } },
+      legend: { display: false }
+    },
+    scales: {
+      y: { min: 0.15, max: 0.22, ticks: { color: '#666' }, grid: { color: '#1a1a1a' } },
+      x: { ticks: { color: '#888', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
