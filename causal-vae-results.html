@@ -95,8 +95,8 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid #1a1a1a; col
     <div class="label">Best VAE R&sup2;<br><span style="color:#aaa;font-size:0.75rem">iter4d (59K params)</span></div>
   </div>
   <div class="summary-card">
-    <div class="big">5</div>
-    <div class="label">Architectures Tested</div>
+    <div class="big">9</div>
+    <div class="label">Configurations Tested</div>
   </div>
 </div>
 
@@ -190,21 +190,46 @@ Demographics &rarr; Encoder &rarr; z_continuous &rarr; Quantize &rarr; z_discret
   </div>
 </div>
 
-<!-- ============ VQ-VAE SWEEP (PENDING) ============ -->
-<h2>3. VQ-VAE Sweep <span class="tag tag-pending">in progress</span></h2>
-<p class="section-desc">Experiment #21 &mdash; sweeping codebook size. Results will populate as runs complete.</p>
+<!-- ============ VQ-VAE SWEEP (COMPLETED) ============ -->
+<h2>3. VQ-VAE Sweep <span class="tag tag-new">completed</span></h2>
+<p class="section-desc">Experiment #21 &mdash; codebook size sweep. <strong>Negative result:</strong> hard quantization consistently underperforms the iter4d baseline.</p>
 
 <table class="results-table">
   <thead>
-    <tr><th>Codebook K</th><th>Reconstruction</th><th>Codebook Usage</th><th>R&sup2;</th><th>Status</th></tr>
+    <tr><th>Codebook K</th><th>Params</th><th>Reconstruction</th><th>Codebook Usage</th><th>R&sup2; (All)</th><th>R&sup2; (Hi-Cov Psycho)</th></tr>
   </thead>
   <tbody>
-    <tr><td class="model-name">K = 256</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#D4A84B">Running</td></tr>
-    <tr><td class="model-name">K = 512</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#555">Queued</td></tr>
-    <tr><td class="model-name">K = 1024</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#555">Queued</td></tr>
-    <tr><td class="model-name">K = 2048</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td style="color:#555">Queued</td></tr>
+    <tr>
+      <td class="model-name">K = 256</td><td>91K</td><td>0.914</td><td>14.8%</td><td>0.138</td><td>0.142</td>
+    </tr>
+    <tr>
+      <td class="model-name"><span class="tag tag-best">best VQ</span> K = 512</td><td>94K</td><td>0.913</td><td>9.0%</td><td class="best-val">0.143</td><td>0.156</td>
+    </tr>
+    <tr>
+      <td class="model-name">K = 1024</td><td>100K</td><td>0.913</td><td>3.6%</td><td>0.138</td><td>0.146</td>
+    </tr>
+    <tr>
+      <td class="model-name">K = 2048</td><td>113K</td><td>0.912</td><td>1.7%</td><td>0.134</td><td>0.141</td>
+    </tr>
+    <tr class="ref-row">
+      <td class="model-name"><span class="tag tag-ref">baseline</span> iter4d</td><td>59K</td><td>0.909</td><td>&mdash;</td><td class="ref-val">0.202</td><td class="ref-val">&mdash;</td>
+    </tr>
   </tbody>
 </table>
+
+<div class="chart-wrap"><canvas id="vqChart"></canvas></div>
+
+<div class="insight" style="border-left-color: #D4A84B;">
+  <h3 style="color: #D4A84B;">Negative Result: Hard Quantization Kills Signal</h3>
+  <p>VQ-VAE&rsquo;s best R&sup2; (0.143 at K=512) is <strong>29% worse</strong> than iter4d (0.202). The hard argmin quantization destroys gradient information that the DAG structure preserves. Codebook usage collapses with scale: K=2048 uses only 1.7% of codes (34 of 2048). This is a known failure mode &mdash; the &ldquo;codebook collapse&rdquo; problem.</p>
+  <p style="margin-top: 12px;"><strong>Path forward (4 options):</strong></p>
+  <ol style="color: #bbb; font-size: 0.92rem; padding-left: 20px; margin-top: 8px;">
+    <li><strong>Gumbel-Softmax</strong> &mdash; differentiable relaxation of discrete bottleneck</li>
+    <li><strong>Product quantization</strong> &mdash; factored codebook (fewer codes per subspace)</li>
+    <li><strong>VQ after DAG</strong> &mdash; quantize iter4d&rsquo;s structured latent space, not raw encoder output</li>
+    <li><strong>Two-stage (fastest)</strong> &mdash; train iter4d, then cluster its latent space with k-means or CRP post-hoc</li>
+  </ol>
+</div>
 
 <!-- ============ MIGRATION ROADMAP ============ -->
 <h2>4. Migration Roadmap</h2>
@@ -215,9 +240,9 @@ Demographics &rarr; Encoder &rarr; z_continuous &rarr; Quantize &rarr; z_discret
     <h4>Phase 1: Causal VAE Proof</h4>
     <p>DAG-constrained latent space. Completed &mdash; iter4d achieves R&sup2; 0.202 with causal structure.</p>
   </div>
-  <div class="timeline-item active">
-    <h4>Phase 2: VQ-VAE Training</h4>
-    <p>Discrete bottleneck, codebook quality validation. K sweep in progress (Experiment #21).</p>
+  <div class="timeline-item done">
+    <h4>Phase 2: VQ-VAE Training <span style="color:#D4A84B;font-size:0.8rem;">&mdash; negative result</span></h4>
+    <p>Hard quantization underperforms iter4d by 29%. Codebook collapse at high K. Pivoting to two-stage or Gumbel-Softmax approaches.</p>
   </div>
   <div class="timeline-item">
     <h4>Phase 3: Population Calibration</h4>
@@ -259,6 +284,52 @@ new Chart(reconCtx, {
     scales: {
       y: { min: 0.85, max: 1.0, ticks: { color: '#666' }, grid: { color: '#1a1a1a' } },
       x: { ticks: { color: '#888', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// VQ-VAE sweep chart
+const vqCtx = document.getElementById('vqChart').getContext('2d');
+new Chart(vqCtx, {
+  type: 'bar',
+  data: {
+    labels: ['K=256', 'K=512', 'K=1024', 'K=2048', 'iter4d\n(baseline)'],
+    datasets: [
+      {
+        label: 'R² (All Variables)',
+        data: [0.138, 0.143, 0.138, 0.134, 0.202],
+        backgroundColor: ['#3d7a9e', '#5BA8D9', '#3d7a9e', '#3d7a9e', '#D4A84B'],
+        borderRadius: 6,
+        barPercentage: 0.5
+      },
+      {
+        label: 'Codebook Usage %',
+        data: [14.8, 9.0, 3.6, 1.7, null],
+        backgroundColor: ['#444', '#555', '#444', '#444', 'transparent'],
+        borderRadius: 6,
+        barPercentage: 0.5,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: 'VQ-VAE Sweep: R² vs Codebook Usage', color: '#888', font: { family: 'EB Garamond', size: 16 } },
+      legend: { labels: { color: '#888' } },
+      annotation: {
+        annotations: {
+          baseline: {
+            type: 'line', yMin: 0.202, yMax: 0.202, borderColor: '#D4A84B', borderWidth: 2, borderDash: [6,3],
+            label: { display: true, content: 'iter4d baseline (0.202)', position: 'end', backgroundColor: 'rgba(212,168,75,0.8)', color: '#fff', font: { size: 10 } }
+          }
+        }
+      }
+    },
+    scales: {
+      y: { min: 0, max: 0.25, ticks: { color: '#666' }, grid: { color: '#1a1a1a' }, title: { display: true, text: 'R²', color: '#666' } },
+      y1: { position: 'right', min: 0, max: 20, ticks: { color: '#666', callback: v => v + '%' }, grid: { display: false }, title: { display: true, text: 'Codebook Usage', color: '#666' } },
+      x: { ticks: { color: '#888' }, grid: { display: false } }
     }
   }
 });
