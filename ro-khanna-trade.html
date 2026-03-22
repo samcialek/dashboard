@@ -114,7 +114,7 @@
   <div class="card full">
     <h2>📋 Full Scenario Matrix</h2>
     <table class="scenario-table" id="scenarioTable">
-      <tr><th>Furthest Trigger</th><th>Shares Sold</th><th>Cash Out</th><th>Shares Left</th><th>ROI</th><th></th></tr>
+      <tr><th>Scenario</th><th>Cash Out</th><th>Unsold Shares</th><th>Outcome</th><th>ROI</th><th></th></tr>
     </table>
   </div>
 
@@ -192,44 +192,65 @@ function compute(popPrice) {
 
 function buildScenarios(r) {
   const scenarios = [];
-  // Only reaches T1
+  const remainAfterT1 = TOTAL_SHARES - r.t1.shares;
+  const remainAfterT2 = remainAfterT1 - r.t2.shares;
+  const remainAfterT3 = remainAfterT2 - r.t3.shares;
+
+  // Never announces — total loss
   scenarios.push({
-    name: 'Only T1 fires (pop, then fades)',
+    name: 'Never announces',
+    cashOut: 0,
+    sharesLeft: 0,
+    detail: 'Shares expire worthless',
+    roi: -100
+  });
+
+  // Announces NOT running — shares crash
+  scenarios.push({
+    name: 'Announces NOT running',
+    cashOut: TOTAL_SHARES * 0.001,
+    sharesLeft: 0,
+    detail: 'Shares crash to ~$0.001',
+    roi: ((TOTAL_SHARES * 0.001 - PRINCIPAL) / PRINCIPAL * 100)
+  });
+
+  // Only T1 fires — recovers principal, rest expires worthless
+  scenarios.push({
+    name: 'T1 only (pop fades, rest expires $0)',
     cashOut: r.t1.cash,
-    sharesLeft: TOTAL_SHARES - r.t1.shares,
-    sharesLeftValue0: 0,
+    sharesLeft: remainAfterT1,
+    detail: fmt(remainAfterT1) + ' shares expire worthless',
     roi: ((r.t1.cash - PRINCIPAL) / PRINCIPAL * 100)
   });
-  // T1 + T2
+
+  // T1 + T2 fire, rest expires worthless
   const t1t2Cash = r.t1.cash + r.t2.cash;
   scenarios.push({
-    name: 'T1 + T2 fire (reaches 6%)',
+    name: 'T1 + T2 fire (6%), rest expires $0',
     cashOut: t1t2Cash,
-    sharesLeft: TOTAL_SHARES - r.t1.shares - r.t2.shares,
+    sharesLeft: remainAfterT2,
+    detail: fmt(remainAfterT2) + ' shares expire worthless',
     roi: ((t1t2Cash - PRINCIPAL) / PRINCIPAL * 100)
   });
-  // T1 + T2 + T3
+
+  // T1 + T2 + T3 fire, rest expires worthless
   const t123Cash = t1t2Cash + r.t3.cash;
   scenarios.push({
-    name: 'T1 + T2 + T3 fire (reaches 20%)',
+    name: 'T1 + T2 + T3 fire (20%), rest expires $0',
     cashOut: t123Cash,
-    sharesLeft: r.t4.shares,
+    sharesLeft: remainAfterT3,
+    detail: fmt(remainAfterT3) + ' shares expire worthless',
     roi: ((t123Cash - PRINCIPAL) / PRINCIPAL * 100)
   });
-  // T1 + T2 + T3 + T4 (wins)
-  const allCash = t123Cash + r.t4.cashIfWin;
+
+  // All triggers + wins
+  const allCash = t123Cash + remainAfterT3 * 1.00;
   scenarios.push({
     name: 'All triggers + WINS presidency',
     cashOut: allCash,
     sharesLeft: 0,
+    detail: fmt(remainAfterT3) + ' shares settle at $1',
     roi: ((allCash - PRINCIPAL) / PRINCIPAL * 100)
-  });
-  // Never announces
-  scenarios.push({
-    name: 'Never announces (total loss)',
-    cashOut: 0,
-    sharesLeft: 0,
-    roi: -100
   });
 
   return scenarios;
@@ -268,11 +289,11 @@ function updateSim() {
     const row = tbody.insertRow();
     row.innerHTML = `
       <td>${s.name}</td>
-      <td>—</td>
       <td style="font-weight:700;color:${s.cashOut >= PRINCIPAL ? '#4ade80' : '#f87171'}">${fmtD(s.cashOut)}</td>
       <td>${fmt(s.sharesLeft || 0)}</td>
-      <td style="font-weight:700;color:${s.roi >= 0 ? '#4ade80' : '#f87171'}">${s.roi >= 0 ? '+' : ''}${s.roi.toFixed(0)}%</td>
-      <td>${s.roi > 500 ? '<span class="tag moon">MOON</span>' : s.roi > 100 ? '<span class="tag bull">STRONG</span>' : s.roi >= 0 ? '<span class="tag neutral">OK</span>' : '<span class="tag bear">LOSS</span>'}</td>
+      <td style="color:#888;font-size:0.8rem">${s.detail || ''}</td>
+      <td style="font-weight:700;color:${s.roi >= 0 ? (s.roi === 0 ? '#fbbf24' : '#4ade80') : '#f87171'}">${s.roi >= 0 ? '+' : ''}${s.roi.toFixed(0)}%</td>
+      <td>${s.roi > 500 ? '<span class="tag moon">MOON</span>' : s.roi > 100 ? '<span class="tag bull">STRONG</span>' : s.roi > 0 ? '<span class="tag neutral">OK</span>' : s.roi === 0 ? '<span class="tag neutral">BREAKEVEN</span>' : '<span class="tag bear">LOSS</span>'}</td>
     `;
   });
 
