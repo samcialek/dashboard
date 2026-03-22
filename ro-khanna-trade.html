@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ro Khanna 2028 — Trade Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; color: #e0e0e0; font-family: 'SF Mono', 'Fira Code', monospace; padding: 24px; }
+  h1 { font-size: 1.6rem; color: #5BA8D9; margin-bottom: 4px; }
+  .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 32px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+  .card { background: #13131a; border: 1px solid #222; border-radius: 12px; padding: 20px; }
+  .card h2 { font-size: 1rem; color: #5BA8D9; margin-bottom: 12px; }
+  .card.full { grid-column: 1 / -1; }
+  .metric { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #1a1a24; }
+  .metric:last-child { border-bottom: none; }
+  .metric .label { color: #888; }
+  .metric .value { color: #e0e0e0; font-weight: 600; }
+  .metric .value.green { color: #4ade80; }
+  .metric .value.red { color: #f87171; }
+  .metric .value.yellow { color: #fbbf24; }
+  .metric .value.blue { color: #5BA8D9; }
+  canvas { width: 100% !important; }
+  .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .scenario-table th { text-align: left; color: #5BA8D9; padding: 8px 12px; border-bottom: 2px solid #222; }
+  .scenario-table td { padding: 8px 12px; border-bottom: 1px solid #1a1a24; }
+  .scenario-table tr:hover { background: #1a1a24; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .tag.bull { background: #064e3b; color: #4ade80; }
+  .tag.bear { background: #450a0a; color: #f87171; }
+  .tag.neutral { background: #422006; color: #fbbf24; }
+  .tag.moon { background: #1e1b4b; color: #a78bfa; }
+  .assumptions { font-size: 0.8rem; color: #666; margin-top: 24px; line-height: 1.6; }
+  .slider-group { margin: 12px 0; }
+  .slider-group label { display: block; color: #888; font-size: 0.8rem; margin-bottom: 4px; }
+  .slider-group input[type=range] { width: 100%; accent-color: #5BA8D9; }
+  .slider-val { color: #5BA8D9; font-weight: 600; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>Ro Khanna 2028 — Trade Risk Analysis</h1>
+<p class="subtitle">Polymarket catalyst trade · Entry $0.009 · Live data as of Mar 22, 2026</p>
+
+<div class="grid">
+
+  <!-- Entry Parameters -->
+  <div class="card">
+    <h2>📊 Entry Parameters</h2>
+    <div class="metric"><span class="label">Asset</span><span class="value blue">Ro Khanna — 2028 President</span></div>
+    <div class="metric"><span class="label">Platform</span><span class="value">Polymarket</span></div>
+    <div class="metric"><span class="label">Current Price</span><span class="value">$0.0085 (0.85%)</span></div>
+    <div class="metric"><span class="label">Entry Price</span><span class="value">$0.009 (0.9%)</span></div>
+    <div class="metric"><span class="label">Implied Leverage</span><span class="value green">111x</span></div>
+    <div class="metric"><span class="label">Market Liquidity</span><span class="value">$1.16M</span></div>
+    <div class="metric"><span class="label">24h Volume</span><span class="value">$153K</span></div>
+    <div class="metric"><span class="label">Settlement</span><span class="value">Nov 7, 2028</span></div>
+  </div>
+
+  <!-- Strategy -->
+  <div class="card">
+    <h2>🎯 Strategy: Tiered Exit + Kalshi Hedge</h2>
+    <div class="metric"><span class="label">Polymarket allocation</span><span class="value">98.4% of P</span></div>
+    <div class="metric"><span class="label">Kalshi hedge ("won't run")</span><span class="value">1.6% of P @ 6:1</span></div>
+    <div class="metric"><span class="label">Shares acquired</span><span class="value green">109.3 × P</span></div>
+    <div class="metric"><span class="label">Tranche 1 (⅓)</span><span class="value">Sell at announcement pop</span></div>
+    <div class="metric"><span class="label">Tranche 2 (⅓)</span><span class="value">Sell at 6%</span></div>
+    <div class="metric"><span class="label">Tranche 3 (⅓)</span><span class="value">Let ride</span></div>
+    <div class="metric"><span class="label">Catalyst</span><span class="value yellow">Announcement to run</span></div>
+  </div>
+
+  <!-- Scenario Returns Chart -->
+  <div class="card full">
+    <h2>📈 Scenario Returns (% of Principal)</h2>
+    <canvas id="scenarioChart" height="100"></canvas>
+  </div>
+
+  <!-- Interactive Simulator -->
+  <div class="card full">
+    <h2>🔧 Exit Price Simulator</h2>
+    <p style="color:#888;font-size:0.8rem;margin-bottom:16px;">Adjust announcement pop price and target exit to see returns.</p>
+    <div class="slider-group">
+      <label>Announcement Pop Price: <span class="slider-val" id="popVal">$0.05</span></label>
+      <input type="range" id="popSlider" min="0.015" max="0.15" step="0.005" value="0.05">
+    </div>
+    <div class="slider-group">
+      <label>Tranche 2 Exit Price: <span class="slider-val" id="t2Val">$0.06</span></label>
+      <input type="range" id="t2Slider" min="0.02" max="0.25" step="0.005" value="0.06">
+    </div>
+    <div class="slider-group">
+      <label>Tranche 3 Final Price (0 = expires worthless): <span class="slider-val" id="t3Val">$0.00</span></label>
+      <input type="range" id="t3Slider" min="0" max="1" step="0.01" value="0">
+    </div>
+    <div style="margin-top:16px;">
+      <div class="metric"><span class="label">Tranche 1 revenue</span><span class="value" id="t1rev">—</span></div>
+      <div class="metric"><span class="label">Tranche 2 revenue</span><span class="value" id="t2rev">—</span></div>
+      <div class="metric"><span class="label">Tranche 3 revenue</span><span class="value" id="t3rev">—</span></div>
+      <div class="metric"><span class="label">Kalshi hedge cost</span><span class="value red" id="hedgeCost">—</span></div>
+      <div class="metric"><span class="label" style="font-weight:700">Total Return</span><span class="value green" id="totalReturn" style="font-size:1.2rem">—</span></div>
+    </div>
+  </div>
+
+  <!-- Scenario Table -->
+  <div class="card full">
+    <h2>📋 Full Scenario Matrix</h2>
+    <table class="scenario-table">
+      <tr><th>Scenario</th><th>Outcome</th><th>Return</th><th>Risk</th></tr>
+      <tr>
+        <td>Announces, pops to 5-6%</td>
+        <td>Sell ⅓ at 5¢, ⅓ at 6¢, hold ⅓</td>
+        <td style="color:#4ade80;font-weight:700">+300% to +550%</td>
+        <td><span class="tag bull">BASE CASE</span></td>
+      </tr>
+      <tr>
+        <td>Announces, weak pop 2-3%</td>
+        <td>Sell all at ~2.5¢</td>
+        <td style="color:#4ade80">+170%</td>
+        <td><span class="tag bull">STILL GOOD</span></td>
+      </tr>
+      <tr>
+        <td>Doesn't announce (status quo)</td>
+        <td>Sell near entry + Kalshi pays</td>
+        <td style="color:#fbbf24">+8% to −36%</td>
+        <td><span class="tag neutral">DRIFT RISK</span></td>
+      </tr>
+      <tr>
+        <td>Announces NOT running</td>
+        <td>Shares crater, hedge partial</td>
+        <td style="color:#f87171;font-weight:700">−80%</td>
+        <td><span class="tag bear">HEDGE GAP</span></td>
+      </tr>
+      <tr>
+        <td>Runs + gains traction (10%+)</td>
+        <td>Tiered exit with moonbag</td>
+        <td style="color:#4ade80;font-weight:700">+665%</td>
+        <td><span class="tag bull">UPSIDE</span></td>
+      </tr>
+      <tr>
+        <td>Wins the presidency</td>
+        <td>Tranche 3 settles at $1</td>
+        <td style="color:#a78bfa;font-weight:700">+3,940%</td>
+        <td><span class="tag moon">LOTTERY</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Hedge Analysis -->
+  <div class="card">
+    <h2>🛡️ Hedge Analysis</h2>
+    <div class="metric"><span class="label">Kalshi bet</span><span class="value">1.6% of P</span></div>
+    <div class="metric"><span class="label">Kalshi payout (6:1)</span><span class="value green">9.6% of P</span></div>
+    <div class="metric"><span class="label">Coverage if no announcement</span><span class="value green">≈ breakeven</span></div>
+    <div class="metric"><span class="label">Coverage if "NOT running"</span><span class="value red">Only 10% recovered</span></div>
+    <div class="metric"><span class="label">Hedge gap</span><span class="value red">~70% exposed</span></div>
+    <div class="metric"><span class="label">Fix: hedge at 10-15%</span><span class="value yellow">Recovers 60-90%</span></div>
+  </div>
+
+  <!-- Risk Flags -->
+  <div class="card">
+    <h2>⚠️ Key Risks</h2>
+    <div class="metric"><span class="label">Liquidity</span><span class="value yellow">Thin at 0.9%</span></div>
+    <div class="metric"><span class="label">Exit slippage</span><span class="value yellow">Order book may be thin at pop</span></div>
+    <div class="metric"><span class="label">Timing</span><span class="value yellow">Could be months of dead capital</span></div>
+    <div class="metric"><span class="label">Kalshi contract terms</span><span class="value red">Verify trigger conditions</span></div>
+    <div class="metric"><span class="label">Sell discipline</span><span class="value yellow">Set limit orders NOW</span></div>
+    <div class="metric"><span class="label">Recommendation</span><span class="value green">Deploy $500-2K max</span></div>
+  </div>
+
+  <!-- Payout Curve -->
+  <div class="card full">
+    <h2>📉 Payout Curve: Share Value vs Exit Price</h2>
+    <canvas id="payoutChart" height="80"></canvas>
+  </div>
+
+</div>
+
+<p class="assumptions">
+  Assumptions: Entry at $0.009/share. Kalshi hedge at 6:1 with 1.6% of principal. Polymarket resolves to $1 if candidate wins, $0 otherwise.
+  No fees modeled. Liquidity and slippage not accounted for. All returns expressed as multiples of initial principal P.<br>
+  Data: Polymarket API, live as of Mar 22, 2026.
+</p>
+
+<script>
+// Scenario chart
+const ctx1 = document.getElementById('scenarioChart').getContext('2d');
+new Chart(ctx1, {
+  type: 'bar',
+  data: {
+    labels: ['Announces\n5-6% pop', 'Announces\n2-3% pop', 'No announce\n(status quo)', 'Says NOT\nrunning', 'Gains traction\n10%+', 'Wins\npresidency'],
+    datasets: [{
+      label: 'Return (%)',
+      data: [425, 170, -14, -80, 665, 3940],
+      backgroundColor: ['#4ade80', '#4ade80', '#fbbf24', '#f87171', '#4ade80', '#a78bfa'],
+      borderColor: ['#22c55e', '#22c55e', '#f59e0b', '#ef4444', '#22c55e', '#8b5cf6'],
+      borderWidth: 1,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => (c.raw > 0 ? '+' : '') + c.raw + '%' } }
+    },
+    scales: {
+      y: {
+        grid: { color: '#1a1a24' },
+        ticks: { color: '#888', callback: v => v + '%' }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#888', font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// Payout curve
+const ctx2 = document.getElementById('payoutChart').getContext('2d');
+const exitPrices = [];
+const returns = [];
+for (let p = 0; p <= 0.20; p += 0.005) {
+  exitPrices.push(p.toFixed(3));
+  const sharesPerP = 0.984 / 0.009;
+  const rev = sharesPerP * p;
+  const net = ((rev - 0.016) / 1 - 1) * 100;
+  returns.push(Math.round(net));
+}
+new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: exitPrices,
+    datasets: [{
+      label: 'Return if sell all at price (%)',
+      data: returns,
+      borderColor: '#5BA8D9',
+      backgroundColor: 'rgba(91,168,217,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: '#888' } },
+      tooltip: { callbacks: { label: c => (c.raw > 0 ? '+' : '') + c.raw + '%' } }
+    },
+    scales: {
+      y: { grid: { color: '#1a1a24' }, ticks: { color: '#888', callback: v => v + '%' } },
+      x: { grid: { color: '#1a1a24' }, ticks: { color: '#888', maxTicksLimit: 10 }, title: { display: true, text: 'Exit Price ($)', color: '#888' } }
+    }
+  }
+});
+
+// Interactive simulator
+const popSlider = document.getElementById('popSlider');
+const t2Slider = document.getElementById('t2Slider');
+const t3Slider = document.getElementById('t3Slider');
+const sharesPerP = 0.984 / 0.009; // 109.33
+const thirdShares = sharesPerP / 3;
+
+function update() {
+  const pop = parseFloat(popSlider.value);
+  const t2 = parseFloat(t2Slider.value);
+  const t3 = parseFloat(t3Slider.value);
+
+  document.getElementById('popVal').textContent = '$' + pop.toFixed(3);
+  document.getElementById('t2Val').textContent = '$' + t2.toFixed(3);
+  document.getElementById('t3Val').textContent = '$' + t3.toFixed(2);
+
+  const r1 = thirdShares * pop;
+  const r2 = thirdShares * t2;
+  const r3 = thirdShares * t3;
+  const hedge = 0.016;
+  const total = r1 + r2 + r3 - hedge;
+  const pct = ((total - 1) * 100).toFixed(0);
+
+  document.getElementById('t1rev').textContent = r1.toFixed(3) + 'P';
+  document.getElementById('t2rev').textContent = r2.toFixed(3) + 'P';
+  document.getElementById('t3rev').textContent = r3.toFixed(3) + 'P';
+  document.getElementById('hedgeCost').textContent = '-' + hedge.toFixed(3) + 'P';
+
+  const el = document.getElementById('totalReturn');
+  el.textContent = (total >= 1 ? '+' : '') + pct + '% (' + total.toFixed(2) + 'P)';
+  el.className = 'value ' + (total >= 1 ? 'green' : 'red');
+}
+
+popSlider.addEventListener('input', update);
+t2Slider.addEventListener('input', update);
+t3Slider.addEventListener('input', update);
+update();
+</script>
+</body>
+</html>
