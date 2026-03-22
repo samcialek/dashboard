@@ -22,6 +22,7 @@
   .metric .value.red { color: #f87171; }
   .metric .value.yellow { color: #fbbf24; }
   .metric .value.blue { color: #5BA8D9; }
+  .metric .value.purple { color: #a78bfa; }
   canvas { width: 100% !important; }
   .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   .scenario-table th { text-align: left; color: #5BA8D9; padding: 8px 12px; border-bottom: 2px solid #222; }
@@ -37,262 +38,329 @@
   .slider-group label { display: block; color: #888; font-size: 0.8rem; margin-bottom: 4px; }
   .slider-group input[type=range] { width: 100%; accent-color: #5BA8D9; }
   .slider-val { color: #5BA8D9; font-weight: 600; }
+  .trigger-box { background: #1a1a24; border-left: 3px solid #5BA8D9; padding: 12px 16px; margin: 8px 0; border-radius: 0 8px 8px 0; }
+  .trigger-box.t1 { border-color: #4ade80; }
+  .trigger-box.t2 { border-color: #fbbf24; }
+  .trigger-box.t3 { border-color: #f97316; }
+  .trigger-box.t4 { border-color: #a78bfa; }
+  .trigger-box h3 { font-size: 0.85rem; margin-bottom: 6px; }
+  .trigger-box .detail { font-size: 0.8rem; color: #888; }
+  .waterfall-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; }
+  .waterfall-bar { height: 24px; border-radius: 4px; min-width: 2px; }
+  .waterfall-label { font-size: 0.8rem; color: #888; min-width: 180px; }
+  .waterfall-value { font-size: 0.85rem; font-weight: 600; min-width: 80px; text-align: right; }
   @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
 <h1>Ro Khanna 2028 — Trade Risk Analysis</h1>
-<p class="subtitle">Polymarket catalyst trade · Entry $0.009 · Live data as of Mar 22, 2026</p>
+<p class="subtitle">Polymarket catalyst trade | $10,000 principal | Entry $0.0096 | Live data Mar 22, 2026</p>
 
 <div class="grid">
 
   <!-- Entry Parameters -->
   <div class="card">
-    <h2>📊 Entry Parameters</h2>
-    <div class="metric"><span class="label">Asset</span><span class="value blue">Ro Khanna — 2028 President</span></div>
-    <div class="metric"><span class="label">Platform</span><span class="value">Polymarket</span></div>
-    <div class="metric"><span class="label">Current Price</span><span class="value">$0.0085 (0.85%)</span></div>
-    <div class="metric"><span class="label">Entry Price</span><span class="value">$0.009 (0.9%)</span></div>
-    <div class="metric"><span class="label">Implied Leverage</span><span class="value green">111x</span></div>
+    <h2>📊 Position</h2>
+    <div class="metric"><span class="label">Principal</span><span class="value green">$10,000</span></div>
+    <div class="metric"><span class="label">Entry Price</span><span class="value">$0.0096 (0.96%)</span></div>
+    <div class="metric"><span class="label">Shares</span><span class="value blue">1,041,667</span></div>
+    <div class="metric"><span class="label">Implied Leverage</span><span class="value green">104x</span></div>
     <div class="metric"><span class="label">Market Liquidity</span><span class="value">$1.16M</span></div>
     <div class="metric"><span class="label">24h Volume</span><span class="value">$153K</span></div>
-    <div class="metric"><span class="label">Settlement</span><span class="value">Nov 7, 2028</span></div>
+    <div class="metric"><span class="label">Payout if wins</span><span class="value purple">$1,041,667</span></div>
   </div>
 
-  <!-- Strategy -->
+  <!-- 4 Triggers -->
   <div class="card">
-    <h2>🎯 Strategy: Tiered Exit + Kalshi Hedge</h2>
-    <div class="metric"><span class="label">Polymarket allocation</span><span class="value">98.4% of P</span></div>
-    <div class="metric"><span class="label">Kalshi hedge ("won't run")</span><span class="value">1.6% of P @ 6:1</span></div>
-    <div class="metric"><span class="label">Shares acquired</span><span class="value green">109.3 × P</span></div>
-    <div class="metric"><span class="label">Tranche 1 (⅓)</span><span class="value">Sell at announcement pop</span></div>
-    <div class="metric"><span class="label">Tranche 2 (⅓)</span><span class="value">Sell at 6%</span></div>
-    <div class="metric"><span class="label">Tranche 3 (⅓)</span><span class="value">Let ride</span></div>
-    <div class="metric"><span class="label">Catalyst</span><span class="value yellow">Announcement to run</span></div>
+    <h2>🎯 4 Exit Triggers</h2>
+    <div class="trigger-box t1">
+      <h3 style="color:#4ade80">T1 — Announcement (event-based)</h3>
+      <div class="detail">Within 1 week of announcing, sell $10K worth (recover principal). Whatever the price.</div>
+    </div>
+    <div class="trigger-box t2">
+      <h3 style="color:#fbbf24">T2 — Price hits 6%</h3>
+      <div class="detail">Sell another $10K worth. Cumulative: 100% ROI locked in.</div>
+    </div>
+    <div class="trigger-box t3">
+      <h3 style="color:#f97316">T3 — Price hits 20%</h3>
+      <div class="detail">Sell another $20K worth. Cumulative: 300% ROI locked in.</div>
+    </div>
+    <div class="trigger-box t4">
+      <h3 style="color:#a78bfa">T4 — Ride to election</h3>
+      <div class="detail">Hold remaining shares through Nov 7, 2028. Free roll.</div>
+    </div>
   </div>
 
-  <!-- Scenario Returns Chart -->
+  <!-- Announcement Pop Simulator -->
   <div class="card full">
-    <h2>📈 Scenario Returns (% of Principal)</h2>
-    <canvas id="scenarioChart" height="100"></canvas>
+    <h2>🔧 Announcement Pop Simulator</h2>
+    <p style="color:#888;font-size:0.8rem;margin-bottom:16px;">Adjust the price Khanna hits when he announces. This determines how many shares T1 sells and what remains for T2-T4.</p>
+    <div class="slider-group">
+      <label>Announcement pop price: <span class="slider-val" id="popVal">$0.03</span></label>
+      <input type="range" id="popSlider" min="0.015" max="0.12" step="0.005" value="0.03">
+    </div>
+    <div id="simResults" style="margin-top:16px;"></div>
   </div>
 
-  <!-- Interactive Simulator -->
+  <!-- Scenario Waterfall -->
   <div class="card full">
-    <h2>🔧 Exit Price Simulator</h2>
-    <p style="color:#888;font-size:0.8rem;margin-bottom:16px;">Adjust announcement pop price and target exit to see returns.</p>
-    <div class="slider-group">
-      <label>Announcement Pop Price: <span class="slider-val" id="popVal">$0.05</span></label>
-      <input type="range" id="popSlider" min="0.015" max="0.15" step="0.005" value="0.05">
-    </div>
-    <div class="slider-group">
-      <label>Tranche 2 Exit Price: <span class="slider-val" id="t2Val">$0.06</span></label>
-      <input type="range" id="t2Slider" min="0.02" max="0.25" step="0.005" value="0.06">
-    </div>
-    <div class="slider-group">
-      <label>Tranche 3 Final Price (0 = expires worthless): <span class="slider-val" id="t3Val">$0.00</span></label>
-      <input type="range" id="t3Slider" min="0" max="1" step="0.01" value="0">
-    </div>
-    <div style="margin-top:16px;">
-      <div class="metric"><span class="label">Tranche 1 revenue</span><span class="value" id="t1rev">—</span></div>
-      <div class="metric"><span class="label">Tranche 2 revenue</span><span class="value" id="t2rev">—</span></div>
-      <div class="metric"><span class="label">Tranche 3 revenue</span><span class="value" id="t3rev">—</span></div>
-      <div class="metric"><span class="label">Kalshi hedge cost</span><span class="value red" id="hedgeCost">—</span></div>
-      <div class="metric"><span class="label" style="font-weight:700">Total Return</span><span class="value green" id="totalReturn" style="font-size:1.2rem">—</span></div>
-    </div>
+    <h2>📈 Scenario Outcomes — How Far Does He Get?</h2>
+    <p style="color:#888;font-size:0.8rem;margin-bottom:16px;">Each row assumes he reaches that trigger and no further (except T4 ride).</p>
+    <canvas id="scenarioChart" height="110"></canvas>
   </div>
 
-  <!-- Scenario Table -->
+  <!-- Detailed Scenario Table -->
   <div class="card full">
     <h2>📋 Full Scenario Matrix</h2>
-    <table class="scenario-table">
-      <tr><th>Scenario</th><th>Outcome</th><th>Return</th><th>Risk</th></tr>
-      <tr>
-        <td>Announces, pops to 5-6%</td>
-        <td>Sell ⅓ at 5¢, ⅓ at 6¢, hold ⅓</td>
-        <td style="color:#4ade80;font-weight:700">+300% to +550%</td>
-        <td><span class="tag bull">BASE CASE</span></td>
-      </tr>
-      <tr>
-        <td>Announces, weak pop 2-3%</td>
-        <td>Sell all at ~2.5¢</td>
-        <td style="color:#4ade80">+170%</td>
-        <td><span class="tag bull">STILL GOOD</span></td>
-      </tr>
-      <tr>
-        <td>Doesn't announce (status quo)</td>
-        <td>Sell near entry + Kalshi pays</td>
-        <td style="color:#fbbf24">+8% to −36%</td>
-        <td><span class="tag neutral">DRIFT RISK</span></td>
-      </tr>
-      <tr>
-        <td>Announces NOT running</td>
-        <td>Shares crater, hedge partial</td>
-        <td style="color:#f87171;font-weight:700">−80%</td>
-        <td><span class="tag bear">HEDGE GAP</span></td>
-      </tr>
-      <tr>
-        <td>Runs + gains traction (10%+)</td>
-        <td>Tiered exit with moonbag</td>
-        <td style="color:#4ade80;font-weight:700">+665%</td>
-        <td><span class="tag bull">UPSIDE</span></td>
-      </tr>
-      <tr>
-        <td>Wins the presidency</td>
-        <td>Tranche 3 settles at $1</td>
-        <td style="color:#a78bfa;font-weight:700">+3,940%</td>
-        <td><span class="tag moon">LOTTERY</span></td>
-      </tr>
+    <table class="scenario-table" id="scenarioTable">
+      <tr><th>Furthest Trigger</th><th>Shares Sold</th><th>Cash Out</th><th>Shares Left</th><th>ROI</th><th></th></tr>
     </table>
   </div>
 
-  <!-- Hedge Analysis -->
-  <div class="card">
-    <h2>🛡️ Hedge Analysis</h2>
-    <div class="metric"><span class="label">Kalshi bet</span><span class="value">1.6% of P</span></div>
-    <div class="metric"><span class="label">Kalshi payout (6:1)</span><span class="value green">9.6% of P</span></div>
-    <div class="metric"><span class="label">Coverage if no announcement</span><span class="value green">≈ breakeven</span></div>
-    <div class="metric"><span class="label">Coverage if "NOT running"</span><span class="value red">Only 10% recovered</span></div>
-    <div class="metric"><span class="label">Hedge gap</span><span class="value red">~70% exposed</span></div>
-    <div class="metric"><span class="label">Fix: hedge at 10-15%</span><span class="value yellow">Recovers 60-90%</span></div>
+  <!-- Payout Curve -->
+  <div class="card full">
+    <h2>📉 Total Position Value vs Market Price</h2>
+    <canvas id="payoutChart" height="80"></canvas>
   </div>
 
   <!-- Risk Flags -->
   <div class="card">
     <h2>⚠️ Key Risks</h2>
-    <div class="metric"><span class="label">Liquidity</span><span class="value yellow">Thin at 0.9%</span></div>
-    <div class="metric"><span class="label">Exit slippage</span><span class="value yellow">Order book may be thin at pop</span></div>
-    <div class="metric"><span class="label">Timing</span><span class="value yellow">Could be months of dead capital</span></div>
-    <div class="metric"><span class="label">Kalshi contract terms</span><span class="value red">Verify trigger conditions</span></div>
-    <div class="metric"><span class="label">Sell discipline</span><span class="value yellow">Set limit orders NOW</span></div>
-    <div class="metric"><span class="label">Recommendation</span><span class="value green">Deploy $500-2K max</span></div>
+    <div class="metric"><span class="label">Liquidity</span><span class="value yellow">$1.16M — thin for $10K exit at pop</span></div>
+    <div class="metric"><span class="label">Slippage at T1</span><span class="value yellow">Market order may move price</span></div>
+    <div class="metric"><span class="label">Timing</span><span class="value yellow">Months of dead capital possible</span></div>
+    <div class="metric"><span class="label">Never announces</span><span class="value red">Shares drift to 0, total loss</span></div>
+    <div class="metric"><span class="label">Says NOT running</span><span class="value red">Shares crash, ~90% loss</span></div>
   </div>
 
-  <!-- Payout Curve -->
-  <div class="card full">
-    <h2>📉 Payout Curve: Share Value vs Exit Price</h2>
-    <canvas id="payoutChart" height="80"></canvas>
+  <!-- Optimal Sizing -->
+  <div class="card">
+    <h2>💡 Notes</h2>
+    <div class="metric"><span class="label">T1 is event-based</span><span class="value green">Derisks regardless of price</span></div>
+    <div class="metric"><span class="label">After T1 + T2</span><span class="value green">House money — principal recovered</span></div>
+    <div class="metric"><span class="label">After T3</span><span class="value green">300% locked, rest is free roll</span></div>
+    <div class="metric"><span class="label">Lower the pop, more shares sold at T1</span><span class="value yellow">Less upside for T2-T4</span></div>
+    <div class="metric"><span class="label">Higher the pop, fewer shares at T1</span><span class="value green">More upside preserved</span></div>
+    <div class="metric"><span class="label">Best case</span><span class="value purple">Pop ≥ 6% → T1+T2 fire together</span></div>
   </div>
 
 </div>
 
 <p class="assumptions">
-  Assumptions: Entry at $0.009/share. Kalshi hedge at 6:1 with 1.6% of principal. Polymarket resolves to $1 if candidate wins, $0 otherwise.
-  No fees modeled. Liquidity and slippage not accounted for. All returns expressed as multiples of initial principal P.<br>
-  Data: Polymarket API, live as of Mar 22, 2026.
+  Entry: 1,041,667 shares at $0.0096. Triggers sell fixed dollar amounts. Shares sold = $amount / market price at trigger.
+  Remaining shares ride or settle at $0/$1. No fees or slippage modeled. Polymarket data live as of Mar 22, 2026.
 </p>
 
 <script>
-// Scenario chart
-const ctx1 = document.getElementById('scenarioChart').getContext('2d');
-new Chart(ctx1, {
-  type: 'bar',
-  data: {
-    labels: ['Announces\n5-6% pop', 'Announces\n2-3% pop', 'No announce\n(status quo)', 'Says NOT\nrunning', 'Gains traction\n10%+', 'Wins\npresidency'],
-    datasets: [{
-      label: 'Return (%)',
-      data: [425, 170, -14, -80, 665, 3940],
-      backgroundColor: ['#4ade80', '#4ade80', '#fbbf24', '#f87171', '#4ade80', '#a78bfa'],
-      borderColor: ['#22c55e', '#22c55e', '#f59e0b', '#ef4444', '#22c55e', '#8b5cf6'],
-      borderWidth: 1,
-      borderRadius: 6
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: c => (c.raw > 0 ? '+' : '') + c.raw + '%' } }
+const ENTRY = 0.0096;
+const PRINCIPAL = 10000;
+const TOTAL_SHARES = Math.floor(PRINCIPAL / ENTRY);
+
+function fmt(n) { return n.toLocaleString('en-US', {maximumFractionDigits: 0}); }
+function fmtD(n) { return '$' + n.toLocaleString('en-US', {maximumFractionDigits: 0}); }
+
+function compute(popPrice) {
+  // T1: sell $10K worth at popPrice
+  const t1Shares = Math.min(Math.floor(10000 / popPrice), TOTAL_SHARES);
+  const t1Cash = t1Shares * popPrice;
+  let remaining = TOTAL_SHARES - t1Shares;
+
+  // T2: sell $10K worth at $0.06
+  const t2Price = 0.06;
+  const t2Shares = Math.min(Math.floor(10000 / t2Price), remaining);
+  const t2Cash = t2Shares * t2Price;
+  remaining -= t2Shares;
+
+  // T3: sell $20K worth at $0.20
+  const t3Price = 0.20;
+  const t3Shares = Math.min(Math.floor(20000 / t3Price), remaining);
+  const t3Cash = t3Shares * t3Price;
+  remaining -= t3Shares;
+
+  // T4: remaining shares ride
+  const t4SharesIfWin = remaining * 1.00;
+
+  return {
+    t1: { shares: t1Shares, cash: t1Cash, price: popPrice },
+    t2: { shares: t2Shares, cash: t2Cash, price: t2Price },
+    t3: { shares: t3Shares, cash: t3Cash, price: t3Price },
+    t4: { shares: remaining, cashIfWin: t4SharesIfWin, cashIfLose: 0 },
+    totalShares: TOTAL_SHARES
+  };
+}
+
+function buildScenarios(r) {
+  const scenarios = [];
+  // Only reaches T1
+  scenarios.push({
+    name: 'Only T1 fires (pop, then fades)',
+    cashOut: r.t1.cash,
+    sharesLeft: TOTAL_SHARES - r.t1.shares,
+    sharesLeftValue0: 0,
+    roi: ((r.t1.cash - PRINCIPAL) / PRINCIPAL * 100)
+  });
+  // T1 + T2
+  const t1t2Cash = r.t1.cash + r.t2.cash;
+  scenarios.push({
+    name: 'T1 + T2 fire (reaches 6%)',
+    cashOut: t1t2Cash,
+    sharesLeft: TOTAL_SHARES - r.t1.shares - r.t2.shares,
+    roi: ((t1t2Cash - PRINCIPAL) / PRINCIPAL * 100)
+  });
+  // T1 + T2 + T3
+  const t123Cash = t1t2Cash + r.t3.cash;
+  scenarios.push({
+    name: 'T1 + T2 + T3 fire (reaches 20%)',
+    cashOut: t123Cash,
+    sharesLeft: r.t4.shares,
+    roi: ((t123Cash - PRINCIPAL) / PRINCIPAL * 100)
+  });
+  // T1 + T2 + T3 + T4 (wins)
+  const allCash = t123Cash + r.t4.cashIfWin;
+  scenarios.push({
+    name: 'All triggers + WINS presidency',
+    cashOut: allCash,
+    sharesLeft: 0,
+    roi: ((allCash - PRINCIPAL) / PRINCIPAL * 100)
+  });
+  // Never announces
+  scenarios.push({
+    name: 'Never announces (total loss)',
+    cashOut: 0,
+    sharesLeft: 0,
+    roi: -100
+  });
+
+  return scenarios;
+}
+
+function updateSim() {
+  const pop = parseFloat(document.getElementById('popSlider').value);
+  document.getElementById('popVal').textContent = '$' + pop.toFixed(3);
+
+  const r = compute(pop);
+  const scenarios = buildScenarios(r);
+
+  // Sim results
+  const cumAfterT1 = r.t1.cash;
+  const cumAfterT2 = cumAfterT1 + r.t2.cash;
+  const cumAfterT3 = cumAfterT2 + r.t3.cash;
+
+  document.getElementById('simResults').innerHTML = `
+    <div class="metric"><span class="label">T1: Sell at ${pop.toFixed(3)}</span><span class="value green">${fmt(r.t1.shares)} shares → ${fmtD(r.t1.cash)}</span></div>
+    <div class="metric"><span class="label">Shares remaining after T1</span><span class="value">${fmt(TOTAL_SHARES - r.t1.shares)}</span></div>
+    <div class="metric"><span class="label">T2: Sell at $0.06</span><span class="value green">${fmt(r.t2.shares)} shares → ${fmtD(r.t2.cash)}</span></div>
+    <div class="metric"><span class="label">T3: Sell at $0.20</span><span class="value green">${fmt(r.t3.shares)} shares → ${fmtD(r.t3.cash)}</span></div>
+    <div class="metric"><span class="label">T4: Remaining shares (free ride)</span><span class="value purple">${fmt(r.t4.shares)} shares</span></div>
+    <hr style="border-color:#222;margin:8px 0">
+    <div class="metric"><span class="label">Cumulative after T1</span><span class="value ${cumAfterT1 >= PRINCIPAL ? 'green' : 'red'}">${fmtD(cumAfterT1)} (${((cumAfterT1/PRINCIPAL-1)*100).toFixed(0)}%)</span></div>
+    <div class="metric"><span class="label">Cumulative after T1+T2</span><span class="value green">${fmtD(cumAfterT2)} (+${((cumAfterT2/PRINCIPAL-1)*100).toFixed(0)}%)</span></div>
+    <div class="metric"><span class="label">Cumulative after T1+T2+T3</span><span class="value green">${fmtD(cumAfterT3)} (+${((cumAfterT3/PRINCIPAL-1)*100).toFixed(0)}%)</span></div>
+    <div class="metric"><span class="label">If T4 wins ($1/share)</span><span class="value purple">${fmtD(cumAfterT3 + r.t4.cashIfWin)} (+${(((cumAfterT3+r.t4.cashIfWin)/PRINCIPAL-1)*100).toFixed(0)}%)</span></div>
+  `;
+
+  // Update scenario table
+  const tbody = document.getElementById('scenarioTable');
+  // Clear all but header
+  while (tbody.rows.length > 1) tbody.deleteRow(1);
+  scenarios.forEach(s => {
+    const row = tbody.insertRow();
+    row.innerHTML = `
+      <td>${s.name}</td>
+      <td>—</td>
+      <td style="font-weight:700;color:${s.cashOut >= PRINCIPAL ? '#4ade80' : '#f87171'}">${fmtD(s.cashOut)}</td>
+      <td>${fmt(s.sharesLeft || 0)}</td>
+      <td style="font-weight:700;color:${s.roi >= 0 ? '#4ade80' : '#f87171'}">${s.roi >= 0 ? '+' : ''}${s.roi.toFixed(0)}%</td>
+      <td>${s.roi > 500 ? '<span class="tag moon">MOON</span>' : s.roi > 100 ? '<span class="tag bull">STRONG</span>' : s.roi >= 0 ? '<span class="tag neutral">OK</span>' : '<span class="tag bear">LOSS</span>'}</td>
+    `;
+  });
+
+  // Update bar chart
+  updateBarChart(scenarios);
+}
+
+// Bar chart
+let barChart;
+function updateBarChart(scenarios) {
+  const ctx = document.getElementById('scenarioChart').getContext('2d');
+  const data = scenarios.map(s => s.roi);
+  const colors = data.map(v => v > 500 ? '#a78bfa' : v > 100 ? '#4ade80' : v >= 0 ? '#fbbf24' : '#f87171');
+
+  if (barChart) barChart.destroy();
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: scenarios.map(s => s.name.length > 30 ? s.name.slice(0,28) + '...' : s.name),
+      datasets: [{
+        label: 'ROI (%)',
+        data: data,
+        backgroundColor: colors,
+        borderRadius: 6
+      }]
     },
-    scales: {
-      y: {
-        grid: { color: '#1a1a24' },
-        ticks: { color: '#888', callback: v => v + '%' }
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => (c.raw >= 0 ? '+' : '') + c.raw.toFixed(0) + '% → ' + fmtD(scenarios[c.dataIndex].cashOut) } }
       },
-      x: {
-        grid: { display: false },
-        ticks: { color: '#888', font: { size: 11 } }
+      scales: {
+        x: { grid: { color: '#1a1a24' }, ticks: { color: '#888', callback: v => v + '%' } },
+        y: { grid: { display: false }, ticks: { color: '#aaa', font: { size: 11 } } }
       }
     }
-  }
-});
+  });
+}
 
-// Payout curve
+// Payout curve (full position value vs market price)
 const ctx2 = document.getElementById('payoutChart').getContext('2d');
-const exitPrices = [];
-const returns = [];
-for (let p = 0; p <= 0.20; p += 0.005) {
-  exitPrices.push(p.toFixed(3));
-  const sharesPerP = 0.984 / 0.009;
-  const rev = sharesPerP * p;
-  const net = ((rev - 0.016) / 1 - 1) * 100;
-  returns.push(Math.round(net));
+const prices = [];
+const values = [];
+for (let p = 0; p <= 0.30; p += 0.005) {
+  prices.push(p.toFixed(3));
+  values.push(TOTAL_SHARES * p);
 }
 new Chart(ctx2, {
   type: 'line',
   data: {
-    labels: exitPrices,
-    datasets: [{
-      label: 'Return if sell all at price (%)',
-      data: returns,
-      borderColor: '#5BA8D9',
-      backgroundColor: 'rgba(91,168,217,0.1)',
-      fill: true,
-      tension: 0.3,
-      pointRadius: 0
-    }]
+    labels: prices,
+    datasets: [
+      {
+        label: 'Position Value ($)',
+        data: values,
+        borderColor: '#5BA8D9',
+        backgroundColor: 'rgba(91,168,217,0.1)',
+        fill: true,
+        tension: 0.1,
+        pointRadius: 0
+      },
+      {
+        label: 'Principal ($10K)',
+        data: prices.map(() => PRINCIPAL),
+        borderColor: '#f87171',
+        borderDash: [5, 5],
+        pointRadius: 0,
+        fill: false
+      }
+    ]
   },
   options: {
     responsive: true,
     plugins: {
       legend: { labels: { color: '#888' } },
-      tooltip: { callbacks: { label: c => (c.raw > 0 ? '+' : '') + c.raw + '%' } }
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + fmtD(c.raw) } }
     },
     scales: {
-      y: { grid: { color: '#1a1a24' }, ticks: { color: '#888', callback: v => v + '%' } },
-      x: { grid: { color: '#1a1a24' }, ticks: { color: '#888', maxTicksLimit: 10 }, title: { display: true, text: 'Exit Price ($)', color: '#888' } }
+      y: { grid: { color: '#1a1a24' }, ticks: { color: '#888', callback: v => fmtD(v) } },
+      x: { grid: { color: '#1a1a24' }, ticks: { color: '#888', maxTicksLimit: 12 }, title: { display: true, text: 'Market Price ($)', color: '#888' } }
     }
   }
 });
 
-// Interactive simulator
-const popSlider = document.getElementById('popSlider');
-const t2Slider = document.getElementById('t2Slider');
-const t3Slider = document.getElementById('t3Slider');
-const sharesPerP = 0.984 / 0.009; // 109.33
-const thirdShares = sharesPerP / 3;
-
-function update() {
-  const pop = parseFloat(popSlider.value);
-  const t2 = parseFloat(t2Slider.value);
-  const t3 = parseFloat(t3Slider.value);
-
-  document.getElementById('popVal').textContent = '$' + pop.toFixed(3);
-  document.getElementById('t2Val').textContent = '$' + t2.toFixed(3);
-  document.getElementById('t3Val').textContent = '$' + t3.toFixed(2);
-
-  const r1 = thirdShares * pop;
-  const r2 = thirdShares * t2;
-  const r3 = thirdShares * t3;
-  const hedge = 0.016;
-  const total = r1 + r2 + r3 - hedge;
-  const pct = ((total - 1) * 100).toFixed(0);
-
-  document.getElementById('t1rev').textContent = r1.toFixed(3) + 'P';
-  document.getElementById('t2rev').textContent = r2.toFixed(3) + 'P';
-  document.getElementById('t3rev').textContent = r3.toFixed(3) + 'P';
-  document.getElementById('hedgeCost').textContent = '-' + hedge.toFixed(3) + 'P';
-
-  const el = document.getElementById('totalReturn');
-  el.textContent = (total >= 1 ? '+' : '') + pct + '% (' + total.toFixed(2) + 'P)';
-  el.className = 'value ' + (total >= 1 ? 'green' : 'red');
-}
-
-popSlider.addEventListener('input', update);
-t2Slider.addEventListener('input', update);
-t3Slider.addEventListener('input', update);
-update();
+document.getElementById('popSlider').addEventListener('input', updateSim);
+updateSim();
 </script>
 </body>
 </html>
