@@ -60,9 +60,8 @@
   .cover {
     background: linear-gradient(135deg, #3b3122 0%, #2c2416 50%, #1e1a0f 100%);
     color: #f5f0e1;
-    padding: 100px 60px 80px;
+    padding: 60px 60px 50px;
     text-align: center;
-    min-height: 50vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -322,32 +321,6 @@
     <p><strong>The core thesis:</strong> Prediction without mechanism is fragile. Aaru's competitive moat isn't scale -- it's fidelity. A Research Lead should be the person who ensures the agents don't just correlate with reality, but explain it.</p>
   </div>
 
-  <h1 class="section">Why This Role, Why Me</h1>
-
-  <h3 class="item">1. Causal Inference + Population Simulation</h3>
-  <p>PRISM is a 71-archetype political disposition model built from 258K survey responses across 5 national datasets (ANES, GSS, Pew, CES, CCES). It operates across four layers:</p>
-  <ul>
-    <li><strong>L1 (Demographics)</strong> -- structural priors: age, education, income, geography</li>
-    <li><strong>L2 (Psychographics)</strong> -- latent dispositions: moral foundations, risk tolerance, institutional trust</li>
-    <li><strong>L3 (Issue Positions)</strong> -- derived from L1+L2 interactions via causal DAGs</li>
-    <li><strong>L4 (Temporal Dynamics)</strong> -- exogenous shocks, drift, generational replacement</li>
-  </ul>
-  <p>This maps directly to Aaru's agent architecture: archetypes are cluster centers, L4 is temporal dynamics, and the exogenous/endogenous function separation is exactly how you'd structure agent decision-making under external shocks.</p>
-
-  <h3 class="item">2. The Causal VAE -- Mechanism Over Correlation</h3>
-  <p>I built a DAG-constrained variational autoencoder that enforces causal structure in latent space. The key result: R&sup2;=0.202 predicting psychographic dispositions from demographics alone -- not by memorizing correlations, but by learning the generative process. When VQ-VAE failed (a genuine negative result), I pivoted to two-stage clustering and discovered natural archetypes that the model hadn't been told to find.</p>
-  <p>This is the kind of methodology Aaru needs at scale: models that degrade gracefully when the world shifts, because they've learned <em>why</em>, not just <em>what</em>.</p>
-
-  <h3 class="item">3. The GLP-1 Case Study -- Simulation in Action</h3>
-  <p>Through Serif, I built the mediated causal chain: Treatment &rarr; BMI &rarr; Confidence &rarr; Sociality &rarr; Alcohol. XGBoost sees that GLP-1 patients drink less. The causal model sees <em>why</em>: weight loss increases confidence, which changes social behavior, which reduces alcohol consumption. This is exactly the kind of analysis Aaru pitched on Squawk Box -- and exactly what a Research Lead should be building at scale across every domain Aaru touches.</p>
-
-  <h3 class="item">4. Full-Stack Research Engineering</h3>
-  <ul>
-    <li>End-to-end pipeline: data harmonization (258K rows, 5 surveys) &rarr; model training &rarr; evaluation &rarr; production interactive</li>
-    <li>Python/PyTorch, Bayesian methods (Stan, PyMC), DAG learning, causal inference</li>
-    <li>Built and shipped: PRISM interactive (1000+ daily visitors on matricesofconfusion.com), Serif health platform, multiple data products</li>
-  </ul>
-
 </div>
 </div><!-- end page 2 -->
 
@@ -424,12 +397,16 @@
 
   <table class="phase-table">
     <tr>
-      <td class="label-cell">Target Range</td>
-      <td>$200,000 - $350,000 (Staff Engineer equivalent)</td>
+      <td class="label-cell">Title</td>
+      <td>Research Lead</td>
     </tr>
     <tr>
-      <td class="label-cell">Structure</td>
-      <td>Open to salary + equity, or contract-to-hire. Flexible on format -- the work matters more than the structure.</td>
+      <td class="label-cell">Salary</td>
+      <td>$350,000</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Equity</td>
+      <td>0.16%</td>
     </tr>
     <tr>
       <td class="label-cell">Location</td>
