@@ -455,9 +455,11 @@
 
   <h3 class="item">A Fully Generative Framework</h3>
 
-  <p>The endgame is multi-agent reinforcement learning: fully simulate agents and the conditions under which they're making decisions, rather than predicting outcomes from features. This gets you three things correlational models can't: a more accurate distribution of outcomes, easy incorporation of new data for online predictions, and the ability to transfer information between models and use cases by inferring upstream causal parameters.</p>
+  <p>The endgame is a system that climbs Pearl's causal ladder — from association to intervention to counterfactual reasoning — and stays there, updating continuously as new data arrives. Most models in production today live on the first rung: they learn associations ("people who do X tend to do Y") and stop. That's useful but brittle. Move to the second rung — intervention — and you can answer "what happens if we change X?" without actually running the experiment. Move to the third rung — counterfactuals — and you can answer "what <em>would have</em> happened if X had been different for this specific person, given everything else we know about them?" That's where the real value lives, and it's where almost no one operates at scale.</p>
 
-  <p>The timing is right. There have been major advancements since 2022 in Bayesian VAE and autograd techniques for inferring and <em>naming</em> causal forces — moving from black-box latent dimensions to interpretable causal structure.</p>
+  <p>The goal, for partners who want it, is to turn Aaru's simulation into a fully online, self-updating prediction machine. Not a model you retrain quarterly — a system that ingests new data as it happens (a jobs report, a competitor price change, a new regulatory announcement, a cultural inflection point) and automatically understands how to interpret it. "Automatically" is doing real work in that sentence: the system needs causal structure to know <em>which</em> parameters a new datapoint should update and which it shouldn't. A jobs report should shift economic-sensitivity parameters, not dietary preferences. Without the causal graph, online updating is just noise propagation. With it, every new observation makes the simulation more accurate, and the product becomes something clients can't walk away from — because the model they have today is strictly better than the model they had yesterday.</p>
+
+  <p>The timing is right. There have been major advancements since 2022 in Bayesian VAE and autograd techniques for inferring and <em>naming</em> causal forces — moving from black-box latent dimensions to interpretable causal structure. Combined with online Bayesian updating and eventually reinforcement learning for dynamic agent behavior, this is the path from "sophisticated consulting deliverable" to "platform that compounds value over time."</p>
 
   <div class="two-col">
     <div class="col">
@@ -520,7 +522,7 @@
 
   <div class="footer">
     <strong>Sam Cialek</strong><br>
-    Founder, Matrices Consulting &nbsp;|&nbsp; Founder, Serif Health<br>
+    Founder, Matrices Management &nbsp;|&nbsp; Founder, Serif Health<br>
     NYU &nbsp;|&nbsp; Georgia Tech MS Computer Science<br>
     Former: D.E. Shaw Group &nbsp;|&nbsp; Barclays Investment Bank
   </div>
