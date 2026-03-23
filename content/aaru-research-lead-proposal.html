@@ -276,6 +276,16 @@
     font-size: 16px;
   }
 
+  a {
+    color: #5a4a2e;
+    text-decoration: underline;
+    text-decoration-color: #c0b9a8;
+  }
+
+  a:hover {
+    color: #3b3122;
+  }
+
   @media print {
     body { background: white; }
     .page { margin: 0; box-shadow: none; border: none; }
@@ -297,92 +307,39 @@
 </head>
 <body>
 
+<!-- COVER PAGE -->
+<div class="page page-break">
+  <div class="cover" style="min-height: 11in;">
+    <div class="label">Proposal</div>
+    <h1>AARU</h1>
+    <h2>Research Lead</h2>
+    <div class="meta-row">
+      <div><span>Prepared by</span> Sam Cialek</div>
+      <div><span>Date</span> March 2025</div>
+      <div><span>Location</span> Brooklyn, NYC</div>
+    </div>
+  </div>
+</div>
 
-
+<!-- EXECUTIVE SUMMARY -->
 <div class="page page-break">
 <div class="container">
 
   <h1 class="section">Executive Summary</h1>
-  <p>Aaru is building the most ambitious population simulation platform in the world. I've spent the last two years building one independently -- a 71-archetype political disposition model (PRISM) with causal inference at every layer, a DAG-constrained variational autoencoder that predicts psychographic outcomes from demographics alone, and a health simulation platform that traces mediated causal chains through GLP-1 treatment effects. These aren't adjacent to what Aaru does. They are the same thing, applied to different domains.</p>
-  <p>This proposal outlines what I'd do as Research Lead: own the methodology that makes Aaru's simulations not just large, but <em>right</em>. Higher-fidelity agent behavior, causal structure that survives out-of-distribution shifts, and evaluation infrastructure that proves it.</p>
+
+  <p>Everything I do is generative. I don't run regressions and report coefficients — I use creative approaches to evidence to infer causal mechanisms, map first principles, and expand understanding. The work I've done across political modeling, health simulation, and psychographic inference all shares this DNA: start from structure, not from data, and build systems that explain reality rather than merely correlating with it.</p>
 
   <div class="highlight-box">
-    <p><strong>The core thesis:</strong> Prediction without mechanism is fragile. Aaru's competitive moat isn't scale -- it's fidelity. A Research Lead should be the person who ensures the agents don't just correlate with reality, but explain it.</p>
+    <p><strong>On heterogeneity:</strong> In Liu Cixin's <em>Three Body Problem</em>, even the alien Trisolaran civilization displays the full heterogeneity of thought — from ruthless hawks advocating humanity's destruction to individuals genuinely sympathetic to our survival. This is rare in fiction, just as it's rare in life. We default to assuming everyone thinks like us. But everything from interpersonal strife to catastrophically suboptimal outcomes can stem from people's lack of insight into the minds of others. The simulation that gets this right — that captures the genuine diversity of how people process, decide, and act — wins.</p>
   </div>
 
-</div>
-</div><!-- end page 2 -->
-
-<div class="page page-break">
-<div class="container">
+  <p>This proposal lays out how I'd approach the Research Lead role at Aaru: what I'd do in the first three days, the first three months, and how my thirteen years of applying causal learning models across four distinct domains maps directly onto Aaru's core challenge. Feel free to share any aspects of this with the team where you'd like additional buy-in.</p>
 
   <h1 class="section">The Role: Research Lead</h1>
 
-  <p><strong>Core mandate:</strong> Own the scientific methodology that makes Aaru's simulations trustworthy. This means three things: better agent behavior models, causal structure that generalizes, and evaluation infrastructure that proves both.</p>
+  <p>The heterogeneity principle applies to teams, too. I want to work in the role where my contributions are most expert and most unique, while pushing forward a coherent and unified vision. "Diversity is a strength" is an oversimplification — what's actually true is that if you control for coordination issues, a team where everyone <em>spikes</em> in different areas is incredibly powerful. The key is coordination, not homogeneity.</p>
 
-  <div class="two-col">
-    <div class="col">
-      <h4>Own</h4>
-      <ul>
-        <li>Agent behavior architecture -- how simulated people make decisions</li>
-        <li>Causal inference methodology -- ensuring interventions in simulation produce valid counterfactuals</li>
-        <li>Evaluation & calibration -- quantifying simulation fidelity against real-world outcomes</li>
-        <li>Research roadmap -- what methodological bets to make next</li>
-      </ul>
-    </div>
-    <div class="col">
-      <h4>Contribute</h4>
-      <ul>
-        <li>Data pipeline design for new domains and data sources</li>
-        <li>Client-facing methodology briefs -- translating research into trust</li>
-        <li>Hiring and mentoring research engineers</li>
-        <li>Cross-functional work with Lumen and Polls product teams</li>
-      </ul>
-    </div>
-  </div>
-
-  <h1 class="section">What I'd Build in the First 90 Days</h1>
-
-  <table class="phase-table">
-    <tr>
-      <th>Phase</th>
-      <th>Focus</th>
-    </tr>
-    <tr>
-      <td class="label-cell">Weeks 1-4<br><em>Learn & Audit</em></td>
-      <td>
-        Deep dive into Aaru's current agent architecture, data sources, and simulation methodology. Identify gaps between current fidelity and what causal structure could unlock. Produce an internal research brief: "Where Aaru's agents are wrong, and why it matters."
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Weeks 5-8<br><em>Build & Prove</em></td>
-      <td>
-        Implement causal structure in one domain as proof of concept. Likely candidate: integrate DAG-constrained agent decision-making into an existing simulation vertical. Benchmark against current approach -- show where causal agents outperform correlational ones, especially on out-of-distribution scenarios.
-      </td>
-    </tr>
-    <tr>
-      <td class="label-cell">Weeks 9-12<br><em>Scale & Ship</em></td>
-      <td>
-        Generalize the causal agent framework for cross-domain use. Build evaluation infrastructure (calibration metrics, backtesting against known outcomes, sensitivity analysis). Deliver research roadmap for the next 6-12 months.
-      </td>
-    </tr>
-  </table>
-
-  <h1 class="section">Why Aaru, Why Now</h1>
-  <p>I've been building toward this role for two years without knowing it existed. PRISM was an independent attempt to do what Aaru does at scale -- simulate populations, predict behavior, understand mechanism. The difference is Aaru has the data, the compute, and the market. I have the methodology and the obsession with getting the causal structure right.</p>
-  <p>The timing matters: Aaru is post-Series A and scaling fast. The methodological decisions made in the next 6-12 months will determine whether the platform is a better polling model or a genuine simulation of human behavior. That's a research leadership problem, and it's the one I've been solving on my own.</p>
-
-  <div class="highlight-box">
-    <p>I pitched Serif to Mateja as "95% the same thing Aaru does" -- population simulation, partial pooling, cohort priors updating to individual posteriors. Health vs. psychographic is the 5% delta. This isn't a career pivot. It's a convergence.</p>
-  </div>
-
-</div>
-</div><!-- end page 3 -->
-
-<div class="page">
-<div class="container">
-
-  <h1 class="section">Compensation & Structure</h1>
+  <p>For however long I spend at Aaru — three days, three years, or three decades — my goal will be to make the simulation explain reality, not just correlate with it. That means owning the causal methodology, building evaluation infrastructure that proves fidelity, and ensuring the agents aren't just plausible but <em>right</em>.</p>
 
   <table class="phase-table">
     <tr>
@@ -399,16 +356,166 @@
     </tr>
     <tr>
       <td class="label-cell">Location</td>
-      <td>Brooklyn-based, available for in-person at Aaru's NYC office</td>
+      <td>Brooklyn — in-person at Aaru NYC</td>
     </tr>
   </table>
 
+</div>
+</div>
+
+<!-- THE FIRST 3 DAYS -->
+<div class="page page-break">
+<div class="container">
+
+  <h1 class="section">The First 3 Days</h1>
+
+  <p>I'd defer to the Research team on how best to structure the evaluation during the trial period — you know what you need to see, and I'd rather demonstrate value on your terms than mine. That said, I'd propose hosting a series of 60-minute "salons" with the Research team on specific concepts where I can immediately show depth and spark productive discussion.</p>
+
+  <table class="phase-table">
+    <tr>
+      <th>Salon Topic</th>
+      <th>Content</th>
+    </tr>
+    <tr>
+      <td class="label-cell">Causal Variational Autoencoders</td>
+      <td>DAG-constrained latent spaces, how to enforce causal structure in the generative process itself, and the practical tradeoffs I've encountered building these for political and health domains. Where they shine, where they hallucinate structure.</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Causal Discovery &amp; Inference</td>
+      <td>Do-calculus, front-door and back-door adjustment, mediator bias, and — critically — time-indexed unrolling to resolve cycles into DAG structure. Most real causal graphs have cycles; the trick is knowing when temporal ordering dissolves them.</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Markov Blankets &amp; Levels of Abstraction</td>
+      <td>Which inference, attribution, and intervention techniques work best at which level of abstraction. When to zoom in on individual mechanisms versus when to let partial pooling do the heavy lifting at the cohort level.</td>
+    </tr>
+  </table>
+
+  <p>These aren't academic exercises — they're distilled from thirteen years of applying causal learning models across political behavior, health outcomes, financial markets, and psychographic prediction. Hard-won lessons about which models suit which purposes, and (more importantly) which ones fail quietly.</p>
+
+</div>
+</div>
+
+<!-- THE FIRST 3 MONTHS -->
+<div class="page page-break">
+<div class="container">
+
+  <h1 class="section">The First 3 Months</h1>
+
+  <p style="font-style: italic; color: #6b5d3e; margin-bottom: 28px;">I don't yet have specific insight into Aaru's roadmap, so some of what follows may be redundant with work already underway. Nevertheless, listing these gives useful insight into potentially original areas where I can add the most value. If all of them align with your roadmap, ninety days is quite ambitious — but hopefully this is fodder for more thinking.</p>
+
+  <table class="phase-table">
+    <tr>
+      <th>Workstream</th>
+      <th>Focus</th>
+    </tr>
+    <tr>
+      <td class="label-cell">Causal Rigor</td>
+      <td>Establish methodological foundations for distinguishing genuine causal signal from correlation in Aaru's agent behavior models.</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Environment Simulation<br><em>(Milieu)</em></td>
+      <td>Build the contextual layer — macro and micro conditions that modulate agent behavior and shift causal thresholds.</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Fully Generative Framework</td>
+      <td>Move from predictive models to multi-agent RL: simulate agents and the conditions under which they make decisions.</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Parallel Simulator Engine<br><em>(10,000+ Archetypes)</em></td>
+      <td>Dirichlet-process clustering into autonomous archetype agents with fully online Bayesian updating.</td>
+    </tr>
+  </table>
+
+  <h3 class="item">Causal Rigor</h3>
+
+  <div class="highlight-box">
+    <p><strong>The GLP-1 question:</strong> On Squawk Box recently, the question came up — do GLP-1 drugs reduce alcohol consumption? The naive answer is yes, but the causal picture is far more interesting. There's a rebound effect: as people get more physically fit, they become more social, which can <em>increase</em> certain types of drinking. The real answer has loads of heterogeneity — different time-bound effects from different causal sources, operating at different scales. This is exactly the kind of question Aaru's simulation needs to get right, and exactly the kind of question that correlational methods get catastrophically wrong.</p>
+  </div>
+
+  <p>Causal rigor isn't about academic purity — it's about building simulations that survive contact with reality. When a competitor's model says "GLP-1 reduces drinking" and Aaru's model says "it depends on the archetype, the time horizon, and the social context — here's the full distribution," that's the moat.</p>
+
+</div>
+</div>
+
+<!-- MILIEU + GENERATIVE FRAMEWORK -->
+<div class="page page-break">
+<div class="container">
+
+  <h3 class="item">Environment Simulation (Milieu)</h3>
+
+  <p>I prefer "milieu" to "environment" — it captures both the macro conditions (economic climate, policy shifts, cultural moments) and the less-macro conditions any individual agent is experiencing (sleep debt, recent life events, social network dynamics). At Serif, incorporating "loads" as modifiers to causal effects and thresholds was one of our biggest breakthroughs. High sleep debt, for instance, didn't just change outcomes — it changed the <em>threshold</em> at which interventions became effective. The causal graph itself was load-dependent.</p>
+
+  <p>Scenario analysis should produce the full distribution of outcomes, not just point estimates. Different situations call for optimizing different places along the probability distribution — sometimes you want the median, sometimes the tail.</p>
+
+  <div class="highlight-box">
+    <p><strong>On distribution shape:</strong> I wrote about this in <a href="https://matricesofconfusion.com/geometry-of-preference.html"><em>The Geometry of Preference</em></a> — an investing perspective on why the <em>shape</em> of the outcome distribution matters as much as the mean. The St. Petersburg Paradox (which I first encountered at D.E. Shaw) makes this visceral: a bet with infinite expected value that no rational person would take, because the distribution shape is pathological.</p>
+  </div>
+
+  <p>The model should be fully online — recommendations updating with the latest jobs report, competitor price shifts, cultural inflection points. This makes the product sticky in a way static models can't match. The datasets should allow inferring when shifts in competitor dynamics and milieu happen, feeding a model that updates daily.</p>
+
+  <h3 class="item">A Fully Generative Framework</h3>
+
+  <p>The endgame is multi-agent reinforcement learning: fully simulate agents and the conditions under which they're making decisions, rather than predicting outcomes from features. This gets you three things correlational models can't: a more accurate distribution of outcomes, easy incorporation of new data for online predictions, and the ability to transfer information between models and use cases by inferring upstream causal parameters.</p>
+
+  <p>The timing is right. There have been major advancements since 2022 in Bayesian VAE and autograd techniques for inferring and <em>naming</em> causal forces — moving from black-box latent dimensions to interpretable causal structure.</p>
+
+  <div class="two-col">
+    <div class="col">
+      <h4>XGBoost Can Do</h4>
+      <ul>
+        <li>High explanatory value on training distribution</li>
+        <li>Fast inference</li>
+        <li>Well-understood diagnostics</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>XGBoost Cannot Do</h4>
+      <ul>
+        <li>Counterfactual reasoning</li>
+        <li>Heterogeneous treatment effects</li>
+        <li>Interpretable latent pathways</li>
+        <li>Temporal dynamics</li>
+        <li>Social contagion &amp; feedback loops</li>
+        <li>Principled explainability</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>A Causal VAE+RL framework achieves similar explanatory value on the training distribution while unlocking everything in the right column. That's the trade worth making.</p>
+
+</div>
+</div>
+
+<!-- PARALLEL SIMULATOR ENGINE -->
+<div class="page page-break">
+<div class="container">
+
+  <h3 class="item">A Parallel Simulator Engine (10,000+ Archetypes)</h3>
+
+  <p>Partial pooling is extremely effective for coherent regularization, and it's one of the most underappreciated tools in simulation. Simulating a single individual gets noisy fast — you're fitting to an n-of-1. Pooling across archetypes gives you dramatically better estimates while preserving the heterogeneity that matters.</p>
+
+  <p>The vision: 10,000+ archetypes, each running as an autonomous agent on its own compute, with a fully online Bayesian architecture supplementing LLM outputs. When new LLM models come out, you test whether LLM-aided or non-LLM outputs perform better — and there's information in the difference itself. At Serif, we used cluster-based priors with posteriors calibrated for individuals, and that hybrid approach (starting from clusters, refining to individuals) may be ideal for Aaru as well.</p>
+
+  <p>Here's the mathematical argument: the joint probability distribution exists for roughly 50 metrics. With 8 levels each, that's 8<sup>50</sup> potential agent configurations — completely intractable for RL. Use a Dirichlet process to generate 10,000–20,000 clusters: this doesn't add too much bias, mitigates substantial variance, enables principled uncertainty quantification, and avoids losing information at bin boundaries. It makes the RL tractable (O(8<sup>n</sup>) collapses to a manageable space) and complements existing "ember" removal through ablation-style approaches, Bayesian hierarchical models, posterior predictive checks, and Sobol decomposition.</p>
+
+  <p>Redundant models predicting the same thing isn't waste — the <em>disagreement</em> between models is crucial for generating the true distribution before condensing to a point summary. Mode collapse, one of the persistent headaches in generative simulation, becomes much less salient when you're collapsing to 10,000 Dirichlet cluster centroids rather than trying to represent the full combinatorial space.</p>
+
+  <p>I understand Matt is working on internal agent consistency — partial pooling is one natural path to achieving longitudinal validation, because the archetype-level structure provides the regularization that individual-level models lack.</p>
+
+</div>
+</div>
+
+<!-- RELEVANT WORK + FOOTER -->
+<div class="page">
+<div class="container">
+
   <h1 class="section">Relevant Work</h1>
+
   <ul>
-    <li><strong>PRISM Interactive</strong> -- 71-archetype political disposition model, live at matricesofconfusion.com</li>
-    <li><strong>Causal VAE</strong> -- DAG-constrained latent space, demographic &rarr; psychographic prediction</li>
-    <li><strong>Serif Health Platform</strong> -- GLP-1 mediated causal chain, Vim partnership (150K+ providers)</li>
-    <li><strong>Matrices of Confusion</strong> -- ~1000 daily visitors, research blog + interactive tools</li>
+    <li><strong>PRISM Interactive</strong> — 71-archetype political disposition model, live at <a href="https://matricesofconfusion.com">matricesofconfusion.com</a>. Full population simulation with causal inference at every layer, demonstrating the archetype-based approach proposed above.</li>
+    <li><strong>Causal VAE</strong> — DAG-constrained latent space predicting psychographic outcomes from demographics alone. Enforces causal structure in the generative process itself, preventing the model from learning spurious shortcuts.</li>
+    <li><strong>Serif Health Platform</strong> — GLP-1 mediated causal chain modeling, Vim partnership covering 150K+ providers. Population-level health simulation using the same partial-pooling and cohort-prior methodology proposed here.</li>
+    <li><strong>Matrices of Confusion</strong> — ~1,000 daily visitors. Research blog and interactive tools bridging technical methodology and accessible explanation.</li>
   </ul>
 
   <div class="footer">
@@ -419,7 +526,7 @@
   </div>
 
 </div>
-</div><!-- end page 4 -->
+</div>
 
 </body>
 </html>
