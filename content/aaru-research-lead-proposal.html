@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Lead Proposal — Aaru</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a2e;
+    background: #f8f9fa;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  .cover {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    padding: 100px 60px 80px;
+    text-align: center;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover .label {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .cover h2 {
+    font-size: 22px;
+    font-weight: 300;
+    opacity: 0.85;
+    margin-bottom: 40px;
+  }
+
+  .cover .meta-row {
+    display: flex;
+    gap: 60px;
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 20px;
+  }
+
+  .cover .meta-row div span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  h1.section {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 60px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0f3460;
+  }
+
+  h2.subsection {
+    font-size: 19px;
+    font-weight: 600;
+    color: #16213e;
+    margin: 36px 0 14px;
+  }
+
+  h3.item {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f3460;
+    margin: 24px 0 10px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: #333;
+  }
+
+  ul {
+    margin: 0 0 16px 20px;
+    color: #333;
+  }
+
+  ul li {
+    margin-bottom: 8px;
+  }
+
+  .highlight-box {
+    background: #f0f4ff;
+    border-left: 4px solid #0f3460;
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .highlight-box p {
+    margin-bottom: 0;
+    color: #1a1a2e;
+  }
+
+  .phase-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 30px;
+  }
+
+  .phase-table th {
+    background: #1a1a2e;
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .phase-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: top;
+  }
+
+  .phase-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .phase-table .label-cell {
+    font-weight: 600;
+    color: #0f3460;
+    width: 160px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+
+  .two-col .col {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #e8e8e8;
+  }
+
+  .two-col .col h4 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: #0f3460;
+  }
+
+  .two-col .col ul {
+    margin-left: 16px;
+    font-size: 14px;
+  }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 2px solid #e8e8e8;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .footer strong {
+    color: #1a1a2e;
+  }
+
+  @media print {
+    .cover { min-height: 100vh; page-break-after: always; }
+    .container { padding: 40px 30px; }
+    body { font-size: 13px; }
+  }
+
+  @media (max-width: 600px) {
+    .cover { padding: 60px 24px; }
+    .cover h1 { font-size: 28px; }
+    .cover h2 { font-size: 17px; }
+    .cover .meta-row { flex-direction: column; gap: 16px; }
+    .container { padding: 30px 20px; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="label">Research Lead Proposal</div>
+  <h1>AARU</h1>
+  <h2>Synthetic Population Simulation Meets Causal Inference</h2>
+  <div class="meta-row">
+    <div><span>Prepared by</span>Sam Cialek</div>
+    <div><span>Prepared for</span>John Kessler, CTO & Co-Founder</div>
+    <div><span>Date</span>March 2026</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <h1 class="section">Executive Summary</h1>
+  <p>Aaru is building the most ambitious population simulation platform in the world. I've spent the last two years building one independently -- a 71-archetype political disposition model (PRISM) with causal inference at every layer, a DAG-constrained variational autoencoder that predicts psychographic outcomes from demographics alone, and a health simulation platform that traces mediated causal chains through GLP-1 treatment effects. These aren't adjacent to what Aaru does. They are the same thing, applied to different domains.</p>
+  <p>This proposal outlines what I'd do as Research Lead: own the methodology that makes Aaru's simulations not just large, but <em>right</em>. Higher-fidelity agent behavior, causal structure that survives out-of-distribution shifts, and evaluation infrastructure that proves it.</p>
+
+  <div class="highlight-box">
+    <p><strong>The core thesis:</strong> Prediction without mechanism is fragile. Aaru's competitive moat isn't scale -- it's fidelity. A Research Lead should be the person who ensures the agents don't just correlate with reality, but explain it.</p>
+  </div>
+
+  <h1 class="section">Why This Role, Why Me</h1>
+
+  <h3 class="item">1. Causal Inference + Population Simulation</h3>
+  <p>PRISM is a 71-archetype political disposition model built from 258K survey responses across 5 national datasets (ANES, GSS, Pew, CES, CCES). It operates across four layers:</p>
+  <ul>
+    <li><strong>L1 (Demographics)</strong> -- structural priors: age, education, income, geography</li>
+    <li><strong>L2 (Psychographics)</strong> -- latent dispositions: moral foundations, risk tolerance, institutional trust</li>
+    <li><strong>L3 (Issue Positions)</strong> -- derived from L1+L2 interactions via causal DAGs</li>
+    <li><strong>L4 (Temporal Dynamics)</strong> -- exogenous shocks, drift, generational replacement</li>
+  </ul>
+  <p>This maps directly to Aaru's agent architecture: archetypes are cluster centers, L4 is temporal dynamics, and the exogenous/endogenous function separation is exactly how you'd structure agent decision-making under external shocks.</p>
+
+  <h3 class="item">2. The Causal VAE -- Mechanism Over Correlation</h3>
+  <p>I built a DAG-constrained variational autoencoder that enforces causal structure in latent space. The key result: R&sup2;=0.202 predicting psychographic dispositions from demographics alone -- not by memorizing correlations, but by learning the generative process. When VQ-VAE failed (a genuine negative result), I pivoted to two-stage clustering and discovered natural archetypes that the model hadn't been told to find.</p>
+  <p>This is the kind of methodology Aaru needs at scale: models that degrade gracefully when the world shifts, because they've learned <em>why</em>, not just <em>what</em>.</p>
+
+  <h3 class="item">3. The GLP-1 Case Study -- Simulation in Action</h3>
+  <p>Through Serif, I built the mediated causal chain: Treatment &rarr; BMI &rarr; Confidence &rarr; Sociality &rarr; Alcohol. XGBoost sees that GLP-1 patients drink less. The causal model sees <em>why</em>: weight loss increases confidence, which changes social behavior, which reduces alcohol consumption. This is exactly the kind of analysis Aaru pitched on Squawk Box -- and exactly what a Research Lead should be building at scale across every domain Aaru touches.</p>
+
+  <h3 class="item">4. Full-Stack Research Engineering</h3>
+  <ul>
+    <li>End-to-end pipeline: data harmonization (258K rows, 5 surveys) &rarr; model training &rarr; evaluation &rarr; production interactive</li>
+    <li>Python/PyTorch, Bayesian methods (Stan, PyMC), DAG learning, causal inference</li>
+    <li>Built and shipped: PRISM interactive (1000+ daily visitors on matricesofconfusion.com), Serif health platform, multiple data products</li>
+  </ul>
+
+  <h1 class="section">The Role: Research Lead</h1>
+
+  <p><strong>Core mandate:</strong> Own the scientific methodology that makes Aaru's simulations trustworthy. This means three things: better agent behavior models, causal structure that generalizes, and evaluation infrastructure that proves both.</p>
+
+  <div class="two-col">
+    <div class="col">
+      <h4>Own</h4>
+      <ul>
+        <li>Agent behavior architecture -- how simulated people make decisions</li>
+        <li>Causal inference methodology -- ensuring interventions in simulation produce valid counterfactuals</li>
+        <li>Evaluation & calibration -- quantifying simulation fidelity against real-world outcomes</li>
+        <li>Research roadmap -- what methodological bets to make next</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Contribute</h4>
+      <ul>
+        <li>Data pipeline design for new domains and data sources</li>
+        <li>Client-facing methodology briefs -- translating research into trust</li>
+        <li>Hiring and mentoring research engineers</li>
+        <li>Cross-functional work with Lumen and Polls product teams</li>
+      </ul>
+    </div>
+  </div>
+
+  <h1 class="section">What I'd Build in the First 90 Days</h1>
+
+  <table class="phase-table">
+    <tr>
+      <th>Phase</th>
+      <th>Focus</th>
+    </tr>
+    <tr>
+      <td class="label-cell">Weeks 1-4<br><em>Learn & Audit</em></td>
+      <td>
+        Deep dive into Aaru's current agent architecture, data sources, and simulation methodology. Identify gaps between current fidelity and what causal structure could unlock. Produce an internal research brief: "Where Aaru's agents are wrong, and why it matters."
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Weeks 5-8<br><em>Build & Prove</em></td>
+      <td>
+        Implement causal structure in one domain as proof of concept. Likely candidate: integrate DAG-constrained agent decision-making into an existing simulation vertical. Benchmark against current approach -- show where causal agents outperform correlational ones, especially on out-of-distribution scenarios.
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Weeks 9-12<br><em>Scale & Ship</em></td>
+      <td>
+        Generalize the causal agent framework for cross-domain use. Build evaluation infrastructure (calibration metrics, backtesting against known outcomes, sensitivity analysis). Deliver research roadmap for the next 6-12 months.
+      </td>
+    </tr>
+  </table>
+
+  <h1 class="section">Why Aaru, Why Now</h1>
+  <p>I've been building toward this role for two years without knowing it existed. PRISM was an independent attempt to do what Aaru does at scale -- simulate populations, predict behavior, understand mechanism. The difference is Aaru has the data, the compute, and the market. I have the methodology and the obsession with getting the causal structure right.</p>
+  <p>The timing matters: Aaru is post-Series A and scaling fast. The methodological decisions made in the next 6-12 months will determine whether the platform is a better polling model or a genuine simulation of human behavior. That's a research leadership problem, and it's the one I've been solving on my own.</p>
+
+  <div class="highlight-box">
+    <p>I pitched Serif to Mateja as "95% the same thing Aaru does" -- population simulation, partial pooling, cohort priors updating to individual posteriors. Health vs. psychographic is the 5% delta. This isn't a career pivot. It's a convergence.</p>
+  </div>
+
+  <h1 class="section">Compensation & Structure</h1>
+
+  <table class="phase-table">
+    <tr>
+      <td class="label-cell">Target Range</td>
+      <td>$200,000 - $350,000 (Staff Engineer equivalent)</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Structure</td>
+      <td>Open to salary + equity, or contract-to-hire. Flexible on format -- the work matters more than the structure.</td>
+    </tr>
+    <tr>
+      <td class="label-cell">Location</td>
+      <td>Brooklyn-based, available for in-person at Aaru's NYC office</td>
+    </tr>
+  </table>
+
+  <h1 class="section">Relevant Work</h1>
+  <ul>
+    <li><strong>PRISM Interactive</strong> -- 71-archetype political disposition model, live at matricesofconfusion.com</li>
+    <li><strong>Causal VAE</strong> -- DAG-constrained latent space, demographic &rarr; psychographic prediction</li>
+    <li><strong>Serif Health Platform</strong> -- GLP-1 mediated causal chain, Vim partnership (150K+ providers)</li>
+    <li><strong>Matrices of Confusion</strong> -- ~1000 daily visitors, research blog + interactive tools</li>
+  </ul>
+
+  <div class="footer">
+    <strong>Sam Cialek</strong><br>
+    Founder, Matrices Consulting &nbsp;|&nbsp; Founder, Serif Health<br>
+    NYU &nbsp;|&nbsp; Georgia Tech MS Computer Science<br>
+    Former: D.E. Shaw Group &nbsp;|&nbsp; Barclays Investment Bank
+  </div>
+
+</div>
+
+</body>
+</html>
