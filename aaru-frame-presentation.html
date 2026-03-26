@@ -107,6 +107,72 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 /* Closing */
 .close-line{font-size:clamp(28px,5vw,56px);font-weight:700;opacity:0;margin:12px 0;font-family:'Inter',sans-serif}
 .close-byline{font-size:18px;opacity:0;margin-top:40px;font-style:italic}
+
+/* ═══ NEW SLIDE STYLES ═══ */
+
+/* Pearl's Ladder of Causation (Slide 5) */
+.ladder-rung{display:flex;align-items:center;gap:24px;padding:20px 32px;margin:12px 0;border-left:3px solid transparent;opacity:0;transform:translateX(30px)}
+.ladder-num{font-family:'Inter',sans-serif;font-size:48px;font-weight:700;min-width:60px}
+.ladder-name{font-family:'Inter',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:0.08em;min-width:120px}
+.ladder-example{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;flex:1}
+.ladder-formula{font-family:'Geist Mono',monospace,'Courier New';font-size:15px;opacity:0.6;min-width:140px;text-align:right}
+.ladder-caption{text-align:center;font-size:clamp(14px,1.5vw,18px);opacity:0;margin-top:32px;font-style:italic;max-width:700px;line-height:1.5;color:rgba(255,255,255,0.6)}
+.ladder-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin-bottom:32px;text-align:center;opacity:0}
+
+/* Naive Model (Slide 6) */
+.naive-svg{width:100%;max-width:700px;margin:0 auto}
+.naive-text{text-align:center;font-size:clamp(22px,3.5vw,40px);font-weight:600;margin-top:32px;opacity:0;font-family:'Inter',sans-serif}
+.naive-subtext{text-align:center;font-size:18px;opacity:0;margin-top:12px;font-style:italic;color:rgba(255,255,255,0.5)}
+
+/* Real DAG (Slide 7) */
+.real-dag-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin-bottom:16px;text-align:center;opacity:0}
+.real-dag-wrap{width:100%;max-width:1000px;margin:0 auto}
+.real-dag-wrap svg{width:100%;height:auto}
+.real-dag-caption{text-align:center;font-size:16px;opacity:0;margin-top:16px;font-style:italic;color:rgba(255,255,255,0.6);max-width:700px}
+
+/* Four Confounds (Slide 8) */
+.confounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;width:100%;max-width:900px;margin:0 auto}
+.confound-cell{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:24px;opacity:0;transform:translateY(20px)}
+.confound-cell .label{margin-bottom:12px}
+.confound-svg{width:100%;height:120px}
+.confound-caption{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;opacity:0.6;margin-top:12px;text-align:center}
+.confounds-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin-bottom:32px;text-align:center;opacity:0}
+
+/* do(GLP-1) Population (Slide 10) */
+.pop-columns{display:flex;gap:32px;width:100%;max-width:1000px;justify-content:center;align-items:flex-start}
+.pop-col{flex:1;text-align:center;opacity:0;transform:translateY(40px);max-width:300px}
+.pop-icon{font-size:80px;margin-bottom:8px}
+.pop-persona{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;margin-bottom:4px}
+.pop-intervention{font-family:'Inter',sans-serif;font-size:13px;opacity:0.5;margin-bottom:4px}
+.pop-pathway{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;opacity:0.7;margin-bottom:16px}
+.pop-bar-wrap{position:relative;height:28px;background:rgba(255,255,255,0.06);border-radius:4px;margin:8px 0;overflow:visible;display:flex;align-items:center;justify-content:center}
+.pop-bar{position:absolute;height:100%;border-radius:4px;width:0}
+.pop-bar-label{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;position:relative;z-index:2}
+.pop-caption{text-align:center;font-size:clamp(14px,1.5vw,18px);opacity:0;margin-top:32px;font-style:italic;max-width:700px;color:rgba(255,255,255,0.6)}
+.pop-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin-bottom:32px;text-align:center;opacity:0}
+
+/* Time-Bound Effects (Slide 11) */
+.tb-title{font-size:clamp(24px,4vw,48px);font-weight:700;margin-bottom:8px;text-align:center;opacity:0}
+.tb-sub{font-size:18px;opacity:0;margin-bottom:24px;text-align:center;color:rgba(255,255,255,0.5)}
+.tb-chart-wrap{width:100%;max-width:900px;position:relative}
+.tb-chart-wrap svg{width:100%;height:auto}
+.tb-annotation{position:absolute;font-family:'Inter',sans-serif;font-size:12px;opacity:0;padding:4px 10px;border-radius:4px;background:rgba(255,255,255,0.08);pointer-events:none;white-space:nowrap}
+
+/* Heterogeneous Treatment (Slide 12) */
+.hte-title{font-size:clamp(24px,4vw,42px);font-weight:700;margin-bottom:24px;text-align:center;opacity:0}
+.hte-table{border-collapse:collapse;width:100%;max-width:800px;margin:0 auto}
+.hte-table th{font-family:'Inter',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.15);text-align:center}
+.hte-table th:first-child{text-align:left}
+.hte-table td{padding:14px 16px;font-family:'Inter',sans-serif;font-size:20px;font-weight:600;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06)}
+.hte-table td:first-child{font-size:15px;font-weight:400;text-align:left;opacity:0.8}
+.hte-table tr{opacity:0;transform:translateY(10px)}
+.hte-callout{font-family:'Inter',sans-serif;font-size:clamp(16px,2vw,22px);font-weight:600;text-align:center;margin-top:24px;opacity:0;color:#03E87A}
+.hte-caption{text-align:center;font-size:clamp(14px,1.5vw,18px);opacity:0;margin-top:16px;font-style:italic;color:rgba(255,255,255,0.6);max-width:700px}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(3,232,122,0.3)}50%{box-shadow:0 0 20px rgba(3,232,122,0.6)}}
+.hte-pulse{animation:pulse-glow 1.5s ease-in-out infinite}
+
+/* From Theory to System (Slide 14) */
+.theory-line{font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(24px,4vw,48px);text-align:center;opacity:0;line-height:1.4;margin:8px 0}
 </style>
 </head>
 <body>
@@ -154,17 +220,11 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 3: COUNTERFACTUAL -->
-<div class="slide" data-slide="3" id="counterfactual">
-<div class="slide-inner">
-<div class="persona">
-<div class="persona-icon">👤</div>
-<div class="persona-label">Rural Evangelical White Male, 50</div>
-</div>
-<div class="intervention" id="cf-intervention"><code>do(education = graduate)</code></div>
-<div class="cf-bars" id="cf-bars"></div>
-<div class="cf-big-text" id="cf-big">Education makes him more liberal…<br>but <span class="red">INCREASES</span> Trump approval.</div>
-<div class="cf-xgb-text" id="cf-xgb">XGBoost cannot compute this.</div>
+<!-- SLIDE 3: THE QUESTION (NEW) -->
+<div class="slide" data-slide="3" id="the-question">
+<div class="slide-inner" style="text-align:center">
+<div class="big-number" id="question-main" style="font-size:clamp(28px,4.5vw,56px);font-weight:600;line-height:1.4">If prediction is solved…<br>what's left?</div>
+<p class="body-text" id="question-answer" style="margin:32px auto 0;font-style:italic;opacity:0">Understanding <span class="accent" style="font-weight:600">why</span> — and what happens when things change.</p>
 </div>
 </div>
 
@@ -183,8 +243,294 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 5: GLP-1 -->
-<div class="slide" data-slide="5" id="glp1">
+<!-- SLIDE 5: PEARL'S LADDER OF CAUSATION (NEW) -->
+<div class="slide" data-slide="5" id="pearl-ladder">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;padding:0 40px">
+<div class="ladder-title heading" id="ladder-title">Pearl's Ladder of Causation</div>
+<div style="width:100%;max-width:900px">
+<div class="ladder-rung" id="rung1" data-color="rgba(255,255,255,0.5)">
+<div class="ladder-num" style="color:rgba(255,255,255,0.5)">1</div>
+<div class="ladder-name" style="color:rgba(255,255,255,0.5)">Seeing</div>
+<div class="ladder-example">People on GLP-1 drink less</div>
+<div class="ladder-formula">P(Y|X)</div>
+</div>
+<div class="ladder-rung" id="rung2" data-color="#1019EC">
+<div class="ladder-num" style="color:#1019EC">2</div>
+<div class="ladder-name" style="color:#1019EC">Doing</div>
+<div class="ladder-example">If we give someone GLP-1, will they drink less?</div>
+<div class="ladder-formula">P(Y|do(X))</div>
+</div>
+<div class="ladder-rung" id="rung3" data-color="#03E87A">
+<div class="ladder-num" style="color:#03E87A">3</div>
+<div class="ladder-name" style="color:#03E87A">Imagining</div>
+<div class="ladder-example">Would this person have drunk less even without GLP-1?</div>
+<div class="ladder-formula">P(Y&#x2093;|X',Y')</div>
+</div>
+</div>
+<p class="ladder-caption" id="ladder-caption">Most ML lives on Rung 1. Business decisions require Rung 2. Strategy requires Rung 3.</p>
+</div>
+</div>
+
+<!-- SLIDE 6: THE NAIVE MODEL (NEW) -->
+<div class="slide" data-slide="6" id="naive-model">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
+<div class="naive-svg" id="naive-svg-wrap">
+<svg viewBox="0 0 700 200" id="naive-svg">
+<defs>
+<marker id="naive-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.6)"/></marker>
+</defs>
+<!-- Left node: GLP-1 -->
+<circle cx="150" cy="100" r="60" fill="none" stroke="#1019EC" stroke-width="2" opacity="0" id="naive-node-left"/>
+<text x="150" y="105" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="16" font-weight="600" opacity="0" id="naive-text-left">GLP-1</text>
+<!-- Arrow -->
+<line x1="215" y1="100" x2="485" y2="100" stroke="rgba(255,255,255,0.6)" stroke-width="2" marker-end="url(#naive-arrow)" id="naive-arrow-line" stroke-dasharray="270" stroke-dashoffset="270"/>
+<!-- Right node: Alcohol Sales -->
+<circle cx="550" cy="100" r="60" fill="none" stroke="#EC1014" stroke-width="2" opacity="0" id="naive-node-right"/>
+<text x="550" y="98" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="14" font-weight="600" opacity="0" id="naive-text-right">Alcohol</text>
+<text x="550" y="116" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="14" font-weight="600" opacity="0" id="naive-text-right2">Sales</text>
+</svg>
+</div>
+<div class="naive-text" id="naive-forecast">The consensus forecast: −12% alcohol revenue.</div>
+<div class="naive-subtext" id="naive-wrong">Linear. Uniform. Wrong.</div>
+</div>
+</div>
+
+<!-- SLIDE 7: THE REAL DAG (NEW) -->
+<div class="slide" data-slide="7" id="real-dag">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;padding:0 20px">
+<div class="real-dag-title heading" id="real-dag-title">The Real Causal Structure</div>
+<div class="real-dag-wrap">
+<svg viewBox="0 0 1000 500" id="real-dag-svg">
+<defs>
+<marker id="dag-arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.4)"/></marker>
+</defs>
+<!-- Edges (drawn first, behind nodes) -->
+<line x1="210" y1="250" x2="290" y2="130" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="0" data-to="1"/>
+<line x1="210" y1="250" x2="290" y2="250" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="0" data-to="2"/>
+<line x1="210" y1="260" x2="290" y2="370" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="0" data-to="3"/>
+<line x1="415" y1="120" x2="490" y2="90" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="1" data-to="4"/>
+<line x1="610" y1="80" x2="640" y2="80" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="4" data-to="5"/>
+<line x1="760" y1="85" x2="790" y2="140" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="5" data-to="6"/>
+<line x1="910" y1="165" x2="920" y2="235" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="6" data-to="8"/>
+<line x1="415" y1="250" x2="490" y2="300" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="2" data-to="7"/>
+<line x1="415" y1="380" x2="490" y2="310" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="3" data-to="7"/>
+<line x1="610" y1="310" x2="640" y2="375" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#dag-arrowhead)" class="dag-edge" data-from="7" data-to="9"/>
+<!-- Nodes -->
+<g class="dag-node-g" data-idx="0" opacity="0">
+<rect x="90" y="225" width="120" height="50" rx="8" fill="rgba(16,25,236,0.1)" stroke="#1019EC" stroke-width="1.5"/>
+<text x="150" y="255" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="14" font-weight="600">GLP-1</text>
+</g>
+<g class="dag-node-g" data-idx="1" opacity="0">
+<rect x="290" y="95" width="125" height="50" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+<text x="352" y="125" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="13">Weight Loss</text>
+</g>
+<g class="dag-node-g" data-idx="2" opacity="0">
+<rect x="290" y="225" width="125" height="50" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+<text x="352" y="248" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="11">Appetite</text>
+<text x="352" y="264" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="11">Suppression</text>
+</g>
+<g class="dag-node-g" data-idx="3" opacity="0">
+<rect x="290" y="355" width="125" height="50" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+<text x="352" y="385" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="12">Neurochemical</text>
+</g>
+<g class="dag-node-g" data-idx="4" opacity="0">
+<rect x="490" y="55" width="120" height="50" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+<text x="550" y="85" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="13">Body Image</text>
+</g>
+<g class="dag-node-g" data-idx="5" opacity="0">
+<rect x="640" y="55" width="120" height="50" rx="8" fill="rgba(3,232,122,0.1)" stroke="#03E87A" stroke-width="1.5"/>
+<text x="700" y="85" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="13">Confidence</text>
+</g>
+<g class="dag-node-g" data-idx="6" opacity="0">
+<rect x="790" y="120" width="125" height="50" rx="8" fill="rgba(3,232,122,0.1)" stroke="#03E87A" stroke-width="1.5"/>
+<text x="852" y="150" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="13">Socialization</text>
+</g>
+<g class="dag-node-g" data-idx="7" opacity="0">
+<rect x="490" y="280" width="120" height="50" rx="8" fill="rgba(236,16,20,0.1)" stroke="#EC1014" stroke-width="1.5"/>
+<text x="550" y="300" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="11">Reduced</text>
+<text x="550" y="316" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="11">Cravings</text>
+</g>
+<g class="dag-node-g" data-idx="8" opacity="0">
+<rect x="860" y="225" width="130" height="50" rx="8" fill="rgba(3,232,122,0.1)" stroke="#03E87A" stroke-width="1.5"/>
+<text x="925" y="248" text-anchor="middle" fill="#03E87A" font-family="Inter,sans-serif" font-size="12">Social Drinking ↑</text>
+</g>
+<g class="dag-node-g" data-idx="9" opacity="0">
+<rect x="640" y="355" width="130" height="50" rx="8" fill="rgba(236,16,20,0.1)" stroke="#EC1014" stroke-width="1.5"/>
+<text x="705" y="385" text-anchor="middle" fill="#EC1014" font-family="Inter,sans-serif" font-size="12">Solo Drinking ↓</text>
+</g>
+</svg>
+</div>
+<p class="real-dag-caption" id="real-dag-caption">Seven causal pathways. Three of them increase drinking in certain subgroups.</p>
+</div>
+</div>
+
+<!-- SLIDE 8: THE FOUR CONFOUNDS (NEW) -->
+<div class="slide" data-slide="8" id="four-confounds">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;padding:0 40px">
+<div class="confounds-title heading" id="confounds-title">The Four Confounds</div>
+<div class="confounds-grid" id="confounds-grid">
+<!-- Fork -->
+<div class="confound-cell" id="confound-fork">
+<div class="label">Fork (Confounder)</div>
+<svg class="confound-svg" viewBox="0 0 250 120">
+<circle cx="125" cy="25" r="18" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<text x="125" y="29" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="8">Health</text>
+<circle cx="45" cy="95" r="18" fill="none" stroke="#1019EC" stroke-width="1.5"/>
+<text x="45" y="99" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="8">GLP-1</text>
+<circle cx="205" cy="95" r="18" fill="none" stroke="#EC1014" stroke-width="1.5"/>
+<text x="205" y="93" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Reduced</text>
+<text x="205" y="103" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Drinking</text>
+<line x1="110" y1="38" x2="60" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+<line x1="140" y1="38" x2="190" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+</svg>
+<div class="confound-caption">They were already going to drink less</div>
+</div>
+<!-- Pipe -->
+<div class="confound-cell" id="confound-pipe">
+<div class="label">Pipe (Mediator)</div>
+<svg class="confound-svg" viewBox="0 0 250 120">
+<circle cx="30" cy="60" r="18" fill="none" stroke="#1019EC" stroke-width="1.5"/>
+<text x="30" y="64" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="8">GLP-1</text>
+<circle cx="105" cy="60" r="18" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<text x="105" y="57" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Weight</text>
+<text x="105" y="67" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Loss</text>
+<circle cx="180" cy="60" r="18" fill="none" stroke="#03E87A" stroke-width="1.5"/>
+<text x="180" y="57" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Confi-</text>
+<text x="180" y="67" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">dence</text>
+<line x1="50" y1="60" x2="85" y2="60" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+<line x1="125" y1="60" x2="160" y2="60" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+</svg>
+<div class="confound-caption">The indirect path reverses the effect</div>
+</div>
+<!-- Collider -->
+<div class="confound-cell" id="confound-collider">
+<div class="label">Collider</div>
+<svg class="confound-svg" viewBox="0 0 250 120">
+<circle cx="45" cy="25" r="18" fill="none" stroke="#1019EC" stroke-width="1.5"/>
+<text x="45" y="29" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="8">GLP-1</text>
+<circle cx="205" cy="25" r="18" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<text x="205" y="29" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Genetics</text>
+<circle cx="125" cy="95" r="18" fill="none" stroke="#EC1014" stroke-width="1.5"/>
+<text x="125" y="92" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Treatment</text>
+<text x="125" y="102" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Success</text>
+<line x1="60" y1="38" x2="110" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+<line x1="190" y1="38" x2="140" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+</svg>
+<div class="confound-caption">Conditioning on response creates bias</div>
+</div>
+<!-- Descendant -->
+<div class="confound-cell" id="confound-desc">
+<div class="label">Descendant</div>
+<svg class="confound-svg" viewBox="0 0 250 120">
+<circle cx="80" cy="25" r="18" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<text x="80" y="22" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Health</text>
+<text x="80" y="32" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Motivation</text>
+<circle cx="170" cy="95" r="18" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<text x="170" y="92" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Gym</text>
+<text x="170" y="102" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="7">Member</text>
+<line x1="95" y1="38" x2="155" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+</svg>
+<div class="confound-caption">We see the shadow, not the cause</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 9: COUNTERFACTUAL (was slide 3) -->
+<div class="slide" data-slide="9" id="counterfactual">
+<div class="slide-inner">
+<div class="persona">
+<div class="persona-icon">👤</div>
+<div class="persona-label">Rural Evangelical White Male, 50</div>
+</div>
+<div class="intervention" id="cf-intervention"><code>do(education = graduate)</code></div>
+<div class="cf-bars" id="cf-bars"></div>
+<div class="cf-big-text" id="cf-big">Education makes him more liberal…<br>but <span class="red">INCREASES</span> Trump approval.</div>
+<div class="cf-xgb-text" id="cf-xgb">XGBoost cannot compute this.</div>
+</div>
+</div>
+
+<!-- SLIDE 10: do(GLP-1) ON A POPULATION (NEW) -->
+<div class="slide" data-slide="10" id="do-population">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;padding:0 40px">
+<div class="pop-title heading" id="pop-title">do(GLP-1) on a Population</div>
+<div class="pop-columns" id="pop-columns">
+<!-- Column 1 -->
+<div class="pop-col" id="pop-col-1">
+<div class="pop-icon">👩</div>
+<div class="pop-persona">25F Urban Professional</div>
+<div class="pop-intervention">do(GLP-1 = 1)</div>
+<div class="pop-pathway">Confidence → Socialization</div>
+<div class="pop-bar-wrap">
+<div class="pop-bar" id="pop-bar-1" style="background:#03E87A;left:50%;right:auto"></div>
+<div class="pop-bar-label" style="color:#03E87A">Alcohol +8%</div>
+</div>
+</div>
+<!-- Column 2 -->
+<div class="pop-col" id="pop-col-2">
+<div class="pop-icon">👨</div>
+<div class="pop-persona">55M Suburban Empty Nester</div>
+<div class="pop-intervention">do(GLP-1 = 1)</div>
+<div class="pop-pathway">Cravings → Solo Drinking</div>
+<div class="pop-bar-wrap">
+<div class="pop-bar" id="pop-bar-2" style="background:#EC1014;right:50%;left:auto"></div>
+<div class="pop-bar-label" style="color:#EC1014">Alcohol −22%</div>
+</div>
+</div>
+<!-- Column 3 -->
+<div class="pop-col" id="pop-col-3">
+<div class="pop-icon">👩</div>
+<div class="pop-persona">35F Rural Mother</div>
+<div class="pop-intervention">do(GLP-1 = 1)</div>
+<div class="pop-pathway">Weight Loss (no alcohol path)</div>
+<div class="pop-bar-wrap">
+<div class="pop-bar" id="pop-bar-3a" style="background:rgba(255,255,255,0.2);left:50%;right:auto"></div>
+<div class="pop-bar-label" style="color:rgba(255,255,255,0.5)">Alcohol 0%</div>
+</div>
+<div class="pop-bar-wrap" style="margin-top:4px">
+<div class="pop-bar" id="pop-bar-3b" style="background:#EC1014;right:50%;left:auto"></div>
+<div class="pop-bar-label" style="color:#EC1014">Snacks −40%</div>
+</div>
+</div>
+</div>
+<p class="pop-caption" id="pop-caption">Same drug. Three different causal pathways. Three different outcomes.</p>
+</div>
+</div>
+
+<!-- SLIDE 11: TIME-BOUND EFFECTS (NEW) -->
+<div class="slide" data-slide="11" id="time-bound">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
+<div class="tb-title heading" id="tb-title">Time-Bound Effects</div>
+<div class="tb-sub" id="tb-sub">Why the 12-month forecast was wrong</div>
+<div class="tb-chart-wrap" id="tb-chart-wrap">
+<svg viewBox="0 0 900 400" id="tb-svg"></svg>
+<div class="tb-annotation" id="tb-annot1" style="left:28%;top:48%">First-order effects peak</div>
+<div class="tb-annotation" id="tb-annot2" style="left:50%;top:38%">Confidence pathway activates</div>
+<div class="tb-annotation" id="tb-annot3" style="left:68%;top:30%">New equilibrium: −3%, not −12%</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 12: HETEROGENEOUS TREATMENT EFFECTS (NEW) -->
+<div class="slide" data-slide="12" id="hte">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
+<div class="hte-title heading" id="hte-title">Heterogeneous Treatment Effects</div>
+<table class="hte-table" id="hte-table">
+<thead><tr style="opacity:0;transform:none" id="hte-thead"><th>Segment</th><th>0–6 mo</th><th>6–12 mo</th><th>12–24 mo</th></tr></thead>
+<tbody>
+<tr id="hte-row-1"><td>25–40 Urban Female</td><td style="color:#EC1014">−4%</td><td style="color:#03E87A">+2%</td><td style="color:#03E87A;font-weight:700" id="hte-pulse-cell">+8%</td></tr>
+<tr id="hte-row-2"><td>25–40 Urban Male</td><td style="color:#EC1014">−5%</td><td style="color:#EC1014;opacity:0.7">−3%</td><td style="color:rgba(255,255,255,0.5)">−1%</td></tr>
+<tr id="hte-row-3"><td>50+ Suburban Female</td><td style="color:#EC1014">−8%</td><td style="color:#EC1014">−12%</td><td style="color:#EC1014">−15%</td></tr>
+<tr id="hte-row-4"><td>50+ Suburban Male</td><td style="color:#EC1014">−6%</td><td style="color:#EC1014">−14%</td><td style="color:#EC1014;font-weight:700">−22%</td></tr>
+</tbody>
+</table>
+<div class="hte-callout" id="hte-callout">25–40 Urban Females: +8% alcohol spending by month 18</div>
+<p class="hte-caption" id="hte-caption">The average treatment effect is −3%. But no one is average.</p>
+</div>
+</div>
+
+<!-- SLIDE 13: GLP-1 IMPACT DIVERGENCE (was slide 5) -->
+<div class="slide" data-slide="13" id="glp1">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="glp1-title heading">GLP-1 Impact Divergence</div>
 <div class="glp1-sub">Republican vote share change over 24 months</div>
@@ -196,8 +542,16 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 6: ENVIRONMENT -->
-<div class="slide" data-slide="6" id="environment">
+<!-- SLIDE 14: FROM THEORY TO SYSTEM (NEW) -->
+<div class="slide" data-slide="14" id="theory-system">
+<div class="slide-inner" style="text-align:center">
+<div class="theory-line" id="theory-line1" style="opacity:0.7">Every insight we just walked through</div>
+<div class="theory-line" id="theory-line2">requires <span class="accent">causal structure</span> embedded in the agent.</div>
+</div>
+</div>
+
+<!-- SLIDE 15: AGENT ARCHITECTURE (was slide 6) -->
+<div class="slide" data-slide="15" id="environment">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="env-title heading">Agent Architecture</div>
 <div class="dag-flow" id="dag-flow">
@@ -212,8 +566,8 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 7: BOTTOM LINE -->
-<div class="slide" data-slide="7" id="bottomline">
+<!-- SLIDE 16: CAPABILITY TABLE (was slide 7) -->
+<div class="slide" data-slide="16" id="bottomline">
 <div class="slide-inner" style="display:flex;justify-content:center">
 <table class="cap-table" id="cap-table">
 <thead><tr style="opacity:1;transform:none"><th>Capability</th><th>XGBoost</th><th>Causal VAE</th></tr></thead>
@@ -230,12 +584,13 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 8: CLOSING -->
-<div class="slide" data-slide="8" id="closing">
+<!-- SLIDE 17: CLOSING (was slide 8, with new line) -->
+<div class="slide" data-slide="17" id="closing">
 <div class="slide-inner" style="text-align:center">
 <div class="close-line" id="close1">Prediction is table stakes.</div>
 <div class="close-line" id="close2">Intervention design is the moat.</div>
-<div class="close-byline" id="close3">Prepared by Sam Cialek — March 2026</div>
+<div class="close-line" id="close3" style="font-size:clamp(22px,3.5vw,40px);opacity:0">The question isn't what will happen. It's what should we do.</div>
+<div class="close-byline" id="close4">Prepared by Sam Cialek — March 2026</div>
 </div>
 </div>
 
@@ -244,14 +599,14 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 <!-- Navigation dots -->
 <div class="slide-nav" id="slide-nav"></div>
 <div class="slide-hint" id="slide-hint">← → or click to navigate</div>
-<div class="slide-counter" id="slide-counter">1 / 9</div>
+<div class="slide-counter" id="slide-counter">1 / 18</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function(){
 'use strict';
 
-const SLIDE_COUNT = 9;
+const SLIDE_COUNT = 18;
 let current = 0;
 let transitioning = false;
 const OVERLAP = 0.25; // seconds of overlap between exit and enter
@@ -373,14 +728,52 @@ cfData.forEach(d => {
   csEl.style.strokeDashoffset=csLen;
 })();
 
+// ── Build Time-Bound SVG ──
+(function(){
+  const corr=[0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-9.5,-10,-10.5,-11,-11.2,-11.4,-11.5,-11.6,-11.7,-11.8,-11.9,-12,-12,-12];
+  const causal=[0,-0.8,-1.8,-3,-4.5,-6,-7.5,-8,-7.8,-7,-6.2,-5.5,-5,-4.5,-4.2,-3.8,-3.5,-3.3,-3.2,-3.1,-3,-3,-3,-3];
+  const svg=document.getElementById('tb-svg');
+  const W=900,H=400,pad={t:40,r:80,b:50,l:70};
+  const cww=W-pad.l-pad.r,chh=H-pad.t-pad.b;
+  const minY=-14,maxY=1;
+  function x(i){return pad.l+(i/(corr.length-1))*cww}
+  function y(v){return pad.t+((maxY-v)/(maxY-minY))*chh}
+
+  let axes=`<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H-pad.b}" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>`;
+  axes+=`<line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>`;
+  for(let v=0;v>=-14;v-=2){
+    axes+=`<text x="${pad.l-10}" y="${y(v)+4}" fill="rgba(255,255,255,0.7)" font-size="12" text-anchor="end" font-family="Inter">${v}%</text>`;
+    axes+=`<line x1="${pad.l}" y1="${y(v)}" x2="${W-pad.r}" y2="${y(v)}" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>`;
+  }
+  for(let i=0;i<24;i+=3){
+    axes+=`<text x="${x(i)}" y="${H-pad.b+20}" fill="rgba(255,255,255,0.7)" font-size="12" text-anchor="middle" font-family="Inter">M${i}</text>`;
+  }
+
+  let corrPath='M'+corr.map((v,i)=>`${x(i)},${y(v)}`).join('L');
+  let causalPath='M'+causal.map((v,i)=>`${x(i)},${y(v)}`).join('L');
+
+  svg.innerHTML=axes+
+    `<path d="${corrPath}" fill="none" stroke="#5BA8D9" stroke-width="2" stroke-dasharray="8,4" id="tb-corr-line" opacity="0.9"/>
+     <path d="${causalPath}" fill="none" stroke="#1019EC" stroke-width="3" id="tb-causal-line" opacity="0.9"/>
+     <text x="${W-pad.r+5}" y="${y(corr[23])+4}" fill="#5BA8D9" font-size="11" font-family="Inter">Correlation</text>
+     <text x="${W-pad.r+5}" y="${y(causal[23])+4}" fill="#1019EC" font-size="11" font-family="Inter">Causal</text>`;
+
+  const corrEl=document.getElementById('tb-corr-line');
+  const causalEl=document.getElementById('tb-causal-line');
+  const corrLen=corrEl.getTotalLength();
+  const causalLen=causalEl.getTotalLength();
+  corrEl.style.strokeDasharray=corrLen;
+  corrEl.style.strokeDashoffset=corrLen;
+  causalEl.style.strokeDasharray=causalLen;
+  causalEl.style.strokeDashoffset=causalLen;
+})();
+
 
 // ══════════════════════════════════════════════
 //  CONTENT-LEVEL ENTER / EXIT ANIMATIONS
-//  Each function animates individual elements,
-//  never the whole slide opacity.
 // ══════════════════════════════════════════════
 
-// ── HERO ──
+// ── SLIDE 0: HERO ──
 function heroEnter(){
   const tl = gsap.timeline();
   const title = "Why Causal Structure Matters";
@@ -397,18 +790,16 @@ function heroEnter(){
     .to(sub, {opacity:0.7, y:0, duration:0.6}, 0.8);
   return tl;
 }
-
 function heroExit(){
   const tl = gsap.timeline();
   const letters = document.querySelectorAll('#hero-title .letter');
   const sub = document.getElementById('hero-subtitle');
-  // Letters scatter left with stagger, subtitle drops down
   tl.to(letters, {opacity:0, x:-60, duration:0.35, stagger:0.01, ease:'power2.in'}, 0)
     .to(sub, {opacity:0, y:40, duration:0.35, ease:'power2.in'}, 0.05);
   return tl;
 }
 
-// ── CEILING ──
+// ── SLIDE 1: CEILING ──
 function ceilingEnter(){
   const tl = gsap.timeline();
   const r2El = document.getElementById('r2-number');
@@ -438,7 +829,6 @@ function ceilingEnter(){
     .to(fills, {width: i => fills[i].dataset.w, duration:0.6, stagger:0.03, ease:'power2.out'}, 0.9);
   return tl;
 }
-
 function ceilingExit(){
   const tl = gsap.timeline();
   const r2El = document.getElementById('r2-number');
@@ -447,7 +837,6 @@ function ceilingExit(){
   const chart = document.getElementById('bar-chart');
   const barRows = chart.querySelectorAll('.bar-row');
 
-  // Big number scales down and fades, label exits left, bars exit right staggered, text drops
   tl.to(r2El, {opacity:0, scale:0.6, duration:0.4, ease:'power2.in'}, 0)
     .to(ceilLabel, {opacity:0, x:-80, duration:0.35, ease:'power2.in'}, 0)
     .to(ceilText, {opacity:0, y:30, duration:0.3, ease:'power2.in'}, 0.05)
@@ -455,7 +844,7 @@ function ceilingExit(){
   return tl;
 }
 
-// ── CAUSAL WINS ──
+// ── SLIDE 2: CAUSAL WINS ──
 function causalWinsEnter(){
   const tl = gsap.timeline();
   const left = document.getElementById('split-left');
@@ -481,21 +870,228 @@ function causalWinsEnter(){
   tl.to(overlay, {opacity:1, y:0, duration:0.5}, 1.2);
   return tl;
 }
-
 function causalWinsExit(){
   const tl = gsap.timeline();
   const left = document.getElementById('split-left');
   const right = document.getElementById('split-right');
   const overlay = document.getElementById('wins-overlay');
 
-  // Left exits further left, right exits further right, overlay fades up
   tl.to(overlay, {opacity:0, y:-30, duration:0.3, ease:'power2.in'}, 0)
     .to(left, {opacity:0, x:-80, duration:0.4, ease:'power2.in'}, 0.05)
     .to(right, {opacity:0, x:80, duration:0.4, ease:'power2.in'}, 0.05);
   return tl;
 }
 
-// ── COUNTERFACTUAL ──
+// ── SLIDE 3: THE QUESTION (NEW) ──
+function questionEnter(){
+  const tl = gsap.timeline();
+  const main = document.getElementById('question-main');
+  const answer = document.getElementById('question-answer');
+
+  gsap.set(main, {opacity:0, scale:0.95});
+  gsap.set(answer, {opacity:0});
+
+  tl.to(main, {opacity:1, scale:1, duration:0.6, ease:'power2.out'}, 0.1)
+    .to(answer, {opacity:0.9, duration:0.5, ease:'power2.out'}, 0.9);
+  return tl;
+}
+function questionExit(){
+  const tl = gsap.timeline();
+  const main = document.getElementById('question-main');
+  const answer = document.getElementById('question-answer');
+
+  tl.to(answer, {opacity:0, duration:0.25, ease:'power2.in'}, 0)
+    .to(main, {opacity:0, scale:0.92, duration:0.35, ease:'power2.in'}, 0.05);
+  return tl;
+}
+
+// ── SLIDE 4: VIDEO CLIP ──
+function videoClipEnter(){
+  const tl = gsap.timeline();
+  const label = document.getElementById('vc-label');
+  const video = document.getElementById('vc-video');
+  const border = document.querySelector('#video-clip .video-border');
+  const caption = document.getElementById('vc-caption');
+
+  gsap.set(label, {opacity:0, y:-30});
+  gsap.set(border, {opacity:0, scale:0.95});
+  gsap.set(caption, {opacity:0});
+
+  tl.to(label, {opacity:0.5, y:0, duration:0.4, ease:'power2.out'}, 0.1)
+    .to(border, {opacity:1, scale:1, duration:0.5, ease:'power2.out'}, 0.3)
+    .to(caption, {opacity:0.7, duration:0.4}, 0.6)
+    .add(() => { video.play().catch(()=>{}); }, 0.8);
+  return tl;
+}
+function videoClipExit(){
+  const tl = gsap.timeline();
+  const label = document.getElementById('vc-label');
+  const video = document.getElementById('vc-video');
+  const border = document.querySelector('#video-clip .video-border');
+  const caption = document.getElementById('vc-caption');
+
+  video.pause();
+
+  tl.to(caption, {opacity:0, duration:0.25, ease:'power2.in'}, 0)
+    .to(border, {opacity:0, scale:0.9, duration:0.35, ease:'power2.in'}, 0.05)
+    .to(label, {opacity:0, y:-30, duration:0.3, ease:'power2.in'}, 0.05);
+  return tl;
+}
+
+// ── SLIDE 5: PEARL'S LADDER (NEW) ──
+function ladderEnter(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('ladder-title');
+  const rungs = [document.getElementById('rung1'), document.getElementById('rung2'), document.getElementById('rung3')];
+  const caption = document.getElementById('ladder-caption');
+  const colors = ['rgba(255,255,255,0.5)', '#1019EC', '#03E87A'];
+
+  gsap.set(title, {opacity:0, y:-20});
+  gsap.set(caption, {opacity:0});
+  rungs.forEach(r => { gsap.set(r, {opacity:0, x:30, borderLeftColor:'transparent'}); });
+
+  tl.to(title, {opacity:1, y:0, duration:0.4, ease:'power2.out'}, 0.1);
+
+  rungs.forEach((r, i) => {
+    tl.to(r, {opacity:1, x:0, duration:0.4, ease:'power2.out'}, 0.4 + i*0.3)
+      .to(r, {borderLeftColor:colors[i], duration:0.3}, 0.6 + i*0.3);
+  });
+
+  tl.to(caption, {opacity:0.6, duration:0.4}, 1.5);
+  return tl;
+}
+function ladderExit(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('ladder-title');
+  const rungs = [document.getElementById('rung1'), document.getElementById('rung2'), document.getElementById('rung3')];
+  const caption = document.getElementById('ladder-caption');
+
+  tl.to(caption, {opacity:0, duration:0.2}, 0);
+  rungs.forEach((r, i) => {
+    tl.to(r, {opacity:0, x:-30, duration:0.3, ease:'power2.in'}, 0.05 + i*0.08);
+  });
+  tl.to(title, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0.1);
+  return tl;
+}
+
+// ── SLIDE 6: NAIVE MODEL (NEW) ──
+function naiveEnter(){
+  const tl = gsap.timeline();
+  const nodeL = document.getElementById('naive-node-left');
+  const textL = document.getElementById('naive-text-left');
+  const arrow = document.getElementById('naive-arrow-line');
+  const nodeR = document.getElementById('naive-node-right');
+  const textR = document.getElementById('naive-text-right');
+  const textR2 = document.getElementById('naive-text-right2');
+  const forecast = document.getElementById('naive-forecast');
+  const wrong = document.getElementById('naive-wrong');
+
+  gsap.set([nodeL, textL], {opacity:0});
+  gsap.set([nodeR, textR, textR2], {opacity:0});
+  gsap.set(forecast, {opacity:0});
+  gsap.set(wrong, {opacity:0});
+  arrow.style.strokeDashoffset = '270';
+
+  tl.to([nodeL, textL], {opacity:1, duration:0.4, ease:'power2.out'}, 0.1)
+    .to(arrow, {strokeDashoffset:0, duration:0.6, ease:'none'}, 0.4)
+    .to([nodeR, textR, textR2], {opacity:1, duration:0.4, ease:'power2.out'}, 0.8)
+    .to(forecast, {opacity:1, duration:0.4}, 1.2)
+    .to(wrong, {opacity:0.5, duration:0.3}, 1.5);
+  return tl;
+}
+function naiveExit(){
+  const tl = gsap.timeline();
+  const svgWrap = document.getElementById('naive-svg-wrap');
+  const forecast = document.getElementById('naive-forecast');
+  const wrong = document.getElementById('naive-wrong');
+
+  tl.to(wrong, {opacity:0, duration:0.2}, 0)
+    .to(forecast, {opacity:0, duration:0.25}, 0)
+    .to(svgWrap, {opacity:0, scale:0.9, duration:0.35, ease:'power2.in'}, 0.05);
+  return tl;
+}
+
+// ── SLIDE 7: REAL DAG (NEW) ──
+function realDagEnter(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('real-dag-title');
+  const nodes = document.querySelectorAll('#real-dag-svg .dag-node-g');
+  const edges = document.querySelectorAll('#real-dag-svg .dag-edge');
+  const caption = document.getElementById('real-dag-caption');
+
+  gsap.set(title, {opacity:0, y:-20});
+  gsap.set(caption, {opacity:0});
+  nodes.forEach(n => gsap.set(n, {opacity:0}));
+  edges.forEach(e => {
+    const len = e.getTotalLength ? e.getTotalLength() : 100;
+    e.style.strokeDasharray = len;
+    e.style.strokeDashoffset = len;
+  });
+
+  tl.to(title, {opacity:1, y:0, duration:0.4, ease:'power2.out'}, 0.1);
+
+  // Sort nodes by data-idx
+  const sortedNodes = Array.from(nodes).sort((a,b) => +a.dataset.idx - +b.dataset.idx);
+  sortedNodes.forEach((n, i) => {
+    tl.to(n, {opacity:1, duration:0.25, ease:'power2.out'}, 0.3 + i*0.15);
+  });
+
+  // Draw edges as target nodes appear
+  edges.forEach(e => {
+    const toIdx = +e.dataset.to;
+    const startTime = 0.3 + toIdx*0.15;
+    tl.to(e, {strokeDashoffset:0, duration:0.3, ease:'none'}, startTime);
+  });
+
+  tl.to(caption, {opacity:0.6, duration:0.4}, 2.0);
+  return tl;
+}
+function realDagExit(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('real-dag-title');
+  const nodes = document.querySelectorAll('#real-dag-svg .dag-node-g');
+  const edges = document.querySelectorAll('#real-dag-svg .dag-edge');
+  const caption = document.getElementById('real-dag-caption');
+
+  tl.to(caption, {opacity:0, duration:0.2}, 0)
+    .to(edges, {opacity:0, duration:0.25}, 0);
+  nodes.forEach(n => {
+    const rx = (Math.random()-0.5)*100;
+    const ry = (Math.random()-0.5)*80;
+    tl.to(n, {x:rx, y:ry, opacity:0, duration:0.4, ease:'power2.in'}, 0.05);
+  });
+  tl.to(title, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0.1);
+  return tl;
+}
+
+// ── SLIDE 8: FOUR CONFOUNDS (NEW) ──
+function confoundsEnter(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('confounds-title');
+  const cells = ['confound-fork','confound-pipe','confound-collider','confound-desc'].map(id => document.getElementById(id));
+
+  gsap.set(title, {opacity:0, y:-20});
+  cells.forEach(c => gsap.set(c, {opacity:0, y:20}));
+
+  tl.to(title, {opacity:1, y:0, duration:0.4, ease:'power2.out'}, 0.1);
+  cells.forEach((c, i) => {
+    tl.to(c, {opacity:1, y:0, duration:0.35, ease:'power2.out'}, 0.4 + i*0.2);
+  });
+  return tl;
+}
+function confoundsExit(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('confounds-title');
+  const cells = ['confound-desc','confound-collider','confound-pipe','confound-fork'].map(id => document.getElementById(id));
+
+  cells.forEach((c, i) => {
+    tl.to(c, {opacity:0, y:20, duration:0.25, ease:'power2.in'}, i*0.08);
+  });
+  tl.to(title, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0.2);
+  return tl;
+}
+
+// ── SLIDE 9: COUNTERFACTUAL ──
 function counterfactualEnter(){
   const tl = gsap.timeline();
   const interv = document.getElementById('cf-intervention');
@@ -531,7 +1127,6 @@ function counterfactualEnter(){
     .to(xgbText, {opacity:1, duration:0.4}, 1.8);
   return tl;
 }
-
 function counterfactualExit(){
   const tl = gsap.timeline();
   const persona = document.querySelector('#counterfactual .persona');
@@ -540,7 +1135,6 @@ function counterfactualExit(){
   const bigText = document.getElementById('cf-big');
   const xgbText = document.getElementById('cf-xgb');
 
-  // Persona scales down, rows exit right staggered, text fades up
   tl.to(xgbText, {opacity:0, y:-20, duration:0.25, ease:'power2.in'}, 0)
     .to(bigText, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0)
     .to(rows, {opacity:0, x:-40, duration:0.3, stagger:0.03, ease:'power2.in'}, 0.05)
@@ -549,41 +1143,137 @@ function counterfactualExit(){
   return tl;
 }
 
-// ── VIDEO CLIP ──
-function videoClipEnter(){
+// ── SLIDE 10: do(GLP-1) POPULATION (NEW) ──
+function doPopEnter(){
   const tl = gsap.timeline();
-  const label = document.getElementById('vc-label');
-  const video = document.getElementById('vc-video');
-  const border = document.querySelector('#video-clip .video-border');
-  const caption = document.getElementById('vc-caption');
+  const title = document.getElementById('pop-title');
+  const cols = [document.getElementById('pop-col-1'), document.getElementById('pop-col-2'), document.getElementById('pop-col-3')];
+  const caption = document.getElementById('pop-caption');
+  const bars = [
+    {el:document.getElementById('pop-bar-1'), w:'40%'},
+    {el:document.getElementById('pop-bar-2'), w:'55%'},
+    {el:document.getElementById('pop-bar-3a'), w:'2%'},
+    {el:document.getElementById('pop-bar-3b'), w:'80%'}
+  ];
 
-  gsap.set(label, {opacity:0, y:-30});
-  gsap.set(border, {opacity:0, scale:0.95});
+  gsap.set(title, {opacity:0, y:-20});
+  gsap.set(caption, {opacity:0});
+  cols.forEach(c => gsap.set(c, {opacity:0, y:40}));
+  bars.forEach(b => gsap.set(b.el, {width:'0%'}));
+
+  tl.to(title, {opacity:1, y:0, duration:0.4, ease:'power2.out'}, 0.1);
+  cols.forEach((c, i) => {
+    tl.to(c, {opacity:1, y:0, duration:0.4, ease:'power2.out'}, 0.3 + i*0.2);
+  });
+  bars.forEach((b, i) => {
+    tl.to(b.el, {width:b.w, duration:0.5, ease:'power2.out'}, 1.0 + i*0.1);
+  });
+  tl.to(caption, {opacity:0.6, duration:0.4}, 1.6);
+  return tl;
+}
+function doPopExit(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('pop-title');
+  const cols = [document.getElementById('pop-col-1'), document.getElementById('pop-col-2'), document.getElementById('pop-col-3')];
+  const caption = document.getElementById('pop-caption');
+
+  tl.to(caption, {opacity:0, duration:0.2}, 0);
+  cols.reverse().forEach((c, i) => {
+    tl.to(c, {opacity:0, y:40, duration:0.3, ease:'power2.in'}, 0.05 + i*0.08);
+  });
+  tl.to(title, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0.15);
+  return tl;
+}
+
+// ── SLIDE 11: TIME-BOUND EFFECTS (NEW) ──
+function timeBoundEnter(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('tb-title');
+  const sub = document.getElementById('tb-sub');
+  const chartWrap = document.getElementById('tb-chart-wrap');
+  const corrLine = document.getElementById('tb-corr-line');
+  const causalLine = document.getElementById('tb-causal-line');
+  const annots = [document.getElementById('tb-annot1'), document.getElementById('tb-annot2'), document.getElementById('tb-annot3')];
+
+  const corrLen = corrLine.getTotalLength();
+  const causalLen = causalLine.getTotalLength();
+  corrLine.style.strokeDashoffset = corrLen;
+  causalLine.style.strokeDashoffset = causalLen;
+
+  gsap.set(title, {opacity:0, x:60});
+  gsap.set(sub, {opacity:0});
+  gsap.set(chartWrap, {opacity:0});
+  annots.forEach(a => gsap.set(a, {opacity:0}));
+
+  tl.to(title, {opacity:1, x:0, duration:0.4, ease:'power2.out'}, 0.1)
+    .to(sub, {opacity:0.5, duration:0.3}, 0.3)
+    .to(chartWrap, {opacity:1, duration:0.3}, 0.4)
+    .to(corrLine, {strokeDashoffset:0, duration:1.5, ease:'none'}, 0.5)
+    .to(causalLine, {strokeDashoffset:0, duration:1.5, ease:'none'}, 0.5);
+  annots.forEach((a, i) => {
+    tl.to(a, {opacity:1, duration:0.3}, 2.0 + i*0.3);
+  });
+  return tl;
+}
+function timeBoundExit(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('tb-title');
+  const chartWrap = document.getElementById('tb-chart-wrap');
+  const annots = [document.getElementById('tb-annot1'), document.getElementById('tb-annot2'), document.getElementById('tb-annot3')];
+
+  annots.forEach(a => tl.to(a, {opacity:0, duration:0.2}, 0));
+  tl.to(chartWrap, {opacity:0, scale:0.9, duration:0.35, ease:'power2.in'}, 0.05)
+    .to(title, {opacity:0, x:-60, duration:0.3, ease:'power2.in'}, 0.05);
+  return tl;
+}
+
+// ── SLIDE 12: HETEROGENEOUS TREATMENT EFFECTS (NEW) ──
+function hteEnter(){
+  const tl = gsap.timeline();
+  const title = document.getElementById('hte-title');
+  const thead = document.getElementById('hte-thead');
+  const rows = [document.getElementById('hte-row-1'), document.getElementById('hte-row-2'), document.getElementById('hte-row-3'), document.getElementById('hte-row-4')];
+  const callout = document.getElementById('hte-callout');
+  const caption = document.getElementById('hte-caption');
+  const pulseCell = document.getElementById('hte-pulse-cell');
+
+  gsap.set(title, {opacity:0, y:-20});
+  gsap.set(thead, {opacity:0, y:-10});
+  rows.forEach(r => gsap.set(r, {opacity:0, y:10}));
+  gsap.set(callout, {opacity:0});
   gsap.set(caption, {opacity:0});
 
-  tl.to(label, {opacity:0.5, y:0, duration:0.4, ease:'power2.out'}, 0.1)
-    .to(border, {opacity:1, scale:1, duration:0.5, ease:'power2.out'}, 0.3)
-    .to(caption, {opacity:0.7, duration:0.4}, 0.6)
-    .add(() => { video.play().catch(()=>{}); }, 0.8);
+  tl.to(title, {opacity:1, y:0, duration:0.4, ease:'power2.out'}, 0.1)
+    .to(thead, {opacity:1, y:0, duration:0.3, ease:'power2.out'}, 0.3);
+  rows.forEach((r, i) => {
+    tl.to(r, {opacity:1, y:0, duration:0.3, ease:'power2.out'}, 0.5 + i*0.15);
+  });
+  tl.add(() => { pulseCell.classList.add('hte-pulse'); }, 1.2)
+    .to(callout, {opacity:1, duration:0.4}, 1.4)
+    .to(caption, {opacity:0.6, duration:0.4}, 1.6);
   return tl;
 }
-
-function videoClipExit(){
+function hteExit(){
   const tl = gsap.timeline();
-  const label = document.getElementById('vc-label');
-  const video = document.getElementById('vc-video');
-  const border = document.querySelector('#video-clip .video-border');
-  const caption = document.getElementById('vc-caption');
+  const title = document.getElementById('hte-title');
+  const thead = document.getElementById('hte-thead');
+  const rows = [document.getElementById('hte-row-4'), document.getElementById('hte-row-3'), document.getElementById('hte-row-2'), document.getElementById('hte-row-1')];
+  const callout = document.getElementById('hte-callout');
+  const caption = document.getElementById('hte-caption');
+  const pulseCell = document.getElementById('hte-pulse-cell');
 
-  video.pause();
-
-  tl.to(caption, {opacity:0, duration:0.25, ease:'power2.in'}, 0)
-    .to(border, {opacity:0, scale:0.9, duration:0.35, ease:'power2.in'}, 0.05)
-    .to(label, {opacity:0, y:-30, duration:0.3, ease:'power2.in'}, 0.05);
+  pulseCell.classList.remove('hte-pulse');
+  tl.to(caption, {opacity:0, duration:0.2}, 0)
+    .to(callout, {opacity:0, duration:0.2}, 0);
+  rows.forEach((r, i) => {
+    tl.to(r, {opacity:0, y:10, duration:0.25, ease:'power2.in'}, 0.05 + i*0.05);
+  });
+  tl.to(thead, {opacity:0, y:-10, duration:0.25, ease:'power2.in'}, 0.15)
+    .to(title, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0.2);
   return tl;
 }
 
-// ── GLP-1 ──
+// ── SLIDE 13: GLP-1 ──
 function glp1Enter(){
   const tl = gsap.timeline();
   const jpEl = document.getElementById('jp-line');
@@ -613,7 +1303,6 @@ function glp1Enter(){
     .to(concl, {opacity:0.8, y:0, duration:0.4}, 1.6);
   return tl;
 }
-
 function glp1Exit(){
   const tl = gsap.timeline();
   const title = document.querySelector('#glp1 .glp1-title');
@@ -622,7 +1311,6 @@ function glp1Exit(){
   const concl = document.getElementById('glp1-conclusion');
   const annot = document.getElementById('glp1-annot');
 
-  // Chart scales down, title exits left, conclusion fades
   tl.to(annot, {opacity:0, duration:0.2}, 0)
     .to(concl, {opacity:0, y:30, duration:0.3, ease:'power2.in'}, 0)
     .to(chartWrap, {opacity:0, scale:0.85, duration:0.4, ease:'power2.in'}, 0.05)
@@ -631,7 +1319,30 @@ function glp1Exit(){
   return tl;
 }
 
-// ── ENVIRONMENT ──
+// ── SLIDE 14: FROM THEORY TO SYSTEM (NEW) ──
+function theoryEnter(){
+  const tl = gsap.timeline();
+  const line1 = document.getElementById('theory-line1');
+  const line2 = document.getElementById('theory-line2');
+
+  gsap.set(line1, {opacity:0});
+  gsap.set(line2, {opacity:0});
+
+  tl.to(line1, {opacity:0.7, duration:0.5, ease:'power2.out'}, 0.2)
+    .to(line2, {opacity:1, duration:0.5, ease:'power2.out'}, 0.7);
+  return tl;
+}
+function theoryExit(){
+  const tl = gsap.timeline();
+  const line1 = document.getElementById('theory-line1');
+  const line2 = document.getElementById('theory-line2');
+
+  tl.to(line1, {opacity:0, x:-80, duration:0.35, ease:'power2.in'}, 0)
+    .to(line2, {opacity:0, x:80, duration:0.35, ease:'power2.in'}, 0);
+  return tl;
+}
+
+// ── SLIDE 15: ENVIRONMENT / AGENT ARCHITECTURE ──
 function envEnter(){
   const tl = gsap.timeline();
   const nodes = document.querySelectorAll('#dag-flow .dag-node');
@@ -654,7 +1365,6 @@ function envEnter(){
   tl.to(envText, {opacity:0.8, y:0, duration:0.5}, 1.2);
   return tl;
 }
-
 function envExit(){
   const tl = gsap.timeline();
   const nodes = document.querySelectorAll('#dag-flow .dag-node');
@@ -662,7 +1372,6 @@ function envExit(){
   const envText = document.getElementById('env-text');
   const title = document.querySelector('#environment .env-title');
 
-  // Nodes scatter upward staggered, title exits right
   tl.to(envText, {opacity:0, y:30, duration:0.3, ease:'power2.in'}, 0)
     .to(arrows, {opacity:0, duration:0.2}, 0)
     .to(nodes, {opacity:0, y:-30, duration:0.3, stagger:0.03, ease:'power2.in'}, 0.05)
@@ -670,7 +1379,7 @@ function envExit(){
   return tl;
 }
 
-// ── BOTTOM LINE ──
+// ── SLIDE 16: BOTTOM LINE / CAPABILITY TABLE ──
 function bottomlineEnter(){
   const tl = gsap.timeline();
   const rows = document.querySelectorAll('#cap-table tbody tr');
@@ -685,50 +1394,91 @@ function bottomlineEnter(){
   });
   return tl;
 }
-
 function bottomlineExit(){
   const tl = gsap.timeline();
   const rows = document.querySelectorAll('#cap-table tbody tr');
   const thead = document.querySelector('#cap-table thead tr');
 
-  // Rows exit down staggered from bottom, header fades up
   const rowArr = Array.from(rows).reverse();
   tl.to(rowArr, {opacity:0, x:40, duration:0.25, stagger:0.03, ease:'power2.in'}, 0)
     .to(thead, {opacity:0, y:-20, duration:0.3, ease:'power2.in'}, 0.1);
   return tl;
 }
 
-// ── CLOSING ──
+// ── SLIDE 17: CLOSING ──
 function closingEnter(){
   const tl = gsap.timeline();
   const c1 = document.getElementById('close1');
   const c2 = document.getElementById('close2');
   const c3 = document.getElementById('close3');
+  const c4 = document.getElementById('close4');
 
   gsap.set(c1, {opacity:0, x:80});
   gsap.set(c2, {opacity:0, x:-80});
   gsap.set(c3, {opacity:0});
+  gsap.set(c4, {opacity:0});
 
   tl.to(c1, {opacity:1, x:0, duration:0.6, ease:'power2.out'}, 0.2)
     .to(c2, {opacity:1, x:0, duration:0.6, ease:'power2.out'}, 0.6)
-    .to(c3, {opacity:0.5, duration:0.5}, 1.1);
+    .to(c3, {opacity:0.8, duration:0.5}, 1.0)
+    .to(c4, {opacity:0.5, duration:0.5}, 1.4);
   return tl;
 }
-
 function closingExit(){
   const tl = gsap.timeline();
   const c1 = document.getElementById('close1');
   const c2 = document.getElementById('close2');
   const c3 = document.getElementById('close3');
+  const c4 = document.getElementById('close4');
 
-  tl.to(c3, {opacity:0, duration:0.2}, 0)
+  tl.to(c4, {opacity:0, duration:0.2}, 0)
+    .to(c3, {opacity:0, duration:0.2}, 0)
     .to(c2, {opacity:0, x:80, duration:0.35, ease:'power2.in'}, 0)
     .to(c1, {opacity:0, x:-80, duration:0.35, ease:'power2.in'}, 0.05);
   return tl;
 }
 
-const enterFns = [heroEnter, ceilingEnter, causalWinsEnter, counterfactualEnter, videoClipEnter, glp1Enter, envEnter, bottomlineEnter, closingEnter];
-const exitFns  = [heroExit, ceilingExit, causalWinsExit, counterfactualExit, videoClipExit, glp1Exit, envExit, bottomlineExit, closingExit];
+// ── ALL 18 ENTER/EXIT FUNCTIONS ──
+const enterFns = [
+  heroEnter,           // 0: Hero
+  ceilingEnter,        // 1: Ceiling
+  causalWinsEnter,     // 2: Causal Wins
+  questionEnter,       // 3: The Question (NEW)
+  videoClipEnter,      // 4: Video Clip
+  ladderEnter,         // 5: Pearl's Ladder (NEW)
+  naiveEnter,          // 6: Naive Model (NEW)
+  realDagEnter,        // 7: Real DAG (NEW)
+  confoundsEnter,      // 8: Four Confounds (NEW)
+  counterfactualEnter, // 9: Counterfactual
+  doPopEnter,          // 10: do(GLP-1) Population (NEW)
+  timeBoundEnter,      // 11: Time-Bound Effects (NEW)
+  hteEnter,            // 12: HTE (NEW)
+  glp1Enter,           // 13: GLP-1 Divergence
+  theoryEnter,         // 14: From Theory to System (NEW)
+  envEnter,            // 15: Agent Architecture
+  bottomlineEnter,     // 16: Capability Table
+  closingEnter         // 17: Closing
+];
+const exitFns = [
+  heroExit,            // 0
+  ceilingExit,         // 1
+  causalWinsExit,      // 2
+  questionExit,        // 3
+  videoClipExit,       // 4
+  ladderExit,          // 5
+  naiveExit,           // 6
+  realDagExit,         // 7
+  confoundsExit,       // 8
+  counterfactualExit,  // 9
+  doPopExit,           // 10
+  timeBoundExit,       // 11
+  hteExit,             // 12
+  glp1Exit,            // 13
+  theoryExit,          // 14
+  envExit,             // 15
+  bottomlineExit,      // 16
+  closingExit          // 17
+];
 
 // ══════════════════════════════════════════
 //  SLIDE TRANSITIONS — overlapping content
