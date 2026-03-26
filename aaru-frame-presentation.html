@@ -98,6 +98,12 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 .cap-table th:nth-child(2),.cap-table th:nth-child(3){text-align:center}
 .check{color:#03E87A}.cross{color:rgba(255,255,255,0.2)}
 
+/* Video Clip */
+.video-clip-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:80vw}
+.video-clip-container video{width:100%;max-height:70vh;object-fit:contain;background:#111;display:block}
+.video-border{border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;margin:20px 0}
+.video-caption{font-style:italic;opacity:0.7;text-align:center;margin-top:16px}
+
 /* Closing */
 .close-line{font-size:clamp(28px,5vw,56px);font-weight:700;opacity:0;margin:12px 0;font-family:'Inter',sans-serif}
 .close-byline{font-size:18px;opacity:0;margin-top:40px;font-style:italic}
@@ -162,8 +168,23 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 4: GLP-1 -->
-<div class="slide" data-slide="4" id="glp1">
+<!-- SLIDE 4: VIDEO CLIP -->
+<div class="slide" data-slide="4" id="video-clip">
+<div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
+<div class="label" id="vc-label">CNBC SQUAWK BOX — GLP-1 MARKET IMPACT</div>
+<div class="video-clip-container">
+<div class="video-border">
+<video id="vc-video" controls preload="metadata" style="background:#111">
+<source src="video/squawk-box-glp1-clip.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+<p class="body-text video-caption" id="vc-caption">The consensus model predicted a simple demand shift. The market told a different story.</p>
+</div>
+</div>
+
+<!-- SLIDE 5: GLP-1 -->
+<div class="slide" data-slide="5" id="glp1">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="glp1-title heading">GLP-1 Impact Divergence</div>
 <div class="glp1-sub">Republican vote share change over 24 months</div>
@@ -175,8 +196,8 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 5: ENVIRONMENT -->
-<div class="slide" data-slide="5" id="environment">
+<!-- SLIDE 6: ENVIRONMENT -->
+<div class="slide" data-slide="6" id="environment">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="env-title heading">Agent Architecture</div>
 <div class="dag-flow" id="dag-flow">
@@ -191,8 +212,8 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 6: BOTTOM LINE -->
-<div class="slide" data-slide="6" id="bottomline">
+<!-- SLIDE 7: BOTTOM LINE -->
+<div class="slide" data-slide="7" id="bottomline">
 <div class="slide-inner" style="display:flex;justify-content:center">
 <table class="cap-table" id="cap-table">
 <thead><tr style="opacity:1;transform:none"><th>Capability</th><th>XGBoost</th><th>Causal VAE</th></tr></thead>
@@ -209,8 +230,8 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 </div>
 </div>
 
-<!-- SLIDE 7: CLOSING -->
-<div class="slide" data-slide="7" id="closing">
+<!-- SLIDE 8: CLOSING -->
+<div class="slide" data-slide="8" id="closing">
 <div class="slide-inner" style="text-align:center">
 <div class="close-line" id="close1">Prediction is table stakes.</div>
 <div class="close-line" id="close2">Intervention design is the moat.</div>
@@ -223,14 +244,14 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Inter',sans-serif}
 <!-- Navigation dots -->
 <div class="slide-nav" id="slide-nav"></div>
 <div class="slide-hint" id="slide-hint">← → or click to navigate</div>
-<div class="slide-counter" id="slide-counter">1 / 8</div>
+<div class="slide-counter" id="slide-counter">1 / 9</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function(){
 'use strict';
 
-const SLIDE_COUNT = 8;
+const SLIDE_COUNT = 9;
 let current = 0;
 let transitioning = false;
 const OVERLAP = 0.25; // seconds of overlap between exit and enter
@@ -528,6 +549,40 @@ function counterfactualExit(){
   return tl;
 }
 
+// ── VIDEO CLIP ──
+function videoClipEnter(){
+  const tl = gsap.timeline();
+  const label = document.getElementById('vc-label');
+  const video = document.getElementById('vc-video');
+  const border = document.querySelector('#video-clip .video-border');
+  const caption = document.getElementById('vc-caption');
+
+  gsap.set(label, {opacity:0, y:-30});
+  gsap.set(border, {opacity:0, scale:0.95});
+  gsap.set(caption, {opacity:0});
+
+  tl.to(label, {opacity:0.5, y:0, duration:0.4, ease:'power2.out'}, 0.1)
+    .to(border, {opacity:1, scale:1, duration:0.5, ease:'power2.out'}, 0.3)
+    .to(caption, {opacity:0.7, duration:0.4}, 0.6)
+    .add(() => { video.play().catch(()=>{}); }, 0.8);
+  return tl;
+}
+
+function videoClipExit(){
+  const tl = gsap.timeline();
+  const label = document.getElementById('vc-label');
+  const video = document.getElementById('vc-video');
+  const border = document.querySelector('#video-clip .video-border');
+  const caption = document.getElementById('vc-caption');
+
+  video.pause();
+
+  tl.to(caption, {opacity:0, duration:0.25, ease:'power2.in'}, 0)
+    .to(border, {opacity:0, scale:0.9, duration:0.35, ease:'power2.in'}, 0.05)
+    .to(label, {opacity:0, y:-30, duration:0.3, ease:'power2.in'}, 0.05);
+  return tl;
+}
+
 // ── GLP-1 ──
 function glp1Enter(){
   const tl = gsap.timeline();
@@ -672,8 +727,8 @@ function closingExit(){
   return tl;
 }
 
-const enterFns = [heroEnter, ceilingEnter, causalWinsEnter, counterfactualEnter, glp1Enter, envEnter, bottomlineEnter, closingEnter];
-const exitFns  = [heroExit, ceilingExit, causalWinsExit, counterfactualExit, glp1Exit, envExit, bottomlineExit, closingExit];
+const enterFns = [heroEnter, ceilingEnter, causalWinsEnter, counterfactualEnter, videoClipEnter, glp1Enter, envEnter, bottomlineEnter, closingEnter];
+const exitFns  = [heroExit, ceilingExit, causalWinsExit, counterfactualExit, videoClipExit, glp1Exit, envExit, bottomlineExit, closingExit];
 
 // ══════════════════════════════════════════
 //  SLIDE TRANSITIONS — overlapping content
