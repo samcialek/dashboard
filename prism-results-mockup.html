@@ -411,7 +411,7 @@
 <!-- SECTION 4: NODE PROFILE -->
 <section id="profile-section">
   <div class="container">
-    <div class="section-label">Node Profile · 14 Dimensions</div>
+    <div class="section-label">Your Profile · 14 Dimensions</div>
     <div class="nodes-grid" id="nodes-grid"></div>
   </div>
 </section>
@@ -708,7 +708,8 @@
   const clusterLabels = { ENDS: 'ENDS — What You Want', MEANS: 'MEANS — How You Get There', REALITY: 'REALITY — How You See the World', SELF: 'SELF — Who You Are' };
 
   clusterOrder.forEach(clusterName => {
-    const clusterDims = dimensions.filter(d => d.cluster === clusterName);
+    const clusterDims = dimensions.filter(d => d.cluster === clusterName)
+      .sort((a, b) => b.sal - a.sal); // Sort by salience, highest first
     if (clusterDims.length === 0) return;
 
     const block = document.createElement('div');
@@ -718,16 +719,17 @@
     clusterDims.forEach(d => {
       const pct = ((d.pos - 1) / 4) * 100;
       const color = clusterColors[d.cluster] || 'var(--pool-deep)';
+      const barH = Math.round(8 + d.sal * 14); // 8px min, 22px max based on salience
       const row = document.createElement('div');
       row.className = 'node-row';
       row.style.opacity = 0.4 + d.sal * 0.6;
       row.style.gridTemplateColumns = '130px 1fr 40px';
       row.innerHTML = `
-        <div class="node-name" style="font-size:0.78rem;color:#bbb;">${d.name}</div>
+        <div class="node-name" style="font-size:0.78rem;color:#bbb;">${d.name}<span style="font-size:0.55rem;color:#555;margin-left:6px;">${Math.round(d.sal * 100)}%</span></div>
         <div class="node-bar-wrap">
-          <div class="node-bar">
-            <div class="node-bar-segment" style="width:${pct}%;background:${color};"></div>
-            <div class="node-bar-marker" style="left:${pct}%;"></div>
+          <div class="node-bar" style="height:${barH}px;">
+            <div class="node-bar-segment" style="width:${pct}%;background:${color};height:100%;"></div>
+            <div class="node-bar-marker" style="left:${pct}%;top:-3px;height:${barH+6}px;"></div>
           </div>
           <div class="node-labels"><span style="${d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="${d.pos > 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.high}</span></div>
         </div>
