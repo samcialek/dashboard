@@ -1,0 +1,2612 @@
+{
+  "archetype": {
+    "id": "134",
+    "name": "Progressive Civic Nationalist"
+  },
+  "elections": [
+    {
+      "y": 1789,
+      "c": "Washington",
+      "p": "other"
+    },
+    {
+      "y": 1792,
+      "c": "Washington",
+      "p": "other"
+    },
+    {
+      "y": 1796,
+      "c": "Jefferson",
+      "p": "dem"
+    },
+    {
+      "y": 1800,
+      "c": "Jefferson",
+      "p": "dem"
+    },
+    {
+      "y": 1804,
+      "c": "Jefferson",
+      "p": "dem"
+    },
+    {
+      "y": 1808,
+      "c": "Madison",
+      "p": "dem"
+    },
+    {
+      "y": 1812,
+      "c": "Madison",
+      "p": "dem"
+    },
+    {
+      "y": 1816,
+      "c": "Monroe",
+      "p": "dem"
+    },
+    {
+      "y": 1820,
+      "c": "Monroe",
+      "p": "dem"
+    },
+    {
+      "y": 1824,
+      "c": "Jackson",
+      "p": "dem"
+    },
+    {
+      "y": 1828,
+      "c": "Jackson",
+      "p": "dem"
+    },
+    {
+      "y": 1832,
+      "c": "Jackson",
+      "p": "dem"
+    },
+    {
+      "y": 1836,
+      "c": "Van Buren",
+      "p": "dem"
+    },
+    {
+      "y": 1840,
+      "c": "Harrison",
+      "p": "rep"
+    },
+    {
+      "y": 1844,
+      "c": "Polk",
+      "p": "dem"
+    },
+    {
+      "y": 1848,
+      "c": "Van Buren",
+      "p": "dem"
+    },
+    {
+      "y": 1852,
+      "c": "Pierce",
+      "p": "dem"
+    },
+    {
+      "y": 1856,
+      "c": "Fremont",
+      "p": "rep"
+    },
+    {
+      "y": 1860,
+      "c": "Lincoln",
+      "p": "rep"
+    },
+    {
+      "y": 1864,
+      "c": "Lincoln",
+      "p": "rep"
+    },
+    {
+      "y": 1868,
+      "c": "Grant",
+      "p": "rep"
+    },
+    {
+      "y": 1872,
+      "c": "Greeley",
+      "p": "other"
+    },
+    {
+      "y": 1876,
+      "c": "Tilden",
+      "p": "dem"
+    },
+    {
+      "y": 1880,
+      "c": "Hancock",
+      "p": "dem"
+    },
+    {
+      "y": 1884,
+      "c": "Blaine",
+      "p": "rep"
+    },
+    {
+      "y": 1888,
+      "c": "Cleveland",
+      "p": "dem"
+    },
+    {
+      "y": 1892,
+      "c": "Weaver",
+      "p": "third"
+    },
+    {
+      "y": 1896,
+      "c": "Bryan",
+      "p": "dem"
+    },
+    {
+      "y": 1900,
+      "c": "Bryan",
+      "p": "dem"
+    },
+    {
+      "y": 1904,
+      "c": "Roosevelt",
+      "p": "rep"
+    },
+    {
+      "y": 1908,
+      "c": "Bryan",
+      "p": "dem"
+    },
+    {
+      "y": 1912,
+      "c": "Wilson",
+      "p": "dem"
+    },
+    {
+      "y": 1916,
+      "c": "Wilson",
+      "p": "dem"
+    },
+    {
+      "y": 1920,
+      "c": "Harding",
+      "p": "rep"
+    },
+    {
+      "y": 1924,
+      "c": "Davis",
+      "p": "dem"
+    },
+    {
+      "y": 1928,
+      "c": "Smith",
+      "p": "dem"
+    },
+    {
+      "y": 1932,
+      "c": "Roosevelt",
+      "p": "dem"
+    },
+    {
+      "y": 1936,
+      "c": "Roosevelt",
+      "p": "dem"
+    },
+    {
+      "y": 1940,
+      "c": "Roosevelt",
+      "p": "dem"
+    },
+    {
+      "y": 1944,
+      "c": "Roosevelt",
+      "p": "dem"
+    },
+    {
+      "y": 1948,
+      "c": "Truman",
+      "p": "dem"
+    },
+    {
+      "y": 1952,
+      "c": "Stevenson",
+      "p": "dem"
+    },
+    {
+      "y": 1956,
+      "c": "Stevenson",
+      "p": "dem"
+    },
+    {
+      "y": 1960,
+      "c": "Kennedy",
+      "p": "dem"
+    },
+    {
+      "y": 1964,
+      "c": "Johnson",
+      "p": "dem"
+    },
+    {
+      "y": 1968,
+      "c": "Humphrey",
+      "p": "dem"
+    },
+    {
+      "y": 1972,
+      "c": "Nixon",
+      "p": "rep"
+    },
+    {
+      "y": 1976,
+      "c": "Carter",
+      "p": "dem"
+    },
+    {
+      "y": 1980,
+      "c": "Reagan",
+      "p": "rep"
+    },
+    {
+      "y": 1984,
+      "c": "Reagan",
+      "p": "rep"
+    },
+    {
+      "y": 1988,
+      "c": "Bush",
+      "p": "rep"
+    },
+    {
+      "y": 1992,
+      "c": "Clinton",
+      "p": "dem"
+    },
+    {
+      "y": 1996,
+      "c": "Clinton",
+      "p": "dem"
+    },
+    {
+      "y": 2000,
+      "c": "Gore",
+      "p": "dem"
+    },
+    {
+      "y": 2004,
+      "c": "Kerry",
+      "p": "dem"
+    },
+    {
+      "y": 2008,
+      "c": "Obama",
+      "p": "dem"
+    },
+    {
+      "y": 2012,
+      "c": "Obama",
+      "p": "dem"
+    },
+    {
+      "y": 2016,
+      "c": "Clinton",
+      "p": "dem"
+    },
+    {
+      "y": 2020,
+      "c": "Biden",
+      "p": "dem"
+    },
+    {
+      "y": 2024,
+      "c": "Harris",
+      "p": "dem"
+    }
+  ],
+  "alignments": {
+    "United Kingdom": [
+      {
+        "regime": "Georgian Britain",
+        "start": 1789,
+        "end": 1819,
+        "score": 0.535
+      },
+      {
+        "regime": "Reform Era",
+        "start": 1820,
+        "end": 1848,
+        "score": 1.474
+      },
+      {
+        "regime": "Victorian Peak",
+        "start": 1849,
+        "end": 1874,
+        "score": 0.63
+      },
+      {
+        "regime": "Late Victorian/Edwardian",
+        "start": 1875,
+        "end": 1913,
+        "score": 1.272
+      },
+      {
+        "regime": "WWI & Lloyd George",
+        "start": 1914,
+        "end": 1922,
+        "score": 1.647
+      },
+      {
+        "regime": "Interwar",
+        "start": 1923,
+        "end": 1938,
+        "score": 1.052
+      },
+      {
+        "regime": "WWII Britain",
+        "start": 1939,
+        "end": 1945,
+        "score": 1.37
+      },
+      {
+        "regime": "Attlee/Consensus",
+        "start": 1946,
+        "end": 1964,
+        "score": 2.223
+      },
+      {
+        "regime": "Wilson/Heath",
+        "start": 1965,
+        "end": 1978,
+        "score": 2.434
+      },
+      {
+        "regime": "Thatcher Era",
+        "start": 1979,
+        "end": 1990,
+        "score": -0.042
+      },
+      {
+        "regime": "New Labour/Blair",
+        "start": 1991,
+        "end": 2009,
+        "score": 1.964
+      },
+      {
+        "regime": "Austerity/Brexit",
+        "start": 2010,
+        "end": 2026,
+        "score": 0.646
+      }
+    ],
+    "France": [
+      {
+        "regime": "Ancien Regime remnant",
+        "start": 1789,
+        "end": 1791,
+        "score": 0.368
+      },
+      {
+        "regime": "French Revolution",
+        "start": 1792,
+        "end": 1799,
+        "score": 0.56
+      },
+      {
+        "regime": "Napoleonic Empire",
+        "start": 1800,
+        "end": 1814,
+        "score": 1.379
+      },
+      {
+        "regime": "Restoration",
+        "start": 1815,
+        "end": 1829,
+        "score": -0.042
+      },
+      {
+        "regime": "July Monarchy",
+        "start": 1830,
+        "end": 1847,
+        "score": 0.654
+      },
+      {
+        "regime": "Second Republic",
+        "start": 1848,
+        "end": 1851,
+        "score": 2.257
+      },
+      {
+        "regime": "Second Empire",
+        "start": 1852,
+        "end": 1870,
+        "score": 1.106
+      },
+      {
+        "regime": "Third Republic Early",
+        "start": 1871,
+        "end": 1899,
+        "score": 1.835
+      },
+      {
+        "regime": "Third Republic Late",
+        "start": 1900,
+        "end": 1939,
+        "score": 1.709
+      },
+      {
+        "regime": "Vichy France",
+        "start": 1940,
+        "end": 1944,
+        "score": -0.579
+      },
+      {
+        "regime": "Fourth Republic",
+        "start": 1946,
+        "end": 1957,
+        "score": 1.857
+      },
+      {
+        "regime": "Fifth Republic Gaullist",
+        "start": 1958,
+        "end": 1980,
+        "score": 1.467
+      },
+      {
+        "regime": "Fifth Republic Modern",
+        "start": 1981,
+        "end": 2026,
+        "score": 2.199
+      }
+    ],
+    "Germany/Prussia": [
+      {
+        "regime": "Prussian Reform Era",
+        "start": 1789,
+        "end": 1814,
+        "score": 0.844
+      },
+      {
+        "regime": "German Confederation",
+        "start": 1815,
+        "end": 1847,
+        "score": 0.694
+      },
+      {
+        "regime": "1848 Revolution",
+        "start": 1848,
+        "end": 1849,
+        "score": 1.997
+      },
+      {
+        "regime": "Bismarck Era",
+        "start": 1850,
+        "end": 1890,
+        "score": 1.126
+      },
+      {
+        "regime": "Wilhelmine",
+        "start": 1891,
+        "end": 1913,
+        "score": 0.768
+      },
+      {
+        "regime": "WWI Germany",
+        "start": 1914,
+        "end": 1918,
+        "score": 0.225
+      },
+      {
+        "regime": "Weimar Republic",
+        "start": 1919,
+        "end": 1932,
+        "score": 1.867
+      },
+      {
+        "regime": "Nazi Germany",
+        "start": 1933,
+        "end": 1945,
+        "score": -0.224
+      },
+      {
+        "regime": "Occupied Germany",
+        "start": 1945,
+        "end": 1948,
+        "score": 1.709
+      },
+      {
+        "regime": "West Germany/Bonn Republic",
+        "start": 1949,
+        "end": 1989,
+        "score": 1.772
+      },
+      {
+        "regime": "East Germany/DDR",
+        "start": 1949,
+        "end": 1989,
+        "score": 0.88
+      },
+      {
+        "regime": "Reunified Germany",
+        "start": 1990,
+        "end": 2026,
+        "score": 1.899
+      }
+    ],
+    "Russia/USSR": [
+      {
+        "regime": "Tsarist Russia Late Catherine/Alexander I",
+        "start": 1789,
+        "end": 1825,
+        "score": -0.391
+      },
+      {
+        "regime": "Nicholas I",
+        "start": 1826,
+        "end": 1855,
+        "score": -0.408
+      },
+      {
+        "regime": "Great Reforms",
+        "start": 1856,
+        "end": 1881,
+        "score": 1.272
+      },
+      {
+        "regime": "Reaction/Late Tsarist",
+        "start": 1882,
+        "end": 1904,
+        "score": -0.068
+      },
+      {
+        "regime": "Revolution Era",
+        "start": 1905,
+        "end": 1917,
+        "score": 1.126
+      },
+      {
+        "regime": "Soviet Early/Lenin",
+        "start": 1918,
+        "end": 1928,
+        "score": 1.037
+      },
+      {
+        "regime": "Stalin",
+        "start": 1929,
+        "end": 1953,
+        "score": 0.14
+      },
+      {
+        "regime": "Khrushchev Thaw",
+        "start": 1954,
+        "end": 1964,
+        "score": 1.921
+      },
+      {
+        "regime": "Brezhnev Stagnation",
+        "start": 1965,
+        "end": 1984,
+        "score": 1.37
+      },
+      {
+        "regime": "Gorbachev/Collapse",
+        "start": 1985,
+        "end": 1991,
+        "score": 2.131
+      },
+      {
+        "regime": "Yeltsin",
+        "start": 1992,
+        "end": 1999,
+        "score": 0.443
+      },
+      {
+        "regime": "Putin Era",
+        "start": 2000,
+        "end": 2026,
+        "score": -0.164
+      }
+    ],
+    "Spain": [
+      {
+        "regime": "Bourbon Spain/Napoleonic",
+        "start": 1789,
+        "end": 1813,
+        "score": 0.091
+      },
+      {
+        "regime": "Liberal-Absolutist struggle",
+        "start": 1814,
+        "end": 1833,
+        "score": 0.05
+      },
+      {
+        "regime": "Isabella/Moderate Monarchy",
+        "start": 1834,
+        "end": 1868,
+        "score": 1.188
+      },
+      {
+        "regime": "Sexenio/Restoration",
+        "start": 1869,
+        "end": 1897,
+        "score": 1.052
+      },
+      {
+        "regime": "Crisis/Primo",
+        "start": 1898,
+        "end": 1930,
+        "score": 0.743
+      },
+      {
+        "regime": "Second Republic",
+        "start": 1931,
+        "end": 1936,
+        "score": 2.02
+      },
+      {
+        "regime": "Civil War/Franco",
+        "start": 1936,
+        "end": 1959,
+        "score": -0.345
+      },
+      {
+        "regime": "Late Franco",
+        "start": 1960,
+        "end": 1975,
+        "score": -0.157
+      },
+      {
+        "regime": "Transition",
+        "start": 1976,
+        "end": 1982,
+        "score": 1.899
+      },
+      {
+        "regime": "PSOE/PP Democracy",
+        "start": 1983,
+        "end": 2007,
+        "score": 2.03
+      },
+      {
+        "regime": "Crisis Spain",
+        "start": 2008,
+        "end": 2026,
+        "score": 1.74
+      }
+    ],
+    "Italy": [
+      {
+        "regime": "Italian States/Napoleonic",
+        "start": 1789,
+        "end": 1814,
+        "score": 0.946
+      },
+      {
+        "regime": "Restoration/Risorgimento",
+        "start": 1815,
+        "end": 1860,
+        "score": 2.03
+      },
+      {
+        "regime": "Liberal Italy",
+        "start": 1861,
+        "end": 1913,
+        "score": 1.244
+      },
+      {
+        "regime": "WWI Italy/Crisis",
+        "start": 1914,
+        "end": 1921,
+        "score": 0.914
+      },
+      {
+        "regime": "Fascist Italy",
+        "start": 1922,
+        "end": 1943,
+        "score": 0.147
+      },
+      {
+        "regime": "Post-war Republic",
+        "start": 1946,
+        "end": 1968,
+        "score": 1.321
+      },
+      {
+        "regime": "Years of Lead",
+        "start": 1969,
+        "end": 1983,
+        "score": 1.526
+      },
+      {
+        "regime": "Craxi/First Republic End",
+        "start": 1984,
+        "end": 1993,
+        "score": 1.079
+      },
+      {
+        "regime": "Second Republic",
+        "start": 1994,
+        "end": 2012,
+        "score": 1.329
+      },
+      {
+        "regime": "Populist Italy",
+        "start": 2013,
+        "end": 2026,
+        "score": 1.467
+      }
+    ],
+    "Austria/Austria-Hungary": [
+      {
+        "regime": "Habsburg Enlightened Absolutism",
+        "start": 1789,
+        "end": 1814,
+        "score": 0.844
+      },
+      {
+        "regime": "Metternich System",
+        "start": 1815,
+        "end": 1847,
+        "score": 0.324
+      },
+      {
+        "regime": "1848/Neo-Absolutism",
+        "start": 1848,
+        "end": 1866,
+        "score": 0.793
+      },
+      {
+        "regime": "Austria-Hungary Dual Monarchy",
+        "start": 1867,
+        "end": 1913,
+        "score": 1.272
+      },
+      {
+        "regime": "WWI/Collapse",
+        "start": 1914,
+        "end": 1918,
+        "score": 0.384
+      },
+      {
+        "regime": "First Republic",
+        "start": 1919,
+        "end": 1933,
+        "score": 1.825
+      },
+      {
+        "regime": "Austrofascism/Anschluss",
+        "start": 1934,
+        "end": 1945,
+        "score": -0.579
+      },
+      {
+        "regime": "Second Republic Consensus",
+        "start": 1945,
+        "end": 1986,
+        "score": 1.803
+      },
+      {
+        "regime": "Modern Austria",
+        "start": 1987,
+        "end": 2026,
+        "score": 2.097
+      }
+    ],
+    "Ottoman Empire/Turkey": [
+      {
+        "regime": "Late Ottoman",
+        "start": 1789,
+        "end": 1807,
+        "score": 0.646
+      },
+      {
+        "regime": "Tanzimat",
+        "start": 1808,
+        "end": 1876,
+        "score": 1.445
+      },
+      {
+        "regime": "Hamidian Era",
+        "start": 1877,
+        "end": 1907,
+        "score": 0.237
+      },
+      {
+        "regime": "Young Turks/WWI",
+        "start": 1908,
+        "end": 1918,
+        "score": 0.065
+      },
+      {
+        "regime": "Kemalist Republic",
+        "start": 1919,
+        "end": 1937,
+        "score": 1.181
+      },
+      {
+        "regime": "Multi-party Turkey",
+        "start": 1938,
+        "end": 1959,
+        "score": 1.188
+      },
+      {
+        "regime": "Coup/Instability Era",
+        "start": 1960,
+        "end": 1979,
+        "score": 1.126
+      },
+      {
+        "regime": "Ozal/Secular Republic",
+        "start": 1980,
+        "end": 2001,
+        "score": 1.272
+      },
+      {
+        "regime": "Erdogan Era",
+        "start": 2002,
+        "end": 2026,
+        "score": 0.34
+      }
+    ],
+    "Poland": [
+      {
+        "regime": "Partition Era",
+        "start": 1789,
+        "end": 1830,
+        "score": 0.694
+      },
+      {
+        "regime": "November/January Uprisings",
+        "start": 1831,
+        "end": 1863,
+        "score": 0.837
+      },
+      {
+        "regime": "Organic Work/Positivism",
+        "start": 1864,
+        "end": 1913,
+        "score": 1.932
+      },
+      {
+        "regime": "Second Republic",
+        "start": 1918,
+        "end": 1926,
+        "score": 1.74
+      },
+      {
+        "regime": "Sanacja/Pilsudski",
+        "start": 1926,
+        "end": 1939,
+        "score": 1.379
+      },
+      {
+        "regime": "WWII/Occupation",
+        "start": 1939,
+        "end": 1944,
+        "score": -0.187
+      },
+      {
+        "regime": "Stalinist Poland",
+        "start": 1945,
+        "end": 1956,
+        "score": 0.88
+      },
+      {
+        "regime": "Gomulka/Gierek",
+        "start": 1957,
+        "end": 1980,
+        "score": 1.399
+      },
+      {
+        "regime": "Solidarity/Transition",
+        "start": 1981,
+        "end": 1997,
+        "score": 1.358
+      },
+      {
+        "regime": "PiS Poland",
+        "start": 1998,
+        "end": 2026,
+        "score": 1.209
+      }
+    ],
+    "Netherlands": [
+      {
+        "regime": "Batavian/French Period",
+        "start": 1789,
+        "end": 1813,
+        "score": 1.997
+      },
+      {
+        "regime": "United Kingdom of Netherlands",
+        "start": 1814,
+        "end": 1830,
+        "score": 1.445
+      },
+      {
+        "regime": "Liberal Era",
+        "start": 1831,
+        "end": 1887,
+        "score": 0.702
+      },
+      {
+        "regime": "Pillarization",
+        "start": 1888,
+        "end": 1939,
+        "score": 1.556
+      },
+      {
+        "regime": "WWII Occupation",
+        "start": 1940,
+        "end": 1945,
+        "score": -0.187
+      },
+      {
+        "regime": "Reconstruction/Consensus",
+        "start": 1946,
+        "end": 1965,
+        "score": 2.257
+      },
+      {
+        "regime": "Cultural Revolution/Progressive",
+        "start": 1966,
+        "end": 2001,
+        "score": 1.857
+      },
+      {
+        "regime": "Populist Turn",
+        "start": 2002,
+        "end": 2026,
+        "score": 1.835
+      }
+    ],
+    "Sweden": [
+      {
+        "regime": "Gustavian/Bernadotte Early",
+        "start": 1789,
+        "end": 1865,
+        "score": 1.216
+      },
+      {
+        "regime": "Liberal Reform Era",
+        "start": 1866,
+        "end": 1913,
+        "score": 1.415
+      },
+      {
+        "regime": "Social Democratic Rise",
+        "start": 1914,
+        "end": 1945,
+        "score": 2.223
+      },
+      {
+        "regime": "Folkhem Peak",
+        "start": 1946,
+        "end": 1975,
+        "score": 1.668
+      },
+      {
+        "regime": "Neoliberal Turn",
+        "start": 1976,
+        "end": 2005,
+        "score": 1.899
+      },
+      {
+        "regime": "Immigration Debate",
+        "start": 2006,
+        "end": 2026,
+        "score": 2.097
+      }
+    ],
+    "Portugal": [
+      {
+        "regime": "Late Monarchy",
+        "start": 1789,
+        "end": 1807,
+        "score": 0.743
+      },
+      {
+        "regime": "Brazilian Exile/Liberalism",
+        "start": 1808,
+        "end": 1833,
+        "score": 1.161
+      },
+      {
+        "regime": "Constitutional Monarchy",
+        "start": 1834,
+        "end": 1909,
+        "score": 1.272
+      },
+      {
+        "regime": "First Republic",
+        "start": 1910,
+        "end": 1925,
+        "score": 1.678
+      },
+      {
+        "regime": "Estado Novo/Salazar",
+        "start": 1926,
+        "end": 1968,
+        "score": 0.01
+      },
+      {
+        "regime": "Caetano/Revolution",
+        "start": 1969,
+        "end": 1976,
+        "score": 1.284
+      },
+      {
+        "regime": "Democratic Consolidation",
+        "start": 1977,
+        "end": 2007,
+        "score": 2.03
+      },
+      {
+        "regime": "Austerity Portugal",
+        "start": 2008,
+        "end": 2026,
+        "score": 1.997
+      }
+    ],
+    "Greece": [
+      {
+        "regime": "Ottoman Rule/Independence",
+        "start": 1789,
+        "end": 1832,
+        "score": 1.237
+      },
+      {
+        "regime": "Othonian/Early Kingdom",
+        "start": 1833,
+        "end": 1862,
+        "score": 1.244
+      },
+      {
+        "regime": "Trikoupis/Deliyannis",
+        "start": 1863,
+        "end": 1909,
+        "score": 1.079
+      },
+      {
+        "regime": "Venizelos/National Schism",
+        "start": 1910,
+        "end": 1935,
+        "score": 1.181
+      },
+      {
+        "regime": "Metaxas/WWII/Civil War",
+        "start": 1936,
+        "end": 1949,
+        "score": -0.15
+      },
+      {
+        "regime": "Cold War Greece",
+        "start": 1950,
+        "end": 1966,
+        "score": 0.92
+      },
+      {
+        "regime": "Junta",
+        "start": 1967,
+        "end": 1974,
+        "score": -0.345
+      },
+      {
+        "regime": "Metapolitefsi",
+        "start": 1975,
+        "end": 2008,
+        "score": 1.74
+      },
+      {
+        "regime": "Crisis Greece",
+        "start": 2009,
+        "end": 2026,
+        "score": 1.293
+      }
+    ],
+    "Belgium": [
+      {
+        "regime": "Revolution/Independence",
+        "start": 1830,
+        "end": 1847,
+        "score": 1.534
+      },
+      {
+        "regime": "Liberal/Catholic Rivalry",
+        "start": 1848,
+        "end": 1913,
+        "score": 0.999
+      },
+      {
+        "regime": "WWI/Interwar",
+        "start": 1914,
+        "end": 1939,
+        "score": 1.617
+      },
+      {
+        "regime": "WWII/Reconstruction",
+        "start": 1940,
+        "end": 1957,
+        "score": 2.097
+      },
+      {
+        "regime": "Linguistic Federalization",
+        "start": 1958,
+        "end": 1992,
+        "score": 1.772
+      },
+      {
+        "regime": "Federal Belgium",
+        "start": 1993,
+        "end": 2010,
+        "score": 1.74
+      },
+      {
+        "regime": "Modern Belgium",
+        "start": 2011,
+        "end": 2026,
+        "score": 1.899
+      }
+    ],
+    "Switzerland": [
+      {
+        "regime": "Helvetic/Mediation",
+        "start": 1789,
+        "end": 1847,
+        "score": 1.386
+      },
+      {
+        "regime": "Federal State",
+        "start": 1848,
+        "end": 1913,
+        "score": 1.415
+      },
+      {
+        "regime": "Interwar/WWII",
+        "start": 1914,
+        "end": 1945,
+        "score": 1.358
+      },
+      {
+        "regime": "Magic Formula Era",
+        "start": 1946,
+        "end": 1990,
+        "score": 1.358
+      },
+      {
+        "regime": "SVP Rise",
+        "start": 1991,
+        "end": 2010,
+        "score": 1.133
+      },
+      {
+        "regime": "Modern Switzerland",
+        "start": 2011,
+        "end": 2026,
+        "score": 1.3
+      }
+    ],
+    "Romania": [
+      {
+        "regime": "Phanariot/Early Principalities",
+        "start": 1789,
+        "end": 1829,
+        "score": -0.195
+      },
+      {
+        "regime": "Organic Statutes/Union",
+        "start": 1830,
+        "end": 1866,
+        "score": 1.216
+      },
+      {
+        "regime": "Romanian Kingdom",
+        "start": 1867,
+        "end": 1913,
+        "score": 0.42
+      },
+      {
+        "regime": "Greater Romania",
+        "start": 1914,
+        "end": 1937,
+        "score": 0.818
+      },
+      {
+        "regime": "Royal Dictatorship/WWII",
+        "start": 1938,
+        "end": 1944,
+        "score": -0.579
+      },
+      {
+        "regime": "Communist Romania",
+        "start": 1945,
+        "end": 1964,
+        "score": 0.88
+      },
+      {
+        "regime": "Ceausescu",
+        "start": 1965,
+        "end": 1989,
+        "score": 0.4
+      },
+      {
+        "regime": "Post-Communist Romania",
+        "start": 1990,
+        "end": 2026,
+        "score": 1.244
+      }
+    ],
+    "Hungary": [
+      {
+        "regime": "Habsburg Hungary",
+        "start": 1789,
+        "end": 1847,
+        "score": 1.244
+      },
+      {
+        "regime": "1848/Compromise",
+        "start": 1848,
+        "end": 1867,
+        "score": 1.496
+      },
+      {
+        "regime": "Dual Monarchy",
+        "start": 1868,
+        "end": 1918,
+        "score": 0.598
+      },
+      {
+        "regime": "Horthy Era",
+        "start": 1920,
+        "end": 1944,
+        "score": 0.01
+      },
+      {
+        "regime": "Stalinist Hungary",
+        "start": 1945,
+        "end": 1956,
+        "score": 0.88
+      },
+      {
+        "regime": "Kadar Era",
+        "start": 1957,
+        "end": 1989,
+        "score": 1.921
+      },
+      {
+        "regime": "Post-Communist/Liberal",
+        "start": 1990,
+        "end": 2009,
+        "score": 1.358
+      },
+      {
+        "regime": "Orban's Hungary",
+        "start": 2010,
+        "end": 2026,
+        "score": 0.005
+      }
+    ],
+    "Czech/Czechoslovakia": [
+      {
+        "regime": "Habsburg Bohemia",
+        "start": 1789,
+        "end": 1867,
+        "score": 1.244
+      },
+      {
+        "regime": "Austria-Hungary/Czech Politics",
+        "start": 1868,
+        "end": 1918,
+        "score": 2.03
+      },
+      {
+        "regime": "First Republic",
+        "start": 1918,
+        "end": 1938,
+        "score": 1.964
+      },
+      {
+        "regime": "Munich/Protectorate",
+        "start": 1938,
+        "end": 1945,
+        "score": -0.224
+      },
+      {
+        "regime": "Communist Czechoslovakia",
+        "start": 1948,
+        "end": 1967,
+        "score": 0.88
+      },
+      {
+        "regime": "Prague Spring/Normalization",
+        "start": 1968,
+        "end": 1989,
+        "score": 1.699
+      },
+      {
+        "regime": "Czech Republic",
+        "start": 1993,
+        "end": 2026,
+        "score": 1.216
+      }
+    ],
+    "USA": [
+      {
+        "regime": "Federalist Era",
+        "start": 1789,
+        "end": 1800,
+        "score": 0.827
+      },
+      {
+        "regime": "Jeffersonian",
+        "start": 1801,
+        "end": 1823,
+        "score": 1.594
+      },
+      {
+        "regime": "Jacksonian Democracy",
+        "start": 1824,
+        "end": 1849,
+        "score": 0.844
+      },
+      {
+        "regime": "Sectional Crisis",
+        "start": 1850,
+        "end": 1860,
+        "score": 0.346
+      },
+      {
+        "regime": "Civil War/Reconstruction",
+        "start": 1861,
+        "end": 1876,
+        "score": 1.181
+      },
+      {
+        "regime": "Gilded Age",
+        "start": 1877,
+        "end": 1895,
+        "score": 0.266
+      },
+      {
+        "regime": "Progressive Era",
+        "start": 1896,
+        "end": 1919,
+        "score": 2.03
+      },
+      {
+        "regime": "Roaring Twenties/Normalcy",
+        "start": 1920,
+        "end": 1932,
+        "score": 0.559
+      },
+      {
+        "regime": "New Deal/WWII",
+        "start": 1933,
+        "end": 1952,
+        "score": 2.223
+      },
+      {
+        "regime": "Cold War Consensus",
+        "start": 1953,
+        "end": 1968,
+        "score": 2.097
+      },
+      {
+        "regime": "Crisis/Realignment",
+        "start": 1969,
+        "end": 1980,
+        "score": 1.678
+      },
+      {
+        "regime": "Reagan-Clinton",
+        "start": 1981,
+        "end": 2007,
+        "score": 1.3
+      },
+      {
+        "regime": "Polarization Era",
+        "start": 2008,
+        "end": 2026,
+        "score": 0.992
+      }
+    ],
+    "Mexico": [
+      {
+        "regime": "Late Colonial/Independence",
+        "start": 1789,
+        "end": 1821,
+        "score": 0.743
+      },
+      {
+        "regime": "First Empire/Early Republic",
+        "start": 1822,
+        "end": 1854,
+        "score": 0.598
+      },
+      {
+        "regime": "La Reforma",
+        "start": 1855,
+        "end": 1876,
+        "score": 1.617
+      },
+      {
+        "regime": "Porfiriato",
+        "start": 1877,
+        "end": 1910,
+        "score": -0.119
+      },
+      {
+        "regime": "Revolution",
+        "start": 1911,
+        "end": 1920,
+        "score": 0.984
+      },
+      {
+        "regime": "Revolutionary State",
+        "start": 1921,
+        "end": 1940,
+        "score": 2.053
+      },
+      {
+        "regime": "PRI Hegemony/Miracle",
+        "start": 1941,
+        "end": 1968,
+        "score": 1.647
+      },
+      {
+        "regime": "PRI Crisis",
+        "start": 1969,
+        "end": 1988,
+        "score": 1.293
+      },
+      {
+        "regime": "Democratization",
+        "start": 1989,
+        "end": 2012,
+        "score": 1.272
+      },
+      {
+        "regime": "AMLO/Morena",
+        "start": 2013,
+        "end": 2026,
+        "score": 1.487
+      }
+    ],
+    "Brazil": [
+      {
+        "regime": "Colonial/Portuguese Court",
+        "start": 1789,
+        "end": 1821,
+        "score": -0.023
+      },
+      {
+        "regime": "Empire",
+        "start": 1822,
+        "end": 1889,
+        "score": 0.606
+      },
+      {
+        "regime": "Old Republic",
+        "start": 1889,
+        "end": 1930,
+        "score": 0.331
+      },
+      {
+        "regime": "Vargas Era",
+        "start": 1930,
+        "end": 1945,
+        "score": 1.399
+      },
+      {
+        "regime": "Democratic Experiment",
+        "start": 1946,
+        "end": 1963,
+        "score": 1.932
+      },
+      {
+        "regime": "Military Dictatorship",
+        "start": 1964,
+        "end": 1984,
+        "score": 0.07
+      },
+      {
+        "regime": "Redemocratization",
+        "start": 1985,
+        "end": 2002,
+        "score": 2.03
+      },
+      {
+        "regime": "Lula/PT Era",
+        "start": 2003,
+        "end": 2015,
+        "score": 2.398
+      },
+      {
+        "regime": "Bolsonaro/Crisis",
+        "start": 2016,
+        "end": 2026,
+        "score": -0.201
+      }
+    ],
+    "Argentina": [
+      {
+        "regime": "Independence/Rivadavia",
+        "start": 1810,
+        "end": 1829,
+        "score": 1.445
+      },
+      {
+        "regime": "Rosas",
+        "start": 1830,
+        "end": 1852,
+        "score": -0.345
+      },
+      {
+        "regime": "Liberal Republic",
+        "start": 1853,
+        "end": 1915,
+        "score": 0.777
+      },
+      {
+        "regime": "Radical/Conservative",
+        "start": 1916,
+        "end": 1942,
+        "score": 1.899
+      },
+      {
+        "regime": "Peronist Era",
+        "start": 1943,
+        "end": 1955,
+        "score": 0.931
+      },
+      {
+        "regime": "Instability/Coups",
+        "start": 1956,
+        "end": 1972,
+        "score": 0.622
+      },
+      {
+        "regime": "Dirty War",
+        "start": 1973,
+        "end": 1983,
+        "score": -0.579
+      },
+      {
+        "regime": "Democratic Restoration",
+        "start": 1984,
+        "end": 2001,
+        "score": 1.3
+      },
+      {
+        "regime": "Kirchnerismo/Crisis",
+        "start": 2002,
+        "end": 2026,
+        "score": 1.399
+      }
+    ],
+    "Canada": [
+      {
+        "regime": "British North America",
+        "start": 1789,
+        "end": 1866,
+        "score": 1.445
+      },
+      {
+        "regime": "Confederation/Macdonald",
+        "start": 1867,
+        "end": 1895,
+        "score": 0.946
+      },
+      {
+        "regime": "Laurier/Early 20th",
+        "start": 1896,
+        "end": 1929,
+        "score": 1.358
+      },
+      {
+        "regime": "Depression/War/Postwar",
+        "start": 1930,
+        "end": 1956,
+        "score": 2.03
+      },
+      {
+        "regime": "Quiet Revolution/Trudeau Sr.",
+        "start": 1957,
+        "end": 1983,
+        "score": 2.087
+      },
+      {
+        "regime": "Mulroney/Chretien",
+        "start": 1984,
+        "end": 2005,
+        "score": 1.3
+      },
+      {
+        "regime": "Modern Canada",
+        "start": 2006,
+        "end": 2026,
+        "score": 1.964
+      }
+    ],
+    "Colombia": [
+      {
+        "regime": "Gran Colombia/Independence",
+        "start": 1810,
+        "end": 1830,
+        "score": 1.188
+      },
+      {
+        "regime": "Conservative Hegemony",
+        "start": 1831,
+        "end": 1885,
+        "score": -0.003
+      },
+      {
+        "regime": "Regeneration/Thousand Days",
+        "start": 1886,
+        "end": 1929,
+        "score": -0.195
+      },
+      {
+        "regime": "Liberal Republic/La Violencia",
+        "start": 1930,
+        "end": 1957,
+        "score": 0.384
+      },
+      {
+        "regime": "National Front",
+        "start": 1958,
+        "end": 1973,
+        "score": 0.869
+      },
+      {
+        "regime": "Drug War/Constitution",
+        "start": 1974,
+        "end": 2002,
+        "score": 1.133
+      },
+      {
+        "regime": "Uribe/Santos/Peace",
+        "start": 2003,
+        "end": 2026,
+        "score": 1.899
+      }
+    ],
+    "Chile": [
+      {
+        "regime": "Independence/O'Higgins",
+        "start": 1810,
+        "end": 1830,
+        "score": 1.079
+      },
+      {
+        "regime": "Conservative Republic",
+        "start": 1831,
+        "end": 1860,
+        "score": -0.062
+      },
+      {
+        "regime": "Liberal Republic",
+        "start": 1861,
+        "end": 1924,
+        "score": 0.727
+      },
+      {
+        "regime": "Social Question",
+        "start": 1925,
+        "end": 1958,
+        "score": 1.899
+      },
+      {
+        "regime": "Christian Democracy/Left",
+        "start": 1959,
+        "end": 1972,
+        "score": 1.825
+      },
+      {
+        "regime": "Pinochet",
+        "start": 1973,
+        "end": 1989,
+        "score": -0.846
+      },
+      {
+        "regime": "Concertacion",
+        "start": 1990,
+        "end": 2009,
+        "score": 1.899
+      },
+      {
+        "regime": "Estallido/Boric",
+        "start": 2010,
+        "end": 2026,
+        "score": 2.292
+      }
+    ],
+    "Cuba": [
+      {
+        "regime": "Spanish Colony",
+        "start": 1789,
+        "end": 1897,
+        "score": -0.699
+      },
+      {
+        "regime": "US Intervention/Platt",
+        "start": 1898,
+        "end": 1932,
+        "score": 0.309
+      },
+      {
+        "regime": "Batista/Republic",
+        "start": 1933,
+        "end": 1958,
+        "score": 0.098
+      },
+      {
+        "regime": "Revolutionary Cuba",
+        "start": 1959,
+        "end": 1975,
+        "score": 1.172
+      },
+      {
+        "regime": "Late Castro/Special Period",
+        "start": 1976,
+        "end": 2006,
+        "score": 1.2
+      },
+      {
+        "regime": "Post-Castro",
+        "start": 2007,
+        "end": 2026,
+        "score": 1.637
+      }
+    ],
+    "Peru": [
+      {
+        "regime": "Colonial/Independence",
+        "start": 1789,
+        "end": 1824,
+        "score": -0.637
+      },
+      {
+        "regime": "Caudillo Era",
+        "start": 1825,
+        "end": 1878,
+        "score": 0.098
+      },
+      {
+        "regime": "Aristocratic Republic",
+        "start": 1879,
+        "end": 1919,
+        "score": 0.398
+      },
+      {
+        "regime": "Leguia/APRA",
+        "start": 1920,
+        "end": 1967,
+        "score": 1.496
+      },
+      {
+        "regime": "Velasco/Military",
+        "start": 1968,
+        "end": 1979,
+        "score": 1.73
+      },
+      {
+        "regime": "Democracy/Fujimori",
+        "start": 1980,
+        "end": 2000,
+        "score": 0.694
+      },
+      {
+        "regime": "Post-Fujimori",
+        "start": 2001,
+        "end": 2026,
+        "score": 1.772
+      }
+    ],
+    "Venezuela": [
+      {
+        "regime": "Independence/Gran Colombia",
+        "start": 1810,
+        "end": 1830,
+        "score": 1.025
+      },
+      {
+        "regime": "Caudillo Era",
+        "start": 1831,
+        "end": 1908,
+        "score": -0.339
+      },
+      {
+        "regime": "Gomez/Oil State",
+        "start": 1909,
+        "end": 1957,
+        "score": -0.119
+      },
+      {
+        "regime": "Punto Fijo Democracy",
+        "start": 1958,
+        "end": 1988,
+        "score": 1.647
+      },
+      {
+        "regime": "Crisis/Caracazo",
+        "start": 1989,
+        "end": 1998,
+        "score": 1.161
+      },
+      {
+        "regime": "Chavez",
+        "start": 1999,
+        "end": 2012,
+        "score": 0.804
+      },
+      {
+        "regime": "Maduro",
+        "start": 2013,
+        "end": 2026,
+        "score": 0.445
+      }
+    ],
+    "China": [
+      {
+        "regime": "Late Qing/Pre-Opium",
+        "start": 1789,
+        "end": 1839,
+        "score": 0.458
+      },
+      {
+        "regime": "Opium Wars/Taiping",
+        "start": 1840,
+        "end": 1864,
+        "score": -0.068
+      },
+      {
+        "regime": "Self-Strengthening/Reform",
+        "start": 1865,
+        "end": 1911,
+        "score": 0.973
+      },
+      {
+        "regime": "Republic/Warlords",
+        "start": 1912,
+        "end": 1927,
+        "score": 1.237
+      },
+      {
+        "regime": "Nanjing Decade/War",
+        "start": 1928,
+        "end": 1948,
+        "score": 0.28
+      },
+      {
+        "regime": "Mao Early",
+        "start": 1949,
+        "end": 1957,
+        "score": 0.68
+      },
+      {
+        "regime": "Mao Radical",
+        "start": 1958,
+        "end": 1976,
+        "score": 0.468
+      },
+      {
+        "regime": "Deng Reform",
+        "start": 1977,
+        "end": 1989,
+        "score": 1.025
+      },
+      {
+        "regime": "Jiang/Hu Technocratic",
+        "start": 1990,
+        "end": 2012,
+        "score": 1.161
+      },
+      {
+        "regime": "Xi Jinping",
+        "start": 2013,
+        "end": 2026,
+        "score": 0.475
+      }
+    ],
+    "Japan": [
+      {
+        "regime": "Late Tokugawa",
+        "start": 1789,
+        "end": 1853,
+        "score": 1.126
+      },
+      {
+        "regime": "Bakumatsu/Restoration",
+        "start": 1854,
+        "end": 1877,
+        "score": 0.844
+      },
+      {
+        "regime": "Meiji",
+        "start": 1878,
+        "end": 1912,
+        "score": 0.869
+      },
+      {
+        "regime": "Taishō Democracy",
+        "start": 1913,
+        "end": 1930,
+        "score": 1.997
+      },
+      {
+        "regime": "Militarist Japan",
+        "start": 1931,
+        "end": 1945,
+        "score": 0.079
+      },
+      {
+        "regime": "Occupation/Recovery",
+        "start": 1946,
+        "end": 1959,
+        "score": 2.165
+      },
+      {
+        "regime": "High Growth",
+        "start": 1960,
+        "end": 1989,
+        "score": 1.678
+      },
+      {
+        "regime": "Lost Decades",
+        "start": 1990,
+        "end": 2011,
+        "score": 1.932
+      },
+      {
+        "regime": "Abe/Modern Japan",
+        "start": 2012,
+        "end": 2026,
+        "score": 1.052
+      }
+    ],
+    "India": [
+      {
+        "regime": "Late Mughal/EIC",
+        "start": 1789,
+        "end": 1857,
+        "score": 0.92
+      },
+      {
+        "regime": "British Raj",
+        "start": 1858,
+        "end": 1919,
+        "score": 0.287
+      },
+      {
+        "regime": "Nationalist Movement",
+        "start": 1920,
+        "end": 1946,
+        "score": 1.761
+      },
+      {
+        "regime": "Nehruvian India",
+        "start": 1947,
+        "end": 1964,
+        "score": 2.223
+      },
+      {
+        "regime": "Congress Dominance",
+        "start": 1965,
+        "end": 1976,
+        "score": 1.457
+      },
+      {
+        "regime": "Coalition Era",
+        "start": 1977,
+        "end": 1998,
+        "score": 1.964
+      },
+      {
+        "regime": "BJP/Shining India",
+        "start": 1999,
+        "end": 2013,
+        "score": 1.079
+      },
+      {
+        "regime": "Modi Era",
+        "start": 2014,
+        "end": 2026,
+        "score": -0.274
+      }
+    ],
+    "Korea": [
+      {
+        "regime": "Joseon Late",
+        "start": 1789,
+        "end": 1875,
+        "score": 1.019
+      },
+      {
+        "regime": "Opening/Colonial",
+        "start": 1876,
+        "end": 1945,
+        "score": -0.414
+      }
+    ],
+    "South Korea": [
+      {
+        "regime": "Korean War/Division",
+        "start": 1946,
+        "end": 1960,
+        "score": 0.324
+      },
+      {
+        "regime": "Park/Military",
+        "start": 1961,
+        "end": 1979,
+        "score": 0.173
+      },
+      {
+        "regime": "Transition",
+        "start": 1980,
+        "end": 1992,
+        "score": 1.079
+      },
+      {
+        "regime": "Democratic Consolidation",
+        "start": 1993,
+        "end": 2007,
+        "score": 2.131
+      },
+      {
+        "regime": "Polarized Democracy",
+        "start": 2008,
+        "end": 2026,
+        "score": 1.647
+      }
+    ],
+    "Indonesia": [
+      {
+        "regime": "Dutch East Indies",
+        "start": 1789,
+        "end": 1941,
+        "score": -0.374
+      },
+      {
+        "regime": "Japanese Occupation/Revolution",
+        "start": 1942,
+        "end": 1949,
+        "score": 1.09
+      },
+      {
+        "regime": "Guided Democracy/Sukarno",
+        "start": 1950,
+        "end": 1965,
+        "score": 2.087
+      },
+      {
+        "regime": "New Order/Suharto",
+        "start": 1966,
+        "end": 1998,
+        "score": 0.67
+      },
+      {
+        "regime": "Reformasi",
+        "start": 1999,
+        "end": 2013,
+        "score": 2.097
+      },
+      {
+        "regime": "Jokowi/Modern",
+        "start": 2014,
+        "end": 2026,
+        "score": 2.064
+      }
+    ],
+    "Philippines": [
+      {
+        "regime": "Spanish Philippines",
+        "start": 1789,
+        "end": 1898,
+        "score": -0.339
+      },
+      {
+        "regime": "American Period",
+        "start": 1899,
+        "end": 1945,
+        "score": 1.445
+      },
+      {
+        "regime": "Independence/Democratic",
+        "start": 1946,
+        "end": 1971,
+        "score": 1.272
+      },
+      {
+        "regime": "Marcos",
+        "start": 1972,
+        "end": 1985,
+        "score": -0.622
+      },
+      {
+        "regime": "People Power/Democracy",
+        "start": 1986,
+        "end": 2015,
+        "score": 1.329
+      },
+      {
+        "regime": "Duterte/Modern",
+        "start": 2016,
+        "end": 2026,
+        "score": -0.068
+      }
+    ],
+    "Thailand": [
+      {
+        "regime": "Late Ayutthaya/Early Chakri",
+        "start": 1789,
+        "end": 1850,
+        "score": 0.694
+      },
+      {
+        "regime": "Chulalongkorn/Reform",
+        "start": 1851,
+        "end": 1932,
+        "score": 1.244
+      },
+      {
+        "regime": "Constitutional Revolution",
+        "start": 1932,
+        "end": 1957,
+        "score": 1.379
+      },
+      {
+        "regime": "Military/Development",
+        "start": 1958,
+        "end": 1972,
+        "score": 0.435
+      },
+      {
+        "regime": "Democracy Oscillation",
+        "start": 1973,
+        "end": 1991,
+        "score": 2.064
+      },
+      {
+        "regime": "Thaksin/Yellow-Red",
+        "start": 1992,
+        "end": 2013,
+        "score": 1.181
+      },
+      {
+        "regime": "Junta/Modern",
+        "start": 2014,
+        "end": 2026,
+        "score": 0.622
+      }
+    ],
+    "Vietnam": [
+      {
+        "regime": "Late Lê/Nguyễn",
+        "start": 1789,
+        "end": 1858,
+        "score": 0.966
+      },
+      {
+        "regime": "French Indochina",
+        "start": 1859,
+        "end": 1945,
+        "score": -0.493
+      },
+      {
+        "regime": "Independence War",
+        "start": 1946,
+        "end": 1954,
+        "score": 0.957
+      },
+      {
+        "regime": "Vietnam War",
+        "start": 1955,
+        "end": 1975,
+        "score": 0.608
+      },
+      {
+        "regime": "Socialist Republic",
+        "start": 1976,
+        "end": 1985,
+        "score": 0.854
+      },
+      {
+        "regime": "Đổi Mới",
+        "start": 1986,
+        "end": 2026,
+        "score": 0.999
+      }
+    ],
+    "Iran": [
+      {
+        "regime": "Qajar Early",
+        "start": 1789,
+        "end": 1848,
+        "score": 0.458
+      },
+      {
+        "regime": "Qajar Late/Constitutional",
+        "start": 1849,
+        "end": 1924,
+        "score": 1.133
+      },
+      {
+        "regime": "Pahlavi Early",
+        "start": 1925,
+        "end": 1952,
+        "score": 0.504
+      },
+      {
+        "regime": "Mossadegh/Shah",
+        "start": 1953,
+        "end": 1963,
+        "score": 0.694
+      },
+      {
+        "regime": "Pahlavi Peak",
+        "start": 1964,
+        "end": 1978,
+        "score": 0.694
+      },
+      {
+        "regime": "Islamic Revolution",
+        "start": 1979,
+        "end": 1988,
+        "score": 0.514
+      },
+      {
+        "regime": "Islamic Republic",
+        "start": 1989,
+        "end": 2026,
+        "score": 0.712
+      }
+    ],
+    "Pakistan": [
+      {
+        "regime": "Independence/Early",
+        "start": 1947,
+        "end": 1958,
+        "score": 1.74
+      },
+      {
+        "regime": "Ayub/Military",
+        "start": 1959,
+        "end": 1971,
+        "score": 0.39
+      },
+      {
+        "regime": "Bhutto/Zia",
+        "start": 1972,
+        "end": 1988,
+        "score": 0.475
+      },
+      {
+        "regime": "Democratic Oscillation",
+        "start": 1989,
+        "end": 2007,
+        "score": 0.598
+      },
+      {
+        "regime": "Modern Pakistan",
+        "start": 2008,
+        "end": 2026,
+        "score": 0.598
+      }
+    ],
+    "Egypt": [
+      {
+        "regime": "Muhammad Ali Dynasty",
+        "start": 1789,
+        "end": 1848,
+        "score": 0.694
+      },
+      {
+        "regime": "Khedivate/British",
+        "start": 1849,
+        "end": 1913,
+        "score": 0.266
+      },
+      {
+        "regime": "Liberal/Monarchy",
+        "start": 1914,
+        "end": 1951,
+        "score": 1.188
+      },
+      {
+        "regime": "Nasser",
+        "start": 1952,
+        "end": 1970,
+        "score": 1.117
+      },
+      {
+        "regime": "Sadat",
+        "start": 1971,
+        "end": 1981,
+        "score": 1.133
+      },
+      {
+        "regime": "Mubarak",
+        "start": 1982,
+        "end": 2010,
+        "score": 0.481
+      },
+      {
+        "regime": "Arab Spring/Morsi",
+        "start": 2011,
+        "end": 2013,
+        "score": 1.35
+      },
+      {
+        "regime": "Sisi",
+        "start": 2014,
+        "end": 2026,
+        "score": -0.126
+      }
+    ],
+    "South Africa": [
+      {
+        "regime": "Cape Colony/Early",
+        "start": 1789,
+        "end": 1869,
+        "score": -0.459
+      },
+      {
+        "regime": "Mineral Revolution/Union",
+        "start": 1870,
+        "end": 1913,
+        "score": -0.493
+      },
+      {
+        "regime": "Segregation Era",
+        "start": 1914,
+        "end": 1947,
+        "score": -0.59
+      },
+      {
+        "regime": "Apartheid",
+        "start": 1948,
+        "end": 1989,
+        "score": -0.465
+      },
+      {
+        "regime": "Transition",
+        "start": 1990,
+        "end": 1994,
+        "score": 2.064
+      },
+      {
+        "regime": "Mandela/Mbeki",
+        "start": 1995,
+        "end": 2007,
+        "score": 1.932
+      },
+      {
+        "regime": "Zuma/Crisis",
+        "start": 2008,
+        "end": 2026,
+        "score": 1.556
+      }
+    ],
+    "Nigeria": [
+      {
+        "regime": "Colonial Nigeria",
+        "start": 1789,
+        "end": 1913,
+        "score": -0.408
+      },
+      {
+        "regime": "British Colony",
+        "start": 1914,
+        "end": 1959,
+        "score": 1.188
+      },
+      {
+        "regime": "First Republic/Biafra",
+        "start": 1960,
+        "end": 1969,
+        "score": 0.504
+      },
+      {
+        "regime": "Military Era",
+        "start": 1970,
+        "end": 1998,
+        "score": -0.068
+      },
+      {
+        "regime": "Fourth Republic",
+        "start": 1999,
+        "end": 2014,
+        "score": 1.244
+      },
+      {
+        "regime": "Buhari/Modern",
+        "start": 2015,
+        "end": 2026,
+        "score": 0.999
+      }
+    ],
+    "Saudi Arabia": [
+      {
+        "regime": "Pre-Saudi/First State",
+        "start": 1789,
+        "end": 1818,
+        "score": -0.274
+      },
+      {
+        "regime": "Second Saudi State/Interregnum",
+        "start": 1819,
+        "end": 1901,
+        "score": 0.237
+      },
+      {
+        "regime": "Ibn Saud/Unification",
+        "start": 1902,
+        "end": 1952,
+        "score": 0.03
+      },
+      {
+        "regime": "Oil Kingdom",
+        "start": 1953,
+        "end": 2014,
+        "score": 0.28
+      },
+      {
+        "regime": "MBS/Vision 2030",
+        "start": 2015,
+        "end": 2026,
+        "score": 0.39
+      }
+    ],
+    "Iraq": [
+      {
+        "regime": "Ottoman Iraq",
+        "start": 1789,
+        "end": 1917,
+        "score": 0.458
+      },
+      {
+        "regime": "British Mandate/Monarchy",
+        "start": 1918,
+        "end": 1957,
+        "score": 1.415
+      },
+      {
+        "regime": "Revolution/Baath",
+        "start": 1958,
+        "end": 1968,
+        "score": 0.957
+      },
+      {
+        "regime": "Saddam Hussein",
+        "start": 1969,
+        "end": 2002,
+        "score": -0.001
+      },
+      {
+        "regime": "US Occupation",
+        "start": 2003,
+        "end": 2010,
+        "score": 0.869
+      },
+      {
+        "regime": "Maliki/ISIS",
+        "start": 2011,
+        "end": 2017,
+        "score": 0.362
+      },
+      {
+        "regime": "Post-ISIS Iraq",
+        "start": 2018,
+        "end": 2026,
+        "score": 1.647
+      }
+    ],
+    "Israel": [
+      {
+        "regime": "Yishuv/Mandate",
+        "start": 1920,
+        "end": 1947,
+        "score": 1.607
+      },
+      {
+        "regime": "Labor Zionism",
+        "start": 1948,
+        "end": 1977,
+        "score": 1.761
+      },
+      {
+        "regime": "Likud/Begin",
+        "start": 1978,
+        "end": 1992,
+        "score": 0.346
+      },
+      {
+        "regime": "Oslo/Peace Process",
+        "start": 1993,
+        "end": 2000,
+        "score": 2.131
+      },
+      {
+        "regime": "Netanyahu/Right Turn",
+        "start": 2001,
+        "end": 2026,
+        "score": -0.182
+      }
+    ],
+    "Algeria": [
+      {
+        "regime": "Ottoman/French Conquest",
+        "start": 1789,
+        "end": 1847,
+        "score": 0.111
+      },
+      {
+        "regime": "French Algeria",
+        "start": 1848,
+        "end": 1953,
+        "score": -0.622
+      },
+      {
+        "regime": "War of Independence",
+        "start": 1954,
+        "end": 1962,
+        "score": 1.145
+      },
+      {
+        "regime": "FLN State",
+        "start": 1963,
+        "end": 1988,
+        "score": 1.487
+      },
+      {
+        "regime": "Civil War/Bouteflika",
+        "start": 1989,
+        "end": 2026,
+        "score": 1.35
+      }
+    ],
+    "Ethiopia": [
+      {
+        "regime": "Zemene Mesafint/Tewodros",
+        "start": 1789,
+        "end": 1868,
+        "score": 0.216
+      },
+      {
+        "regime": "Menelik/Imperial",
+        "start": 1869,
+        "end": 1935,
+        "score": 0.67
+      },
+      {
+        "regime": "Italian Occupation/Haile Selassie",
+        "start": 1936,
+        "end": 1973,
+        "score": 0.768
+      },
+      {
+        "regime": "Derg",
+        "start": 1974,
+        "end": 1991,
+        "score": 0.491
+      },
+      {
+        "regime": "EPRDF",
+        "start": 1991,
+        "end": 2017,
+        "score": 1.678
+      },
+      {
+        "regime": "Abiy Ahmed",
+        "start": 2018,
+        "end": 2026,
+        "score": 1.321
+      }
+    ]
+  }
+}
