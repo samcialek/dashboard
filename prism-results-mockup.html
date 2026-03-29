@@ -611,8 +611,22 @@
   ];
 
   const textDimensions = [
-    { code: 'EPS', name: 'Epistemics', value: 'Intuitionist', sal: 0.6 },
-    { code: 'AES', name: 'Aesthetics', value: 'Visionary', sal: 0.5 },
+    { code: 'EPS', name: 'Epistemics', sal: 0.6, categories: [
+      { label: 'Empiricist', prob: 0.08 },
+      { label: 'Institutionalist', prob: 0.12 },
+      { label: 'Traditionalist', prob: 0.05 },
+      { label: 'Intuitionist', prob: 0.58 },
+      { label: 'Autonomous', prob: 0.14 },
+      { label: 'Nihilist', prob: 0.03 },
+    ]},
+    { code: 'AES', name: 'Aesthetics', sal: 0.5, categories: [
+      { label: 'Statesman', prob: 0.06 },
+      { label: 'Technocrat', prob: 0.04 },
+      { label: 'Pastoral', prob: 0.05 },
+      { label: 'Authentic', prob: 0.08 },
+      { label: 'Fighter', prob: 0.10 },
+      { label: 'Visionary', prob: 0.67 },
+    ]},
   ];
 
   const nodesGrid = document.getElementById('nodes-grid');
@@ -651,18 +665,28 @@
   cluster2.innerHTML = '<div class="cluster-title">Categorical Dimensions</div>';
 
   textDimensions.forEach(d => {
-    const row = document.createElement('div');
-    row.className = 'node-row text-node';
-    row.style.opacity = 0.4 + d.sal * 0.6;
-    row.innerHTML = `
-      <div class="node-code">${d.code}</div>
-      <div class="node-name">${d.name}</div>
-      <div class="node-bar-wrap" style="display:flex;align-items:center;">
-        <span style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--pool-deep);">${d.value}</span>
-      </div>
-      <div class="node-value" style="visibility:hidden;">—</div>
-    `;
-    cluster2.appendChild(row);
+    const sorted = [...d.categories].sort((a,b) => b.prob - a.prob);
+    const top = sorted[0];
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'margin-bottom:20px;opacity:' + (0.4 + d.sal * 0.6);
+    let html = `<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--pool-deep);width:32px;">${d.code}</span>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;">${d.name}</span>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:700;color:var(--pool-deep);margin-left:auto;">${top.label} (${Math.round(top.prob*100)}%)</span>
+    </div>`;
+    d.categories.forEach(c => {
+      const w = Math.max(c.prob * 100, 2);
+      const isTop = c === top;
+      html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;width:100px;text-align:right;opacity:${isTop?1:0.6};">${c.label}</span>
+        <div style="flex:1;height:${isTop?14:10}px;background:rgba(26,26,26,0.08);border-radius:3px;overflow:hidden;">
+          <div style="width:${w}%;height:100%;background:${isTop?'var(--pool-deep)':'rgba(137,204,240,0.4)'};border-radius:3px;"></div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;width:30px;opacity:${isTop?1:0.5};">${Math.round(c.prob*100)}%</span>
+      </div>`;
+    });
+    wrap.innerHTML = html;
+    cluster2.appendChild(wrap);
   });
 
   nodesGrid.appendChild(cluster2);
