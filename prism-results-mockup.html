@@ -744,11 +744,18 @@
     clusterDims.forEach(d => {
       const pct = ((d.pos - 1) / 4) * 100;
       const color = clusterColors[d.cluster] || 'var(--pool-deep)';
-      const barH = Math.round(8 + d.sal * 14); // 8px min, 22px max based on salience
+      const barH = Math.round(d.sal * 24); // 0px at sal=0, 24px at sal=1, fully proportional
       const row = document.createElement('div');
       row.className = 'node-row';
       row.style.opacity = 0.4 + d.sal * 0.6;
       row.style.gridTemplateColumns = '130px 1fr 40px';
+      if (d.sal === 0) {
+        row.innerHTML = `
+          <div class="node-name" style="font-size:0.78rem;color:#bbb;">${d.name}</div>
+          <div class="node-bar-wrap"><div style="font-size:0.6rem;color:#555;font-style:italic;">no salience</div></div>
+          <div class="node-value">${d.pos}</div>
+        `;
+      } else {
       row.innerHTML = `
         <div class="node-name" style="font-size:0.78rem;color:#bbb;">${d.name}<span style="font-size:0.55rem;color:#555;margin-left:6px;">${Math.round(d.sal * 100)}%</span></div>
         <div class="node-bar-wrap">
@@ -760,6 +767,7 @@
         </div>
         <div class="node-value">${d.pos}</div>
       `;
+      }
       block.appendChild(row);
     });
 
