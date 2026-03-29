@@ -624,7 +624,7 @@
 
   dimensions.forEach(d => {
     const pct = ((d.pos - 1) / 4) * 100;
-    const color = d.pos <= 2 ? 'var(--pool-deep)' : d.pos >= 4 ? 'var(--flesh)' : '#ede2ab';
+    const color = 'var(--pool-deep)';
     const row = document.createElement('div');
     row.className = 'node-row';
     row.style.opacity = 0.4 + d.sal * 0.6;
