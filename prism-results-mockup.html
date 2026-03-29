@@ -700,8 +700,13 @@
     { code: 'ENG', name: 'Engagement', pos: 5, sal: 1.0, low: 'Apolitical', high: 'Fully Engaged', cluster: 'SELF' },
   ];
 
-  // No flipping — keep original orientation. Bar always fills from left (low=1) to right (high=5).
-  const dimensions = rawDimensions;
+  // Flip: if pos < 3, invert so bar always fills ≥ 50%. Dominant trait always on the right.
+  const dimensions = rawDimensions.map(d => {
+    if (d.pos < 3) {
+      return { ...d, pos: 6 - d.pos, low: d.high, high: d.low };
+    }
+    return d;
+  });
 
   const textDimensions = [
     { code: 'EPS', name: 'Epistemics', sal: 0.6, categories: [
@@ -751,7 +756,7 @@
             <div class="node-bar-segment" style="width:${pct}%;background:${color};height:100%;"></div>
             <div class="node-bar-marker" style="left:${pct}%;top:-3px;height:${barH+6}px;"></div>
           </div>
-          <div class="node-labels"><span style="${d.pos <= 2 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="${d.pos >= 4 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.high}</span></div>
+          <div class="node-labels"><span style="${d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="font-size:0.7rem;font-weight:600;color:#ccc;">${d.high}</span></div>
         </div>
         <div class="node-value">${d.pos}</div>
       `;
