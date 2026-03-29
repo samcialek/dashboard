@@ -729,7 +729,7 @@
           <div class="node-bar-segment" style="width:${pct}%;background:${color};"></div>
           <div class="node-bar-marker" style="left:${pct}%;"></div>
         </div>
-        <div class="node-labels"><span>${d.low}</span><span>${d.high}</span></div>
+        <div class="node-labels"><span style="${d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="${d.pos > 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.high}</span></div>
       </div>
       <div class="node-value">${d.pos}</div>
     `;
