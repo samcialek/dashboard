@@ -703,69 +703,66 @@
   ];
 
   const nodesGrid = document.getElementById('nodes-grid');
+  // Group dimensions by cluster
+  const clusterOrder = ['ENDS', 'MEANS', 'REALITY', 'SELF'];
+  const clusterLabels = { ENDS: 'ENDS — What You Want', MEANS: 'MEANS — How You Get There', REALITY: 'REALITY — How You See the World', SELF: 'SELF — Who You Are' };
 
-  // Cluster: Numeric bars
-  const cluster1 = document.createElement('div');
-  cluster1.className = 'node-cluster';
-  cluster1.innerHTML = `<div class="cluster-title">Dimensional Positions (1–5 scale)</div>
-    <div style="display:flex;gap:16px;margin-bottom:12px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;">
-      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.ENDS};border-radius:2px;margin-right:4px;"></span>ENDS</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.MEANS};border-radius:2px;margin-right:4px;"></span>MEANS</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.REALITY};border-radius:2px;margin-right:4px;"></span>REALITY</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.SELF};border-radius:2px;margin-right:4px;"></span>SELF</span>
-    </div>`;
+  clusterOrder.forEach(clusterName => {
+    const clusterDims = dimensions.filter(d => d.cluster === clusterName);
+    if (clusterDims.length === 0) return;
 
-  dimensions.forEach(d => {
-    const pct = ((d.pos - 1) / 4) * 100;
-    const color = clusterColors[d.cluster] || 'var(--pool-deep)';
-    const row = document.createElement('div');
-    row.className = 'node-row';
-    row.style.opacity = 0.4 + d.sal * 0.6;
-    row.innerHTML = `
-      <div class="node-code">${d.code}</div>
-      <div class="node-name">${d.name}</div>
-      <div class="node-bar-wrap">
-        <div class="node-bar">
-          <div class="node-bar-segment" style="width:${pct}%;background:${color};"></div>
-          <div class="node-bar-marker" style="left:${pct}%;"></div>
+    const block = document.createElement('div');
+    block.className = 'node-cluster';
+    block.innerHTML = `<div class="cluster-title" style="border-bottom-color:${clusterColors[clusterName]}44;"><span style="color:${clusterColors[clusterName]};">${clusterLabels[clusterName]}</span></div>`;
+
+    clusterDims.forEach(d => {
+      const pct = ((d.pos - 1) / 4) * 100;
+      const color = clusterColors[d.cluster] || 'var(--pool-deep)';
+      const row = document.createElement('div');
+      row.className = 'node-row';
+      row.style.opacity = 0.4 + d.sal * 0.6;
+      row.style.gridTemplateColumns = '130px 1fr 40px';
+      row.innerHTML = `
+        <div class="node-name" style="font-size:0.78rem;color:#bbb;">${d.name}</div>
+        <div class="node-bar-wrap">
+          <div class="node-bar">
+            <div class="node-bar-segment" style="width:${pct}%;background:${color};"></div>
+            <div class="node-bar-marker" style="left:${pct}%;"></div>
+          </div>
+          <div class="node-labels"><span style="${d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="${d.pos > 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.high}</span></div>
         </div>
-        <div class="node-labels"><span style="${d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="${d.pos > 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : d.pos === 3 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.high}</span></div>
-      </div>
-      <div class="node-value">${d.pos}</div>
-    `;
-    cluster1.appendChild(row);
-  });
-
-  nodesGrid.appendChild(cluster1);
-
-  // Cluster: Text dimensions
-  const cluster2 = document.createElement('div');
-  cluster2.className = 'node-cluster';
-  cluster2.innerHTML = '<div class="cluster-title">Categorical Dimensions</div>';
-
-  textDimensions.forEach(d => {
-    const sorted = [...d.categories].sort((a,b) => b.prob - a.prob);
-    const top = sorted[0];
-    const wrap = document.createElement('div');
-    wrap.style.cssText = 'margin-bottom:20px;opacity:' + (0.4 + d.sal * 0.6);
-    let html = `<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--pool-deep);width:32px;">${d.code}</span>
-      <span style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;">${d.name}</span>
-      <span style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:700;color:var(--pool-deep);margin-left:auto;">${top.label} (${Math.round(top.prob*100)}%)</span>
-    </div>`;
-    d.categories.forEach(c => {
-      const w = Math.max(c.prob * 100, 2);
-      const isTop = c === top;
-      html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;width:100px;text-align:right;opacity:${isTop?1:0.6};">${c.label}</span>
-        <div style="flex:1;height:${isTop?14:10}px;background:rgba(26,26,26,0.08);border-radius:3px;overflow:hidden;">
-          <div style="width:${w}%;height:100%;background:${isTop?'var(--pool-deep)':'rgba(137,204,240,0.4)'};border-radius:3px;"></div>
-        </div>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;width:30px;opacity:${isTop?1:0.5};">${Math.round(c.prob*100)}%</span>
-      </div>`;
+        <div class="node-value">${d.pos}</div>
+      `;
+      block.appendChild(row);
     });
-    wrap.innerHTML = html;
-    cluster2.appendChild(wrap);
+
+    // Add categorical dimensions that belong to this cluster
+    const catInCluster = clusterName === 'MEANS' ? textDimensions : [];
+    catInCluster.forEach(d => {
+      const sorted = [...d.categories].sort((a,b) => b.prob - a.prob);
+      const top = sorted[0];
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'margin-bottom:16px;margin-top:12px;opacity:' + (0.4 + d.sal * 0.6);
+      let html = `<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;color:#bbb;">${d.name}</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:700;color:var(--pool-deep);margin-left:auto;">${top.label} (${Math.round(top.prob*100)}%)</span>
+      </div>`;
+      d.categories.forEach(c => {
+        const w = Math.max(c.prob * 100, 2);
+        const isTop = c === top;
+        html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;width:100px;text-align:right;opacity:${isTop?1:0.6};">${c.label}</span>
+          <div style="flex:1;height:${isTop?14:10}px;background:rgba(26,26,26,0.08);border-radius:3px;overflow:hidden;">
+            <div style="width:${w}%;height:100%;background:${isTop?'var(--pool-deep)':'rgba(137,204,240,0.4)'};border-radius:3px;"></div>
+          </div>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;width:30px;opacity:${isTop?1:0.5};">${Math.round(c.prob*100)}%</span>
+        </div>`;
+      });
+      wrap.innerHTML = html;
+      block.appendChild(wrap);
+    });
+
+    nodesGrid.appendChild(block);
   });
 
   nodesGrid.appendChild(cluster2);
