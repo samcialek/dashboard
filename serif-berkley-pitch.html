@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serif — Berkley Center Entrepreneurs Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#FFFEF8;color:#1a1a1a;font-family:'Playfair Display',serif;overflow:hidden;width:100%;height:100%}
+
+.slide{position:absolute;top:0;left:0;width:100%;height:100vh;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px;max-width:1100px;width:100%}
+
+h1{font-family:'Playfair Display',serif;font-weight:600;font-size:clamp(48px,8vw,96px);line-height:1.05;letter-spacing:-1px}
+h2{font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(36px,5.5vw,72px);line-height:1.1}
+h3{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(24px,3.5vw,48px);line-height:1.2}
+.mono{font-family:'IBM Plex Mono',monospace}
+.blue{color:#89ccf0}
+.salmon{color:#fa8072}
+.cream{color:#1a1a1a}
+.dim{opacity:0.4}
+.sub{font-family:'IBM Plex Mono',monospace;font-size:clamp(14px,1.8vw,22px);opacity:0.5;margin-top:16px;font-weight:300}
+
+.logo{font-family:'IBM Plex Mono',monospace;font-size:clamp(16px,2vw,24px);font-weight:400;letter-spacing:0.05em;position:fixed;top:28px;left:36px;z-index:100;opacity:0.3}
+.logo span{color:#89ccf0}
+
+.slide-nav{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100}
+.slide-dot{width:8px;height:8px;border-radius:50%;background:rgba(26,26,26,0.15);cursor:pointer;transition:all 0.3s}
+.slide-dot.active{background:#89ccf0}
+.slide-counter{position:fixed;top:28px;right:36px;font-family:'IBM Plex Mono',monospace;font-size:13px;opacity:0.35;z-index:100}
+
+/* Diagram styles */
+.flow{display:flex;align-items:center;justify-content:center;gap:0;margin:40px 0 20px;flex-wrap:wrap}
+.flow-node{padding:16px 28px;border:1px solid rgba(26,26,26,0.2);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:clamp(14px,1.6vw,20px);font-weight:400}
+.flow-node.struck{opacity:0.35;text-decoration:line-through}
+.flow-node.active-node{border-color:#89ccf0;color:#89ccf0}
+.flow-node.glow{border-color:#fa8072;color:#fa8072;box-shadow:0 0 20px rgba(250,128,114,0.2)}
+.flow-arrow{font-size:24px;margin:0 12px;opacity:0.3;color:#1a1a1a}
+
+/* Comparison */
+.compare{display:flex;gap:48px;width:100%;max-width:900px;margin:32px auto 0;text-align:left}
+.compare-col{flex:1;padding:28px;border-radius:8px}
+.compare-col.llm-col{background:rgba(26,26,26,0.03);border:1px solid rgba(26,26,26,0.1)}
+.compare-col.serif-col{background:rgba(137,204,240,0.06);border:1px solid rgba(137,204,240,0.2)}
+.compare-label{font-family:'IBM Plex Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:16px}
+.compare-text{font-family:'Playfair Display',serif;font-size:clamp(16px,1.8vw,22px);line-height:1.6;font-style:italic}
+
+/* Traction items */
+.traction{display:flex;flex-direction:column;gap:20px;width:100%;max-width:800px;text-align:left;margin-top:32px}
+.traction-item{display:flex;align-items:baseline;gap:16px}
+.traction-num{font-family:'IBM Plex Mono',monospace;font-size:clamp(28px,4vw,48px);font-weight:600;color:#89ccf0;min-width:80px;text-align:right}
+.traction-desc{font-family:'IBM Plex Mono',monospace;font-size:clamp(14px,1.5vw,18px);opacity:0.7;line-height:1.5}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:16px;width:100%;max-width:700px;text-align:left;margin-top:32px}
+.timeline-row{display:flex;align-items:baseline;gap:20px}
+.timeline-year{font-family:'IBM Plex Mono',monospace;font-size:clamp(16px,2vw,24px);color:#fa8072;font-weight:600;min-width:100px;text-align:right}
+.timeline-desc{font-family:'IBM Plex Mono',monospace;font-size:clamp(14px,1.5vw,18px);opacity:0.6;line-height:1.5}
+
+/* Ask */
+.ask-amount{font-family:'IBM Plex Mono',monospace;font-size:clamp(60px,10vw,120px);font-weight:600;color:#89ccf0;line-height:1}
+.ask-items{display:flex;flex-direction:column;gap:12px;margin-top:28px;text-align:left}
+.ask-item{font-family:'IBM Plex Mono',monospace;font-size:clamp(16px,2vw,24px);opacity:0.6}
+.ask-item span{opacity:1;color:#1a1a1a}
+
+@media(max-width:700px){
+  .compare{flex-direction:column;gap:20px}
+  .flow{gap:4px}
+  .flow-arrow{margin:0 6px}
+}
+</style>
+</head>
+<body>
+
+<div class="logo"><span>●</span> serif</div>
+<div class="slide-counter"><span id="counter">1</span> / 10</div>
+
+<!-- 1: TITLE -->
+<div class="slide active" data-slide="0">
+  <div class="slide-inner">
+    <h1 style="font-size:clamp(64px,12vw,140px);letter-spacing:-2px">serif</h1>
+    <p class="sub" style="margin-top:24px;opacity:0.4;font-size:clamp(16px,2.2vw,28px)">Own the outcome layer of health.</p>
+  </div>
+</div>
+
+<!-- 2: THE PROBLEM -->
+<div class="slide" data-slide="1">
+  <div class="slide-inner">
+    <h3 class="dim" style="margin-bottom:32px">The value stack is collapsing.</h3>
+    <div class="flow">
+      <div class="flow-node">Context</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node struck">Intelligence</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node glow">Outcomes</div>
+    </div>
+    <p class="sub" style="margin-top:32px">LLMs are commoditizing intelligence.<br>The only defensible layer is <span class="salmon">outcomes</span>.</p>
+  </div>
+</div>
+
+<!-- 3: THE SHIFT -->
+<div class="slide" data-slide="2">
+  <div class="slide-inner">
+    <h2>Intelligence is free.</h2>
+    <h2 style="margin-top:16px"><span class="salmon">Certainty</span> is not.</h2>
+  </div>
+</div>
+
+<!-- 4: WHAT SERIF DOES — LLM vs Serif -->
+<div class="slide" data-slide="3">
+  <div class="slide-inner">
+    <h3 style="margin-bottom:8px">What's the difference?</h3>
+    <div class="compare">
+      <div class="compare-col llm-col">
+        <div class="compare-label">Any LLM</div>
+        <div class="compare-text">"People who sleep more tend to have lower heart rates."</div>
+      </div>
+      <div class="compare-col serif-col">
+        <div class="compare-label blue">Serif</div>
+        <div class="compare-text" style="color:#89ccf0">"If <strong>you</strong> shift your sleep window by 45 min, <strong>your</strong> resting heart rate will improve 3–5 bpm over 6 weeks. Confidence: 78%."</div>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:28px">Population averages → <span class="blue">individual certainty</span></p>
+  </div>
+</div>
+
+<!-- 5: HOW IT WORKS -->
+<div class="slide" data-slide="4">
+  <div class="slide-inner">
+    <h3 style="margin-bottom:12px">Bayesian causal inference.</h3>
+    <h3 class="dim" style="font-size:clamp(18px,2.5vw,32px)">Sample size of one.</h3>
+    <div class="flow" style="margin-top:40px">
+      <div class="flow-node">Your data</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active-node">Posterior model</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active-node">Counterfactual sim</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node glow">Confidence interval</div>
+    </div>
+    <p class="sub" style="margin-top:28px">Not pattern matching. Causal structure.<br>Updates continuously. Specific to <span class="blue">your</span> biology.</p>
+  </div>
+</div>
+
+<!-- 6: TRACTION -->
+<div class="slide" data-slide="5">
+  <div class="slide-inner">
+    <h2 style="margin-bottom:8px">Traction.</h2>
+    <div class="traction">
+      <div class="traction-item">
+        <div class="traction-num">150K+</div>
+        <div class="traction-desc">providers via <span class="blue" style="opacity:1">Vim</span> partnership<br><span class="dim">EHR middleware, 80% of top payers</span></div>
+      </div>
+      <div class="traction-item">
+        <div class="traction-num">$400</div>
+        <div class="traction-desc">/member/year — CMS Access Model<br><span class="dim">Medicare tech-only reimbursement, live June 2026</span></div>
+      </div>
+      <div class="traction-item">
+        <div class="traction-num">1M</div>
+        <div class="traction-desc">patients in cardiology pilot<br><span class="dim">~500 cardiologists, ready to launch through Vim</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 7: BUSINESS MODEL -->
+<div class="slide" data-slide="6">
+  <div class="slide-inner">
+    <h2 style="margin-bottom:36px">$400<span class="dim">/member/year</span></h2>
+    <h3 class="dim" style="font-size:clamp(18px,2.5vw,32px)">Zero customer acquisition cost.</h3>
+    <p class="sub" style="margin-top:28px;max-width:600px">CMS reimburses. Vim distributes.<br>Serif delivers the outcome engine.</p>
+  </div>
+</div>
+
+<!-- 8: GROWTH -->
+<div class="slide" data-slide="7">
+  <div class="slide-inner">
+    <h2 style="margin-bottom:8px">Growth.</h2>
+    <div class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-year">Year 1</div>
+        <div class="timeline-desc">Vim SDK build + cardiology pilot + CMS revenue</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-year">Year 2</div>
+        <div class="timeline-desc">3 verticals — cardiology, endocrinology, primary care</div>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline-year">Year 3–5</div>
+        <div class="timeline-desc">Platform play — the outcome engine for any health platform</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9: THE ASK -->
+<div class="slide" data-slide="8">
+  <div class="slide-inner">
+    <div class="ask-amount">$75K</div>
+    <div class="ask-items">
+      <div class="ask-item"><span class="blue">→</span> &nbsp;Vim SDK integration build</div>
+      <div class="ask-item"><span class="blue">→</span> &nbsp;First hire — customer success</div>
+      <div class="ask-item"><span class="blue">→</span> &nbsp;Cardiology pilot launch</div>
+    </div>
+  </div>
+</div>
+
+<!-- 10: CLOSE -->
+<div class="slide" data-slide="9">
+  <div class="slide-inner">
+    <h1 style="font-size:clamp(40px,7vw,88px)">Outcomes,</h1>
+    <h1 style="font-size:clamp(40px,7vw,88px)">not intelligence.</h1>
+    <p class="sub" style="margin-top:36px;font-size:clamp(14px,1.6vw,20px);opacity:0.3">Sam Cialek · serif.life</p>
+  </div>
+</div>
+
+<!-- Navigation dots -->
+<div class="slide-nav" id="nav"></div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const counter=document.getElementById('counter');
+const nav=document.getElementById('nav');
+let cur=0;
+
+// Build dots
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='slide-dot'+(i===0?' active':'');
+  d.onclick=()=>go(i);
+  nav.appendChild(d);
+});
+
+function go(n){
+  if(n<0||n>=slides.length)return;
+  slides[cur].classList.remove('active');
+  nav.children[cur].classList.remove('active');
+  cur=n;
+  slides[cur].classList.add('active');
+  nav.children[cur].classList.add('active');
+  counter.textContent=cur+1;
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='Enter')go(cur+1);
+  if(e.key==='ArrowLeft'||e.key==='Backspace')go(cur-1);
+});
+
+// Click/touch to advance
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('slide-dot'))return;
+  go(cur+1);
+});
+</script>
+</body>
+</html>
