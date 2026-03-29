@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRISM Results — Progressive Civic Nationalist</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pool: #d1f6ff;
+      --pool-deep: #89ccf0;
+      --flesh: #fa8072;
+      --cream: #FFFEF8;
+      --ink: #1a1a1a;
+      --dem-blue: #3333FF;
+      --rep-red: #E9141D;
+    }
+
+    html, body {
+      background: var(--cream);
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ===================== SECTION 1: ARCHETYPE IDENTITY ===================== */
+    #archetype-section {
+      padding: 4rem 0 3rem;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .tier-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      background: var(--flesh);
+      color: var(--ink);
+      padding: 0.25rem 0.7rem;
+      margin-bottom: 1rem;
+    }
+
+    .archetype-number {
+      font-size: 0.75rem;
+      color: #888;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .archetype-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .archetype-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 720px;
+      color: #444;
+    }
+
+    /* ===================== SECTION 2: ELECTIONS GRID ===================== */
+    #elections-section {
+      padding: 3rem 0;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #888;
+      margin-bottom: 1.5rem;
+    }
+
+    .elections-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 3px;
+      margin-bottom: 1.25rem;
+    }
+
+    .election-cell {
+      padding: 0.3rem 0.15rem;
+      text-align: center;
+      font-size: 0.55rem;
+      line-height: 1.3;
+      border: 1px solid rgba(0,0,0,0.08);
+      transition: transform 0.1s;
+      cursor: default;
+    }
+
+    .election-cell:hover {
+      transform: scale(1.15);
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .election-cell.dem {
+      background: var(--dem-blue);
+      color: #fff;
+      border-color: rgba(51,51,255,0.3);
+    }
+
+    .election-cell.rep {
+      background: var(--rep-red);
+      color: #fff;
+      border-color: rgba(233,20,29,0.3);
+    }
+
+    .election-cell.other {
+      background: #888;
+      color: #fff;
+    }
+
+    .cell-year {
+      font-weight: 600;
+      font-size: 0.6rem;
+      display: block;
+    }
+
+    .cell-name {
+      font-size: 0.45rem;
+      opacity: 0.85;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .election-summary {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .election-summary .dem-count { color: var(--dem-blue); font-weight: 600; }
+    .election-summary .rep-count { color: var(--rep-red); font-weight: 600; }
+
+    /* ===================== SECTION 3: WORLD MAP ===================== */
+    #map-section {
+      padding: 3rem 0;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .map-controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #year-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      min-width: 70px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .slider-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .slider-wrap span {
+      font-size: 0.65rem;
+      color: #888;
+    }
+
+    #year-slider {
+      flex: 1;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--ink);
+      outline: none;
+      cursor: pointer;
+    }
+
+    #year-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--pool-deep);
+      border: 2px solid var(--ink);
+      cursor: pointer;
+    }
+
+    #map-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 1;
+      min-height: 350px;
+    }
+
+    #map-container svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .country {
+      stroke: var(--ink);
+      stroke-width: 0.3px;
+      transition: fill 0.3s;
+    }
+
+    .country.inactive {
+      fill: #e5e5e5 !important;
+    }
+
+    .country.active:hover {
+      stroke-width: 1.5px;
+      filter: brightness(1.1);
+    }
+
+    .map-legend {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.65rem;
+      color: #888;
+    }
+
+    .map-legend canvas {
+      border: 1px solid var(--ink);
+    }
+
+    /* ===================== SECTION 4: NODE PROFILE ===================== */
+    #profile-section {
+      padding: 3rem 0 4rem;
+    }
+
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .node-cluster {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1.5rem 2rem;
+    }
+
+    .cluster-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #888;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #333;
+    }
+
+    .node-row {
+      display: grid;
+      grid-template-columns: 50px 130px 1fr 40px;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .node-row:last-child { margin-bottom: 0; }
+
+    .node-code {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--pool-deep);
+      text-align: right;
+    }
+
+    .node-name {
+      font-size: 0.72rem;
+      color: #aaa;
+    }
+
+    .node-bar-wrap { width: 100%; }
+
+    .node-bar {
+      height: 14px;
+      background: #333;
+      position: relative;
+      border: 1px solid #555;
+      display: flex;
+    }
+
+    .node-bar-segment {
+      height: 100%;
+      transition: width 0.3s;
+    }
+
+    .node-bar-marker {
+      position: absolute;
+      top: -3px;
+      width: 3px;
+      height: 20px;
+      background: #fff;
+      border: 1px solid var(--ink);
+      transform: translateX(-50%);
+    }
+
+    .node-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.55rem;
+      color: #666;
+      margin-top: 0.2rem;
+    }
+
+    .node-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+    }
+
+    .node-row.text-node .node-value {
+      font-size: 0.65rem;
+      grid-column: 4;
+    }
+
+    @media (max-width: 700px) {
+      .container { padding: 0 1rem; }
+      .elections-grid { gap: 2px; }
+      .election-cell { padding: 0.2rem 0.1rem; font-size: 0.45rem; }
+      .cell-name { display: none; }
+      .node-row { grid-template-columns: 40px 100px 1fr 35px; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SECTION 1: ARCHETYPE IDENTITY -->
+<section id="archetype-section">
+  <div class="container">
+    <span class="tier-badge">Tier 1</span>
+    <div class="archetype-number">ARCHETYPE #134</div>
+    <h1 class="archetype-name">Progressive Civic Nationalist</h1>
+    <p class="archetype-desc">An economically progressive patriot who believes America should live up to its ideals. You combine redistributionist economics with cultural pluralism, procedural faith, and strong civic identity. You work within the system, compromise when needed, but fight hard for economic justice.</p>
+  </div>
+</section>
+
+<!-- SECTION 2: US PRESIDENTIAL ELECTIONS -->
+<section id="elections-section">
+  <div class="container">
+    <div class="section-label">US Presidential Elections · 1789–2024</div>
+    <div class="elections-grid" id="elections-grid"></div>
+    <div class="election-summary" id="election-summary"></div>
+  </div>
+</section>
+
+<!-- SECTION 3: WORLD ALIGNMENT MAP -->
+<section id="map-section">
+  <div class="container">
+    <div class="section-label">World Alignment Map</div>
+    <div class="map-controls">
+      <div id="year-display">2026</div>
+      <div class="slider-wrap">
+        <span>1789</span>
+        <input type="range" id="year-slider" min="1789" max="2026" value="2026">
+        <span>2026</span>
+      </div>
+    </div>
+    <div id="map-container"><svg id="map"></svg></div>
+    <div class="map-legend">
+      <span>Opposed (−3)</span>
+      <canvas id="legend-gradient" width="120" height="10"></canvas>
+      <span>Aligned (+3)</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: NODE PROFILE -->
+<section id="profile-section">
+  <div class="container">
+    <div class="section-label">Node Profile · 14 Dimensions</div>
+    <div class="nodes-grid" id="nodes-grid"></div>
+  </div>
+</section>
+
+<script>
+(function() {
+  // ============================================
+  // SECTION 2: ELECTIONS
+  // ============================================
+  const elections = [
+    // Row 1: 1789-1824
+    {y:1789,c:'Washington',p:'other'},{y:1792,c:'Washington',p:'other'},
+    {y:1796,c:'Jefferson',p:'dem'},{y:1800,c:'Jefferson',p:'dem'},
+    {y:1804,c:'Jefferson',p:'dem'},{y:1808,c:'Madison',p:'dem'},
+    {y:1812,c:'Madison',p:'dem'},{y:1816,c:'Monroe',p:'dem'},
+    {y:1820,c:'Monroe',p:'dem'},{y:1824,c:'J.Q. Adams',p:'dem'},
+    // Row 2: 1828-1864
+    {y:1828,c:'Jackson',p:'dem'},{y:1832,c:'Jackson',p:'dem'},
+    {y:1836,c:'Van Buren',p:'dem'},{y:1840,c:'Van Buren',p:'dem'},
+    {y:1844,c:'Polk',p:'dem'},{y:1848,c:'Van Buren',p:'dem'},
+    {y:1852,c:'Pierce',p:'dem'},{y:1856,c:'Frémont',p:'rep'},
+    {y:1860,c:'Lincoln',p:'rep'},{y:1864,c:'Lincoln',p:'rep'},
+    // Row 3: 1868-1904
+    {y:1868,c:'Grant',p:'rep'},{y:1872,c:'Grant',p:'rep'},
+    {y:1876,c:'Tilden',p:'dem'},{y:1880,c:'Hancock',p:'dem'},
+    {y:1884,c:'Cleveland',p:'dem'},{y:1888,c:'Cleveland',p:'dem'},
+    {y:1892,c:'Cleveland',p:'dem'},{y:1896,c:'Bryan',p:'dem'},
+    {y:1900,c:'Bryan',p:'dem'},{y:1904,c:'T. Roosevelt',p:'rep'},
+    // Row 4: 1908-1944
+    {y:1908,c:'Bryan',p:'dem'},{y:1912,c:'Wilson',p:'dem'},
+    {y:1916,c:'Wilson',p:'dem'},{y:1920,c:'Debs',p:'dem'},
+    {y:1924,c:'La Follette',p:'dem'},{y:1928,c:'Smith',p:'dem'},
+    {y:1932,c:'FDR',p:'dem'},{y:1936,c:'FDR',p:'dem'},
+    {y:1940,c:'FDR',p:'dem'},{y:1944,c:'FDR',p:'dem'},
+    // Row 5: 1948-1984
+    {y:1948,c:'Truman',p:'dem'},{y:1952,c:'Stevenson',p:'dem'},
+    {y:1956,c:'Stevenson',p:'dem'},{y:1960,c:'Kennedy',p:'dem'},
+    {y:1964,c:'LBJ',p:'dem'},{y:1968,c:'Humphrey',p:'dem'},
+    {y:1972,c:'McGovern',p:'dem'},{y:1976,c:'Carter',p:'dem'},
+    {y:1980,c:'Carter',p:'dem'},{y:1984,c:'Mondale',p:'dem'},
+    // Row 6: 1988-2024
+    {y:1988,c:'Dukakis',p:'dem'},{y:1992,c:'Clinton',p:'dem'},
+    {y:1996,c:'Clinton',p:'dem'},{y:2000,c:'Gore',p:'dem'},
+    {y:2004,c:'Kerry',p:'dem'},{y:2008,c:'Obama',p:'dem'},
+    {y:2012,c:'Obama',p:'dem'},{y:2016,c:'Clinton',p:'dem'},
+    {y:2020,c:'Biden',p:'dem'},{y:2024,c:'Harris',p:'dem'}
+  ];
+
+  const grid = document.getElementById('elections-grid');
+  let demCount = 0, repCount = 0, otherCount = 0;
+
+  elections.forEach(e => {
+    const cell = document.createElement('div');
+    cell.className = `election-cell ${e.p}`;
+    cell.innerHTML = `<span class="cell-year">${e.y}</span><span class="cell-name">${e.c}</span>`;
+    grid.appendChild(cell);
+    if (e.p === 'dem') demCount++;
+    else if (e.p === 'rep') repCount++;
+    else otherCount++;
+  });
+
+  document.getElementById('election-summary').innerHTML =
+    `Voted <span class="dem-count">Democrat ${demCount}</span> times, <span class="rep-count">Republican ${repCount}</span> times, Other ${otherCount} times`;
+
+  // ============================================
+  // SECTION 3: WORLD MAP
+  // ============================================
+  const COLORS = { aligned: '#00D4FF', neutral: '#FFE135', opposed: '#FF6B6B', inactive: '#e5e5e5' };
+
+  // Legend gradient
+  const lc = document.getElementById('legend-gradient').getContext('2d');
+  const lg = lc.createLinearGradient(0, 0, 120, 0);
+  lg.addColorStop(0, COLORS.opposed);
+  lg.addColorStop(0.5, COLORS.neutral);
+  lg.addColorStop(1, COLORS.aligned);
+  lc.fillStyle = lg;
+  lc.fillRect(0, 0, 120, 10);
+
+  const alignmentScale = d3.scaleLinear().domain([-1, 0, 1]).range([COLORS.opposed, COLORS.neutral, COLORS.aligned]).interpolate(d3.interpolateRgb);
+
+  // Country ID → name
+  const countryIdMap = {
+    36:'Australia',40:'Austria',56:'Belgium',76:'Brazil',124:'Canada',152:'Chile',156:'China',
+    158:'Taiwan',170:'Colombia',208:'Denmark',246:'Finland',250:'France',276:'Germany',300:'Greece',
+    356:'India',360:'Indonesia',364:'Iran',368:'Iraq',372:'Ireland',376:'Israel',380:'Italy',
+    392:'Japan',410:'South Korea',484:'Mexico',528:'Netherlands',554:'New Zealand',578:'Norway',
+    586:'Pakistan',604:'Peru',608:'Philippines',616:'Poland',620:'Portugal',643:'Russia',
+    682:'Saudi Arabia',710:'South Africa',724:'Spain',752:'Sweden',756:'Switzerland',764:'Thailand',
+    792:'Turkey',804:'Ukraine',826:'United Kingdom',840:'United States',862:'Venezuela'
+  };
+
+  // Alignment data for Progressive Civic Nationalist per country
+  // Format: { countryName: [ [startYear, endYear, score(-1 to 1)] ] }
+  const alignmentData = {
+    'United Kingdom': [[1789,1832,-0.3],[1832,1900,0.1],[1900,1945,0.3],[1945,1979,0.9],[1979,1997,-0.2],[1997,2010,0.7],[2010,2027,0.1]],
+    'France': [[1789,1799,0.4],[1799,1848,-0.3],[1848,1870,0.0],[1870,1940,0.5],[1940,1944,-0.9],[1944,1958,0.6],[1958,1981,0.2],[1981,1995,0.8],[1995,2012,0.2],[2012,2017,0.6],[2017,2027,0.5]],
+    'Germany': [[1789,1871,-0.2],[1871,1918,-0.5],[1918,1933,0.3],[1933,1945,-1.0],[1945,1969,0.3],[1969,1982,0.8],[1982,1998,0.4],[1998,2005,0.7],[2005,2021,0.6],[2021,2027,0.7]],
+    'Russia': [[1789,1861,-0.7],[1861,1917,-0.5],[1917,1924,-0.4],[1924,1953,-0.9],[1953,1985,-0.6],[1985,1991,0.2],[1991,2000,-0.1],[2000,2027,-0.8]],
+    'Italy': [[1789,1861,-0.2],[1861,1922,0.2],[1922,1943,-0.9],[1943,1994,0.3],[1994,2027,0.2]],
+    'Spain': [[1789,1931,-0.5],[1931,1939,0.5],[1939,1975,-0.8],[1975,2027,0.6]],
+    'Japan': [[1789,1868,-0.3],[1868,1926,-0.1],[1926,1945,-0.9],[1945,2027,0.5]],
+    'Canada': [[1789,1867,0.2],[1867,1960,0.4],[1960,2006,0.8],[2006,2015,0.3],[2015,2027,0.8]],
+    'Mexico': [[1789,1910,-0.3],[1910,1940,0.2],[1940,2000,0.3],[2000,2018,0.2],[2018,2027,0.5]],
+    'Brazil': [[1789,1889,-0.5],[1889,1964,0.1],[1964,1985,-0.6],[1985,2003,0.1],[2003,2016,0.6],[2016,2023,-0.3],[2023,2027,0.5]],
+    'India': [[1789,1947,-0.4],[1947,1977,0.5],[1977,1984,0.3],[1984,2014,0.5],[2014,2027,0.0]],
+    'South Korea': [[1789,1945,-0.3],[1945,1960,-0.2],[1960,1987,-0.4],[1987,2008,0.5],[2008,2017,0.1],[2017,2022,0.7],[2022,2027,0.3]],
+    'Israel': [[1948,1977,0.5],[1977,1992,0.0],[1992,1996,0.6],[1996,2027,-0.2]],
+    'Iran': [[1789,1906,-0.5],[1906,1953,0.1],[1953,1979,-0.4],[1979,2027,-0.9]],
+    'Turkey': [[1789,1922,-0.4],[1922,1950,0.1],[1950,1980,0.0],[1980,2003,0.0],[2003,2027,-0.5]],
+    'Australia': [[1789,1901,0.2],[1901,1945,0.4],[1945,1975,0.5],[1975,1983,0.2],[1983,1996,0.7],[1996,2007,0.2],[2007,2013,0.7],[2013,2022,0.2],[2022,2027,0.7]],
+    'South Africa': [[1789,1948,-0.5],[1948,1990,-0.9],[1990,2027,0.5]],
+    'Sweden': [[1789,1900,0.0],[1900,1932,0.3],[1932,2027,0.9]],
+    'China': [[1789,1912,-0.5],[1912,1949,-0.2],[1949,1976,-0.8],[1976,2012,-0.3],[2012,2027,-0.7]],
+    'Taiwan': [[1949,1987,-0.2],[1987,2000,0.3],[2000,2008,0.6],[2008,2016,0.3],[2016,2027,0.7]]
+  };
+
+  const nameMap = {
+    'united states':'United States','united kingdom':'United Kingdom','great britain':'United Kingdom',
+    'france':'France','germany':'Germany','russia':'Russia','russian federation':'Russia',
+    'italy':'Italy','spain':'Spain','japan':'Japan','canada':'Canada','mexico':'Mexico',
+    'brazil':'Brazil','india':'India','south korea':'South Korea','israel':'Israel',
+    'iran':'Iran','turkey':'Turkey','turkiye':'Turkey','australia':'Australia',
+    'south africa':'South Africa','sweden':'Sweden','china':'China','taiwan':'Taiwan'
+  };
+
+  function matchName(n) {
+    if (!n) return null;
+    return nameMap[n.toLowerCase().trim()] || null;
+  }
+
+  function getAlignment(country, year) {
+    const eras = alignmentData[country];
+    if (!eras) return null;
+    for (const [s, e, score] of eras) {
+      if (year >= s && year < e) return score;
+    }
+    return null;
+  }
+
+  let currentYear = 2026;
+  const svg = d3.select('#map');
+  const slider = document.getElementById('year-slider');
+  const yearDisp = document.getElementById('year-display');
+
+  async function renderMap() {
+    const data = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const countries = topojson.feature(data, data.objects.countries);
+    countries.features.forEach(f => {
+      if (!f.properties) f.properties = {};
+      f.properties.NAME = countryIdMap[f.id] || '';
+    });
+
+    function draw() {
+      const container = document.getElementById('map-container');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      svg.attr('viewBox', `0 0 ${w} ${h}`);
+
+      const proj = d3.geoNaturalEarth1().scale(w / 5.5).translate([w / 2, h / 2]);
+      const path = d3.geoPath().projection(proj);
+
+      svg.selectAll('path').remove();
+      svg.selectAll('path')
+        .data(countries.features)
+        .enter().append('path')
+        .attr('class', d => {
+          const m = matchName(d.properties.NAME);
+          return 'country ' + (m ? 'active' : 'inactive');
+        })
+        .attr('d', path)
+        .attr('fill', d => {
+          const m = matchName(d.properties.NAME);
+          if (!m) return COLORS.inactive;
+          const a = getAlignment(m, currentYear);
+          return a !== null ? alignmentScale(a) : COLORS.inactive;
+        })
+        .append('title')
+        .text(d => {
+          const m = matchName(d.properties.NAME);
+          if (!m) return d.properties.NAME;
+          const a = getAlignment(m, currentYear);
+          return `${m}: ${a !== null ? (a * 3).toFixed(1) : 'N/A'}`;
+        });
+    }
+
+    draw();
+    window.addEventListener('resize', draw);
+
+    slider.addEventListener('input', function() {
+      currentYear = +this.value;
+      yearDisp.textContent = currentYear;
+      draw();
+    });
+  }
+
+  renderMap();
+
+  // ============================================
+  // SECTION 4: NODE PROFILE
+  // ============================================
+  const dimensions = [
+    { code: 'MAT', name: 'Material', pos: 1, sal: 0.9, low: 'Redistributionist', high: 'Free Market' },
+    { code: 'CD', name: 'Cultural Defense', pos: 2, sal: 0.6, low: 'Progressive', high: 'Traditional' },
+    { code: 'CU', name: 'Cultural Uniformity', pos: 4, sal: 0.7, low: 'Pluralist', high: 'Assimilationist' },
+    { code: 'MOR', name: 'Moral Circle', pos: 4, sal: 0.8, low: 'Universal', high: 'Particularist' },
+    { code: 'PRO', name: 'Proceduralism', pos: 4, sal: 0.85, low: 'Outcome-focused', high: 'Rules-bound' },
+    { code: 'COM', name: 'Compromise', pos: 4, sal: 0.7, low: 'Principled', high: 'Pragmatic' },
+    { code: 'ZS', name: 'Zero-Sum', pos: 2, sal: 0.5, low: 'Positive-sum', high: 'Zero-sum' },
+    { code: 'ONT_H', name: 'Human Nature', pos: 4, sal: 0.6, low: 'Pessimistic', high: 'Optimistic' },
+    { code: 'ONT_S', name: 'System View', pos: 3, sal: 0.5, low: 'Declining', high: 'Thriving' },
+    { code: 'PF', name: 'Partisan Fusion', pos: 2, sal: 0.4, low: 'Independent', high: 'Partisan' },
+    { code: 'TRB', name: 'Tribalism', pos: 4, sal: 0.75, low: 'Universalist', high: 'Civic Tribal' },
+    { code: 'ENG', name: 'Engagement', pos: 5, sal: 1.0, low: 'Apolitical', high: 'Fully Engaged' },
+  ];
+
+  const textDimensions = [
+    { code: 'EPS', name: 'Epistemics', value: 'Intuitionist', sal: 0.6 },
+    { code: 'AES', name: 'Aesthetics', value: 'Visionary', sal: 0.5 },
+  ];
+
+  const nodesGrid = document.getElementById('nodes-grid');
+
+  // Cluster: Numeric bars
+  const cluster1 = document.createElement('div');
+  cluster1.className = 'node-cluster';
+  cluster1.innerHTML = '<div class="cluster-title">Dimensional Positions (1–5 scale)</div>';
+
+  dimensions.forEach(d => {
+    const pct = ((d.pos - 1) / 4) * 100;
+    const color = d.pos <= 2 ? 'var(--pool-deep)' : d.pos >= 4 ? 'var(--flesh)' : '#ede2ab';
+    const row = document.createElement('div');
+    row.className = 'node-row';
+    row.style.opacity = 0.4 + d.sal * 0.6;
+    row.innerHTML = `
+      <div class="node-code">${d.code}</div>
+      <div class="node-name">${d.name}</div>
+      <div class="node-bar-wrap">
+        <div class="node-bar">
+          <div class="node-bar-segment" style="width:${pct}%;background:${color};"></div>
+          <div class="node-bar-marker" style="left:${pct}%;"></div>
+        </div>
+        <div class="node-labels"><span>${d.low}</span><span>${d.high}</span></div>
+      </div>
+      <div class="node-value">${d.pos}</div>
+    `;
+    cluster1.appendChild(row);
+  });
+
+  nodesGrid.appendChild(cluster1);
+
+  // Cluster: Text dimensions
+  const cluster2 = document.createElement('div');
+  cluster2.className = 'node-cluster';
+  cluster2.innerHTML = '<div class="cluster-title">Categorical Dimensions</div>';
+
+  textDimensions.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'node-row text-node';
+    row.style.opacity = 0.4 + d.sal * 0.6;
+    row.innerHTML = `
+      <div class="node-code">${d.code}</div>
+      <div class="node-name">${d.name}</div>
+      <div class="node-bar-wrap" style="display:flex;align-items:center;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--pool-deep);">${d.value}</span>
+      </div>
+      <div class="node-value" style="visibility:hidden;">—</div>
+    `;
+    cluster2.appendChild(row);
+  });
+
+  nodesGrid.appendChild(cluster2);
+})();
+</script>
+</body>
+</html>
