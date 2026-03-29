@@ -98,13 +98,25 @@
     }
 
     .election-cell {
-      padding: 0.3rem 0.15rem;
+      padding: 0.2rem 0.15rem;
       text-align: center;
       font-size: 0.55rem;
-      line-height: 1.3;
+      line-height: 1.2;
       border: 1px solid rgba(0,0,0,0.08);
       transition: transform 0.1s;
       cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .election-cell img.pres-photo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(255,255,255,0.5);
     }
 
     .election-cell:hover {
@@ -159,6 +171,11 @@
       border-bottom: 2px solid var(--ink);
     }
 
+    #map-section .container {
+      max-width: 100%;
+      padding: 0 1rem;
+    }
+
     .map-controls {
       display: flex;
       align-items: center;
@@ -208,8 +225,8 @@
     #map-container {
       position: relative;
       width: 100%;
-      aspect-ratio: 2 / 1;
-      min-height: 350px;
+      aspect-ratio: 2.2 / 1;
+      min-height: 450px;
     }
 
     #map-container svg {
@@ -404,6 +421,49 @@
   // ============================================
   // SECTION 2: ELECTIONS
   // ============================================
+  // Wikipedia commons presidential portrait thumbnails
+  const PH = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
+  const photos = {
+    'Washington': PH+'b/b6/Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg/100px-Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg',
+    'Jefferson': PH+'1/1e/Thomas_Jefferson_by_Rembrandt_Peale%2C_1800.jpg/100px-Thomas_Jefferson_by_Rembrandt_Peale%2C_1800.jpg',
+    'Madison': PH+'1/10/James_Madison.jpg/100px-James_Madison.jpg',
+    'Monroe': PH+'d/d4/James_Monroe_White_House_portrait_1819.jpg/100px-James_Monroe_White_House_portrait_1819.jpg',
+    'J.Q. Adams': PH+'5/51/JQA_Photo.jpg/100px-JQA_Photo.jpg',
+    'Jackson': PH+'4/43/Andrew_jackson_head.jpg/100px-Andrew_jackson_head.jpg',
+    'Van Buren': PH+'0/04/MVanBuren.jpg/100px-MVanBuren.jpg',
+    'Polk': PH+'5/5e/JKP.jpg/100px-JKP.jpg',
+    'Pierce': PH+'4/46/Mathew_Brady_-_Franklin_Pierce_-_alternate_crop.jpg/100px-Mathew_Brady_-_Franklin_Pierce_-_alternate_crop.jpg',
+    'Frémont': PH+'1/1f/John_C_Fremont_-_Brady-Handy.jpg/100px-John_C_Fremont_-_Brady-Handy.jpg',
+    'Lincoln': PH+'a/ab/Abraham_Lincoln_O-77_matte_collodion_print.jpg/100px-Abraham_Lincoln_O-77_matte_collodion_print.jpg',
+    'Grant': PH+'7/75/Ulysses_S._Grant_1870-1880.jpg/100px-Ulysses_S._Grant_1870-1880.jpg',
+    'Tilden': PH+'f/f4/Samuel_Jones_Tilden.jpg/100px-Samuel_Jones_Tilden.jpg',
+    'Hancock': PH+'3/3f/Winfield_Scott_Hancock.jpg/100px-Winfield_Scott_Hancock.jpg',
+    'Cleveland': PH+'3/3f/Grover_Cleveland_-_NARA_-_518139_%28cropped%29.jpg/100px-Grover_Cleveland_-_NARA_-_518139_%28cropped%29.jpg',
+    'Bryan': PH+'8/85/William_Jennings_Bryan_-_1896.jpg/100px-William_Jennings_Bryan_-_1896.jpg',
+    'T. Roosevelt': PH+'1/19/President_Roosevelt_-_Pach_Bros_%28cropped%29.jpg/100px-President_Roosevelt_-_Pach_Bros_%28cropped%29.jpg',
+    'Wilson': PH+'8/8d/President_Woodrow_Wilson_portrait_December_2_1912.jpg/100px-President_Woodrow_Wilson_portrait_December_2_1912.jpg',
+    'Debs': PH+'3/3b/Eugene_V._Debs%2C_bw_photo_portrait%2C_1897.jpg/100px-Eugene_V._Debs%2C_bw_photo_portrait%2C_1897.jpg',
+    'La Follette': PH+'8/8b/Robert_M._La_Follette_Sr.jpg/100px-Robert_M._La_Follette_Sr.jpg',
+    'Smith': PH+'e/ea/Al_Smith_cropped.jpg/100px-Al_Smith_cropped.jpg',
+    'FDR': PH+'4/42/FDR_1944_Color_Portrait.jpg/100px-FDR_1944_Color_Portrait.jpg',
+    'Truman': PH+'0/0b/TRUMAN_58-766-06_%28cropped%29.jpg/100px-TRUMAN_58-766-06_%28cropped%29.jpg',
+    'Stevenson': PH+'e/e1/Adlai_E._Stevenson_II.jpg/100px-Adlai_E._Stevenson_II.jpg',
+    'Kennedy': PH+'c/c3/John_F._Kennedy%2C_White_House_color_photo_portrait.jpg/100px-John_F._Kennedy%2C_White_House_color_photo_portrait.jpg',
+    'LBJ': PH+'e/e4/37_Lyndon_Johnson_3x4.jpg/100px-37_Lyndon_Johnson_3x4.jpg',
+    'Humphrey': PH+'e/e3/Hubert_Humphrey_crop.jpg/100px-Hubert_Humphrey_crop.jpg',
+    'McGovern': PH+'1/18/George_McGovern%2C_c_1972_%28cropped%29.jpg/100px-George_McGovern%2C_c_1972_%28cropped%29.jpg',
+    'Carter': PH+'5/5a/JimmyCarterPortrait2.jpg/100px-JimmyCarterPortrait2.jpg',
+    'Mondale': PH+'8/81/VP-mondale.jpg/100px-VP-mondale.jpg',
+    'Dukakis': PH+'b/b6/Michael_Dukakis.jpg/100px-Michael_Dukakis.jpg',
+    'Clinton': PH+'d/d3/Bill_Clinton.jpg/100px-Bill_Clinton.jpg',
+    'Gore': PH+'c/c2/Al_Gore%2C_Vice_President_of_the_United_States%2C_official_portrait_1994.jpg/100px-Al_Gore%2C_Vice_President_of_the_United_States%2C_official_portrait_1994.jpg',
+    'Kerry': PH+'e/ea/John_Kerry_official_Secretary_of_State_portrait.jpg/100px-John_Kerry_official_Secretary_of_State_portrait.jpg',
+    'Obama': PH+'8/8d/President_Barack_Obama.jpg/100px-President_Barack_Obama.jpg',
+    'H. Clinton': PH+'2/27/Hillary_Clinton_official_Secretary_of_State_portrait_crop.jpg/100px-Hillary_Clinton_official_Secretary_of_State_portrait_crop.jpg',
+    'Biden': PH+'6/68/Joe_Biden_presidential_portrait.jpg/100px-Joe_Biden_presidential_portrait.jpg',
+    'Harris': PH+'4/41/Kamala_Harris_Vice_Presidential_Portrait.jpg/100px-Kamala_Harris_Vice_Presidential_Portrait.jpg',
+  };
+
   const elections = [
     // Row 1: 1789-1824
     {y:1789,c:'Washington',p:'other'},{y:1792,c:'Washington',p:'other'},
@@ -439,7 +499,7 @@
     {y:1988,c:'Dukakis',p:'dem'},{y:1992,c:'Clinton',p:'dem'},
     {y:1996,c:'Clinton',p:'dem'},{y:2000,c:'Gore',p:'dem'},
     {y:2004,c:'Kerry',p:'dem'},{y:2008,c:'Obama',p:'dem'},
-    {y:2012,c:'Obama',p:'dem'},{y:2016,c:'Clinton',p:'dem'},
+    {y:2012,c:'Obama',p:'dem'},{y:2016,c:'H. Clinton',p:'dem'},
     {y:2020,c:'Biden',p:'dem'},{y:2024,c:'Harris',p:'dem'}
   ];
 
@@ -449,7 +509,9 @@
   elections.forEach(e => {
     const cell = document.createElement('div');
     cell.className = `election-cell ${e.p}`;
-    cell.innerHTML = `<span class="cell-year">${e.y}</span><span class="cell-name">${e.c}</span>`;
+    const photoUrl = photos[e.c] || '';
+    const photoHtml = photoUrl ? `<img class="pres-photo" src="${photoUrl}" alt="${e.c}" loading="lazy" onerror="this.style.display='none'">` : '';
+    cell.innerHTML = `${photoHtml}<span class="cell-year">${e.y}</span><span class="cell-name">${e.c}</span>`;
     grid.appendChild(cell);
     if (e.p === 'dem') demCount++;
     else if (e.p === 'rep') repCount++;
