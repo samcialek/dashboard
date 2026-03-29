@@ -595,20 +595,31 @@
   // ============================================
   // SECTION 4: NODE PROFILE
   // ============================================
-  const dimensions = [
-    { code: 'MAT', name: 'Material', pos: 1, sal: 0.9, low: 'Redistributionist', high: 'Free Market' },
-    { code: 'CD', name: 'Cultural Direction', pos: 2, sal: 0.6, low: 'Progressive', high: 'Traditional' },
-    { code: 'CU', name: 'Cultural Universalism', pos: 4, sal: 0.7, low: 'Assimilationist', high: 'Pluralist' },
-    { code: 'MOR', name: 'Moral Circle', pos: 4, sal: 0.8, low: 'Universal', high: 'Particularist' },
-    { code: 'PRO', name: 'Proceduralism', pos: 4, sal: 0.85, low: 'Anti-procedural', high: 'Procedural' },
-    { code: 'COM', name: 'Compromise', pos: 4, sal: 0.7, low: 'Principled', high: 'Pragmatic' },
-    { code: 'ZS', name: 'Zero-Sum', pos: 2, sal: 0.5, low: 'Positive-sum', high: 'Zero-sum' },
-    { code: 'ONT_H', name: 'Human Nature', pos: 4, sal: 0.6, low: 'Pessimistic', high: 'Optimistic' },
-    { code: 'ONT_S', name: 'System View', pos: 3, sal: 0.5, low: 'Stable', high: 'Broken' },
-    { code: 'PF', name: 'Partisan Fusion', pos: 2, sal: 0.4, low: 'Independent', high: 'Partisan' },
-    { code: 'TRB', name: 'Tribalism', pos: 4, sal: 0.75, low: 'Universalist', high: 'Civic Tribal' },
-    { code: 'ENG', name: 'Engagement', pos: 5, sal: 1.0, low: 'Apolitical', high: 'Fully Engaged' },
+  // Cluster colors: ENDS=#D4A84B (amber), MEANS=#89CCF0 (pool blue), REALITY=#B088D0 (violet), SELF=#FA8072 (salmon)
+  const clusterColors = { ENDS: '#D4A84B', MEANS: '#5BA8D9', REALITY: '#B088D0', SELF: '#FA8072' };
+
+  const rawDimensions = [
+    { code: 'MAT', name: 'Material', pos: 1, sal: 0.9, low: 'Free Market', high: 'Redistributionist', cluster: 'ENDS' },
+    { code: 'CD', name: 'Cultural Direction', pos: 2, sal: 0.6, low: 'Traditional', high: 'Progressive', cluster: 'ENDS' },
+    { code: 'CU', name: 'Cultural Universalism', pos: 4, sal: 0.7, low: 'Assimilationist', high: 'Pluralist', cluster: 'ENDS' },
+    { code: 'MOR', name: 'Moral Circle', pos: 4, sal: 0.8, low: 'Particularist', high: 'Universal', cluster: 'ENDS' },
+    { code: 'PRO', name: 'Proceduralism', pos: 4, sal: 0.85, low: 'Anti-procedural', high: 'Procedural', cluster: 'MEANS' },
+    { code: 'COM', name: 'Compromise', pos: 4, sal: 0.7, low: 'Principled', high: 'Pragmatic', cluster: 'MEANS' },
+    { code: 'ZS', name: 'Zero-Sum', pos: 2, sal: 0.5, low: 'Zero-sum', high: 'Positive-sum', cluster: 'REALITY' },
+    { code: 'ONT_H', name: 'Human Nature', pos: 4, sal: 0.6, low: 'Pessimistic', high: 'Optimistic', cluster: 'REALITY' },
+    { code: 'ONT_S', name: 'System View', pos: 3, sal: 0.5, low: 'Broken', high: 'Stable', cluster: 'REALITY' },
+    { code: 'PF', name: 'Partisan Fusion', pos: 2, sal: 0.4, low: 'Partisan', high: 'Independent', cluster: 'SELF' },
+    { code: 'TRB', name: 'Tribalism', pos: 4, sal: 0.75, low: 'Universalist', high: 'Civic Tribal', cluster: 'SELF' },
+    { code: 'ENG', name: 'Engagement', pos: 5, sal: 1.0, low: 'Apolitical', high: 'Fully Engaged', cluster: 'SELF' },
   ];
+
+  // Flip: if pos <= 2, invert so the dominant trait is always on the high (right) side
+  const dimensions = rawDimensions.map(d => {
+    if (d.pos <= 2) {
+      return { ...d, pos: 6 - d.pos, low: d.high, high: d.low };
+    }
+    return d;
+  });
 
   const textDimensions = [
     { code: 'EPS', name: 'Epistemics', sal: 0.6, categories: [
@@ -634,11 +645,17 @@
   // Cluster: Numeric bars
   const cluster1 = document.createElement('div');
   cluster1.className = 'node-cluster';
-  cluster1.innerHTML = '<div class="cluster-title">Dimensional Positions (1–5 scale)</div>';
+  cluster1.innerHTML = `<div class="cluster-title">Dimensional Positions (1–5 scale)</div>
+    <div style="display:flex;gap:16px;margin-bottom:12px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;">
+      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.ENDS};border-radius:2px;margin-right:4px;"></span>ENDS</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.MEANS};border-radius:2px;margin-right:4px;"></span>MEANS</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.REALITY};border-radius:2px;margin-right:4px;"></span>REALITY</span>
+      <span><span style="display:inline-block;width:10px;height:10px;background:${clusterColors.SELF};border-radius:2px;margin-right:4px;"></span>SELF</span>
+    </div>`;
 
   dimensions.forEach(d => {
     const pct = ((d.pos - 1) / 4) * 100;
-    const color = 'var(--pool-deep)';
+    const color = clusterColors[d.cluster] || 'var(--pool-deep)';
     const row = document.createElement('div');
     row.className = 'node-row';
     row.style.opacity = 0.4 + d.sal * 0.6;
