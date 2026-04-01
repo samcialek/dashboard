@@ -1,0 +1,2865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sam's United States Vote Predictions - PRISM v8.1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: #FFFEF8;
+            color: #1a1a1a;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .profile-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border: 2px solid #1a1a1a;
+            background: white;
+        }
+        .profile-title {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+        .l2-dimension {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .l2-dimension.categorical {
+            border-left: 3px solid #89ccf0;
+            padding-left: 0.5rem;
+            background: #f8f9fa;
+            padding: 0.4rem 0.5rem;
+        }
+        .l2-label { width: 40px; font-weight: 600; font-size: 0.75rem; color: #444; }
+        .l2-bar-container { flex: 1; height: 12px; background: #eee; min-width: 80px; }
+        .l2-bar { height: 100%; background: #89ccf0; }
+        .l2-value { width: 30px; text-align: right; font-size: 0.75rem; font-weight: 500; }
+        .l2-pole { font-size: 0.7rem; color: #666; width: 100%; margin-top: 0.2rem; padding-left: 45px; }
+        .l2-category { font-size: 0.85rem; font-weight: 500; color: #1a1a1a; flex: 1; cursor: help; }
+        .l2-fit { font-size: 0.75rem; color: #2e7d32; font-weight: 600; }
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            padding: 1.5rem;
+            border: 2px solid #1a1a1a;
+            text-align: center;
+        }
+        .stat-value { font-size: 2.5rem; font-weight: 600; }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666; }
+        .party-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .party-name { font-weight: 500; }
+        .party-count { font-weight: 600; }
+        .elections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .election-card {
+            border: 2px solid #1a1a1a;
+            padding: 1.5rem;
+            background: white;
+        }
+        .election-card.abstained {
+            opacity: 0.6;
+            border-style: dashed;
+        }
+        .election-year {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .election-result {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            padding: 0.25rem 0.5rem;
+            display: inline-block;
+        }
+        .voted .election-result { background: #89ccf0; }
+        .abstained .election-result { background: #ccc; }
+        .candidates-list { margin-bottom: 1rem; }
+        .candidate {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #ccc;
+            background: #f9f9f9;
+        }
+        .candidate.selected {
+            background: #e8f4f8;
+        }
+        .candidate-name { font-weight: 500; font-size: 0.9rem; }
+        .candidate-party { font-size: 0.7rem; color: #666; margin-bottom: 0.5rem; }
+        .vote-marker {
+            background: #1a1a1a;
+            color: white;
+            padding: 0.1rem 0.4rem;
+            font-size: 0.6rem;
+            margin-left: 0.5rem;
+        }
+        .fit-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .fit-bar-container { flex: 1; height: 8px; background: #eee; position: relative; }
+        .fit-bar { height: 100%; }
+        .fit-score { font-size: 0.7rem; font-weight: 500; min-width: 30px; }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        .metric { display: flex; justify-content: space-between; }
+        .metric-label { color: #666; }
+        .metric-value { font-weight: 500; }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1a1a1a;
+        }
+        .meta {
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .nav-links {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f5f5f0;
+            border: 1px solid #ddd;
+        }
+        .nav-links a {
+            color: #1a1a1a;
+            margin-right: 1rem;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <strong>All Countries:</strong>
+            <a href="sam_results_v81.html">US</a>
+            <a href="sam_results_uk.html">UK</a>
+            <a href="sam_results_france.html">France</a>
+            <a href="sam_results_germany.html">Germany</a>
+            <a href="sam_results_russia.html">Russia</a>
+            <a href="sam_results_china.html">China</a>
+            <a href="sam_results_italy.html">Italy</a>
+            <a href="sam_results_spain.html">Spain</a>
+            <a href="sam_results_austria.html">Austria</a>
+            <a href="sam_results_ottoman_turkey.html">Ottoman/Turkey</a>
+            <a href="sam_results_poland.html">Poland</a>
+            <a href="sam_results_netherlands.html">Netherlands</a>
+            <a href="sam_results_sweden.html">Sweden</a>
+            <a href="sam_results_portugal.html">Portugal</a>
+            <a href="sam_results_belgium.html">Belgium</a>
+            <a href="sam_results_greece.html">Greece</a>
+        </div>
+
+        <h1>Sam's United States Vote Predictions</h1>
+        <p class="subtitle">PRISM v8.1 Analysis - Presidential Elections 1789-2024</p>
+
+        <div class="profile-section">
+            <div>
+                <div class="profile-title">L2 Political Dispositions</div>
+                
+        <div class="l2-dimension continuous">
+            <span class="l2-label" title="Material">MAT</span>
+            <div class="l2-bar-container">
+                <div class="l2-bar" style="width: 22.15%"></div>
+            </div>
+            <span class="l2-value">22</span>
+            <span class="l2-pole">Leaning Structuralist</span>
+        </div>
+        <div class="l2-dimension continuous">
+            <span class="l2-label" title="Social Values">CSO</span>
+            <div class="l2-bar-container">
+                <div class="l2-bar" style="width: 19.6%"></div>
+            </div>
+            <span class="l2-value">20</span>
+            <span class="l2-pole">Strongly Progressive</span>
+        </div>
+        <div class="l2-dimension categorical">
+            <span class="l2-label" title="Civic-National Attachment">CNA</span>
+            <span class="l2-category" title="Ethno Cultural: 43% | Cultural Assimilationist: 31% | Ethno Nationalist: 17% | Civic Universalist: 7%">Ethno-Cultural</span>
+            <span class="l2-fit">(43%)</span>
+        </div>
+        <div class="l2-dimension categorical">
+            <span class="l2-label" title="Moral Foundation">MOR</span>
+            <span class="l2-category" title="Fairness Dominant: 46% | Care Dominant: 33% | Liberty Dominant: 18%">Fairness-Dominant</span>
+            <span class="l2-fit">(46%)</span>
+        </div>
+        <div class="l2-dimension categorical">
+            <span class="l2-label" title="Epistemic Style">EPS</span>
+            <span class="l2-category" title="Traditionalist: 43% | Intuitionist: 30% | Selective: 18% | Autonomous: 6%">Traditionalist</span>
+            <span class="l2-fit">(43%)</span>
+        </div>
+        <div class="l2-dimension categorical">
+            <span class="l2-label" title="Leadership Aesthetic">AES</span>
+            <span class="l2-category" title="Pastoral: 23% | Visionary: 18% | Statesman: 18% | Technocrat: 15%">Pastoral</span>
+            <span class="l2-fit">(23%)</span>
+        </div>
+        <div class="l2-dimension categorical">
+            <span class="l2-label" title="Procedural Orientation">PRO</span>
+            <span class="l2-category" title="Pragmatist: 41% | Consequentialist: 34% | Proceduralist: 15% | Revolutionary: 8%">Pragmatist</span>
+            <span class="l2-fit">(41%)</span>
+        </div>
+            </div>
+            <div>
+                <div class="profile-title">Summary</div>
+                <p style="font-size: 0.8rem; margin-bottom: 1rem;">
+                    <strong>Party (US):</strong> Democrat<br>
+                    <strong>Engagement:</strong> 100/100<br>
+                    <strong>PF (Fusion):</strong> 0.61<br>
+                    <strong>PIS (Identity):</strong> 0.80
+                </p>
+                <div class="profile-title">Vote Breakdown by Party</div>
+                <div class="party-stat"><span class="party-name" style="color: #3b82f6">Democratic</span><span class="party-count">30</span></div><div class="party-stat"><span class="party-name" style="color: #3b82f6">Democratic-Republican</span><span class="party-count">8</span></div><div class="party-stat"><span class="party-name" style="color: #0066cc">Republican</span><span class="party-count">5</span></div><div class="party-stat"><span class="party-name" style="color: #ff0066">Socialist</span><span class="party-count">4</span></div><div class="party-stat"><span class="party-name" style="color: #9ca3af">Nonpartisan</span><span class="party-count">2</span></div><div class="party-stat"><span class="party-name" style="color: #9ca3af">Free Soil</span><span class="party-count">2</span></div><div class="party-stat"><span class="party-name" style="color: #64a12d">Greenback</span><span class="party-count">2</span></div><div class="party-stat"><span class="party-name" style="color: #0066cc">National Republican</span><span class="party-count">1</span></div><div class="party-stat"><span class="party-name" style="color: #f59e0b">Whig</span><span class="party-count">1</span></div><div class="party-stat"><span class="party-name" style="color: #9ca3af">Liberty</span><span class="party-count">1</span></div><div class="party-stat"><span class="party-name" style="color: #0066cc">Liberal Republican</span><span class="party-count">1</span></div><div class="party-stat"><span class="party-name" style="color: #9ca3af">Populist</span><span class="party-count">1</span></div><div class="party-stat"><span class="party-name" style="color: #9ca3af">Progressive</span><span class="party-count">1</span></div><div class="party-stat"><span class="party-name" style="color: #9ca3af">Independent</span><span class="party-count">1</span></div>
+            </div>
+        </div>
+
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-value">60</div>
+                <div class="stat-label">Elections</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">60</div>
+                <div class="stat-label">Votes Cast</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Abstentions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Turnout Rate</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Election-by-Election Results</h2>
+
+        <div class="elections-grid">
+            
+        <div class="election-card voted">
+            <div class="election-year">1789</div>
+            <div class="election-result">Voted for George Washington</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">George Washington <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Nonpartisan</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 47.7%; background: #9ca3af"></div>
+                    <span class="fit-score">47.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">47.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">88%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1792</div>
+            <div class="election-result">Voted for George Washington</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">George Washington <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Nonpartisan</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.6%; background: #9ca3af"></div>
+                    <span class="fit-score">46.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">46.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+26.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">88%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1796</div>
+            <div class="election-result">Voted for Thomas Jefferson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Thomas Jefferson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.7%; background: #3b82f6"></div>
+                    <span class="fit-score">46.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #8b5cf6">
+                <div class="candidate-name">John Adams </div>
+                <div class="candidate-party">Federalist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.3%; background: #8b5cf6"></div>
+                    <span class="fit-score">39.3</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">46.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+26.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">51%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1800</div>
+            <div class="election-result">Voted for Thomas Jefferson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Thomas Jefferson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.9%; background: #3b82f6"></div>
+                    <span class="fit-score">46.9</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #8b5cf6">
+                <div class="candidate-name">John Adams </div>
+                <div class="candidate-party">Federalist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.9%; background: #8b5cf6"></div>
+                    <span class="fit-score">36.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">46.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">55%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1804</div>
+            <div class="election-result">Voted for Thomas Jefferson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Thomas Jefferson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 47.4%; background: #3b82f6"></div>
+                    <span class="fit-score">47.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #8b5cf6">
+                <div class="candidate-name">Charles Pinckney </div>
+                <div class="candidate-party">Federalist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.1%; background: #8b5cf6"></div>
+                    <span class="fit-score">33.1</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">21.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">47.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+26.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">62%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1808</div>
+            <div class="election-result">Voted for James Madison</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">James Madison <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.9%; background: #3b82f6"></div>
+                    <span class="fit-score">45.9</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #8b5cf6">
+                <div class="candidate-name">Charles Pinckney </div>
+                <div class="candidate-party">Federalist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 32.5%; background: #8b5cf6"></div>
+                    <span class="fit-score">32.5</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">61%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1812</div>
+            <div class="election-result">Voted for James Madison</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">James Madison <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.1%; background: #3b82f6"></div>
+                    <span class="fit-score">45.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #8b5cf6">
+                <div class="candidate-name">DeWitt Clinton </div>
+                <div class="candidate-party">Federalist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.6%; background: #8b5cf6"></div>
+                    <span class="fit-score">38.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">49%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1816</div>
+            <div class="election-result">Voted for James Monroe</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">James Monroe <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.5%; background: #3b82f6"></div>
+                    <span class="fit-score">45.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #8b5cf6">
+                <div class="candidate-name">Rufus King </div>
+                <div class="candidate-party">Federalist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 34.4%; background: #8b5cf6"></div>
+                    <span class="fit-score">34.4</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+24.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">57%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1820</div>
+            <div class="election-result">Voted for James Monroe</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">James Monroe <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 44.7%; background: #3b82f6"></div>
+                    <span class="fit-score">44.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">21.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">44.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+23.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">88%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1824</div>
+            <div class="election-result">Voted for Henry Clay</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Henry Clay <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 42.2%; background: #3b82f6"></div>
+                    <span class="fit-score">42.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">John Quincy Adams </div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 41.3%; background: #3b82f6"></div>
+                    <span class="fit-score">41.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Andrew Jackson </div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.4%; background: #3b82f6"></div>
+                    <span class="fit-score">40.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">William Crawford </div>
+                <div class="candidate-party">Democratic-Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.8%; background: #3b82f6"></div>
+                    <span class="fit-score">38.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">42.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+22.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">40%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1828</div>
+            <div class="election-result">Voted for John Quincy Adams</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">John Quincy Adams <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">National Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.0%; background: #0066cc"></div>
+                    <span class="fit-score">40.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Andrew Jackson </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.7%; background: #3b82f6"></div>
+                    <span class="fit-score">39.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+20.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">39%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1832</div>
+            <div class="election-result">Voted for Andrew Jackson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Andrew Jackson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.7%; background: #3b82f6"></div>
+                    <span class="fit-score">39.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Henry Clay </div>
+                <div class="candidate-party">National Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.2%; background: #0066cc"></div>
+                    <span class="fit-score">39.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">William Wirt </div>
+                <div class="candidate-party">Anti-Masonic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.8%; background: #9ca3af"></div>
+                    <span class="fit-score">37.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">39.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+20.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">39%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1836</div>
+            <div class="election-result">Voted for Martin Van Buren</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Martin Van Buren <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.9%; background: #3b82f6"></div>
+                    <span class="fit-score">38.9</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">William Henry Harrison </div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.7%; background: #f59e0b"></div>
+                    <span class="fit-score">38.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">Daniel Webster </div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.2%; background: #f59e0b"></div>
+                    <span class="fit-score">37.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">Hugh White </div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.8%; background: #f59e0b"></div>
+                    <span class="fit-score">36.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">38.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+19.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">39%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1840</div>
+            <div class="election-result">Voted for William Henry Harrison</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #f59e0b">
+                <div class="candidate-name">William Henry Harrison <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.0%; background: #f59e0b"></div>
+                    <span class="fit-score">40.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Martin Van Buren </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.6%; background: #3b82f6"></div>
+                    <span class="fit-score">37.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+22.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">42%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1844</div>
+            <div class="election-result">Voted for James Birney</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">James Birney <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Liberty</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 44.0%; background: #9ca3af"></div>
+                    <span class="fit-score">44.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">Henry Clay </div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.0%; background: #f59e0b"></div>
+                    <span class="fit-score">40.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">James K. Polk </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.8%; background: #3b82f6"></div>
+                    <span class="fit-score">38.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">44.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">45%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1848</div>
+            <div class="election-result">Voted for Martin Van Buren</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">Martin Van Buren <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Free Soil</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 41.4%; background: #9ca3af"></div>
+                    <span class="fit-score">41.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">Zachary Taylor </div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.7%; background: #f59e0b"></div>
+                    <span class="fit-score">37.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Lewis Cass </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 35.2%; background: #3b82f6"></div>
+                    <span class="fit-score">35.2</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">41.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+22.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">44%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1852</div>
+            <div class="election-result">Voted for John Hale</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">John Hale <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Free Soil</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 44.5%; background: #9ca3af"></div>
+                    <span class="fit-score">44.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">Winfield Scott </div>
+                <div class="candidate-party">Whig</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.0%; background: #f59e0b"></div>
+                    <span class="fit-score">38.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Franklin Pierce </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 35.4%; background: #3b82f6"></div>
+                    <span class="fit-score">35.4</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">44.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">49%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1856</div>
+            <div class="election-result">Voted for John C. Fremont</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">John C. Fremont <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 42.2%; background: #0066cc"></div>
+                    <span class="fit-score">42.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">Millard Fillmore </div>
+                <div class="candidate-party">Know-Nothing</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 32.7%; background: #9ca3af"></div>
+                    <span class="fit-score">32.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">James Buchanan </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 30.6%; background: #3b82f6"></div>
+                    <span class="fit-score">30.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">42.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+24.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">54%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1860</div>
+            <div class="election-result">Voted for Abraham Lincoln</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">Abraham Lincoln <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 49.0%; background: #0066cc"></div>
+                    <span class="fit-score">49.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Stephen Douglas </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.1%; background: #3b82f6"></div>
+                    <span class="fit-score">37.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">John Bell </div>
+                <div class="candidate-party">Constitutional Union</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.3%; background: #9ca3af"></div>
+                    <span class="fit-score">36.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">John Breckinridge </div>
+                <div class="candidate-party">Southern Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 26.2%; background: #3b82f6"></div>
+                    <span class="fit-score">26.2</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">16.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">49.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+32.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">58%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1864</div>
+            <div class="election-result">Voted for Abraham Lincoln</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">Abraham Lincoln <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 53.0%; background: #0066cc"></div>
+                    <span class="fit-score">53.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">George McClellan </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.2%; background: #3b82f6"></div>
+                    <span class="fit-score">36.2</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">15.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">53.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+37.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">66%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1868</div>
+            <div class="election-result">Voted for Ulysses Grant</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">Ulysses Grant <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 43.1%; background: #0066cc"></div>
+                    <span class="fit-score">43.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Horatio Seymour </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 32.4%; background: #3b82f6"></div>
+                    <span class="fit-score">32.4</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">43.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">56%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1872</div>
+            <div class="election-result">Voted for Horace Greeley</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">Horace Greeley <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Liberal Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.0%; background: #0066cc"></div>
+                    <span class="fit-score">40.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Ulysses Grant </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.1%; background: #0066cc"></div>
+                    <span class="fit-score">39.1</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+21.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">40%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1876</div>
+            <div class="election-result">Voted for Rutherford Hayes</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #0066cc">
+                <div class="candidate-name">Rutherford Hayes <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.7%; background: #0066cc"></div>
+                    <span class="fit-score">40.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Samuel Tilden </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.4%; background: #3b82f6"></div>
+                    <span class="fit-score">37.4</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+22.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">44%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1880</div>
+            <div class="election-result">Voted for James Weaver</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #64a12d">
+                <div class="candidate-name">James Weaver <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Greenback</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 42.4%; background: #64a12d"></div>
+                    <span class="fit-score">42.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">James Garfield </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.5%; background: #0066cc"></div>
+                    <span class="fit-score">40.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Winfield Hancock </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.0%; background: #3b82f6"></div>
+                    <span class="fit-score">38.0</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">42.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+23.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">42%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1884</div>
+            <div class="election-result">Voted for Benjamin Butler</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #64a12d">
+                <div class="candidate-name">Benjamin Butler <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Greenback</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.8%; background: #64a12d"></div>
+                    <span class="fit-score">40.8</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Grover Cleveland </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.0%; background: #3b82f6"></div>
+                    <span class="fit-score">38.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">James Blaine </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 35.0%; background: #0066cc"></div>
+                    <span class="fit-score">35.0</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+21.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">43%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1888</div>
+            <div class="election-result">Voted for Grover Cleveland</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Grover Cleveland <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.2%; background: #3b82f6"></div>
+                    <span class="fit-score">38.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Benjamin Harrison </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 34.9%; background: #0066cc"></div>
+                    <span class="fit-score">34.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">38.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+19.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">44%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1892</div>
+            <div class="election-result">Voted for James Weaver</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">James Weaver <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Populist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 43.2%; background: #9ca3af"></div>
+                    <span class="fit-score">43.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Grover Cleveland </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.6%; background: #3b82f6"></div>
+                    <span class="fit-score">37.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Benjamin Harrison </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.6%; background: #0066cc"></div>
+                    <span class="fit-score">33.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">43.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">48%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1896</div>
+            <div class="election-result">Voted for William Jennings Bryan</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">William Jennings Bryan <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 44.6%; background: #3b82f6"></div>
+                    <span class="fit-score">44.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">William McKinley </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.6%; background: #0066cc"></div>
+                    <span class="fit-score">33.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">44.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">57%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1900</div>
+            <div class="election-result">Voted for William Jennings Bryan</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">William Jennings Bryan <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 44.5%; background: #3b82f6"></div>
+                    <span class="fit-score">44.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">William McKinley </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 35.6%; background: #0066cc"></div>
+                    <span class="fit-score">35.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">44.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">53%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1904</div>
+            <div class="election-result">Voted for Eugene Debs</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #ff0066">
+                <div class="candidate-name">Eugene Debs <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Socialist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 47.9%; background: #ff0066"></div>
+                    <span class="fit-score">47.9</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Theodore Roosevelt </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.5%; background: #0066cc"></div>
+                    <span class="fit-score">46.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Alton Parker </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.1%; background: #3b82f6"></div>
+                    <span class="fit-score">36.1</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">47.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">41%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1908</div>
+            <div class="election-result">Voted for Eugene Debs</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #ff0066">
+                <div class="candidate-name">Eugene Debs <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Socialist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 48.3%; background: #ff0066"></div>
+                    <span class="fit-score">48.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">William Jennings Bryan </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 43.5%; background: #3b82f6"></div>
+                    <span class="fit-score">43.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">William Howard Taft </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.8%; background: #0066cc"></div>
+                    <span class="fit-score">38.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">48.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+28.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">46%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1912</div>
+            <div class="election-result">Voted for Eugene Debs</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #ff0066">
+                <div class="candidate-name">Eugene Debs <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Socialist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 48.7%; background: #ff0066"></div>
+                    <span class="fit-score">48.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">Theodore Roosevelt </div>
+                <div class="candidate-party">Progressive</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 48.6%; background: #9ca3af"></div>
+                    <span class="fit-score">48.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Woodrow Wilson </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.3%; background: #3b82f6"></div>
+                    <span class="fit-score">45.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">William Howard Taft </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 35.8%; background: #0066cc"></div>
+                    <span class="fit-score">35.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">48.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+29.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">38%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1916</div>
+            <div class="election-result">Voted for Woodrow Wilson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Woodrow Wilson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.1%; background: #3b82f6"></div>
+                    <span class="fit-score">45.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Charles Evans Hughes </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.5%; background: #0066cc"></div>
+                    <span class="fit-score">39.5</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+26.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">48%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1920</div>
+            <div class="election-result">Voted for Eugene Debs</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #ff0066">
+                <div class="candidate-name">Eugene Debs <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Socialist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 48.0%; background: #ff0066"></div>
+                    <span class="fit-score">48.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">James Cox </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.4%; background: #3b82f6"></div>
+                    <span class="fit-score">39.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Warren Harding </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 30.7%; background: #0066cc"></div>
+                    <span class="fit-score">30.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">48.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+29.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">52%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1924</div>
+            <div class="election-result">Voted for Robert La Follette</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">Robert La Follette <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Progressive</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 49.3%; background: #9ca3af"></div>
+                    <span class="fit-score">49.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">John Davis </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.4%; background: #3b82f6"></div>
+                    <span class="fit-score">36.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Calvin Coolidge </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 30.5%; background: #0066cc"></div>
+                    <span class="fit-score">30.5</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">49.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+29.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">60%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1928</div>
+            <div class="election-result">Voted for Al Smith</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Al Smith <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 43.6%; background: #3b82f6"></div>
+                    <span class="fit-score">43.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Herbert Hoover </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.9%; background: #0066cc"></div>
+                    <span class="fit-score">36.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">20.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">43.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+22.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">49%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1932</div>
+            <div class="election-result">Voted for Franklin D. Roosevelt</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Franklin D. Roosevelt <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 53.7%; background: #3b82f6"></div>
+                    <span class="fit-score">53.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #ff0066">
+                <div class="candidate-name">Norman Thomas </div>
+                <div class="candidate-party">Socialist</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 47.4%; background: #ff0066"></div>
+                    <span class="fit-score">47.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Herbert Hoover </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 27.5%; background: #0066cc"></div>
+                    <span class="fit-score">27.5</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">16.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">53.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+37.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">49%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1936</div>
+            <div class="election-result">Voted for Franklin D. Roosevelt</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Franklin D. Roosevelt <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 56.6%; background: #3b82f6"></div>
+                    <span class="fit-score">56.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">William Lemke </div>
+                <div class="candidate-party">Union</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.0%; background: #9ca3af"></div>
+                    <span class="fit-score">39.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Alf Landon </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 29.7%; background: #0066cc"></div>
+                    <span class="fit-score">29.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">56.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+39.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">68%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1940</div>
+            <div class="election-result">Voted for Franklin D. Roosevelt</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Franklin D. Roosevelt <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 55.0%; background: #3b82f6"></div>
+                    <span class="fit-score">55.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Wendell Willkie </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.3%; background: #0066cc"></div>
+                    <span class="fit-score">37.3</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">55.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+37.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">68%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1944</div>
+            <div class="election-result">Voted for Franklin D. Roosevelt</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Franklin D. Roosevelt <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 53.8%; background: #3b82f6"></div>
+                    <span class="fit-score">53.8</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Thomas Dewey </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 37.3%; background: #0066cc"></div>
+                    <span class="fit-score">37.3</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">53.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+36.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">66%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1948</div>
+            <div class="election-result">Voted for Harry Truman</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Harry Truman <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 50.3%; background: #3b82f6"></div>
+                    <span class="fit-score">50.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">Henry Wallace </div>
+                <div class="candidate-party">Progressive</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 44.8%; background: #9ca3af"></div>
+                    <span class="fit-score">44.8</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Thomas Dewey </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.9%; background: #0066cc"></div>
+                    <span class="fit-score">33.9</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">Strom Thurmond </div>
+                <div class="candidate-party">Dixiecrat</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 24.2%; background: #9ca3af"></div>
+                    <span class="fit-score">24.2</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">50.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+31.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">48%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1952</div>
+            <div class="election-result">Voted for Adlai Stevenson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Adlai Stevenson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 47.2%; background: #3b82f6"></div>
+                    <span class="fit-score">47.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Dwight Eisenhower </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.5%; background: #0066cc"></div>
+                    <span class="fit-score">45.5</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">47.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+28.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">41%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1956</div>
+            <div class="election-result">Voted for Adlai Stevenson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Adlai Stevenson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.6%; background: #3b82f6"></div>
+                    <span class="fit-score">46.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Dwight Eisenhower </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.1%; background: #0066cc"></div>
+                    <span class="fit-score">45.1</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">46.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">41%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1960</div>
+            <div class="election-result">Voted for John F. Kennedy</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">John F. Kennedy <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 53.1%; background: #3b82f6"></div>
+                    <span class="fit-score">53.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Richard Nixon </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.7%; background: #0066cc"></div>
+                    <span class="fit-score">33.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">53.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+34.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">71%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1964</div>
+            <div class="election-result">Voted for Lyndon B. Johnson</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Lyndon B. Johnson <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 51.4%; background: #3b82f6"></div>
+                    <span class="fit-score">51.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Barry Goldwater </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 26.2%; background: #0066cc"></div>
+                    <span class="fit-score">26.2</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">51.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+31.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">80%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1968</div>
+            <div class="election-result">Voted for Hubert Humphrey</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Hubert Humphrey <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 48.2%; background: #3b82f6"></div>
+                    <span class="fit-score">48.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Richard Nixon </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 32.5%; background: #0066cc"></div>
+                    <span class="fit-score">32.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">George Wallace </div>
+                <div class="candidate-party">American Independent</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 23.1%; background: #9ca3af"></div>
+                    <span class="fit-score">23.1</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">48.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+29.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">64%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1972</div>
+            <div class="election-result">Voted for George McGovern</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">George McGovern <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.8%; background: #3b82f6"></div>
+                    <span class="fit-score">45.8</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Richard Nixon </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 32.6%; background: #0066cc"></div>
+                    <span class="fit-score">32.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">John Schmitz </div>
+                <div class="candidate-party">American</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 19.4%; background: #9ca3af"></div>
+                    <span class="fit-score">19.4</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+26.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">60%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1976</div>
+            <div class="election-result">Voted for Eugene McCarthy</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #9ca3af">
+                <div class="candidate-name">Eugene McCarthy <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Independent</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.4%; background: #9ca3af"></div>
+                    <span class="fit-score">45.4</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #3b82f6">
+                <div class="candidate-name">Jimmy Carter </div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.3%; background: #3b82f6"></div>
+                    <span class="fit-score">45.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Gerald Ford </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 36.6%; background: #0066cc"></div>
+                    <span class="fit-score">36.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+26.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">38%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1980</div>
+            <div class="election-result">Voted for Jimmy Carter</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Jimmy Carter <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 41.3%; background: #3b82f6"></div>
+                    <span class="fit-score">41.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">John Anderson </div>
+                <div class="candidate-party">Independent</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 41.1%; background: #9ca3af"></div>
+                    <span class="fit-score">41.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Ronald Reagan </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 34.3%; background: #0066cc"></div>
+                    <span class="fit-score">34.3</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">16.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">41.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+24.7</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">39%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1984</div>
+            <div class="election-result">Voted for Walter Mondale</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Walter Mondale <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.2%; background: #3b82f6"></div>
+                    <span class="fit-score">46.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Ronald Reagan </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 35.3%; background: #0066cc"></div>
+                    <span class="fit-score">35.3</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">46.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+27.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">56%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1988</div>
+            <div class="election-result">Voted for Michael Dukakis</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Michael Dukakis <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 43.0%; background: #3b82f6"></div>
+                    <span class="fit-score">43.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">George H.W. Bush </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.9%; background: #0066cc"></div>
+                    <span class="fit-score">33.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">43.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+23.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">53%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1992</div>
+            <div class="election-result">Voted for Bill Clinton</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Bill Clinton <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 46.1%; background: #3b82f6"></div>
+                    <span class="fit-score">46.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">George H.W. Bush </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.0%; background: #0066cc"></div>
+                    <span class="fit-score">33.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">Ross Perot </div>
+                <div class="candidate-party">Independent</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 32.6%; background: #9ca3af"></div>
+                    <span class="fit-score">32.6</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">46.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+28.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">60%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">1996</div>
+            <div class="election-result">Voted for Bill Clinton</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Bill Clinton <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 43.0%; background: #3b82f6"></div>
+                    <span class="fit-score">43.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Bob Dole </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 30.7%; background: #0066cc"></div>
+                    <span class="fit-score">30.7</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #f59e0b">
+                <div class="candidate-name">Ross Perot </div>
+                <div class="candidate-party">Reform</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 30.7%; background: #f59e0b"></div>
+                    <span class="fit-score">30.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">21.3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">43.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+21.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">59%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2000</div>
+            <div class="election-result">Voted for Al Gore</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Al Gore <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.6%; background: #3b82f6"></div>
+                    <span class="fit-score">40.6</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #64a12d">
+                <div class="candidate-name">Ralph Nader </div>
+                <div class="candidate-party">Green</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.3%; background: #64a12d"></div>
+                    <span class="fit-score">40.3</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">George W. Bush </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 31.9%; background: #0066cc"></div>
+                    <span class="fit-score">31.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">21.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.6</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+19.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">39%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2004</div>
+            <div class="election-result">Voted for John Kerry</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">John Kerry <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 38.8%; background: #3b82f6"></div>
+                    <span class="fit-score">38.8</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">George W. Bush </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 29.8%; background: #0066cc"></div>
+                    <span class="fit-score">29.8</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">38.8</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+20.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">53%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2008</div>
+            <div class="election-result">Voted for Barack Obama</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Barack Obama <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 47.2%; background: #3b82f6"></div>
+                    <span class="fit-score">47.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">John McCain </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 33.3%; background: #0066cc"></div>
+                    <span class="fit-score">33.3</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">17.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">47.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+30.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">62%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2012</div>
+            <div class="election-result">Voted for Barack Obama</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Barack Obama <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 45.0%; background: #3b82f6"></div>
+                    <span class="fit-score">45.0</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Mitt Romney </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 29.0%; background: #0066cc"></div>
+                    <span class="fit-score">29.0</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">45.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">65%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2016</div>
+            <div class="election-result">Voted for Hillary Clinton</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Hillary Clinton <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 39.1%; background: #3b82f6"></div>
+                    <span class="fit-score">39.1</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #9ca3af">
+                <div class="candidate-name">Gary Johnson </div>
+                <div class="candidate-party">Libertarian</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 27.8%; background: #9ca3af"></div>
+                    <span class="fit-score">27.8</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Donald Trump </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 21.9%; background: #0066cc"></div>
+                    <span class="fit-score">21.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">19.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">39.1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+19.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">57%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2020</div>
+            <div class="election-result">Voted for Joe Biden</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Joe Biden <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 41.5%; background: #3b82f6"></div>
+                    <span class="fit-score">41.5</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Donald Trump </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 20.7%; background: #0066cc"></div>
+                    <span class="fit-score">20.7</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">16.4</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">41.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+25.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">73%</span>
+                </div>
+            </div>
+        </div>
+        <div class="election-card voted">
+            <div class="election-year">2024</div>
+            <div class="election-result">Voted for Kamala Harris</div>
+            <div class="candidates-list">
+            <div class="candidate selected" style="border-left-color: #3b82f6">
+                <div class="candidate-name">Kamala Harris <span class="vote-marker">YOUR VOTE</span></div>
+                <div class="candidate-party">Democratic</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 40.2%; background: #3b82f6"></div>
+                    <span class="fit-score">40.2</span>
+                </div>
+            </div>
+            <div class="candidate " style="border-left-color: #0066cc">
+                <div class="candidate-name">Donald Trump </div>
+                <div class="candidate-party">Republican</div>
+                <div class="fit-bar-container">
+                    <div class="fit-bar" style="width: 19.9%; background: #0066cc"></div>
+                    <span class="fit-score">19.9</span>
+                </div>
+            </div></div>
+            <div class="metrics">
+                <div class="metric">
+                    <span class="metric-label">Turnout Threshold</span>
+                    <span class="metric-value">18.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Best Fit</span>
+                    <span class="metric-value">40.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Fit Margin</span>
+                    <span class="metric-value">+22.0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Certainty</span>
+                    <span class="metric-value">72%</span>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <p class="meta">
+            Generated 2026-01-01 15:07 | PRISM v8.1 | United States
+        </p>
+    </div>
+</body>
+</html>

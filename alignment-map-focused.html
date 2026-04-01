@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRISM Alignment Map — 20 Countries</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pool: #d1f6ff;
+      --pool-deep: #89ccf0;
+      --flesh: #fa8072;
+      --cream: #FFFEF8;
+      --ink: #1a1a1a;
+      --dem-blue: #3333FF;
+      --rep-red: #E9141D;
+      --dpp-green: #1B9431;
+      --kmt-blue: #0066B3;
+      --ccp-red: #DE2910;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--cream);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    #controls {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 2rem;
+      background: rgba(255, 254, 248, 0.98);
+      border-bottom: 2px solid var(--ink);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    #title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    #year-display {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--ink);
+      min-width: 70px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #slider-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    #year-slider {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--ink);
+      border-radius: 0;
+      outline: none;
+      cursor: pointer;
+    }
+
+    #year-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--pool-deep);
+      border-radius: 0;
+      cursor: pointer;
+      border: 2px solid var(--ink);
+    }
+
+    .year-label {
+      font-size: 0.7rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    #map-section {
+      height: 100vh;
+      padding-top: 60px;
+      position: relative;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .country {
+      stroke: var(--ink);
+      stroke-width: 0.3px;
+      transition: all 0.2s ease;
+    }
+
+    .country.inactive {
+      fill: #e5e5e5 !important;
+      cursor: default;
+    }
+
+    .country.active {
+      cursor: pointer;
+    }
+
+    .country.active:hover {
+      stroke-width: 2px;
+      filter: brightness(1.1);
+    }
+
+    /* Tooltip Styles */
+    .tooltip {
+      position: fixed;
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 1000;
+      min-width: 340px;
+      max-width: 420px;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+    }
+
+    .tooltip-image {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      background: #333;
+      flex-shrink: 0;
+    }
+
+    .tooltip-flag {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .tooltip-title {
+      flex: 1;
+    }
+
+    .tooltip-country {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tooltip-leader {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 0.25rem;
+    }
+
+    .tooltip-party-badge {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tooltip-alignment {
+      padding: 1rem;
+      background: #222;
+    }
+
+    .alignment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .alignment-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .alignment-label {
+      font-size: 0.7rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .alignment-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .alignment-bar-container {
+      flex: 1;
+      margin: 0 0.75rem;
+    }
+
+    .alignment-bar {
+      height: 10px;
+      background: linear-gradient(to right, #FF6B6B, #FFE135 50%, #00D4FF);
+      position: relative;
+      border: 1px solid #444;
+    }
+
+    .alignment-marker {
+      position: absolute;
+      top: -4px;
+      width: 4px;
+      height: 18px;
+      background: #fff;
+      border: 2px solid var(--ink);
+      transform: translateX(-50%);
+    }
+
+    .tooltip-behavior {
+      padding: 1rem;
+      border-top: 1px solid #333;
+    }
+
+    .behavior-title {
+      font-size: 0.7rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .behavior-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .voting-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 2px;
+      margin-top: 0.5rem;
+    }
+
+    .vote-cell {
+      text-align: center;
+      padding: 0.25rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .vote-cell.year {
+      color: #666;
+      background: transparent;
+    }
+
+    .vote-cell.dem { background: var(--dem-blue); color: white; }
+    .vote-cell.rep { background: var(--rep-red); color: white; }
+
+    /* Profile Badge */
+    #profile-badge {
+      position: fixed;
+      top: 80px;
+      right: 2rem;
+      background: var(--pool-deep);
+      color: var(--ink);
+      padding: 1rem;
+      z-index: 100;
+      max-width: 220px;
+      border: 2px solid var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    #profile-badge-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+
+    #profile-badge-desc {
+      font-size: 0.7rem;
+      line-height: 1.4;
+      opacity: 0.8;
+    }
+
+    /* Legend with Gradient */
+    #legend {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(255, 254, 248, 0.98);
+      border: 2px solid var(--ink);
+      padding: 1rem;
+      z-index: 50;
+    }
+
+    #legend-title {
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    #legend-gradient {
+      width: 150px;
+      height: 14px;
+      border: 1px solid var(--ink);
+    }
+
+    #legend-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: #666;
+      margin-top: 0.4rem;
+    }
+
+    /* Profile Section Below Map */
+    #profile-section {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 3rem 2rem;
+      min-height: 100vh;
+    }
+
+    .profile-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--flesh);
+      color: var(--ink);
+      padding: 0.3rem 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .archetype-card {
+      background: linear-gradient(135deg, #222, #333);
+      border: 2px solid #444;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 6px 6px 0 var(--flesh);
+    }
+
+    .archetype-id {
+      font-size: 0.7rem;
+      background: var(--pool-deep);
+      color: var(--ink);
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    .archetype-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .archetype-match {
+      font-size: 1rem;
+      color: var(--pool-deep);
+      margin-bottom: 1rem;
+    }
+
+    .archetype-desc {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .archetype-card.secondary {
+      background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+      border: 2px solid #555;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      box-shadow: 4px 4px 0 var(--pool-deep);
+    }
+
+    .archetype-card.secondary .archetype-name {
+      font-size: 1.4rem;
+    }
+
+    .archetype-card.secondary .archetype-desc {
+      font-size: 0.9rem;
+    }
+
+    .also-matches-label {
+      font-size: 0.8rem;
+      color: var(--pool-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #444;
+    }
+
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      max-width: 1100px;
+    }
+
+    .node-cluster {
+      background: #222;
+      border: 1px solid #444;
+      padding: 1.5rem 2rem;
+      width: 100%;
+    }
+
+    .cluster-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #444;
+    }
+
+    .node-row {
+      display: grid;
+      grid-template-columns: 40px 140px 1fr;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .node-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .node-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: right;
+      color: #fff;
+    }
+
+    .node-name {
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    .node-bar-wrapper {
+      width: 100%;
+    }
+
+    .node-bar {
+      height: 18px;
+      background: #333;
+      position: relative;
+      border: 1px solid #555;
+    }
+
+    .node-bar-fill {
+      position: absolute;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .node-bar-center {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      background: #666;
+    }
+
+    .node-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    #loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1rem 2rem;
+      font-size: 0.8rem;
+      z-index: 2000;
+    }
+
+    .scroll-hint {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      z-index: 100;
+      cursor: pointer;
+      border: 2px solid var(--cream);
+    }
+
+    .scroll-hint:hover {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <div id="title">Political Alignment Map</div>
+    <div id="year-display">2026</div>
+    <div id="slider-container">
+      <span class="year-label">1789</span>
+      <input type="range" id="year-slider" min="1789" max="2026" value="2026">
+      <span class="year-label">2026</span>
+    </div>
+  </div>
+
+  <div id="profile-badge">
+    <div id="profile-badge-title">No Profile</div>
+    <div id="profile-badge-desc">Take the quiz to see alignment</div>
+  </div>
+
+  <div id="map-section">
+    <svg id="map"></svg>
+    <div id="legend">
+      <div id="legend-title">Your Alignment</div>
+      <canvas id="legend-gradient" width="150" height="14"></canvas>
+      <div id="legend-labels">
+        <span>Opposed</span>
+        <span>Neutral</span>
+        <span>Aligned</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" onclick="document.getElementById('profile-section').scrollIntoView({behavior:'smooth'})">
+    ↓ View Your Profile
+  </div>
+
+  <div id="profile-section">
+    <div class="profile-container">
+      <div class="section-header">
+        <span class="section-tag">Archetype</span>
+        <span class="section-title">Your Political Profile</span>
+      </div>
+
+      <div id="archetypes-container">
+        <div class="archetype-card" id="archetype-card">
+          <div class="archetype-id" id="archetype-id">---</div>
+          <div class="archetype-name" id="archetype-name">Take the Quiz</div>
+          <div class="archetype-match" id="archetype-match">---</div>
+          <div class="archetype-desc" id="archetype-desc">Complete the PRISM quiz to discover your political archetype and see how you align with leaders across 20 countries.</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-tag">L3</span>
+        <span class="section-title">Political Dimensions</span>
+      </div>
+
+      <div class="nodes-grid" id="nodes-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+  <div id="loading">Loading map data...</div>
+
+<script>
+(function() {
+  // ============================================
+  // CONFIGURATION
+  // ============================================
+  const COLORS = {
+    aligned: '#00D4FF',
+    neutral: '#FFE135',
+    opposed: '#FF6B6B',
+    inactive: '#e5e5e5'
+  };
+
+  // Available historical map years (from aourednik/historical-basemaps)
+  const availableMapYears = [1715, 1783, 1815, 1880, 1914, 1920, 1938, 1945, 1960, 1994];
+  const mapBaseUrl = 'https://raw.githubusercontent.com/aourednik/historical-basemaps/master/geojson/';
+  const modernMapUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+  const mapCache = {};
+  let currentMapYear = null;
+
+  // Find closest available map year
+  function getClosestMapYear(year) {
+    if (year >= 1994) return 'modern';
+    let closest = availableMapYears[0];
+    for (const mapYear of availableMapYears) {
+      if (mapYear <= year) closest = mapYear;
+      else break;
+    }
+    return closest;
+  }
+
+  // Map numeric country IDs to names (for modern TopoJSON)
+  function getCountryNameFromId(id) {
+    const countryIdMap = {
+      4: 'Afghanistan', 8: 'Albania', 12: 'Algeria', 24: 'Angola', 32: 'Argentina',
+      36: 'Australia', 40: 'Austria', 50: 'Bangladesh', 56: 'Belgium', 68: 'Bolivia',
+      76: 'Brazil', 100: 'Bulgaria', 104: 'Myanmar', 116: 'Cambodia', 120: 'Cameroon',
+      124: 'Canada', 144: 'Sri Lanka', 152: 'Chile', 156: 'China', 170: 'Colombia',
+      180: 'DR Congo', 188: 'Costa Rica', 191: 'Croatia', 192: 'Cuba', 196: 'Cyprus',
+      203: 'Czechia', 208: 'Denmark', 214: 'Dominican Republic', 218: 'Ecuador',
+      818: 'Egypt', 222: 'El Salvador', 231: 'Ethiopia', 246: 'Finland', 250: 'France',
+      276: 'Germany', 288: 'Ghana', 300: 'Greece', 320: 'Guatemala', 332: 'Haiti',
+      340: 'Honduras', 348: 'Hungary', 352: 'Iceland', 356: 'India', 360: 'Indonesia',
+      364: 'Iran', 368: 'Iraq', 372: 'Ireland', 376: 'Israel', 380: 'Italy',
+      384: 'Ivory Coast', 388: 'Jamaica', 392: 'Japan', 400: 'Jordan', 398: 'Kazakhstan',
+      404: 'Kenya', 408: 'North Korea', 410: 'South Korea', 414: 'Kuwait', 422: 'Lebanon',
+      434: 'Libya', 440: 'Lithuania', 458: 'Malaysia', 484: 'Mexico', 504: 'Morocco',
+      508: 'Mozambique', 528: 'Netherlands', 554: 'New Zealand', 558: 'Nicaragua',
+      566: 'Nigeria', 578: 'Norway', 586: 'Pakistan', 591: 'Panama', 598: 'Papua New Guinea',
+      600: 'Paraguay', 604: 'Peru', 608: 'Philippines', 616: 'Poland', 620: 'Portugal',
+      630: 'Puerto Rico', 634: 'Qatar', 642: 'Romania', 643: 'Russia', 682: 'Saudi Arabia',
+      688: 'Serbia', 702: 'Singapore', 703: 'Slovakia', 704: 'Vietnam', 705: 'Slovenia',
+      706: 'Somalia', 710: 'South Africa', 724: 'Spain', 729: 'Sudan', 752: 'Sweden',
+      756: 'Switzerland', 760: 'Syria', 764: 'Thailand', 792: 'Turkey', 804: 'Ukraine',
+      784: 'United Arab Emirates', 826: 'United Kingdom', 840: 'United States',
+      858: 'Uruguay', 860: 'Uzbekistan', 862: 'Venezuela', 887: 'Yemen', 894: 'Zambia',
+      716: 'Zimbabwe', 158: 'Taiwan'
+    };
+    return countryIdMap[id] || `Country ${id}`;
+  }
+
+  // Draw legend gradient
+  const legendCanvas = document.getElementById('legend-gradient');
+  const ctx = legendCanvas.getContext('2d');
+  const gradient = ctx.createLinearGradient(0, 0, 150, 0);
+  gradient.addColorStop(0, COLORS.opposed);
+  gradient.addColorStop(0.5, COLORS.neutral);
+  gradient.addColorStop(1, COLORS.aligned);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 150, 14);
+
+  // ============================================
+  // LOAD USER PROFILE FROM LOCALSTORAGE
+  // ============================================
+  let userProfile = null;
+  let userBehavior = null;
+  let userArchetype = null;
+  let fullProfile = null;
+
+  const storedResults = localStorage.getItem('prism_quiz_results');
+  if (storedResults) {
+    try {
+      const results = JSON.parse(storedResults);
+      const l2 = results.l2;
+      userArchetype = results.archetype;
+      userBehavior = results.behavior;
+      fullProfile = results.fullProfile;
+      const allArchetypes = results.allArchetypes || [];
+      const hasMultiple = results.hasMultipleMatches || false;
+
+      // Convert to map profile scale (-1 to 1)
+      // anti_us: derived from CNA (high nationalism → pro-US-interests, low → cosmopolitan/neutral)
+      // nationalism_type: derived from CNA × CSO (high CNA + high CSO → ethnic, else civic → 0..1 scale)
+      // institutional: derived from PRO × EPS (rules-bound + empirical → technocratic)
+      const cna01 = (l2.CNA - 50) / 50;        // -1..1
+      const cso01 = (l2.CSO - 50) / 50 * -1;   // -1..1 (inverted: low CSO = progressive)
+      const pro01 = (l2.PRO - 50) / 50 * -1;   // -1..1 (inverted: low PRO = rules-bound)
+      const eps01 = l2.EPS !== undefined ? (l2.EPS - 50) / 50 * -1 : 0; // -1..1
+
+      userProfile = {
+        economic: (l2.MAT - 50) / 50 * -1,
+        democracy: pro01,
+        social: cso01,
+        nationalism: cna01,
+        anti_us: -cna01 * 0.5,                              // cosmopolitans tend neutral, nationalists tend pro-US
+        nationalism_type: Math.max(0, (cna01 + (-cso01)) / 2), // ethnic = high nationalism + traditional values
+        institutional: (pro01 + eps01) / 2                   // rules-bound + empirical → technocratic
+      };
+
+      // Update badge
+      document.getElementById('profile-badge-title').textContent = userArchetype?.name || 'Your Profile';
+      document.getElementById('profile-badge-desc').textContent = userArchetype?.desc?.substring(0, 80) + '...' || '';
+
+      // Update primary archetype card
+      document.getElementById('archetype-name').textContent = userArchetype?.name || 'Unknown';
+      document.getElementById('archetype-desc').textContent = userArchetype?.desc || '';
+      const confidence = userArchetype?.confidence ? Math.round(userArchetype.confidence * 100) : null;
+      document.getElementById('archetype-id').textContent = confidence ? `Match: ${confidence}%` : (userBehavior?.usPattern ? `Pattern: ${userBehavior.usPattern}` : '---');
+      document.getElementById('archetype-match').textContent = userArchetype?.examples ? `e.g. ${userArchetype.examples}` : `Taiwan: ${userBehavior?.taiwan || '?'} · PRC: ${userBehavior?.prc || '?'}`;
+
+      // Display additional archetype matches if available
+      if (hasMultiple && allArchetypes.length > 1) {
+        const container = document.getElementById('archetypes-container');
+
+        // Add "Also matches" label
+        const alsoLabel = document.createElement('div');
+        alsoLabel.className = 'also-matches-label';
+        alsoLabel.textContent = 'You also strongly match:';
+        container.appendChild(alsoLabel);
+
+        // Add secondary archetype cards (skip first as it's already shown)
+        allArchetypes.slice(1).forEach((arch, idx) => {
+          const card = document.createElement('div');
+          card.className = 'archetype-card secondary';
+          card.innerHTML = `
+            <div class="archetype-id">Match: ${arch.matchPercent}%</div>
+            <div class="archetype-name">${arch.name}</div>
+            <div class="archetype-match">${arch.examples ? 'e.g. ' + arch.examples : arch.tier + ' archetype'}</div>
+            <div class="archetype-desc">${arch.desc}</div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      // Populate L3 nodes
+      populateNodes(fullProfile);
+    } catch (e) {
+      console.error('Error loading profile:', e);
+    }
+  }
+
+  function populateNodes(profile) {
+    if (!profile) return;
+
+    // L1 - Personality traits (derived/estimated)
+    const l1Nodes = {
+      'L1 — Personality Foundation': [
+        { key: 'T', name: 'Threat Sensitivity', low: 'Low', high: 'High' },
+        { key: 'O', name: 'Openness', low: 'Low', high: 'High' },
+        { key: 'C', name: 'Conscientiousness', low: 'Low', high: 'High' },
+        { key: 'A', name: 'Agreeableness', low: 'Low', high: 'High' }
+      ]
+    };
+
+    // L2 - Core political dimensions
+    const l2Nodes = {
+      'L2 — Core Dimensions': [
+        { key: 'MAT', name: 'Material', low: 'Redistribution', high: 'Free Market' },
+        { key: 'CD', name: 'Cultural', low: 'Progressive', high: 'Traditional' },
+        { key: 'CU', name: 'Belonging', low: 'Universalist', high: 'Nationalist' },
+        { key: 'PRO', name: 'Process', low: 'Rules-bound', high: 'Outcome-focused' }
+      ]
+    };
+
+    // L3 - Detailed political dimensions
+    const l3Nodes = {
+      'L3 ENDS — What You Want': [
+        { key: 'MAT', name: 'Material', low: 'Redistribution', high: 'Free Market' },
+        { key: 'CD', name: 'Cultural Defense', low: 'Progressive', high: 'Traditional' },
+        { key: 'CU', name: 'Uniformity', low: 'Pluralist', high: 'Assimilationist' },
+        { key: 'MOR', name: 'Moral Circle', low: 'Universal', high: 'Particularist' }
+      ],
+      'L3 MEANS — How You Get There': [
+        { key: 'PRO', name: 'Proceduralism', low: 'Rules-bound', high: 'Outcome-focused' },
+        { key: 'EPS', name: 'Epistemics', low: 'Empirical', high: 'Intuitive' },
+        { key: 'AES', name: 'Aesthetics', low: 'Deliberative', high: 'Inspirational' },
+        { key: 'COM', name: 'Compromise', low: 'Principled', high: 'Pragmatic' }
+      ],
+      'L3 REALITY — How You See the World': [
+        { key: 'ZS', name: 'Zero-Sum', low: 'Positive-sum', high: 'Zero-sum' },
+        { key: 'H', name: 'Hierarchy', low: 'Egalitarian', high: 'Hierarchical' },
+        { key: 'ONT_H', name: 'Human Nature', low: 'Pessimistic', high: 'Optimistic' },
+        { key: 'ONT_S', name: 'System', low: 'Declining', high: 'Thriving' }
+      ],
+      'L3 SELF — Your Political Identity': [
+        { key: 'PF', name: 'Partisan Fusion', low: 'Independent', high: 'Partisan' },
+        { key: 'TRB', name: 'Tribalism', low: 'Universalist', high: 'Tribal' },
+        { key: 'ENG', name: 'Engagement', low: 'Apolitical', high: 'Engaged' }
+      ]
+    };
+
+    const grid = document.getElementById('nodes-grid');
+    grid.innerHTML = '';
+
+    // Helper to create cluster HTML
+    function createCluster(clusterName, nodes, isL1 = false) {
+      const clusterDiv = document.createElement('div');
+      clusterDiv.className = 'node-cluster';
+      clusterDiv.innerHTML = `<div class="cluster-title">${clusterName}</div>`;
+
+      for (const node of nodes) {
+        let value;
+        if (isL1) {
+          // Estimate L1 from L3 nodes
+          if (node.key === 'T') value = profile['ZS']?.position ?? 50;
+          else if (node.key === 'O') value = 100 - (profile['CD']?.position ?? 50);
+          else if (node.key === 'C') value = profile['PRO']?.position ?? 50;
+          else if (node.key === 'A') value = 100 - (profile['H']?.position ?? 50);
+          else value = 50;
+        } else {
+          value = profile[node.key]?.position ?? 50;
+        }
+        const color = value < 40 ? '#89ccf0' : value > 60 ? '#fa8072' : '#ede2ab';
+
+        clusterDiv.innerHTML += `
+          <div class="node-row">
+            <div class="node-value">${Math.round(value)}</div>
+            <div class="node-name">${node.name}</div>
+            <div class="node-bar-wrapper">
+              <div class="node-bar">
+                <div class="node-bar-center"></div>
+                <div class="node-bar-fill" style="width:${value}%;background:${color};"></div>
+              </div>
+              <div class="node-labels">
+                <span>${node.low}</span>
+                <span>${node.high}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return clusterDiv;
+    }
+
+    // Add L1 nodes
+    for (const [clusterName, nodes] of Object.entries(l1Nodes)) {
+      grid.appendChild(createCluster(clusterName, nodes, true));
+    }
+
+    // Add L2 nodes
+    for (const [clusterName, nodes] of Object.entries(l2Nodes)) {
+      grid.appendChild(createCluster(clusterName, nodes, false));
+    }
+
+    // Add L3 nodes
+    for (const [clusterName, nodes] of Object.entries(l3Nodes)) {
+      grid.appendChild(createCluster(clusterName, nodes, false));
+    }
+  }
+
+  // ============================================
+  // REGIME DATA — loaded from map_regime_data.json (single source of truth)
+  // ============================================
+  let regimeData = {};  // Populated by loadRegimeData()
+
+  // Leader image URLs for focus countries (supplement to JSON which has no images)
+  const LEADER_IMAGES = {
+    'United States': {
+      'Founders Era': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg/220px-Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg',
+      'Jacksonian Era': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Andrew_jackson_head.jpg/220px-Andrew_jackson_head.jpg',
+      'Abraham Lincoln': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Abraham_Lincoln_O-77_matte_collodion_print.jpg/220px-Abraham_Lincoln_O-77_matte_collodion_print.jpg',
+      'Gilded Age': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Ulysses_S_Grant_by_Brady_c1870-restored.jpg/220px-Ulysses_S_Grant_by_Brady_c1870-restored.jpg',
+      'Theodore Roosevelt': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/President_Roosevelt_-_Pach_Bros.jpg/220px-President_Roosevelt_-_Pach_Bros.jpg',
+      'William H. Taft': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/William_Howard_Taft_1909.jpg/220px-William_Howard_Taft_1909.jpg',
+      'Woodrow Wilson': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Woodrow_Wilson_portrait_December_2_1912.jpg/220px-President_Woodrow_Wilson_portrait_December_2_1912.jpg',
+      'Republican Era': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Calvin_Coolidge_cph.3g10777_%28cropped%29.jpg/220px-Calvin_Coolidge_cph.3g10777_%28cropped%29.jpg',
+      'Franklin D. Roosevelt': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/FDR_1944_Color_Portrait.jpg/220px-FDR_1944_Color_Portrait.jpg',
+      'Harry S. Truman': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/TRUMAN_58-766-09_%28cropped%29.jpg/220px-TRUMAN_58-766-09_%28cropped%29.jpg',
+      'Dwight D. Eisenhower': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Dwight_D._Eisenhower%2C_official_photo_portrait%2C_May_29%2C_1959.jpg/220px-Dwight_D._Eisenhower%2C_official_photo_portrait%2C_May_29%2C_1959.jpg',
+      'John F. Kennedy': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/John_F._Kennedy%2C_White_House_color_photo_portrait.jpg/220px-John_F._Kennedy%2C_White_House_color_photo_portrait.jpg',
+      'Lyndon B. Johnson': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/37_Lyndon_Johnson_3x4.jpg/220px-37_Lyndon_Johnson_3x4.jpg',
+      'Richard Nixon': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Richard_Nixon_presidential_portrait_%281%29.jpg/220px-Richard_Nixon_presidential_portrait_%281%29.jpg',
+      'Gerald Ford': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Gerald_Ford_presidential_portrait_%28cropped_2%29.jpg/220px-Gerald_Ford_presidential_portrait_%28cropped_2%29.jpg',
+      'Jimmy Carter': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/JimmyCarterPortrait2.jpg/220px-JimmyCarterPortrait2.jpg',
+      'Ronald Reagan': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Official_Portrait_of_President_Reagan_1981.jpg/220px-Official_Portrait_of_President_Reagan_1981.jpg',
+      'George H. W. Bush': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/George_H._W._Bush_presidential_portrait_%28cropped%29.jpg/220px-George_H._W._Bush_presidential_portrait_%28cropped%29.jpg',
+      'Bill Clinton': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bill_Clinton.jpg/220px-Bill_Clinton.jpg',
+      'George W. Bush': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/George-W-Bush.jpeg/220px-George-W-Bush.jpeg',
+      'Barack Obama': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/220px-President_Barack_Obama.jpg',
+      'Donald Trump': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/220px-Donald_Trump_official_portrait.jpg',
+      'Joe Biden': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Joe_Biden_presidential_portrait.jpg/220px-Joe_Biden_presidential_portrait.jpg'
+    },
+    'China': {
+      'Qianlong / Jiaqing': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Portrait_of_the_Qianlong_Emperor_in_Court_Dress.jpg/220px-Portrait_of_the_Qianlong_Emperor_in_Court_Dress.jpg',
+      'Daoguang Emperor': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/%E6%B8%85_%E4%BD%9A%E5%90%8D%E3%80%8A%E9%81%93%E5%85%89%E5%B8%9D%E6%9C%9D%E6%9C%8D%E5%83%8F%E3%80%8B.jpg/220px-%E6%B8%85_%E4%BD%9A%E5%90%8D%E3%80%8A%E9%81%93%E5%85%89%E5%B8%9D%E6%9C%9D%E6%9C%8D%E5%83%8F%E3%80%8B.jpg',
+      'Xianfeng / Tongzhi': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/%E5%92%B8%E8%B1%90%E5%B8%9D.jpg/220px-%E5%92%B8%E8%B1%90%E5%B8%9D.jpg',
+      'Guangxu Emperor': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/%E6%B8%85_%E4%BD%9A%E5%90%8D%E3%80%8A%E5%85%89%E7%BB%AA%E7%9A%87%E5%B8%9D%E6%9C%9D%E6%9C%8D%E5%83%8F%E3%80%8B.jpg/220px-%E6%B8%85_%E4%BD%9A%E5%90%8D%E3%80%8A%E5%85%89%E7%BB%AA%E7%9A%87%E5%B8%9D%E6%9C%9D%E6%9C%8D%E5%83%8F%E3%80%8B.jpg',
+      'Xuantong (Puyi)': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Puyi-Manchukuo.jpg/220px-Puyi-Manchukuo.jpg',
+      'Early Republic': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/YuanShikaiPresidworlds.jpg/220px-YuanShikaiPresidworlds.jpg',
+      'Chiang Kai-shek': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Chiang_Kai-shek%EF%BC%88%E8%94%A3%E4%B8%AD%E6%AD%A3%EF%BC%89.jpg/220px-Chiang_Kai-shek%EF%BC%88%E8%94%A3%E4%B8%AD%E6%AD%A3%EF%BC%89.jpg',
+      'Mao Zedong': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Mao_Zedong_portrait.jpg/220px-Mao_Zedong_portrait.jpg',
+      'Deng Xiaoping': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Deng_Xiaoping_and_Jimmy_Carter_at_the_arrival_ceremony_for_the_Vice_Premier_of_China._-_NARA_-_183157-restored%28cropped%29.jpg/220px-Deng_Xiaoping_and_Jimmy_Carter_at_the_arrival_ceremony_for_the_Vice_Premier_of_China._-_NARA_-_183157-restored%28cropped%29.jpg',
+      'Jiang Zemin': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Jiang_Zemin_St._Petersburg2002.jpg/220px-Jiang_Zemin_St._Petersburg2002.jpg',
+      'Hu Jintao': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Hu_Jintao_2004.jpg/220px-Hu_Jintao_2004.jpg',
+      'Xi Jinping': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Xi_Jinping_2019.jpg/220px-Xi_Jinping_2019.jpg'
+    },
+    'Taiwan': {
+      'Chiang Kai-shek': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Chiang_Kai-shek%EF%BC%88%E8%94%A3%E4%B8%AD%E6%AD%A3%EF%BC%89.jpg/220px-Chiang_Kai-shek%EF%BC%88%E8%94%A3%E4%B8%AD%E6%AD%A3%EF%BC%89.jpg',
+      'Chiang Ching-kuo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Chiang_Ching-kuo_1948.jpg/220px-Chiang_Ching-kuo_1948.jpg',
+      'Lee Teng-hui': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/%E7%B8%BD%E7%B5%B1%E6%9D%8E%E7%99%BB%E8%BC%9D%E5%85%88%E7%94%9F%E7%8E%89%E7%85%A7_%28cropped%29.jpg/220px-%E7%B8%BD%E7%B5%B1%E6%9D%8E%E7%99%BB%E8%BC%9D%E5%85%88%E7%94%9F%E7%8E%89%E7%85%A7_%28cropped%29.jpg',
+      'Chen Shui-bian': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/%E9%99%B3%E6%B0%B4%E6%89%81%E7%B8%BD%E7%B5%B1%E7%85%A7.png/220px-%E9%99%B3%E6%B0%B4%E6%89%81%E7%B8%BD%E7%B5%B1%E7%85%A7.png',
+      'Ma Ying-jeou': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/%E9%A6%AC%E8%8B%B1%E4%B9%9D%E7%B8%BD%E7%B5%B1%E5%AE%98%E6%96%B9%E8%82%96%E5%83%8F%E7%85%A7.jpg/220px-%E9%A6%AC%E8%8B%B1%E4%B9%9D%E7%B8%BD%E7%B5%B1%E5%AE%98%E6%96%B9%E8%82%96%E5%83%8F%E7%85%A7.jpg',
+      'Tsai Ing-wen': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/%E8%94%A1%E8%8B%B1%E6%96%87%E5%AE%98%E6%96%B9%E5%85%83%E9%A6%96%E8%82%96%E5%83%8F%E7%85%A7.png/220px-%E8%94%A1%E8%8B%B1%E6%96%87%E5%AE%98%E6%96%B9%E5%85%83%E9%A6%96%E8%82%96%E5%83%8F%E7%85%A7.png',
+      'Lai Ching-te': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/%E8%B3%B4%E6%B8%85%E5%BE%B7%E5%89%AF%E7%B8%BD%E7%B5%B1%E5%AE%98%E6%96%B9%E8%82%96%E5%83%8F%E7%85%A7.jpg/220px-%E8%B3%B4%E6%B8%85%E5%BE%B7%E5%89%AF%E7%B8%BD%E7%B5%B1%E5%AE%98%E6%96%B9%E8%82%96%E5%83%8F%E7%85%A7.jpg'
+    }
+  };
+
+  // Country flags lookup
+  const COUNTRY_FLAGS = {
+    'United States': '\u{1F1FA}\u{1F1F8}', 'China': '\u{1F1E8}\u{1F1F3}', 'Taiwan': '\u{1F1F9}\u{1F1FC}',
+    'United Kingdom': '\u{1F1EC}\u{1F1E7}', 'France': '\u{1F1EB}\u{1F1F7}', 'Germany': '\u{1F1E9}\u{1F1EA}',
+    'Russia': '\u{1F1F7}\u{1F1FA}', 'Italy': '\u{1F1EE}\u{1F1F9}', 'Spain': '\u{1F1EA}\u{1F1F8}',
+    'Japan': '\u{1F1EF}\u{1F1F5}', 'Canada': '\u{1F1E8}\u{1F1E6}', 'Mexico': '\u{1F1F2}\u{1F1FD}',
+    'Brazil': '\u{1F1E7}\u{1F1F7}', 'India': '\u{1F1EE}\u{1F1F3}', 'South Korea': '\u{1F1F0}\u{1F1F7}',
+    'Israel': '\u{1F1EE}\u{1F1F1}', 'Iran': '\u{1F1EE}\u{1F1F7}', 'Turkey': '\u{1F1F9}\u{1F1F7}',
+    'Australia': '\u{1F1E6}\u{1F1FA}', 'South Africa': '\u{1F1FF}\u{1F1E6}'
+  };
+
+  // Load regime data from JSON (single source of truth)
+  async function loadRegimeData() {
+    try {
+      const response = await fetch('data/map_regime_data.json');
+      if (!response.ok) throw new Error('Failed to load regime data');
+      const raw = await response.json();
+
+      // Convert JSON to regimeData format with flags and images
+      for (const [name, data] of Object.entries(raw)) {
+        if (!data || !data.eras) continue;
+        const flag = COUNTRY_FLAGS[name] || '';
+        const images = LEADER_IMAGES[name] || {};
+        regimeData[name] = {
+          flag,
+          eras: data.eras.map(era => ({
+            ...era,
+            image: images[era.leader] || era.image || ''
+          }))
+        };
+      }
+
+      // Aliases
+      regimeData['USA'] = regimeData['United States'];
+      regimeData["People's Republic of China"] = regimeData['China'];
+
+      console.log(`Loaded regime data for ${Object.keys(raw).length} countries from JSON`);
+    } catch (err) {
+      console.error('Failed to load regime data:', err);
+    }
+  }
+
+  // ============================================
+  // ALIGNMENT CALCULATION
+  // ============================================
+  const alignmentScale = d3.scaleLinear()
+    .domain([-1, 0, 1])
+    .range([COLORS.opposed, COLORS.neutral, COLORS.aligned])
+    .interpolate(d3.interpolateRgb);
+
+  function calculateAlignment(userProf, regimeProf) {
+    if (!userProf || !regimeProf) return 0;
+
+    // Core dimensions (original 4) + new dimensions
+    const weights = {
+      economic: 0.25,
+      democracy: 0.25,
+      social: 0.20,
+      nationalism: 0.10,
+      anti_us: 0.08,
+      institutional: 0.07,
+      nationalism_type: 0.05
+    };
+
+    let alignment = 0;
+    let totalWeight = 0;
+
+    for (const dim of Object.keys(weights)) {
+      if (userProf[dim] !== undefined && regimeProf[dim] !== undefined) {
+        let userVal = userProf[dim];
+        let regimeVal = regimeProf[dim];
+
+        // Convert nationalism_type string to numeric for regime data
+        if (dim === 'nationalism_type') {
+          if (typeof regimeVal === 'string') {
+            regimeVal = regimeVal === 'ethnic' ? 1.0 : 0.0;
+          }
+          if (typeof userVal === 'string') {
+            userVal = userVal === 'ethnic' ? 1.0 : 0.0;
+          }
+        }
+
+        const distance = Math.abs(userVal - regimeVal) / 2;
+        const similarity = 1 - distance;
+        alignment += (similarity * 2 - 1) * weights[dim];
+        totalWeight += weights[dim];
+      }
+    }
+
+    return totalWeight > 0 ? alignment / totalWeight : 0;
+  }
+
+  function getRegimeForYear(countryName, year) {
+    const country = regimeData[countryName];
+    if (!country) return null;
+
+    for (const era of country.eras) {
+      if (year >= era.start && year < era.end) {
+        return { ...era, flag: country.flag };
+      }
+    }
+    return null;
+  }
+
+  // ============================================
+  // TOOLTIP GENERATION
+  // ============================================
+  function generateTooltipHTML(countryName, year) {
+    const regime = getRegimeForYear(countryName, year);
+    if (!regime) return '';
+
+    const alignment = userProfile ? calculateAlignment(userProfile, regime.profile) : 0;
+    // Convert alignment (-1 to 1) to -3 to 3 scale for non-electoral regimes
+    const alignmentScore = (alignment * 3).toFixed(1);
+
+    let behaviorHTML = '';
+    let alignmentHTML = '';
+
+    // USA - Electoral regime: Show voting behavior with candidate names
+    if (countryName === 'United States' || countryName === 'USA') {
+      // US Presidential candidates by election year
+      const elections = {
+        1789: { D: 'George Washington', R: 'George Washington' },
+        1792: { D: 'George Washington', R: 'George Washington' },
+        1796: { D: 'Thomas Jefferson', R: 'John Adams' },
+        1800: { D: 'Thomas Jefferson', R: 'John Adams' },
+        1804: { D: 'Thomas Jefferson', R: 'Charles Pinckney' },
+        1808: { D: 'James Madison', R: 'Charles Pinckney' },
+        1812: { D: 'James Madison', R: 'DeWitt Clinton' },
+        1816: { D: 'James Monroe', R: 'Rufus King' },
+        1820: { D: 'James Monroe', R: 'James Monroe' },
+        1824: { D: 'Andrew Jackson', R: 'John Q. Adams' },
+        1828: { D: 'Andrew Jackson', R: 'John Q. Adams' },
+        1832: { D: 'Andrew Jackson', R: 'Henry Clay' },
+        1836: { D: 'Martin Van Buren', R: 'William Harrison' },
+        1840: { D: 'Martin Van Buren', R: 'William Harrison' },
+        1844: { D: 'James K. Polk', R: 'Henry Clay' },
+        1848: { D: 'Lewis Cass', R: 'Zachary Taylor' },
+        1852: { D: 'Franklin Pierce', R: 'Winfield Scott' },
+        1856: { D: 'James Buchanan', R: 'John C. Frémont' },
+        1860: { D: 'Stephen Douglas', R: 'Abraham Lincoln' },
+        1864: { D: 'George McClellan', R: 'Abraham Lincoln' },
+        1868: { D: 'Horatio Seymour', R: 'Ulysses S. Grant' },
+        1872: { D: 'Horace Greeley', R: 'Ulysses S. Grant' },
+        1876: { D: 'Samuel Tilden', R: 'Rutherford Hayes' },
+        1880: { D: 'Winfield Hancock', R: 'James Garfield' },
+        1884: { D: 'Grover Cleveland', R: 'James Blaine' },
+        1888: { D: 'Grover Cleveland', R: 'Benjamin Harrison' },
+        1892: { D: 'Grover Cleveland', R: 'Benjamin Harrison' },
+        1896: { D: 'William J. Bryan', R: 'William McKinley' },
+        1900: { D: 'William J. Bryan', R: 'William McKinley' },
+        1904: { D: 'Alton Parker', R: 'Theodore Roosevelt' },
+        1908: { D: 'William J. Bryan', R: 'William H. Taft' },
+        1912: { D: 'Woodrow Wilson', R: 'William H. Taft' },
+        1916: { D: 'Woodrow Wilson', R: 'Charles E. Hughes' },
+        1920: { D: 'James Cox', R: 'Warren Harding' },
+        1924: { D: 'John W. Davis', R: 'Calvin Coolidge' },
+        1928: { D: 'Al Smith', R: 'Herbert Hoover' },
+        1932: { D: 'Franklin Roosevelt', R: 'Herbert Hoover' },
+        1936: { D: 'Franklin Roosevelt', R: 'Alf Landon' },
+        1940: { D: 'Franklin Roosevelt', R: 'Wendell Willkie' },
+        1944: { D: 'Franklin Roosevelt', R: 'Thomas Dewey' },
+        1948: { D: 'Harry Truman', R: 'Thomas Dewey' },
+        1952: { D: 'Adlai Stevenson', R: 'Dwight Eisenhower' },
+        1956: { D: 'Adlai Stevenson', R: 'Dwight Eisenhower' },
+        1960: { D: 'John F. Kennedy', R: 'Richard Nixon' },
+        1964: { D: 'Lyndon Johnson', R: 'Barry Goldwater' },
+        1968: { D: 'Hubert Humphrey', R: 'Richard Nixon' },
+        1972: { D: 'George McGovern', R: 'Richard Nixon' },
+        1976: { D: 'Jimmy Carter', R: 'Gerald Ford' },
+        1980: { D: 'Jimmy Carter', R: 'Ronald Reagan' },
+        1984: { D: 'Walter Mondale', R: 'Ronald Reagan' },
+        1988: { D: 'Michael Dukakis', R: 'George H.W. Bush' },
+        1992: { D: 'Bill Clinton', R: 'George H.W. Bush' },
+        1996: { D: 'Bill Clinton', R: 'Bob Dole' },
+        2000: { D: 'Al Gore', R: 'George W. Bush' },
+        2004: { D: 'John Kerry', R: 'George W. Bush' },
+        2008: { D: 'Barack Obama', R: 'John McCain' },
+        2012: { D: 'Barack Obama', R: 'Mitt Romney' },
+        2016: { D: 'Hillary Clinton', R: 'Donald Trump' },
+        2020: { D: 'Joe Biden', R: 'Donald Trump' },
+        2024: { D: 'Kamala Harris', R: 'Donald Trump' }
+      };
+
+      // Find the most recent election for this year
+      const electionYears = Object.keys(elections).map(Number).sort((a, b) => a - b);
+      let relevantElection = electionYears[0];
+      for (const ey of electionYears) {
+        if (ey <= year) relevantElection = ey;
+      }
+
+      const currentVote = userBehavior?.votes?.[relevantElection.toString()] || userBehavior?.votes?.['2024'] || 'D';
+      const voteColor = currentVote === 'D' ? '#3333FF' : currentVote === 'R' ? '#E9141D' : '#888';
+      const candidateName = elections[relevantElection]?.[currentVote] || 'Unknown';
+      const partyLabel = currentVote === 'D' ? 'Democrat' : 'Republican';
+
+      alignmentHTML = `
+        <div class="tooltip-alignment" style="background:${voteColor};">
+          <div style="text-align:center;padding:0.5rem 0;">
+            <div style="font-size:0.7rem;opacity:0.8;margin-bottom:0.25rem;">IN ${relevantElection} YOU WOULD VOTE FOR</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;">${candidateName}</div>
+            <div style="font-size:0.7rem;opacity:0.8;margin-top:0.25rem;">${partyLabel}</div>
+          </div>
+        </div>
+      `;
+
+      if (userBehavior?.votes) {
+        const recentYears = ['1992', '1996', '2000', '2004', '2008', '2012', '2016', '2020', '2024'];
+        behaviorHTML = `
+          <div class="tooltip-behavior">
+            <div class="behavior-title">Voting History (Pattern: ${userBehavior.usPattern})</div>
+            <div class="voting-grid">
+              ${recentYears.map(y => `<div class="vote-cell year">'${y.slice(2)}</div>`).join('')}
+              ${recentYears.map(y => {
+                const vote = userBehavior.votes[y];
+                const cls = vote === 'D' ? 'dem' : vote === 'R' ? 'rep' : '';
+                return `<div class="vote-cell ${cls}">${vote || '-'}</div>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Taiwan - Electoral regime: Show party support
+    else if (countryName === 'Taiwan') {
+      const partyColors = { DPP: '#1B9431', KMT: '#0066B3', TPP: '#28C8C8' };
+      const partyNames = { DPP: 'Democratic Progressive Party', KMT: 'Kuomintang', TPP: "Taiwan People's Party" };
+      const userParty = userBehavior?.taiwan || 'DPP';
+      const matchesCurrentParty = regime.party === userParty;
+
+      alignmentHTML = `
+        <div class="tooltip-alignment" style="background:${partyColors[userParty]};">
+          <div style="text-align:center;padding:0.5rem 0;">
+            <div style="font-size:0.7rem;opacity:0.8;margin-bottom:0.25rem;">YOU WOULD VOTE</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;">${userParty}</div>
+            <div style="font-size:0.7rem;opacity:0.8;margin-top:0.25rem;">${partyNames[userParty] || ''}</div>
+          </div>
+        </div>
+      `;
+
+      behaviorHTML = `
+        <div class="tooltip-behavior">
+          <div class="behavior-title">Current Government Match</div>
+          <div class="behavior-value" style="color:${matchesCurrentParty ? '#99ff99' : '#ff9999'};">
+            ${matchesCurrentParty ? '✓ Your party is currently in power' : '✗ Opposition to current government'}
+          </div>
+        </div>
+      `;
+    }
+
+    // China - Non-electoral regime: Show -3 to 3 score
+    else if (countryName === 'China' || countryName === "People's Republic of China") {
+      const scoreColor = alignment > 0.3 ? '#00D4FF' : alignment < -0.3 ? '#FF6B6B' : '#FFE135';
+      const scoreLabel = alignment > 0.3 ? 'Favorable' : alignment < -0.3 ? 'Opposed' : 'Neutral';
+      const markerPos = ((parseFloat(alignmentScore) + 3) / 6) * 100;
+
+      alignmentHTML = `
+        <div class="tooltip-alignment">
+          <div style="text-align:center;margin-bottom:0.75rem;">
+            <div style="font-size:0.7rem;color:#888;margin-bottom:0.25rem;">REGIME ALIGNMENT SCORE</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;color:${scoreColor};">
+              ${alignmentScore > 0 ? '+' : ''}${alignmentScore}
+            </div>
+            <div style="font-size:0.75rem;color:${scoreColor};">${scoreLabel}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span style="font-size:0.65rem;color:#888;">-3</span>
+            <div style="flex:1;height:10px;background:linear-gradient(to right, #FF6B6B, #FFE135 50%, #00D4FF);position:relative;border:1px solid #444;">
+              <div style="position:absolute;top:-4px;left:${markerPos}%;width:4px;height:18px;background:#fff;border:2px solid #1a1a1a;transform:translateX(-50%);"></div>
+            </div>
+            <span style="font-size:0.65rem;color:#888;">+3</span>
+          </div>
+        </div>
+      `;
+
+      if (userBehavior?.prc) {
+        const stances = {
+          'PRAGMATIC': 'Pragmatic engagement — prioritizing stability and economic ties.',
+          'REFORMIST': 'Reform-oriented — pushing for gradual liberalization.',
+          'DISSIDENT': 'Dissident stance — opposing authoritarian control.',
+          'NATIONALIST': 'Nationalist alignment — sharing cultural pride.',
+          'COLLABORATOR': 'System collaborator — working within structures.'
+        };
+        behaviorHTML = `
+          <div class="tooltip-behavior">
+            <div class="behavior-title">Your Stance: ${userBehavior.prc}</div>
+            <div class="behavior-value">${stances[userBehavior.prc] || ''}</div>
+          </div>
+        `;
+      }
+    }
+
+    // Generic alignment display for non-focus countries
+    else if (userProfile) {
+      const scoreColor = alignment > 0.3 ? '#00D4FF' : alignment < -0.3 ? '#FF6B6B' : '#FFE135';
+      const scoreLabel = alignment > 0.3 ? 'Aligned' : alignment < -0.3 ? 'Opposed' : 'Neutral';
+      alignmentHTML = `
+        <div class="tooltip-alignment">
+          <div style="text-align:center;padding:0.5rem 0;">
+            <div style="font-size:0.7rem;color:#888;margin-bottom:0.25rem;">ALIGNMENT</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:${scoreColor};">
+              ${alignmentScore > 0 ? '+' : ''}${alignmentScore}
+            </div>
+            <div style="font-size:0.75rem;color:${scoreColor};">${scoreLabel}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="tooltip-header">
+        <img class="tooltip-image" src="${regime.image}" alt="${regime.leader}" onerror="this.style.display='none'">
+        <div class="tooltip-title">
+          <div class="tooltip-country">${regime.flag} ${countryName}</div>
+          <div class="tooltip-leader">${regime.leader}</div>
+          <span class="tooltip-party-badge" style="background:${regime.partyColor};color:#fff;">${regime.party}</span>
+        </div>
+      </div>
+      ${alignmentHTML}
+      ${behaviorHTML}
+    `;
+  }
+
+  // ============================================
+  // MAP RENDERING
+  // ============================================
+  const svg = d3.select('#map');
+  const tooltip = d3.select('#tooltip');
+  const yearSlider = document.getElementById('year-slider');
+  const yearDisplay = document.getElementById('year-display');
+
+  let currentYear = 2026;
+  let mapData = null;
+
+  // Country name matching — maps geo/topo names to regime data keys
+  const COUNTRY_NAME_MAP = {
+    // Primary focus countries (with tooltips)
+    'united states': 'United States', 'usa': 'United States',
+    'thirteen colonies': 'United States', 'british america': 'United States',
+    'china': 'China', 'prc': 'China', 'qing': 'China',
+    'empire of china': 'China', 'chinese empire': 'China', 'manchuria': 'China',
+    'taiwan': 'Taiwan', 'formosa': 'Taiwan',
+    // Other countries with regime data
+    'united kingdom': 'United Kingdom', 'great britain': 'United Kingdom', 'england': 'United Kingdom', 'uk': 'United Kingdom',
+    'france': 'France', 'french republic': 'France',
+    'germany': 'Germany', 'german empire': 'Germany', 'prussia': 'Germany', 'west germany': 'Germany',
+    'russia': 'Russia', 'russian empire': 'Russia', 'soviet union': 'Russia', 'ussr': 'Russia',
+    'russian federation': 'Russia',
+    'italy': 'Italy', 'kingdom of italy': 'Italy',
+    'spain': 'Spain', 'kingdom of spain': 'Spain',
+    'japan': 'Japan', 'empire of japan': 'Japan',
+    'canada': 'Canada',
+    'mexico': 'Mexico',
+    'brazil': 'Brazil',
+    'india': 'India', 'british india': 'India',
+    'south korea': 'South Korea', 'korea, south': 'South Korea', 'republic of korea': 'South Korea',
+    'israel': 'Israel',
+    'iran': 'Iran', 'persia': 'Iran',
+    'turkey': 'Turkey', 'ottoman empire': 'Turkey', 'turkiye': 'Turkey',
+    'australia': 'Australia',
+    'south africa': 'South Africa'
+  };
+
+  // Focus countries get detailed tooltips; all countries get alignment coloring
+  const FOCUS_COUNTRIES = new Set(['United States', 'China', 'Taiwan']);
+
+  function matchCountryName(geoName) {
+    if (!geoName) return null;
+    const normalized = geoName.toLowerCase().trim();
+
+    // Direct lookup
+    if (COUNTRY_NAME_MAP[normalized]) return COUNTRY_NAME_MAP[normalized];
+
+    // Substring matching for historical names
+    for (const [pattern, canonical] of Object.entries(COUNTRY_NAME_MAP)) {
+      if (normalized.includes(pattern)) {
+        // Handle "People's Republic of China" → China, not Taiwan
+        if (pattern === 'republic of china' && normalized.includes('people')) return 'China';
+        return canonical;
+      }
+    }
+
+    return null;
+  }
+
+  function isFocusCountry(name) {
+    const matched = matchCountryName(name);
+    return matched !== null && FOCUS_COUNTRIES.has(matched);
+  }
+
+  // Any country with regime data gets colored on the map
+  function isDataCountry(name) {
+    return matchCountryName(name) !== null;
+  }
+
+  function updateMap() {
+    if (!mapData) return;
+
+    svg.selectAll('.country')
+      .attr('fill', function(d) {
+        const name = d.properties.name || d.properties.NAME || d.properties.ADMIN;
+        const matched = matchCountryName(name);
+
+        if (!matched) return COLORS.inactive;
+
+        const regime = getRegimeForYear(matched, currentYear);
+        if (!regime) return COLORS.inactive;
+
+        if (!userProfile) {
+          return regime.partyColor;
+        }
+
+        const alignment = calculateAlignment(userProfile, regime.profile);
+        return alignmentScale(alignment);
+      })
+      .classed('active', function(d) {
+        const name = d.properties.name || d.properties.NAME || d.properties.ADMIN;
+        return isDataCountry(name);
+      })
+      .classed('inactive', function(d) {
+        const name = d.properties.name || d.properties.NAME || d.properties.ADMIN;
+        return !isDataCountry(name);
+      });
+  }
+
+  // Load a map with fallback
+  async function loadMapData(mapYear) {
+    if (mapCache[mapYear]) return mapCache[mapYear];
+
+    document.getElementById('loading').style.display = 'block';
+
+    // Use modern TopoJSON for recent years
+    if (mapYear === 'modern') {
+      try {
+        const response = await fetch(modernMapUrl);
+        if (!response.ok) throw new Error('Failed to load modern map');
+        const topoData = await response.json();
+        const countries = topojson.feature(topoData, topoData.objects.countries);
+        // Add NAME property from id for compatibility
+        countries.features.forEach(f => {
+          if (!f.properties) f.properties = {};
+          f.properties.NAME = getCountryNameFromId(f.id);
+        });
+        mapCache[mapYear] = countries;
+        document.getElementById('loading').style.display = 'none';
+        return countries;
+      } catch (error) {
+        console.error('Error loading modern map:', error);
+        document.getElementById('loading').style.display = 'none';
+        return null;
+      }
+    }
+
+    // Try to load historical map
+    try {
+      const url = `${mapBaseUrl}world_${mapYear}.geojson`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Failed to load map for ${mapYear}`);
+      const data = await response.json();
+      mapCache[mapYear] = data;
+      document.getElementById('loading').style.display = 'none';
+      return data;
+    } catch (error) {
+      console.error(`Error loading map for ${mapYear}:`, error);
+
+      // Fallback: try the previous available year
+      const currentIndex = availableMapYears.indexOf(mapYear);
+      if (currentIndex > 0) {
+        const fallbackYear = availableMapYears[currentIndex - 1];
+        console.log(`Falling back to ${fallbackYear}`);
+        return loadMapData(fallbackYear);
+      }
+
+      // Ultimate fallback: use modern map
+      document.getElementById('loading').style.display = 'none';
+      return loadMapData('modern');
+    }
+  }
+
+  async function renderMap() {
+    const neededMapYear = getClosestMapYear(currentYear);
+
+    // Only reload map data if the map year changed
+    if (neededMapYear !== currentMapYear || !mapData) {
+      currentMapYear = neededMapYear;
+      mapData = await loadMapData(neededMapYear);
+    }
+
+    if (!mapData) return;
+
+    const container = document.getElementById('map-section');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    svg.attr('width', width).attr('height', height);
+
+    const projection = d3.geoNaturalEarth1()
+      .scale(width / 5.5)
+      .translate([width / 2, height / 2]);
+
+    const path = d3.geoPath().projection(projection);
+
+    // Clear and redraw
+    svg.selectAll('.country').remove();
+
+    svg.selectAll('.country')
+      .data(mapData.features)
+      .enter()
+      .append('path')
+      .attr('class', 'country')
+      .attr('d', path)
+      .on('mouseenter', function(event, d) {
+        const name = d.properties.name || d.properties.NAME || d.properties.ADMIN;
+        const matched = matchCountryName(name);
+
+        if (!matched) return;
+
+        const html = generateTooltipHTML(matched, currentYear);
+        if (html) {
+          tooltip.html(html)
+            .style('opacity', 1)
+            .style('left', (event.clientX + 15) + 'px')
+            .style('top', (event.clientY - 10) + 'px');
+        }
+      })
+      .on('mousemove', function(event) {
+        tooltip
+          .style('left', (event.clientX + 15) + 'px')
+          .style('top', (event.clientY - 10) + 'px');
+      })
+      .on('mouseleave', function() {
+        tooltip.style('opacity', 0);
+      });
+
+    updateMap();
+  }
+
+  async function loadMap() {
+    await loadRegimeData();
+    await renderMap();
+  }
+
+  yearSlider.addEventListener('input', function() {
+    currentYear = parseInt(this.value);
+    yearDisplay.textContent = currentYear;
+    renderMap();
+  });
+
+  loadMap();
+
+  window.addEventListener('resize', function() {
+    renderMap();
+  });
+})();
+</script>
+</body>
+</html>

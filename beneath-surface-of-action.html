@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beneath the Surface of Action</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root { --bg: #faf9f6; --text: #2c2c2c; --accent: #8b4513; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'EB Garamond', Georgia, serif; background: var(--bg); color: var(--text); }
+.container { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem; }
+#content { line-height: 1.8; font-size: 1.1rem; }
+#content h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+#content h2 { font-size: 1.4rem; margin: 2rem 0 0.8rem; color: var(--accent); }
+#content p { margin-bottom: 1.2rem; text-align: justify; }
+#content em { font-style: italic; }
+#content strong { font-weight: 600; }
+#content hr { border: none; border-top: 1px solid #ddd; margin: 2rem 0; }
+#content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: #555; }
+.toolbar { position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 10; }
+.toolbar button { padding: 0.4rem 0.8rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.8rem; }
+.toolbar button:hover { background: #f0f0f0; }
+.toolbar button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+#editor { display: none; width: 100%; min-height: 80vh; font-family: 'Courier New', monospace; font-size: 0.95rem; padding: 1rem; border: 1px solid #ccc; border-radius: 4px; line-height: 1.6; resize: vertical; background: #fff; }
+@media (max-width: 600px) { .container { padding: 1.5rem 1rem; } #content { font-size: 1rem; } }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="toolbar">
+  <button onclick="toggleEdit()" id="editBtn">✏️ Edit</button>
+  <button onclick="copyMD()">📋 Copy MD</button>
+  <button onclick="downloadMD()">💾 Download</button>
+</div>
+<div class="container">
+  <div id="content"></div>
+  <textarea id="editor"></textarea>
+</div>
+<script>
+let isEditing = false;
+const editor = document.getElementById('editor');
+const content = document.getElementById('content');
+let mdSource = '';
+
+fetch('content/beneath-surface-of-action.md').then(r => r.text()).then(md => {
+  mdSource = md;
+  content.innerHTML = marked.parse(md);
+  editor.value = md;
+}).catch(() => {
+  // Fallback: inline content
+  content.innerHTML = '<p>Loading failed. Try refreshing.</p>';
+});
+
+function toggleEdit() {
+  isEditing = !isEditing;
+  if (isEditing) {
+    content.style.display = 'none';
+    editor.style.display = 'block';
+    editor.value = mdSource;
+    document.getElementById('editBtn').textContent = '👁️ Preview';
+    document.getElementById('editBtn').classList.add('active');
+  } else {
+    mdSource = editor.value;
+    content.innerHTML = marked.parse(mdSource);
+    content.style.display = 'block';
+    editor.style.display = 'none';
+    document.getElementById('editBtn').textContent = '✏️ Edit';
+    document.getElementById('editBtn').classList.remove('active');
+  }
+}
+
+function copyMD() {
+  navigator.clipboard.writeText(isEditing ? editor.value : mdSource);
+  alert('Copied to clipboard!');
+}
+
+function downloadMD() {
+  const blob = new Blob([isEditing ? editor.value : mdSource], {type: 'text/markdown'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'beneath-surface-of-action.md';
+  a.click();
+}
+</script>
+</body>
+</html>
