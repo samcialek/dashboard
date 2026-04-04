@@ -199,7 +199,7 @@ Now here is the move that turns all of this from description into strategy.
 
 The DAG tells you where leverage is. You have to tell it what is movable. Age is not a lever. Geography is not a lever. Some nodes you can only watch. The topology does not know that. You do.
 
-So for each node in the graph, you ask four things. Reach. How much propagates downstream. Manipulability. Can this actually be moved. Specificity. Is the intervention a scalpel or a hammer. Does it stay on one pathway or spill across the graph. Tractability. Will the change stick, or is the variable overdetermined, with too many sufficient causes holding it in place.
+So for each node in the graph, you ask four things. Reach. How much ripples downstream. Manipulability. Can this actually be moved. Specificity. Is the intervention a scalpel or a hammer. Does it stay on one pathway or spill across the graph. Tractability. Will the change stick, or is the variable overdetermined, with too many sufficient causes holding it in place.
 
 Two warnings. Overdetermination. A node can be causally important and still intervention-resistant, because redundant parents stabilize it. And collapsed feedback. Many DAGs are acyclic only because we flattened feedback loops across time. In those cases, the real lever is not a node at all. It is a property of the loop. Its gain, its damping, its threshold.
 
@@ -227,11 +227,11 @@ Let me bring this back to Aaru.
 
 You have synthetic agents simulating a population. A lot of current simulation treats agents as demographic profiles passed into a language model. The model generates responses from associational regularities in its training data. That is rung one.
 
-What I am proposing is that each agent should carry causal structure. Not just a label. An actual graph of mechanisms. When you simulate a messaging change, the effect propagates through the agent's causal graph, not just shifts a scalar.
+What I am proposing is that each agent should carry causal structure. Not just a label. An actual graph of mechanisms. When you simulate a messaging change, the effect ripples through the agent's causal graph, not just shifts a scalar.
 
 That gives you heterogeneous effects. Different agents respond differently because their pathways are different. It gives you mechanistic transparency. You can explain why. And it gives you intervention targeting. Because every agent carries its own affordance map. You know which variables are manipulable for which subgroup, and you know which of them are scalpels versus hammers.
 
-The agents carry enough structure that when an exogenous condition shifts, the downstream implications propagate automatically. Not after a retrain. Through the structure itself.
+The agents carry enough structure that when an exogenous condition shifts, the downstream implications ripple through automatically. Not after a retrain. Through the structure itself.
 
 ---
 
@@ -245,7 +245,7 @@ The split is one-directional. Demographics influence psychographics, not the rev
 
 In the psychographic space, there is an explicit causal graph. A predefined DAG with edges based on domain knowledge. Each edge has a learned structural equation. A small neural network estimating the strength of each causal relationship.
 
-This is where the architecture connects to everything I have been saying. The DAG in the latent space is the same kind of structure we have been talking about. The structural equations are the mechanism. The Markov blankets are defined by the graph. And to compute a counterfactual, you alter a latent variable and propagate through the structural equations. The decoder gives you the new behavioral profile.
+This is where the architecture connects to everything I have been saying. The DAG in the latent space is the same kind of structure we have been talking about. The structural equations are the mechanism. The Markov blankets are defined by the graph. And to compute a counterfactual, you alter a latent variable and ripple through the structural equations. The decoder gives you the new behavioral profile.
 
 One design choice I want to be honest about. We tried learning the graph from data. Pure structure discovery. The data alone was not sufficient to recover sparse structure. What worked better. Bring in domain knowledge for which relationships exist. Use the model to learn how strong they are. Predefined structure, learned strengths. I actually think that is the more mature approach.
 
@@ -261,11 +261,11 @@ When something changes, a policy shift, a market shock, some causal relationship
 
 This is where the architecture pays off. The DAG plus structural equations are modular. You can re-estimate a local neighborhood without rebuilding the entire model. The Markov blankets tell you which variables need updating when something changes.
 
-The picture. You are watching the system. A structural break is detected. Some regime has shifted. Local re-estimation fires. Only the affected neighborhood updates. Downstream propagation. Causal children inherit the shift automatically.
+The picture. You are watching the system. A structural break is detected. Some regime has shifted. Local re-estimation fires. Only the affected neighborhood updates. The change ripples downstream. Causal children inherit the shift automatically.
 
 The formal framework is Bayesian online change-point detection. Maintaining a posterior over how long since the last structural break. I have not built this as a production system. But the architecture supports it. The engineering work to make this live is incremental, not architectural.
 
-The vision. Agents carry causal structure, interventions propagate through mechanisms, and the whole thing updates as reality changes. Continuously, not quarterly.
+The vision. Agents carry causal structure, interventions ripple through mechanisms, and the whole thing updates as reality changes. Continuously, not quarterly.
 
 ---
 
@@ -283,7 +283,7 @@ And a modeling taste built on partial pooling, hierarchical Bayes, structural ca
 
 ### SLIDE 22 — Forward Collaboration
 
-What I would like to build toward here is a system where agents carry causal structure, interventions can be evaluated before deployment, and changes in the world propagate through the model rather than waiting for the next reporting cycle.
+What I would like to build toward here is a system where agents carry causal structure, interventions can be evaluated before deployment, and changes in the world ripple through the model rather than waiting for the next reporting cycle.
 
 That is the direction I think is most interesting. And it is what I would like to build with you.
 
