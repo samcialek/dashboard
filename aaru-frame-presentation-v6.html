@@ -618,11 +618,12 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <line x1="56" y1="130" x2="118" y2="86" stroke="rgba(245,240,232,0.12)" stroke-width="0.8" marker-end="url(#mb-arr)" class="mb-edge"/>
 </svg>
 </div>
-<div class="dag-slide-quote" id="mb-quote" style="font-size:clamp(16px,2vw,22px)">The minimal local boundary around a variable.</div>
+<div class="dag-slide-quote" id="mb-quote" style="font-size:clamp(16px,2vw,22px)">The DAG defines the blanket: parents + children + co-parents of children.</div>
+<p style="font-family:Inter,sans-serif;font-size:14px;opacity:0.5;margin-top:8px;text-align:center">Everything outside the blanket is conditionally independent of Y, given the blanket.</p>
 <ul class="dag-bullet-list" id="mb-bullets">
-<li id="mb-b1"><strong style="color:#5BA8D9">Efficient measurement</strong> — the blanket tells you the minimum sufficient set</li>
-<li id="mb-b2"><strong style="color:#03E87A">Agent state</strong> — define what the agent carries; marginalize the rest</li>
-<li id="mb-b3"><strong style="color:#EC1014">Local updating</strong> — update only variables whose blankets include the change</li>
+<li id="mb-b1"><strong style="color:#5BA8D9">What's locally relevant?</strong> — the blanket is the minimal sufficient neighborhood</li>
+<li id="mb-b2"><strong style="color:#03E87A">What carries the effect?</strong> — mediators within this structure identify the mechanism</li>
+<li id="mb-b3"><strong style="color:#EC1014">Where to intervene?</strong> — blanket + mediator = the right abstraction level for action</li>
 </ul>
 </div>
 </div>
