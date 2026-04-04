@@ -44,7 +44,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 
 /* Dependency chain */
 .chain-container{display:flex;flex-direction:column;align-items:center;gap:0;margin:32px 0}
-.chain-box{padding:16px 32px;border:1px solid rgba(245,240,232,0.15);border-radius:6px;font-family:'Inter',sans-serif;font-size:15px;text-align:center;opacity:0;transform:translateY(8px);min-width:260px}
+.chain-box{padding:16px 32px;border:1px solid rgba(245,240,232,0.15);border-radius:6px;font-family:'Inter',sans-serif;font-size:15px;text-align:center;min-width:260px}
 .chain-arrow-down{font-size:20px;color:rgba(245,240,232,0.25);opacity:0;margin:4px 0}
 .chain-branch{display:flex;align-items:center;gap:16px;opacity:0}
 .chain-branch-line{width:40px;height:1px;background:rgba(245,240,232,0.2)}
@@ -904,10 +904,11 @@ function goToSlide(n) {
       oldSlide.classList.remove('active');
       // Enter new
       newSlide.classList.add('active');
-      // Clear all inline opacity/transform on deep elements first
+      // Force all deep elements visible (override CSS class opacity:0 and transforms)
       newSlide.querySelectorAll('.slide-inner *').forEach(el => {
-        if (el.style.opacity === '0') el.style.opacity = '';
-        if (el.style.transform) el.style.transform = '';
+        const cs = getComputedStyle(el);
+        if (cs.opacity === '0') el.style.opacity = '1';
+        if (cs.transform && cs.transform !== 'none') el.style.transform = 'none';
       });
       // Also reset SVG opacity attributes for DAG nodes
       newSlide.querySelectorAll('[opacity="0"]').forEach(el => el.setAttribute('opacity', '1'));
