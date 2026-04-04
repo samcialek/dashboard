@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRISM Results</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --pool: #d1f6ff; --pool-deep: #89ccf0; --flesh: #fa8072;
+      --cream: #FFFEF8; --ink: #1a1a1a;
+      --dem-blue: #3333FF; --rep-red: #E9141D;
+    }
+    html, body { background: var(--cream); font-family: 'IBM Plex Mono', monospace; color: var(--ink); line-height: 1.5; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    #loading { text-align: center; padding: 4rem; font-size: 1.2rem; }
+
+    /* SECTION 1: ARCHETYPE */
+    #archetype-section { padding: 4rem 0 3rem; border-bottom: 2px solid var(--ink); }
+    .tier-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; background: var(--flesh); color: var(--ink); padding: 0.25rem 0.7rem; margin-bottom: 1rem; }
+    .archetype-number { font-size: 0.75rem; color: #888; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+    .archetype-name { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
+    .archetype-desc { font-size: 0.9rem; line-height: 1.7; max-width: 720px; color: #444; }
+
+    /* SECTION 2: ELECTIONS */
+    #elections-section { padding: 3rem 0; border-bottom: 2px solid var(--ink); }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: #888; margin-bottom: 1.5rem; }
+    .elections-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin-bottom: 1.25rem; }
+    .election-cell { padding: 0.2rem 0.15rem; text-align: center; font-size: 0.55rem; line-height: 1.2; border: 1px solid rgba(0,0,0,0.08); transition: transform 0.1s; cursor: default; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+    .election-cell:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .election-cell.dem { background: var(--dem-blue); color: #fff; border-color: rgba(51,51,255,0.3); }
+    .election-cell.rep { background: var(--rep-red); color: #fff; border-color: rgba(233,20,29,0.3); }
+    .election-cell.other { background: #888; color: #fff; }
+    .election-cell.abstain { background: #ddd; color: #666; }
+    .election-cell img.pres-photo { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.5); }
+    .cell-year { font-weight: 600; font-size: 0.6rem; display: block; }
+    .cell-name { font-size: 0.45rem; opacity: 0.85; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .election-summary { font-size: 0.8rem; color: #666; }
+    .election-summary .dem-count { color: var(--dem-blue); font-weight: 600; }
+    .election-summary .rep-count { color: var(--rep-red); font-weight: 600; }
+
+    /* SECTION 3: MAP */
+    #map-section { padding: 3rem 0; border-bottom: 2px solid var(--ink); }
+    #map-section .container { max-width: 100%; padding: 0 1rem; }
+    .map-controls { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem; }
+    #year-display { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; min-width: 70px; font-variant-numeric: tabular-nums; }
+    .slider-wrap { flex: 1; display: flex; align-items: center; gap: 0.5rem; }
+    .slider-wrap span { font-size: 0.65rem; color: #888; }
+    #year-slider { flex: 1; height: 4px; -webkit-appearance: none; appearance: none; background: var(--ink); outline: none; cursor: pointer; }
+    #year-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--pool-deep); border: 2px solid var(--ink); cursor: pointer; }
+    #map-container { position: relative; width: 100%; aspect-ratio: 1.8 / 1; min-height: 500px; }
+    #map-container svg { width: 100%; height: 100%; }
+    .country { stroke: var(--ink); stroke-width: 0.3px; transition: fill 0.3s; }
+    .country.inactive { fill: #e5e5e5 !important; }
+    .country.active:hover { stroke-width: 1.5px; filter: brightness(1.1); }
+    .map-legend { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; font-size: 0.65rem; color: #888; }
+    .map-legend canvas { border: 1px solid var(--ink); }
+
+    /* SECTION 4: PROFILE */
+    #profile-section { padding: 3rem 0 4rem; }
+    .nodes-grid { display: grid; grid-template-columns: 1fr; gap: 1.75rem; }
+    .node-cluster { background: var(--ink); color: var(--cream); padding: 1.5rem 2rem; }
+    .cluster-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: #888; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid #333; }
+    .node-row { display: grid; grid-template-columns: 130px 1fr 40px; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .node-row:last-child { margin-bottom: 0; }
+    .node-bar-wrap { width: 100%; }
+    .node-bar { height: 14px; background: #333; position: relative; border: 1px solid #555; display: flex; }
+    .node-bar-segment { height: 100%; transition: width 0.3s; }
+    .node-bar-marker { position: absolute; top: -3px; width: 3px; height: 20px; background: #fff; border: 1px solid var(--ink); transform: translateX(-50%); }
+    .node-labels { display: flex; justify-content: space-between; font-size: 0.55rem; color: #666; margin-top: 0.2rem; }
+    .node-value { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 600; color: #fff; text-align: center; }
+    @media (max-width: 700px) {
+      .container { padding: 0 1rem; }
+      .elections-grid { gap: 2px; }
+      .election-cell { padding: 0.2rem 0.1rem; font-size: 0.45rem; }
+      .cell-name { display: none; }
+      .node-row { grid-template-columns: 100px 1fr 35px; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">Loading your results...</div>
+
+<div id="results" style="display:none;">
+<!-- SECTION 1 -->
+<section id="archetype-section">
+  <div class="container">
+    <span class="tier-badge" id="tier-badge"></span>
+    <div class="archetype-number" id="archetype-number"></div>
+    <h1 class="archetype-name" id="archetype-name"></h1>
+    <p class="archetype-desc" id="archetype-desc"></p>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section id="elections-section">
+  <div class="container">
+    <div class="section-label">US Presidential Elections · 1789–2024</div>
+    <div class="elections-grid" id="elections-grid"></div>
+    <div class="election-summary" id="election-summary"></div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section id="map-section">
+  <div class="container">
+    <div class="section-label">World Alignment Map</div>
+    <div class="map-controls">
+      <div id="year-display">2026</div>
+      <div class="slider-wrap">
+        <span>1789</span>
+        <input type="range" id="year-slider" min="1789" max="2026" value="2026">
+        <span>2026</span>
+      </div>
+    </div>
+    <div id="map-container"><svg id="map"></svg></div>
+    <div class="map-legend">
+      <span>Opposed (−3)</span>
+      <canvas id="legend-gradient" width="120" height="10"></canvas>
+      <span>Aligned (+3)</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section id="profile-section">
+  <div class="container">
+    <div class="section-label">Your Profile · 14 Dimensions</div>
+    <div class="nodes-grid" id="nodes-grid"></div>
+  </div>
+</section>
+</div>
+
+<script>
+(async function() {
+  // ========== CONFIG ==========
+  const DATA_BASE = './data';
+  const IMG_BASE = 'img/presidents';
+
+  // Photo filename map
+  const photoMap = {
+    'Washington':'washington','Jefferson':'jefferson','Madison':'madison','Monroe':'monroe',
+    'J.Q. Adams':'jqadams','Jackson':'jackson','Van Buren':'vanburen','Harrison':'harrison',
+    'Polk':'polk','Taylor':'taylor','Buchanan':'buchanan','Pierce':'pierce',
+    'Frémont':'fremont','Lincoln':'lincoln','Grant':'grant','Tilden':'tilden',
+    'Hancock':'hancock','Cleveland':'cleveland','Bryan':'bryan','T. Roosevelt':'troosevelt',
+    'McKinley':'mckinley','Wilson':'wilson','Taft':'taft','Debs':'debs',
+    'Harding':'harding','La Follette':'lafollette','Coolidge':'coolidge','Smith':'smith',
+    'Hoover':'hoover','Landon':'landon','Willkie':'willkie','FDR':'fdr','Dewey':'dewey',
+    'Truman':'truman','Stevenson':'stevenson','Eisenhower':'eisenhower',
+    'Kennedy':'kennedy','LBJ':'lbj','Goldwater':'goldwater','Humphrey':'humphrey',
+    'Nixon':'nixon','Wallace':'wallace','McGovern':'mcgovern','Carter':'carter',
+    'Reagan':'reagan','Mondale':'mondale','Dukakis':'dukakis','Bush Sr':'bushsr',
+    'Clinton':'bclinton','Dole':'dole','Gore':'gore','Bush Jr':'bushjr',
+    'Kerry':'kerry','Obama':'obama','McCain':'mccain','Romney':'romney',
+    'H. Clinton':'hclinton','Trump':'trump','Biden':'biden','Harris':'harris',
+    'Weaver':'weaver','Hayes':'hayes','Garfield':'garfield',
+    'Blaine':'blaine','Scott':'scott','Cass':'cass','Fremont':'fremont',
+    'Breckinridge':'breckinridge','McClellan':'mcclellan','Seymour':'seymour',
+    'Greeley':'greeley','Parker':'parker','Hughes':'hughes','Cox':'cox','Davis':'davis',
+    'Adams':'jqadams','Pinckney':'pinckney','Clinton (DeWitt)':'dewittclinton',
+    'King':'king','Clay':'clay','Birney':'birney','Hale':'hale','Bell':'bell',
+  };
+
+  // Node display config
+  const nodeLabels = {
+    MAT: { name: 'Material', low1: 'Redistributionist', high5: 'Free Market', cluster: 'ENDS' },
+    CD: { name: 'Cultural Direction', low1: 'Progressive', high5: 'Traditional', cluster: 'ENDS' },
+    CU: { name: 'Cultural Universalism', low1: 'Assimilationist', high5: 'Pluralist', cluster: 'ENDS' },
+    MOR: { name: 'Moral Circle', low1: 'Particularist', high5: 'Universal', cluster: 'ENDS' },
+    PRO: { name: 'Proceduralism', low1: 'Anti-procedural', high5: 'Procedural', cluster: 'MEANS' },
+    COM: { name: 'Compromise', low1: 'Principled', high5: 'Pragmatic', cluster: 'MEANS' },
+    ZS: { name: 'Zero-Sum', low1: 'Positive-Sum', high5: 'Zero-Sum', cluster: 'REALITY' },
+    ONT_H: { name: 'Human Nature', low1: 'Pessimistic', high5: 'Optimistic', cluster: 'REALITY' },
+    ONT_S: { name: 'Institutional Trust', low1: 'Broken', high5: 'Stable', cluster: 'REALITY' },
+    PF: { name: 'Partisan Fusion', low1: 'Non-Partisan', high5: 'Partisan', cluster: 'SELF' },
+    TRB: { name: 'Tribalism', low1: 'Universalist', high5: 'Civic Tribal', cluster: 'SELF' },
+    ENG: { name: 'Engagement', low1: 'Apolitical', high5: 'Fully Engaged', cluster: 'SELF' },
+  };
+  const clusterColors = { ENDS: '#D4A84B', MEANS: '#5BA8D9', REALITY: '#B088D0', SELF: '#FA8072' };
+  const clusterLabels = { ENDS: 'ENDS — What You Want', MEANS: 'MEANS — How You Get There', REALITY: 'REALITY — How You See the World', SELF: 'SELF — Who You Are' };
+  const epsCategories = ['empiricist','institutionalist','traditionalist','intuitionist','autonomous','nihilist'];
+  const aesCategories = ['statesman','technocrat','pastoral','authentic','fighter','visionary'];
+
+  // ========== LOAD DATA ==========
+  // Get archetype ID from URL or localStorage
+  const params = new URLSearchParams(window.location.search);
+  let archetypeId = params.get('id');
+  let respondentState = null;
+
+  // Try localStorage for respondent's actual node state
+  try {
+    const stored = localStorage.getItem('prism_results');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (!archetypeId) archetypeId = parsed.archetypeId;
+      respondentState = parsed.respondentState || null;
+    }
+  } catch(e) {}
+
+  if (!archetypeId) {
+    // Demo mode — use archetype 134
+    archetypeId = '134';
+  }
+
+  // Pad ID to 3 digits
+  archetypeId = String(archetypeId).padStart(3, '0');
+
+  try {
+    const [archetypesData, electionsData, alignmentsData] = await Promise.all([
+      fetch(`${DATA_BASE}/archetypes.json`).then(r => r.json()),
+      fetch(`${DATA_BASE}/elections.json`).then(r => r.json()),
+      fetch(`${DATA_BASE}/alignments.json`).then(r => r.json()),
+    ]);
+
+    const archetype = archetypesData.find(a => a.id === archetypeId);
+    if (!archetype) throw new Error('Archetype not found: ' + archetypeId);
+
+    const elections = electionsData[archetypeId] || [];
+    const alignments = alignmentsData[archetypeId] || {};
+
+    // ========== SECTION 1: ARCHETYPE IDENTITY ==========
+    const tierMap = { T1: 'Tier 1', T2: 'Tier 2', T3: 'Tier 3' };
+    document.getElementById('tier-badge').textContent = tierMap[archetype.tier] || archetype.tier;
+    document.getElementById('archetype-number').textContent = `ARCHETYPE #${archetypeId}`;
+    document.getElementById('archetype-name').textContent = archetype.name;
+    document.getElementById('archetype-desc').textContent = archetype.description || '';
+
+    // ========== SECTION 2: ELECTIONS ==========
+    const grid = document.getElementById('elections-grid');
+    let demCount = 0, repCount = 0, otherCount = 0;
+
+    elections.forEach(e => {
+      const cell = document.createElement('div');
+      cell.className = `election-cell ${e.p}`;
+      const photoKey = photoMap[e.c];
+      const photoHtml = photoKey ? `<img class="pres-photo" src="${IMG_BASE}/${photoKey}.jpg" alt="${e.c}" loading="lazy" onerror="this.style.display='none'">` : '';
+      cell.innerHTML = `${photoHtml}<span class="cell-year">${e.y}</span><span class="cell-name">${e.c}</span>`;
+      grid.appendChild(cell);
+      if (e.p === 'dem') demCount++;
+      else if (e.p === 'rep') repCount++;
+      else otherCount++;
+    });
+
+    document.getElementById('election-summary').innerHTML =
+      `Voted <span class="dem-count">Democrat ${demCount}</span> times, <span class="rep-count">Republican ${repCount}</span> times, Other ${otherCount} times`;
+
+    // ========== SECTION 3: WORLD MAP ==========
+    const COLORS = { aligned: '#00D4FF', neutral: '#FFE135', opposed: '#FF6B6B', inactive: '#e5e5e5' };
+
+    // Legend
+    const lc = document.getElementById('legend-gradient').getContext('2d');
+    const lg = lc.createLinearGradient(0, 0, 120, 0);
+    lg.addColorStop(0, COLORS.opposed);
+    lg.addColorStop(0.5, COLORS.neutral);
+    lg.addColorStop(1, COLORS.aligned);
+    lc.fillStyle = lg;
+    lc.fillRect(0, 0, 120, 10);
+
+    const alignmentScale = d3.scaleLinear().domain([-3, 0, 3]).range([COLORS.opposed, COLORS.neutral, COLORS.aligned]).interpolate(d3.interpolateRgb);
+
+    // Build name-matching map from alignments data
+    const countryNames = Object.keys(alignments);
+    const nameMap = {};
+    countryNames.forEach(n => { nameMap[n.toLowerCase()] = n; });
+    // Common aliases
+    const aliases = {
+      'united states of america': 'United States', 'usa': 'United States',
+      'russian federation': 'Russia', 'great britain': 'United Kingdom',
+      'republic of korea': 'South Korea', 'korea, republic of': 'South Korea',
+      'iran, islamic republic of': 'Iran', 'turkiye': 'Turkey',
+      'taiwan, province of china': 'Taiwan', 'viet nam': 'Vietnam',
+    };
+    Object.entries(aliases).forEach(([k, v]) => { if (alignments[v]) nameMap[k] = v; });
+
+    function matchCountry(name) {
+      if (!name) return null;
+      const lower = name.toLowerCase().trim();
+      return nameMap[lower] || null;
+    }
+
+    function getAlignment(country, year) {
+      const eras = alignments[country];
+      if (!eras) return null;
+      for (const era of eras) {
+        if (year >= era.s && year < era.e) return era.v;
+      }
+      // Check last era
+      const last = eras[eras.length - 1];
+      if (last && year >= last.s && year <= (last.e || 2030)) return last.v;
+      return null;
+    }
+
+    // Country ID → name (for TopoJSON)
+    const countryIdMap = {
+      36:'Australia',40:'Austria',56:'Belgium',76:'Brazil',124:'Canada',152:'Chile',156:'China',
+      158:'Taiwan',170:'Colombia',208:'Denmark',246:'Finland',250:'France',276:'Germany',300:'Greece',
+      356:'India',360:'Indonesia',364:'Iran',368:'Iraq',372:'Ireland',376:'Israel',380:'Italy',
+      392:'Japan',410:'South Korea',484:'Mexico',528:'Netherlands',554:'New Zealand',578:'Norway',
+      586:'Pakistan',604:'Peru',608:'Philippines',616:'Poland',620:'Portugal',643:'Russia',
+      682:'Saudi Arabia',710:'South Africa',724:'Spain',752:'Sweden',756:'Switzerland',764:'Thailand',
+      792:'Turkey',804:'Ukraine',826:'United Kingdom',840:'United States',862:'Venezuela',
+      32:'Argentina',818:'Egypt',566:'Nigeria',404:'Kenya',288:'Ghana',
+      100:'Bulgaria',642:'Romania',203:'Czech Republic',348:'Hungary',703:'Slovakia',
+      348:'Hungary',
+    };
+
+    let currentYear = 2026;
+    const svg = d3.select('#map');
+    const slider = document.getElementById('year-slider');
+    const yearDisp = document.getElementById('year-display');
+
+    const topoData = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const countries = topojson.feature(topoData, topoData.objects.countries);
+    countries.features.forEach(f => {
+      if (!f.properties) f.properties = {};
+      f.properties.NAME = countryIdMap[f.id] || '';
+    });
+
+    function drawMap() {
+      const container = document.getElementById('map-container');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      svg.attr('viewBox', `0 0 ${w} ${h}`);
+      const proj = d3.geoNaturalEarth1().scale(w / 6).translate([w / 2, h / 2]);
+      const path = d3.geoPath().projection(proj);
+      svg.selectAll('path').remove();
+      svg.selectAll('path')
+        .data(countries.features)
+        .enter().append('path')
+        .attr('class', d => {
+          const m = matchCountry(d.properties.NAME);
+          return 'country ' + (m ? 'active' : 'inactive');
+        })
+        .attr('d', path)
+        .attr('fill', d => {
+          const m = matchCountry(d.properties.NAME);
+          if (!m) return COLORS.inactive;
+          const a = getAlignment(m, currentYear);
+          return a !== null ? alignmentScale(a) : COLORS.inactive;
+        })
+        .append('title')
+        .text(d => {
+          const m = matchCountry(d.properties.NAME);
+          if (!m) return d.properties.NAME || '';
+          const a = getAlignment(m, currentYear);
+          return `${m}: ${a !== null ? a.toFixed(1) : 'N/A'}`;
+        });
+    }
+
+    drawMap();
+    window.addEventListener('resize', drawMap);
+    slider.addEventListener('input', function() {
+      currentYear = +this.value;
+      yearDisp.textContent = currentYear;
+      drawMap();
+    });
+
+    // ========== SECTION 4: NODE PROFILE ==========
+    // Use respondent's actual state if available, otherwise use archetype centroid
+    const nodeData = {};
+    const continuousNodes = ['MAT','CD','CU','MOR','PRO','COM','ZS','ONT_H','ONT_S','PF','TRB','ENG'];
+
+    continuousNodes.forEach(code => {
+      const arcNode = archetype.nodes[code];
+      let pos, sal;
+      if (respondentState && respondentState[code]) {
+        // Respondent's actual values (continuous, already on appropriate scale)
+        pos = respondentState[code].pos;
+        sal = respondentState[code].sal;
+      } else {
+        // Archetype centroid (1-5 scale)
+        pos = arcNode.pos;
+        sal = arcNode.sal / 3; // Normalize 0-3 sal to 0-1 for display
+      }
+      // Convert 1-5 to 1-10 for display
+      const pos10 = respondentState ? pos : (pos - 1) * 2.25 + 1;
+      nodeData[code] = { pos10, sal, cluster: nodeLabels[code].cluster };
+    });
+
+    // Flip: if pos10 < 5.5, invert so dominant is always on right
+    const displayNodes = continuousNodes.map(code => {
+      const nd = nodeData[code];
+      const nl = nodeLabels[code];
+      let pos = nd.pos10;
+      let low = nl.low1;
+      let high = nl.high5;
+      if (pos < 5.5) {
+        pos = 11 - pos;
+        const tmp = low; low = high; high = tmp;
+      }
+      return { code, name: nl.name, pos, sal: nd.sal, low, high, cluster: nl.cluster };
+    });
+
+    const nodesGrid = document.getElementById('nodes-grid');
+    const clusterOrder = ['ENDS', 'MEANS', 'REALITY', 'SELF'];
+
+    clusterOrder.forEach(clusterName => {
+      const clusterDims = displayNodes.filter(d => d.cluster === clusterName).sort((a, b) => b.sal - a.sal);
+      if (clusterDims.length === 0) return;
+
+      const block = document.createElement('div');
+      block.className = 'node-cluster';
+      block.innerHTML = `<div class="cluster-title" style="border-bottom-color:${clusterColors[clusterName]}44;"><span style="color:${clusterColors[clusterName]};">${clusterLabels[clusterName]}</span></div>`;
+
+      clusterDims.forEach(d => {
+        const pct = ((d.pos - 1) / 9) * 100;
+        const color = clusterColors[d.cluster];
+        const barH = Math.round(d.sal * 24);
+        const row = document.createElement('div');
+        row.className = 'node-row';
+        row.style.opacity = 0.4 + d.sal * 0.6;
+        row.style.gridTemplateColumns = '130px 1fr 40px';
+
+        if (d.sal === 0) {
+          row.innerHTML = `
+            <div style="font-size:0.78rem;color:#bbb;">${d.name}</div>
+            <div class="node-bar-wrap"><div style="font-size:0.6rem;color:#555;font-style:italic;">no salience</div></div>
+            <div class="node-value">${d.pos.toFixed(1)}</div>`;
+        } else {
+          row.innerHTML = `
+            <div style="font-size:0.78rem;color:#bbb;">${d.name}<span style="font-size:0.55rem;color:#555;margin-left:6px;">${Math.round(d.sal * 100)}%</span></div>
+            <div class="node-bar-wrap">
+              <div class="node-bar" style="height:${barH}px;">
+                <div class="node-bar-segment" style="width:${pct}%;background:${color};height:100%;"></div>
+                <div class="node-bar-marker" style="left:${pct}%;top:-3px;height:${barH+6}px;"></div>
+              </div>
+              <div class="node-labels"><span style="${d.pos >= 5 && d.pos <= 6 ? 'font-size:0.7rem;font-weight:600;color:#ccc;' : 'font-size:0.5rem;color:#555;'}">${d.low}</span><span style="font-size:0.7rem;font-weight:600;color:#ccc;">${d.high}</span></div>
+            </div>
+            <div class="node-value">${d.pos.toFixed(1)}</div>`;
+        }
+        block.appendChild(row);
+      });
+
+      // Add EPS/AES under MEANS
+      if (clusterName === 'MEANS') {
+        const catNodes = [
+          { code: 'EPS', name: 'Epistemics', categories: epsCategories },
+          { code: 'AES', name: 'Aesthetics', categories: aesCategories }
+        ];
+        catNodes.forEach(cn => {
+          const arcNode = archetype.nodes[cn.code];
+          if (!arcNode) return;
+          const probs = respondentState && respondentState[cn.code] ? respondentState[cn.code].probs : arcNode.probs;
+          const sal = (respondentState && respondentState[cn.code]) ? respondentState[cn.code].sal : (arcNode.sal / 3);
+          const cats = cn.categories.map((label, i) => ({ label: label.charAt(0).toUpperCase() + label.slice(1), prob: probs[i] || 0 }));
+          const sorted = [...cats].sort((a, b) => b.prob - a.prob);
+          const top = sorted[0];
+
+          const wrap = document.createElement('div');
+          wrap.style.cssText = 'margin-bottom:16px;margin-top:12px;opacity:' + (0.4 + sal * 0.6);
+          let html = `<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;">
+            <span style="font-size:0.85rem;color:#bbb;">${cn.name}</span>
+            <span style="font-size:0.85rem;font-weight:700;color:var(--pool-deep);margin-left:auto;">${top.label} (${Math.round(top.prob*100)}%)</span>
+          </div>`;
+          cats.forEach(c => {
+            const w = Math.max(c.prob * 100, 2);
+            const isTop = c.label === top.label;
+            html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+              <span style="font-size:0.65rem;width:100px;text-align:right;opacity:${isTop?1:0.6};">${c.label}</span>
+              <div style="flex:1;height:${isTop?14:10}px;background:rgba(26,26,26,0.08);border-radius:3px;overflow:hidden;">
+                <div style="width:${w}%;height:100%;background:${isTop?'var(--pool-deep)':'rgba(137,204,240,0.4)'};border-radius:3px;"></div>
+              </div>
+              <span style="font-size:0.65rem;width:30px;opacity:${isTop?1:0.5};">${Math.round(c.prob*100)}%</span>
+            </div>`;
+          });
+          wrap.innerHTML = html;
+          block.appendChild(wrap);
+        });
+      }
+
+      nodesGrid.appendChild(block);
+    });
+
+    // Show results, hide loading
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+    document.title = `PRISM Results — ${archetype.name}`;
+
+  } catch(err) {
+    document.getElementById('loading').innerHTML = `<div style="color:red;">Error loading results: ${err.message}</div>`;
+    console.error(err);
+  }
+})();
+</script>
+</body>
+</html>
