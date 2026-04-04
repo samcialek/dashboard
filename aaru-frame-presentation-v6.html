@@ -286,6 +286,29 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <div class="slide" data-slide="3" id="pearl-ladder">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="ladder-title heading" id="ladder-title">Pearl's Ladder of Causation</div>
+<!-- Ladder visual -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:32px;width:100%;max-width:500px" id="ladder-visual">
+<div style="display:flex;align-items:center;gap:16px;width:100%">
+<div style="flex:1;height:44px;background:rgba(3,232,122,0.15);border:1px solid #03E87A;border-radius:4px;display:flex;align-items:center;justify-content:center">
+<span style="font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:#03E87A">Counterfactual</span>
+</div>
+<span style="font-family:Cormorant Garamond,serif;font-size:15px;font-style:italic;color:rgba(245,240,232,0.5);min-width:200px">What if things had been different?</span>
+</div>
+<div style="width:2px;height:16px;background:rgba(245,240,232,0.1)"></div>
+<div style="display:flex;align-items:center;gap:16px;width:100%">
+<div style="flex:1;height:44px;background:rgba(16,25,236,0.15);border:1px solid #1019EC;border-radius:4px;display:flex;align-items:center;justify-content:center">
+<span style="font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:#1019EC">Intervention</span>
+</div>
+<span style="font-family:Cormorant Garamond,serif;font-size:15px;font-style:italic;color:rgba(245,240,232,0.5);min-width:200px">What if I act?</span>
+</div>
+<div style="width:2px;height:16px;background:rgba(245,240,232,0.1)"></div>
+<div style="display:flex;align-items:center;gap:16px;width:100%">
+<div style="flex:1;height:44px;background:rgba(245,240,232,0.04);border:1px solid rgba(245,240,232,0.15);border-radius:4px;display:flex;align-items:center;justify-content:center">
+<span style="font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:rgba(245,240,232,0.4)">Association</span>
+</div>
+<span style="font-family:Cormorant Garamond,serif;font-size:15px;font-style:italic;color:rgba(245,240,232,0.35);min-width:200px">What do I observe?</span>
+</div>
+</div>
 <div style="width:100%;max-width:900px">
 <div class="ladder-rung" id="rung1" data-color="rgba(245,240,232,0.5)">
 <div class="ladder-num" style="color:rgba(245,240,232,0.5)">1</div>
@@ -310,8 +333,16 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 </div>
 
-<!-- SLIDE 4: d-SEPARATION -->
-<div class="slide" data-slide="4" id="dsep">
+<!-- SLIDE 4: WHY CAUSAL ISOLATION MATTERS (bridge) -->
+<div class="slide" data-slide="4" id="causal-isolation">
+<div class="slide-inner" style="text-align:center">
+<h2 class="heading" style="font-size:clamp(28px,4.5vw,52px);margin-bottom:32px">Why Causal Isolation Matters</h2>
+<p class="body-text" style="margin:0 auto;font-style:italic;font-size:clamp(18px,2.2vw,26px);color:rgba(245,240,232,0.6);max-width:700px;line-height:1.7">Before you can ask what happens if you intervene, you have to know which path is actually causal.</p>
+</div>
+</div>
+
+<!-- SLIDE 5: d-SEPARATION -->
+<div class="slide" data-slide="5" id="dsep">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="dag-slide-title heading" id="dsep-title">d-Separation: The Grammar of Graphs</div>
 <div class="dsep-panels" id="dsep-panels">
@@ -330,6 +361,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <line x1="124" y1="80" x2="136" y2="80" stroke="rgba(245,240,232,0.4)" stroke-width="1" marker-end="url(#dsep-arr)"/>
 </svg>
 <div class="dsep-panel-caption">Conditioning blocks transmission</div>
+<div class="dsep-panel-caption" style="color:#03E87A;opacity:0.9;margin-top:4px;font-style:normal;font-size:13px">Direct effect of X on Y isolated</div>
 </div>
 <!-- Fork -->
 <div class="dsep-panel" id="dsep-fork">
@@ -345,6 +377,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <line x1="118" y1="54" x2="144" y2="102" stroke="rgba(245,240,232,0.4)" stroke-width="1" marker-end="url(#dsep-arr)"/>
 </svg>
 <div class="dsep-panel-caption">Conditioning removes confounding</div>
+<div class="dsep-panel-caption" style="color:#03E87A;opacity:0.9;margin-top:4px;font-style:normal;font-size:13px">Causal effect of X on Y now identifiable</div>
 </div>
 <!-- Collider -->
 <div class="dsep-panel" id="dsep-collider">
@@ -360,6 +393,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <line x1="144" y1="54" x2="116" y2="102" stroke="rgba(245,240,232,0.4)" stroke-width="1" marker-end="url(#dsep-arr)"/>
 </svg>
 <div class="dsep-panel-caption">Conditioning creates bias</div>
+<div class="dsep-panel-caption" style="color:#03E87A;opacity:0.9;margin-top:4px;font-style:normal;font-size:13px">False dependency introduced</div>
 </div>
 </div>
 <p class="dsep-footer" id="dsep-footer">These three patterns are the grammar. Every complex graph decomposes into them.</p>
@@ -367,7 +401,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 5: BACKDOOR ADJUSTMENT -->
-<div class="slide" data-slide="5" id="backdoor">
+<div class="slide" data-slide="6" id="backdoor">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="dag-slide-title heading" id="bd-title">Backdoor Adjustment</div>
 <div class="dag-slide-svg" id="bd-svg-wrap">
@@ -391,6 +425,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <!-- Block marker -->
 <line x1="185" y1="52" x2="105" y2="140" stroke="#EC1014" stroke-width="2.5" stroke-dasharray="6,6" opacity="0" id="bd-block1"/>
 <text x="130" y="85" fill="#EC1014" font-family="Inter,sans-serif" font-size="11" opacity="0" id="bd-block-text">blocked</text>
+<text x="200" y="200" text-anchor="middle" fill="#03E87A" font-family="Inter,sans-serif" font-size="11" font-weight="500" opacity="0" id="bd-identifiable">Now identifiable: causal effect of X on Y</text>
 </svg>
 </div>
 <div class="dag-slide-quote" id="bd-quote">Block the spurious paths. Preserve the mechanism.</div>
@@ -398,7 +433,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 6: FRONT-DOOR ADJUSTMENT -->
-<div class="slide" data-slide="6" id="frontdoor">
+<div class="slide" data-slide="7" id="frontdoor">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="dag-slide-title heading" id="fd-title">Front-Door Adjustment</div>
 <div class="dag-slide-svg" id="fd-svg-wrap">
@@ -424,6 +459,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <line x1="180" y1="46" x2="76" y2="138" stroke="rgba(245,240,232,0.12)" stroke-width="0.8" stroke-dasharray="4,4" marker-end="url(#fd-arr)" id="fd-ux"/>
 <!-- U→Y (hidden) -->
 <line x1="220" y1="46" x2="324" y2="138" stroke="rgba(245,240,232,0.12)" stroke-width="0.8" stroke-dasharray="4,4" marker-end="url(#fd-arr)" id="fd-uy"/>
+<text x="200" y="195" text-anchor="middle" fill="#03E87A" font-family="Inter,sans-serif" font-size="11" font-weight="500" opacity="0" id="fd-identifiable">Identifiable through mechanism</text>
 </svg>
 </div>
 <div class="dag-slide-quote" id="fd-quote">When the direct road is confounded, the mechanism can still give you a way through.</div>
@@ -431,7 +467,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 7: NAIVE MODEL (from v5 slide 6) -->
-<div class="slide" data-slide="7" id="naive-model">
+<div class="slide" data-slide="8" id="naive-model">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="naive-svg" id="naive-svg-wrap">
 <svg viewBox="0 0 700 200" id="naive-svg">
@@ -450,7 +486,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 8: REAL DAG (from v5 slide 7) -->
-<div class="slide" data-slide="8" id="real-dag">
+<div class="slide" data-slide="9" id="real-dag">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="real-dag-title heading" id="real-dag-title">The Real Causal Structure</div>
 <div class="real-dag-wrap">
@@ -483,7 +519,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 9: do(GLP-1) POPULATION (from v5 slide 10) -->
-<div class="slide" data-slide="9" id="do-population">
+<div class="slide" data-slide="10" id="do-population">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="pop-title heading" id="pop-title">do(GLP-1) on a Population</div>
 <div class="pop-columns" id="pop-columns">
@@ -515,7 +551,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 10: HTE TABLE (from v5 slide 12) -->
-<div class="slide" data-slide="10" id="hte">
+<div class="slide" data-slide="11" id="hte">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="hte-title heading" id="hte-title">Heterogeneous Treatment Effects</div>
 <table class="hte-table" id="hte-table">
@@ -533,7 +569,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 11: COUNTERFACTUAL (from v5 slide 9) -->
-<div class="slide" data-slide="11" id="counterfactual">
+<div class="slide" data-slide="12" id="counterfactual">
 <div class="slide-inner">
 <div class="persona">
 <div class="persona-icon">👤</div>
@@ -547,7 +583,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 12: MARKOV BLANKETS -->
-<div class="slide" data-slide="12" id="markov">
+<div class="slide" data-slide="13" id="markov">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="dag-slide-title heading" id="mb-title">Markov Blankets</div>
 <div class="dag-slide-svg" id="mb-svg-wrap">
@@ -592,7 +628,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 13: DO-CALCULUS -->
-<div class="slide" data-slide="13" id="docalc">
+<div class="slide" data-slide="14" id="docalc">
 <div class="slide-inner" style="text-align:center">
 <div class="dag-slide-title heading" id="docalc-title">Climbing the Ladder</div>
 <p class="body-text" id="docalc-question" style="margin:0 auto 16px;opacity:0;font-style:italic">How do you turn do into see?</p>
@@ -606,7 +642,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 14: AARU USE CASE -->
-<div class="slide" data-slide="14" id="aaru-usecase">
+<div class="slide" data-slide="15" id="aaru-usecase">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="dag-slide-title heading" id="aaru-title">Causal Structure in the Agent</div>
 <p class="body-text" id="aaru-thesis" style="text-align:center;margin:0 auto 8px;opacity:0;font-style:italic">Each agent should carry causal structure.</p>
@@ -630,7 +666,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 15: CAUSAL VAE ARCHITECTURE (modified v5 slide 18) -->
-<div class="slide" data-slide="15" id="architecture">
+<div class="slide" data-slide="16" id="architecture">
 <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center">
 <div class="env-title heading" id="arch-title">Causal VAE Architecture</div>
 <div class="dag-flow" id="arch-flow">
@@ -648,7 +684,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 16: ONLINE UPDATING (modified v5 slide 15/BOCPD) -->
-<div class="slide" data-slide="16" id="bocpd">
+<div class="slide" data-slide="17" id="bocpd">
 <div class="slide-inner">
 <div class="label" id="bocpd-label">The Frontier</div>
 <h2 class="heading" id="bocpd-title" style="font-size:clamp(28px,4vw,48px);margin-bottom:8px">Online Updating</h2>
@@ -657,9 +693,9 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <div class="bocpd-timeline" id="bocpd-timeline"></div>
 <div class="bocpd-caption" id="bocpd-event-label">Bayesian change-point detection over 52 weeks</div>
 <div class="bocpd-metrics" id="bocpd-metrics">
-<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m1">0</div><div class="bocpd-metric-label">Change points detected</div></div>
-<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m2">0ms</div><div class="bocpd-metric-label">Median detection lag</div></div>
-<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m3">0</div><div class="bocpd-metric-label">DAG edges rewired</div></div>
+<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m1" data-target="7">7</div><div class="bocpd-metric-label">Change points detected</div></div>
+<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m2" data-target="340">340ms</div><div class="bocpd-metric-label">Median detection lag</div></div>
+<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m3" data-target="2">2</div><div class="bocpd-metric-label">DAG edges rewired</div></div>
 </div>
 </div>
 <p class="body-text" id="bocpd-frontier" style="text-align:center;margin:20px auto 0;font-style:italic;opacity:0">Continuously, not quarterly.</p>
@@ -667,7 +703,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 17: WHAT I BRING -->
-<div class="slide" data-slide="17" id="what-i-bring">
+<div class="slide" data-slide="18" id="what-i-bring">
 <div class="slide-inner" style="text-align:center">
 <h2 class="heading" id="wib-title" style="font-size:clamp(28px,4vw,48px);margin-bottom:40px;opacity:0">What I Bring</h2>
 <div class="bring-item" id="wib-1">Two years of independent research on causal structure, latent representation, and agent-based modeling — not as separate projects, but instances of the same underlying architecture.</div>
@@ -677,7 +713,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 18: FORWARD COLLABORATION -->
-<div class="slide" data-slide="18" id="collaboration">
+<div class="slide" data-slide="19" id="collaboration">
 <div class="slide-inner" style="text-align:center">
 <div class="pull-quote-rule" id="collab-rule1"></div>
 <p class="body-text" id="collab-text" style="margin:0 auto;text-align:center;font-size:clamp(20px,3vw,32px);line-height:1.7;opacity:0">What I'd like to build toward here is a system where agents carry causal structure, interventions can be evaluated before deployment, and changes in the world propagate through the model rather than waiting for the next reporting cycle.</p>
@@ -687,7 +723,7 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 </div>
 
 <!-- SLIDE 19: CLOSE -->
-<div class="slide" data-slide="19" id="closing">
+<div class="slide" data-slide="20" id="closing">
 <div class="slide-inner" style="text-align:center">
 <div class="close-line" id="close1" style="font-size:clamp(24px,4.5vw,52px);font-weight:300">The goal is not prediction.</div>
 <div class="close-line" id="close2" style="font-size:clamp(26px,5vw,58px)">It's live counterfactual navigation<br>of a changing world.</div>
@@ -768,14 +804,14 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <div class="appendix-badge" id="appendix-badge">APPENDIX</div>
 <div class="slide-nav" id="slide-nav"></div>
 <div class="slide-hint" id="slide-hint">← → or click to navigate</div>
-<div class="slide-counter" id="slide-counter">1 / 20</div>
+<div class="slide-counter" id="slide-counter">1 / 21</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function(){
 'use strict';
 
-const SLIDE_COUNT = 20;
+const SLIDE_COUNT = 21;
 let appendixVisible = false;
 const appendixSlides = document.querySelectorAll('.slide.appendix');
 let current = 0;
@@ -965,7 +1001,9 @@ const backdoorEnter = () => {
     // Then block the backdoor paths (red dashes appear)
     .to([block1, block2].filter(Boolean), {opacity:1, duration:0.4, stagger:0.1}, 2.3)
     .to(blockText ? blockText : [], {opacity:1, duration:0.3}, 2.5);
-  if (quote) tl.to(quote, {opacity:1, duration:0.4}, 2.8);
+  const bdIdent = document.getElementById('bd-identifiable');
+  if (bdIdent) tl.to(bdIdent, {opacity:1, duration:0.4}, 2.7);
+  if (quote) tl.to(quote, {opacity:1, duration:0.4}, 3.0);
   return tl;
 };
 
@@ -1004,7 +1042,9 @@ const frontdoorEnter = () => {
     // Then highlight mechanism path (X→M→Y glows)
     .to([mechPath1, mechPath2].filter(Boolean), {stroke:'#03E87A', strokeWidth:2.5, duration:0.5}, 2.2)
     .to(mechHighlight ? [mechHighlight] : [], {opacity:1, duration:0.4}, 2.5);
-  if (quote) tl.to(quote, {opacity:1, duration:0.4}, 2.8);
+  const fdIdent = document.getElementById('fd-identifiable');
+  if (fdIdent) tl.to(fdIdent, {opacity:1, duration:0.4}, 2.7);
+  if (quote) tl.to(quote, {opacity:1, duration:0.4}, 3.0);
   return tl;
 };
 
@@ -1050,15 +1090,15 @@ const markovEnter = () => {
 
 // Override the generic goToSlide with custom animations for Pearl slides
 const originalGoToSlide = goToSlide;
-const pearlAnimations = {4: dsepEnter, 5: backdoorEnter, 6: frontdoorEnter, 12: markovEnter};
+const pearlAnimations = {5: dsepEnter, 6: backdoorEnter, 7: frontdoorEnter, 13: markovEnter};
 
 // Patch: replace the enter animation for Pearl slides
 const _origGoTo = goToSlide;
 
 
 // Pearl animation observer — triggers when slides become active
-const pearlSlideIds = {4: 'dsep', 5: 'backdoor', 6: 'frontdoor', 12: 'markov'};
-const pearlEnterFns = {4: dsepEnter, 5: backdoorEnter, 6: frontdoorEnter, 12: markovEnter};
+const pearlSlideIds = {5: 'dsep', 6: 'backdoor', 7: 'frontdoor', 13: 'markov'};
+const pearlEnterFns = {5: dsepEnter, 6: backdoorEnter, 7: frontdoorEnter, 13: markovEnter};
 
 // Watch for slide transitions via a polling approach (simpler than MutationObserver)
 let lastActiveSlide = -1;
