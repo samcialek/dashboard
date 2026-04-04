@@ -693,9 +693,9 @@ h1,h2,h3,h4,h5,h6,.heading{font-family:'Cormorant Garamond',serif;font-weight:50
 <div class="bocpd-timeline" id="bocpd-timeline"></div>
 <div class="bocpd-caption" id="bocpd-event-label">Bayesian change-point detection over 52 weeks</div>
 <div class="bocpd-metrics" id="bocpd-metrics">
-<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m1" data-target="7">7</div><div class="bocpd-metric-label">Change points detected</div></div>
-<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m2" data-target="340">340ms</div><div class="bocpd-metric-label">Median detection lag</div></div>
-<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m3" data-target="2">2</div><div class="bocpd-metric-label">DAG edges rewired</div></div>
+<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m1" style="font-size:clamp(16px,2.5vw,24px);color:#1019EC">Structural break detected</div><div class="bocpd-metric-label">regime shifts trigger re-estimation</div></div>
+<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m2" style="font-size:clamp(16px,2.5vw,24px);color:#03E87A">Local re-estimation</div><div class="bocpd-metric-label">only affected neighborhoods update</div></div>
+<div class="bocpd-metric"><div class="bocpd-metric-val" id="bocpd-m3" style="font-size:clamp(16px,2.5vw,24px);color:#5BA8D9">Downstream propagation</div><div class="bocpd-metric-label">causal children inherit the shift</div></div>
 </div>
 </div>
 <p class="body-text" id="bocpd-frontier" style="text-align:center;margin:20px auto 0;font-style:italic;opacity:0">Continuously, not quarterly.</p>
@@ -904,6 +904,13 @@ function goToSlide(n) {
       oldSlide.classList.remove('active');
       // Enter new
       newSlide.classList.add('active');
+      // Clear all inline opacity/transform on deep elements first
+      newSlide.querySelectorAll('.slide-inner *').forEach(el => {
+        if (el.style.opacity === '0') el.style.opacity = '';
+        if (el.style.transform) el.style.transform = '';
+      });
+      // Also reset SVG opacity attributes for DAG nodes
+      newSlide.querySelectorAll('[opacity="0"]').forEach(el => el.setAttribute('opacity', '1'));
       gsap.set(newSlide.querySelectorAll('.slide-inner > *'), {opacity: 0, y: 8});
       gsap.to(newSlide.querySelectorAll('.slide-inner > *'), {
         opacity: 1, y: 0, duration: 0.4, stagger: 0.06,
