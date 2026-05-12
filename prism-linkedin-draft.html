@@ -21,15 +21,17 @@
 <body>
 <div class="wrap">
   <h1>PRISM Quiz — LinkedIn launch post</h1>
-  <div class="sub">Draft 5 — most recent. Edit in place. Copy pushes the textarea to your clipboard.</div>
+  <div class="sub">Stitched optimal version. Draft 5 backbone, with Draft 4's "two things converged" preamble restored, the "250th year" anchor reinjected, and the quiz + article links added at the bottom.</div>
 
   <div class="card">
-    <div class="meta">Final draft. Survey-bias + LLM-sidequest narrative, full LinkedIn-strivers closer, PRISM-acronym joke intact. ~500 words. Quiz link not yet inline in the body.</div>
+    <div class="meta">Optimal stitched draft. Survey-bias + LLM-sidequest narrative with proper preamble, full LinkedIn-strivers closer, PRISM-acronym joke, quiz link inline.</div>
     <textarea id="post" spellcheck="false">Sharing with you LinkedIn friends a new 3-part series on my blog, Matrices of Confusion. In this installment, I take a stab at the classic political compass, giving it the generative model treatment to see if I can make something predictive (not just descriptive) of political behavior.
+
+My interest in building a politics quiz grew out of two things that converged over the holidays in late 2025.
 
 First, for a client of Serif I was working through a lot of subjective self-reported data, trying to figure out how to design questions that introduce less bias, and how to de-bias post-survey to derive something closer to revealed preferences from what is a fundamentally noisy and bias-ridden channel. I have a lot to say about the matter in "The Cause of Our Politics," so for you LinkedIn strivers trying to learn something new, this facet might be the most interesting — how do you get honest signal from people who don't even know they're biased? (Spoiler: forced tradeoffs, and triangulating with diverse signals whose biases cancel).
 
-Second was a random sidequest wherein I asked the three frontier LLMs to figure out how I would've voted in each of the 60 past US Presidential elections. It was a great remedial education in US history (and a 3-day rabbit hole), but ultimately a hollow exercise in pattern-matching my stated positions to historical party platforms. Even if I'd had cogent policy preferences, the LLMs were just Ctrl+F-ing them against a list of candidates — matching descriptions to descriptions, with no model of why I hold those positions or how they'd interact with a political context I've never encountered.
+Second was a random sidequest (inspired by realizing the US is entering its 250th year as a nation) wherein I asked the three frontier LLMs to figure out how I would've voted in each of the 60 past US Presidential elections. It was a great remedial education in US history (and a 3-day rabbit hole), but ultimately a hollow exercise in pattern-matching my stated positions to historical party platforms. Even if I'd had cogent policy preferences, the LLMs were just Ctrl+F-ing them against a list of candidates — matching descriptions to descriptions, with no model of why I hold those positions or how they'd interact with a political context I've never encountered.
 
 Political compasses writ large have the same problem: they classify rather than model. Predictive power requires going upstream — inferring the latent dispositions that generate your positions.
 
@@ -37,7 +39,10 @@ So 3 months later, I present PRISM (Political Refraction & Identification... you
 
 The essays explore where in the causal chain it makes sense to measure — not just predicting behavior, but reasoning counterfactually about how you'd vote under choice structures you've never seen.
 
-This effort pushed me and Claude Code (and our patience with each other) to the limit. More importantly for the target audience of this note (you LinkedIn strivers), I think there's some good nuggets in my essays/podcasts (you can listen to my articles — thanks AI!) about how to think about measurement validity, causal structure in observational data, and the difference between classifying what someone tells you versus modeling what generates their underlying beliefs. Whether you're building customer segmentation, designing employee surveys, or trying to understand why your users do what they do — the core problem is the same: self-report is a lossy, biased channel, and the interesting question is always what's upstream of it.</textarea>
+This effort pushed me and Claude Code (and our patience with each other) to the limit. More importantly for the target audience of this note (you LinkedIn strivers), I think there's some good nuggets in my essays/podcasts (you can listen to my articles — thanks AI!) about how to think about measurement validity, causal structure in observational data, and the difference between classifying what someone tells you versus modeling what generates their underlying beliefs. Whether you're building customer segmentation, designing employee surveys, or trying to understand why your users do what they do — the core problem is the same: self-report is a lossy, biased channel, and the interesting question is always what's upstream of it.
+
+Take the quiz: https://matricesofconfusion.com/prism-quiz-v3.html
+How it works: https://matricesofconfusion.com/article_cause_of_our_politics.html</textarea>
     <div class="row">
       <div class="stats" id="stats">~500 words</div>
       <button data-target="post">Copy</button>
