@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>PRISM Quiz — LinkedIn Launch Post (Draft 5)</title>
+<style>
+  body { background:#f4f4f6; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color:#222; margin:0; padding:40px 20px; }
+  .wrap { max-width:760px; margin:0 auto; }
+  h1 { font-size:20px; font-weight:600; color:#2B579A; margin:0 0 4px 0; }
+  .sub { font-size:13px; color:#666; margin-bottom:24px; }
+  .card { background:#fff; border:1px solid #ddd; border-radius:10px; padding:28px; box-shadow:0 1px 4px rgba(0,0,0,0.04); margin-bottom:20px; }
+  .meta { font-size:12px; color:#888; margin-bottom:18px; font-style:italic; }
+  textarea { width:100%; min-height:560px; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; font-size:15px; line-height:1.65; padding:18px; border:1px solid #ccc; border-radius:8px; box-sizing:border-box; resize:vertical; background:#fafafa; color:#111; }
+  .row { display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:12px; }
+  .stats { font-size:12px; color:#888; }
+  button { background:#2B579A; color:#fff; border:0; padding:11px 22px; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer; }
+  button:hover { background:#1f4478; }
+  button.copied { background:#3a8a3a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>PRISM Quiz — LinkedIn launch post</h1>
+  <div class="sub">Draft 5 — most recent. Edit in place. Copy pushes the textarea to your clipboard.</div>
+
+  <div class="card">
+    <div class="meta">Final draft. Survey-bias + LLM-sidequest narrative, full LinkedIn-strivers closer, PRISM-acronym joke intact. ~500 words. Quiz link not yet inline in the body.</div>
+    <textarea id="post" spellcheck="false">Sharing with you LinkedIn friends a new 3-part series on my blog, Matrices of Confusion. In this installment, I take a stab at the classic political compass, giving it the generative model treatment to see if I can make something predictive (not just descriptive) of political behavior.
+
+First, for a client of Serif I was working through a lot of subjective self-reported data, trying to figure out how to design questions that introduce less bias, and how to de-bias post-survey to derive something closer to revealed preferences from what is a fundamentally noisy and bias-ridden channel. I have a lot to say about the matter in "The Cause of Our Politics," so for you LinkedIn strivers trying to learn something new, this facet might be the most interesting — how do you get honest signal from people who don't even know they're biased? (Spoiler: forced tradeoffs, and triangulating with diverse signals whose biases cancel).
+
+Second was a random sidequest wherein I asked the three frontier LLMs to figure out how I would've voted in each of the 60 past US Presidential elections. It was a great remedial education in US history (and a 3-day rabbit hole), but ultimately a hollow exercise in pattern-matching my stated positions to historical party platforms. Even if I'd had cogent policy preferences, the LLMs were just Ctrl+F-ing them against a list of candidates — matching descriptions to descriptions, with no model of why I hold those positions or how they'd interact with a political context I've never encountered.
+
+Political compasses writ large have the same problem: they classify rather than model. Predictive power requires going upstream — inferring the latent dispositions that generate your positions.
+
+So 3 months later, I present PRISM (Political Refraction & Identification... you know what, it doesn't really matter — Claude came up with the acronym) which maps you to one of 130 political archetypes across 14 latent dimensions using Bayesian adaptive questioning. The quiz takes about 25 minutes (roughly: the more niche your politics, the more it asks). You'll be enormously remunerated for your time, however, with not just a cool-sounding archetype, but also how you would've voted (or abstained) in every presidential election going back to 1789, as well as your alignment with every major regime, empire, and country in the world over the same period.
+
+The essays explore where in the causal chain it makes sense to measure — not just predicting behavior, but reasoning counterfactually about how you'd vote under choice structures you've never seen.
+
+This effort pushed me and Claude Code (and our patience with each other) to the limit. More importantly for the target audience of this note (you LinkedIn strivers), I think there's some good nuggets in my essays/podcasts (you can listen to my articles — thanks AI!) about how to think about measurement validity, causal structure in observational data, and the difference between classifying what someone tells you versus modeling what generates their underlying beliefs. Whether you're building customer segmentation, designing employee surveys, or trying to understand why your users do what they do — the core problem is the same: self-report is a lossy, biased channel, and the interesting question is always what's upstream of it.</textarea>
+    <div class="row">
+      <div class="stats" id="stats">~500 words</div>
+      <button data-target="post">Copy</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ta = document.getElementById('post');
+  const stats = document.getElementById('stats');
+  function updateStats() {
+    const words = ta.value.trim().split(/\s+/).filter(Boolean).length;
+    const chars = ta.value.length;
+    stats.textContent = words + ' words · ' + chars + ' chars';
+  }
+  updateStats();
+  ta.addEventListener('input', updateStats);
+
+  document.querySelectorAll('button[data-target]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const t = document.getElementById(btn.dataset.target);
+      try {
+        await navigator.clipboard.writeText(t.value);
+      } catch (e) {
+        t.select();
+        document.execCommand('copy');
+      }
+      const orig = btn.textContent;
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+</script>
+</body>
+</html>
