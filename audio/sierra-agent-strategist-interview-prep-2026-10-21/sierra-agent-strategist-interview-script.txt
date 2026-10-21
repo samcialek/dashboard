@@ -1,0 +1,137 @@
+Sierra Agent Strategist interview preparation, for Sam Cialek.
+
+Caroline's email names customer engagement, technical partnership, and how you use and evaluate artificial intelligence. Those are the strongest clues for this conversation. Later design cases are informed predictions, not disclosed questions.
+
+Lead with Pythia for technical judgment, Serif for customer delivery, and D. E. Shaw for financial credibility. Start with the business problem, explain your decisions, and give one concrete result with its limits.
+
+These are rehearsal drafts using documented experience and clearly hypothetical situations. Pause after each question and try your answer before listening.
+
+Question one. Tell me about yourself and how you got here.
+
+Answer. My career has been about making difficult decisions more tractable with data. I started in equity capital markets at Barclays, then evaluated alternative data at D. E. Shaw. Since then, I've been a founder and consultant building forecasting and causal decision systems. Most recently, I built Pythia for Constellation, combining language model extraction with graph inference and Bayesian modeling for debt restructurings. At Serif, I built a health modeling product and brought in a paying partner. The work I enjoy most is connecting those pieces: understanding what a customer actually needs, making the technical choices, and showing whether the system helps. That's what interests me about an Agent Strategist role.
+
+Question two. Why do you want to work at Sierra?
+
+Answer. Sierra puts the customer problem and the build in the same person's field of responsibility. That suits how I've worked as a founder and consultant. I'm interested in the point where an A I system has to do something useful, reliably, in someone else's business. Your financial services work makes that especially tangible. A customer reporting a disputed charge needs an accurate action and a clear explanation. I also like the emphasis on measuring outcomes after launch. My background gives me a useful combination of financial context and evaluation discipline. I'd like to apply that within a team that has the platform, engineering depth, and customer relationships to do it repeatedly.
+
+Question three. What do you think an Agent Strategist actually does?
+
+Answer. I understand it as owning the journey from a customer's business problem to an agent that performs well in practice. That means understanding the workflow, choosing the first use case, shaping the conversation, working through integrations, and defining how we judge success. Then you stay involved through testing, launch, and improvement. The customer relationship is part of the technical work, because the relevant rules and exceptions often live with different people inside the organization. I'd expect to spend time with both executives and the people doing the work today. My job would be to turn those perspectives into clear decisions and keep the deployment moving toward a measurable result.
+
+Question four. Why move from your own consultancy into a full-time role?
+
+Answer. Consulting has given me a lot of ownership, and I'd like to retain that. What attracts me here is the opportunity to compound the work. When you're working independently, a lot of energy goes into finding the next engagement and rebuilding context. At Sierra, lessons from one deployment can improve a shared platform and help the next customer. I'd work with people confronting these problems every day, while staying close to the client and implementation. I'm interested in a role where I can own an outcome and also be challenged by a strong technical team.
+
+Question five. What makes your background useful for our financial services customers?
+
+Answer. I've worked with financial institutions from several angles. At Barclays, I worked on equity offerings and pricing. At D. E. Shaw, I evaluated data and research inputs for investment decisions. More recently, Pythia required turning fragmented financial documents into evidence that could support restructuring analysis. Those experiences taught me to care about definitions, provenance, and the cost of a wrong answer. I would bring that discipline to a customer-facing agent, while learning the institution's specific operating policies from its experts. Understanding both the evidence and the business consequence gives me a useful starting point with financial services customers.
+
+Question six. Walk me through an A I project you built for a customer.
+
+Answer. Pythia is a restructuring analytics system I built for Constellation. Debt ownership and creditor relationships are scattered across financial documents, and an analyst needs to reason about what those relationships imply. I built an extraction workflow that keeps facts connected to their source, then used graph inference and hierarchical Bayesian models to estimate ownership and possible creditor coalitions. A central design decision was to separate evidence extraction from downstream inference. An inferred relationship should not quietly become a documented fact. I also built provider comparisons, adversarial review, and deterministic validation into the workflow. The result is a research system where an analyst can inspect the evidence behind an important claim.
+
+Question seven. What did you personally do on Pythia?
+
+Answer. My work covered the modeling approach, the extraction harness, and the evaluation workflow. I built the connection between source documents, structured relationships, and the downstream graph and Bayesian analysis. I also developed the process for comparing model providers on the same financial documents, with a benchmark-blind first pass, adversarial review, and deterministic checks. I was making the choices about what constituted evidence and how to test it. I'd be happy to walk through a document and show how a claim moves through that system, from the original text to a structured relationship and its use in the analysis.
+
+Question eight. Tell me about a consequential technical decision you made.
+
+Answer. Pythia's provider comparison made the precision and recall tradeoff very concrete. In a development benchmark of sixteen matched documents, one provider produced approximately ninety percent precision and seventy-one percent recall. The other was around eighty percent precision and seventy-seven percent recall. So the model finding more relationships also introduced more incorrect ones. For restructuring research, a false relationship can contaminate the graph and distort subsequent reasoning. That makes the error type matter more than one aggregate score. My approach was to compare the outputs against the same references and inspect their differences. It also suggests a useful design: separate broad candidate discovery from the stricter standard for an evidence-backed relationship used downstream.
+
+Question nine. How did you know whether Pythia was working?
+
+Answer. I used paired comparisons across two providers on sixteen matched financial documents. We compared extracted relationships with reference records and examined false positives and omissions, alongside source lineage and deterministic checks. Keeping the first pass blind to benchmark information helped prevent the answer key from contaminating extraction. This was development benchmarking. Sixteen documents do not establish broad production reliability, and relationships inside one document are correlated. The next step would be a frozen set of new documents, with breakdowns by document type and relationship difficulty. I'd connect that technical quality to whether analysts can verify the output and complete their research task.
+
+Question ten. Tell me about something that did not work as expected.
+
+Answer. In Pythia, a validation rule was rejecting valid creditor relationships because it didn't recognize formal ownership language. The model had already extracted useful evidence, but the guardrail was discarding it. The correction changed the admission rules while keeping the prompt, schema, and model input fixed. On three development documents containing forty-seven reference relationships, one provider's recall rose from about thirteen to eighty-three percent, with no false positives in that test. The decision was to test held-out documents before expanding the change. The lesson is to inspect the whole path from model response to accepted output. A conservative control is only useful if it distinguishes unsupported claims from valid evidence. More prompting would have missed the actual bottleneck.
+
+Question eleven. Give me an example of taking a product through to customer value.
+
+Answer. Serif is my clearest example of moving beyond the model into a paying relationship. I built the platform around personalized health modeling, and signed Human Edge as its first paying partner. The product combined wearable, laboratory, and behavioral information to support more individualized coaching. The reported post-launch results included a ninety percent reduction in coaching time and engagement at three point two times the pre-launch baseline. Those were observed pre-and-post launch results. What matters for this role is that I had to own both the technical product and whether it fit a partner's work. A model can be interesting while still failing to make someone's day easier. The partner workflow is part of the product.
+
+Question twelve. What was technically distinctive about Serif, and how strong was the evidence?
+
+Answer. Serif modeled how lifestyle interventions relate to health outcomes at the population, cohort, and individual levels. The architecture pooled evidence so that a new participant could start with useful priors and develop individualized estimates as data accumulated. It covered eleven hundred eighty-eight enrolled participants. For predicting blood-panel improvement, a held-out cohort of three hundred eighty-nine produced an area under the receiver operating characteristic curve of zero point seven eight, compared with zero point five six for demographics and baseline biomarkers. That shows improved discrimination in that evaluation. It doesn't prove the recommended interventions caused better health. Predictive performance, causal assumptions, and observed customer outcomes are distinct kinds of evidence.
+
+Question thirteen. How do you work with technical counterparts?
+
+Answer. I try to make the problem and the responsibilities between components explicit. At Maalka, I owned data and analytics and managed two direct reports within a ten-person team. I led the team building Pathways, a retrofit planning tool. In its Pittsburgh pilot, the analysis step went from three weeks to ninety seconds. That required connecting the modeling method to a usable planning workflow. For a Sierra deployment, I'd bring engineering concrete inputs and outputs, failure cases, and a proposed test of success. I'd ask where my assumptions clash with the existing system. The goal is shared understanding of what we're building and how we'll know it works.
+
+Question fourteen. How would you handle a customer who disagrees with your recommendation?
+
+Answer. First, I'd understand what they are optimizing for. A request that looks technically unreasonable may reflect a deadline or a painful existing workflow. Then I'd make the tradeoff concrete with an example or test. If a customer wanted broader automation, I'd show which cases are reliable today, which remain uncertain, and what an error would cost. I'd offer a narrower launch with a clear expansion condition. If we still disagreed, I'd identify the person accountable for the decision and document the alternatives. I would stay constructive and responsive while keeping unsupported claims out of the conversation.
+
+Question fifteen. A customer says, we need an A I agent. What do you do first?
+
+Answer. I'd ask them to show me a recent customer interaction they wish had gone better. What was the customer trying to do? Where did the process stall? What did a successful resolution require? Then I'd ask for the volume, handling time, repeat-contact rate, and business importance of that journey. I'd involve frontline staff early, because documented processes often miss important exceptions. By the end of discovery, I want a specific user, a bounded task, accessible systems, an accountable owner, and an agreed measure of success. That gives us something we can test.
+
+Question sixteen. How would you prioritize competing requests or manage several deployments?
+
+Answer. I'd rank work by customer impact, risk, dependencies, and the evidence needed for the next decision. A high-volume request with a well-defined policy and usable systems may be a better first release than an impressive but ambiguous workflow. For multiple deployments, I'd keep a visible list of owners, upcoming decisions, and blockers. I'd distinguish urgent incidents from expansion requests. If a new feature threatens the launch, I would make the cost explicit: what slips, what risk increases, and what we gain. Then I'd agree on the smallest useful scope, including what we're leaving for the next release.
+
+Question seventeen. A senior customer wants a launch next week. What would you do?
+
+Answer. I'd clarify the outcome they need by next week and identify what can safely deliver it. There may be a useful limited release: one journey, a restricted audience, or a read-only capability. I'd work backward from the minimum tests, integrations, and operational coverage it requires. I'd make unresolved risks visible immediately. If the task includes actions on customer accounts, we need tested authorization and recovery behavior. The useful response is a concrete option with a date and boundaries. If no acceptable option exists, I'd explain the blocker and the shortest credible path to resolving it.
+
+Question eighteen. How would you explain your evaluation approach to a nontechnical executive?
+
+Answer. I'd start with the decision they need to make. For example: can we let this agent resolve this type of customer request without creating more problems? Then I'd describe the evidence in practical terms. We test representative journeys, difficult exceptions, and cases where the agent should ask for help. We check both what it says and what actually happened in the account system. We also monitor repeat contacts and customer satisfaction after launch. I would use a few concrete examples rather than lead with model terminology. If there's uncertainty, I'd explain what remains unknown and how a limited rollout will reduce it. The executive should understand the recommendation, the risk, and the next decision.
+
+Question nineteen. How do you use A I in your own workflow?
+
+Answer. I use coding assistants and language models to build, investigate, and evaluate systems. Pythia is a concrete example: models help extract structured evidence, but I keep source references and validation around the output. Moira uses language models within a forecasting research process, where the task is to decide what information is worth pursuing. My general pattern is to make the work inspectable. I want to see the inputs, the tool calls, the resulting artifacts, and the tests that support a change. I use A I to accelerate the process, while retaining responsibility for the assumptions and the result. The important skill is knowing when generated output is useful and when it still needs verification.
+
+Question twenty. How hands-on are you, and where would you need support?
+
+Answer. I am hands-on with Python, modeling, data pipelines, extraction harnesses, and evaluation. I've worked with production energy forecasting pipelines and built tools around financial documents. I can investigate a failure and contribute to a design discussion. My strongest combination is applied research, product ownership, and translating a customer's problem into something testable. I'd need to learn Sierra's platform and the demands of consumer conversations at your scale. I'd do that by pairing with experienced teammates on a real deployment. I bring the ability to get close to a complex problem and connect technical detail to a useful decision.
+
+Question twenty-one. What is Moira, and why is it relevant here?
+
+Answer. Moira is a research planner and forecasting system. It decomposes a question, tracks evidence and uncertainty, and helps decide which additional research could improve a forecast most. I think of it as asking where the next research dollar does the most good. My personal forecasts, informed by Moira and finalized by me, ranked first on Metaculus's twenty twenty-six Peer Accuracy leaderboard as of October. I keep that attribution explicit. For Sierra, the transferable habit is disciplined uncertainty: identify what we don't know, choose a useful next test, and update when the evidence changes. A forecasting system primarily observes the world. A customer agent also changes it, which makes permissions, transaction correctness, and recovery especially important.
+
+Question twenty-two. How would you design an agent for someone reporting an unfamiliar card charge?
+
+Answer. I'd begin with the institution's approved process and a narrow scope. The agent should acknowledge the concern, establish the required identity and account context, and retrieve authoritative transaction details. It should clarify whether the customer recognizes the merchant before moving to the permitted dispute or card-protection steps. Consequential actions need explicit confirmation and system-enforced authorization. I'd design for duplicate requests, unavailable systems, and a customer whose situation doesn't fit the standard path. The handoff should preserve the relevant facts so the customer doesn't start again. Success means the appropriate action was completed and explained accurately. I would work with the institution's specialists on policy, rather than let the model improvise requirements.
+
+Question twenty-three. When does an agent need retrieval, and when does it need tools?
+
+Answer. Retrieval can provide the relevant policy or product explanation. A tool connects the agent to current account state or lets it perform an authorized action. Both may be needed in one conversation. For a card replacement, retrieved policy might explain delivery options, while a system interface confirms the address and creates the order. I'd keep critical validation in the service that performs the action. The model can interpret intent, but it shouldn't be the final authority on permissions or transaction rules. I'd also verify the result before telling the customer the action succeeded. A timed-out request may have completed, so retries need a way to avoid creating duplicates.
+
+Question twenty-four. What does good context engineering mean to you?
+
+Answer. It means giving the model the right evidence and state for the current decision, with clear boundaries around what it can trust. For a customer agent, I would separate the customer's statements, authenticated account facts, current policy, and prior tool results. I'd retrieve only relevant information and preserve where it came from. Older conversation summaries should not override a current system response. I would also treat text from documents or users as data, rather than authority to change the agent's instructions. Pythia reinforces that discipline because extracted facts and inferred relationships have different evidential status. More context is not automatically better; irrelevant or contradictory material can make a response less reliable.
+
+Question twenty-five. How would you evaluate a new customer-facing agent?
+
+Answer. I'd create a test set around real customer journeys, with ordinary cases, difficult exceptions, and prohibited actions. I'd check whether the agent completed the correct task, followed policy, communicated clearly, and escalated when appropriate. For tool use, the final system state matters as much as the conversation. I'd combine deterministic checks with expert review, using model-based grading only after checking its agreement with human judgments. Because behavior varies, I'd run important scenarios repeatedly and report results by risk category. I'd keep a separate release test set and add production failures to regression testing. One overall pass rate can conceal an unacceptable failure in a rare but consequential workflow.
+
+Question twenty-six. How do you decide whether an agent is ready to launch?
+
+Answer. I'd agree on release criteria before looking at the final results. Those criteria should reflect the task's risk and distinguish ordinary quality issues from failures that block launch. I'd want representative test coverage, reliable integrations, tested escalation, clear monitoring, and an owner who can intervene. I would release to a limited population first and compare the results with the existing process where feasible. The release should be reproducible, so we know which model, instructions, knowledge, and tools produced it. If something goes wrong, we need a tested way to restrict the agent or revert the change. Launch readiness is a combination of measured behavior and operational readiness, rather than a model score alone.
+
+Question twenty-seven. An agent's performance suddenly deteriorates. How would you investigate?
+
+Answer. I'd first assess customer impact and contain any serious harm. Then I'd examine what changed: the model, instructions, knowledge, an interface, customer mix, or the way we measure success. I'd inspect representative failed conversations and tool traces, grouping failures by type rather than relying on anecdotes. I'd also check whether the problem is concentrated in a particular journey or customer segment. Once we have a hypothesis, I'd reproduce it in a controlled test, apply the smallest useful correction, and rerun relevant regression cases. Throughout, I'd give the customer a concise update: what we know, what we're doing, and when they'll hear from us again. Confidence should follow evidence, not the pressure to sound certain.
+
+Question twenty-eight. What metrics would you use to measure success?
+
+Answer. I'd start with verified resolution of the intended customer task. Then I'd look at repeat contacts, satisfaction, escalation quality, handling time, and cost per successfully resolved issue. For a revenue-oriented workflow, we might also measure retention or conversion, with safeguards against misleading or pressuring customers. Containment alone is insufficient because someone can leave a conversation without having their problem solved. I'd agree on definitions and compare similar groups or use a controlled rollout where possible. Sierra's SoFi case reports a thirty-three-point improvement in chat-contained net promoter score. My aim would be to improve those customer outcomes while checking for tradeoffs in risk, repeat contacts, and operating cost.
+
+Question twenty-nine. How would you approach security and compliance in a financial services deployment?
+
+Answer. I'd involve the customer's security, compliance, and operational experts during discovery. Then I'd translate approved requirements into specific permissions, data boundaries, tests, and escalation paths. Sensitive actions should require appropriate identity checks, authorization, and confirmation. Personally identifiable information should be limited to what's needed and protected throughout logs and integrations. I'd test attempts to bypass instructions, access another customer's information, or trigger an unauthorized action. I would also make it possible to reconstruct what the agent did and why a tool accepted or rejected a request. Requirements should become inspectable system behavior, rather than remain general statements in a design document.
+
+Question thirty. What would make you effective here, and what would you focus on improving?
+
+Answer. My strength is connecting business uncertainty to a concrete technical investigation. I can frame a problem, build a model or workflow, and challenge the evidence behind it. A development area I'd focus on is learning Sierra's deployment patterns and the practical demands of high-volume customer conversations. I'd want early feedback on my communication and how quickly I turn ambiguity into decisions. In the first month, I'd study real deployments and work alongside experienced strategists and engineers. Then I'd take ownership of a bounded customer problem, with clear success criteria. My aim would be to earn trust through useful work, sound judgment, and responsiveness, rather than arrive with a universal method to impose.
+
+Question thirty-one. What are your location, timing, compensation, and education details?
+
+Answer. I'm based in New York and comfortable working in the office. I'm also open to substantial client travel. I could start two weeks after accepting an offer, and I don't require work sponsorship. For compensation, I'm targeting two hundred seventy-five thousand dollars in annual base salary, with the overall package depending on the scope and equity. I understand the posted annual salary range is two hundred thousand to two hundred ninety thousand dollars. On education, I have an M B A from Columbia and a bachelor's degree in economics and mathematics from N Y U. My Georgia Tech experience was graduate coursework in computer science through December twenty twenty-five; I did not complete that degree.
+
+Question thirty-two. What questions should I ask at the end?
+
+Answer. I'd choose two or three questions based on what we've already covered. First: is this conversation specifically for the financial services team, and what kinds of customer problems would I initially own? Second: what separates your strongest strategists after their first six months, especially in how they work with customers and engineers? Third: how is responsibility divided between the strategist and agent engineer during a deployment? I would also ask what the next interview stages assess, including whether there is a practical build or customer case. Finally, I'd welcome direct feedback: is there any part of my background you'd like me to clarify before we finish? Those questions help establish mutual fit and prepare for the next conversation.
+
+Final rehearsal. Practice the opening answer, the Pythia story, and the Serif customer example. Use one result at a time and explain its limits. For technical cases, clarify the task, name the risks, propose an approach, and explain the test. Your strongest impression is someone who understands a consequential problem, builds something useful, and can be trusted about the evidence.
